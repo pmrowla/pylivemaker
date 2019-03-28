@@ -1,6 +1,6 @@
-=========
+===========
 pylivemaker
-=========
+===========
 
 
 .. image:: https://img.shields.io/pypi/v/pylivemaker.svg
@@ -17,6 +17,8 @@ pylivemaker
 
 
 Python package for manipulating LiveMaker 3 game resources.
+Specifically intended to work with LiveNovel VN's, but extraction
+should also work for other LiveMaker games.
 
 Based on tinfoil's irl_.
 
@@ -33,16 +35,21 @@ Support for 2.7 is unplanned.
 Features
 --------
 
-* See WIP branch for info on what currently works.
+* Extract files from a LiveMaker .exe or .dat file.
+* Dump LSB files to human-readable text or XML (similar to LiveMaker's XML .lsc format).
+* Extract LiveNovel LNS scripts from LSB files.
+* Compile (modified) LNS scripts and insert them into LSB files.
+* Patch (modified) LSB files into an existing .exe or .dat file.
 
 License
 -------
 
 pylivemaker / irl
-^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
-| Copyright (C) 2019 Peter Rowlands
-| Copyright (C) 2014 tinfoil
+Copyright (C) 2019 Peter Rowlands
+
+Copyright (C) 2014 tinfoil
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

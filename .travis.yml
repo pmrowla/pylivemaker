@@ -1,0 +1,17 @@
+language: python
+python:
+- 3.6
+- 3.5
+- 3.4
+install: pip install -U tox-travis
+script: tox
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: pmrowla
+  password:
+    secure: bDK39H77RLY6JNaRoFXh08gQI42iPOG2dsxdRcx9rohWkVfDpDS8Xk7bXQUXwBedon20dUyVrDBOA13UEcZpLTaYbXC9BhCb/lfxut4eMXWJmrTE8zpH+eHpV/QyV19gcYlgBl8LE4jO1GWxqKyd9+wQDl7VjkvI7rqaN7WRRA0y8JcpBeKAUkbt0m/iAEZTb2q0c+NjqJA0hA79ca0ViIbeOn7R5jkGBX2ftOPW2iACPggoYy5EkqVgYJ4/xFxskJw2jRqNBMzJWgrA1Zqnp0PNARCwvX96dNkXp66fCww0l96dngtXHDiR3EXpq2/vMGY/gW5poopbtAGQuTdfr4GfGaILpiNypdqpLblQA/BF+dFgBoItGqfqfwXRCWQd8uZihOy5Q4Q51CbsU6kk4oTNhRwUjV0VmrKsM/lQh6KwD8pM+f8F+pEWhumhpJGN5RE42eFtJijRsJPeQ12CwqdqAW4+brVqW4bKlFTIovg7PPN+Z6cLhzLcBvmDLj4+/K5csL62XV4//tZUe1XGmBL8P9WUF+p3rN7d7Wd1S1KSIczlmUbQflzqqKEDg8QjthryGttYMvd5L92vQXZ6RisE0HtfohS6bQ/2NFYuYYxOqMV+KiEmNA3e771DRy1pztYOQoQ4OgmNQIJlA7ljhQOZnPbP12EF5VvGbS/6log=
+  on:
+    tags: true
+    repo: pmrowla/pylivemaker
+    python: 3.6
