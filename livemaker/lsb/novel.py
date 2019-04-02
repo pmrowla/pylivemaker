@@ -790,6 +790,10 @@ class TpWord(BaseSerializable):
 
     @classmethod
     def _struct(cls):
+        # Note: LiveMaker's parser silently ignores invalid TWdType's,
+        # so use Byte as the last Select() option to do the same thing
+        select_subcons = _twd_structs
+        select_subcons.append(construct.Byte)
         return construct.Struct(
             'signature' / construct.Const(b'TpWord'),
             'version' / _TpWordVersionAdapter(construct.Bytes(3)),
@@ -802,9 +806,7 @@ class TpWord(BaseSerializable):
                 construct.this.version >= 105,
                 construct.PrefixedArray(construct.Int32ul, TWdLink._struct()),
             ),
-            # Note: LiveMaker's parser silently ignores invalid TWdType's,
-            # so use Byte as the last Select() option to do the same thing
-            'body' / construct.PrefixedArray(construct.Int32ul, construct.Select(*_twd_structs, construct.Byte)),
+            'body' / construct.PrefixedArray(construct.Int32ul, construct.Select(*select_subcons)),
         )
 
     @classmethod
