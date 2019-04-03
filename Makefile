@@ -67,6 +67,7 @@ coverage: ## check code coverage quickly with the default Python
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/livemaker.rst
+	rm -f docs/livemaker.lsb.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ livemaker
 	$(MAKE) -C docs clean

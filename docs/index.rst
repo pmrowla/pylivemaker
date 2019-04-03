@@ -1,5 +1,5 @@
 Welcome to pylivemaker's documentation!
-======================================
+=======================================
 
 .. toctree::
    :maxdepth: 2
