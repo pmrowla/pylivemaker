@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<style type="text/css">
+body,td{ font-size: 13px; line-height: 140%; }
+</style>
+<TITLE>[コマンド] 計算</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#000080">
+<BASEFONT SIZE=2>
+<A NAME="calc"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">計算</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>計算式を実行します。</P>
+<A NAME="new"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">変数作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>変数を作成します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前。&quot;&quot;で囲まないように注意</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+型</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数の型。詳細は<A HREF="calc.html#var">ここ</A></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+初期値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数の初期値</TD>
+   </TR>
+   <TR>
+      <TD ROWSPAN=3 BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+動作タイプ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+【グローバル】<BR>通常の変数<BR></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+【自動破棄】<BR>コール元に戻る際に自動的に破棄される変数<BR>(自動破棄は<A HREF="sequence.html#call">コール</A>、またはイベント駆動で呼ばれた場合に限り有効)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+【ローカル】<BR>現在のルーチン内でのみ使え(ここからコールした先では見えない)、コール元に戻る際に自動的に破棄される変数<BR>(自動破棄は<A HREF="sequence.html#call">コール</A>、またはイベント駆動で呼ばれた場合に限り有効)</TD>
+   </TR>
+</TABLE></P>
+<A NAME="del"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">変数削除</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B>変数名</B>(&quot;&quot;で囲まないように注意)で指定された変数を削除します。</P>
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+</BODY>
+</HTML>

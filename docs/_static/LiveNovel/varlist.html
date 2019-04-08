@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>変数リスト</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">変数リスト</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><IMG SRC="ln_var02.gif" WIDTH=510 HEIGHT=149 HSPACE=8 VSPACE=8 ALT="ln_var02.gif"><BR>変数リストで設定した変数は、<A HREF="var.html">チャートや計算ノードの変数</A>とは違い、全てのチャート、ノードから読み書きが行えます。<BR><BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#C0C0C0" NOWRAP><BASEFONT SIZE=2>
+項目</TD>
+      <TD ALIGN="center" BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+説明</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数の名前です。<A HREF="var.html">チャートや計算ノードの変数</A>と重複することはできません。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タイプ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>変数の型を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FFFFFF">
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">整数</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">小数が扱えない数値</FONT></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">実数</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">小数が扱える数値</FONT></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フラグ</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+                  <P><FONT COLOR="#FFFFFF">FALSE、TRUEのみ扱える<BR>条件に適合している・ON状態がTRUE、条件に適合していない・OFF状態がFALSE<BR>値を逆転させる場合は「f = Not(f)」または「f = f ^ TRUE」とします</FONT></P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字列</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">可変長文字列</FONT></TD>
+            </TR>
+         </TABLE></P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+初期値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+最初に入れておく値を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+動作タイプ</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FFFFFF">
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+                  <P><FONT COLOR="#FFFFFF">ゲーム起動時またはリセット時に初期化されます<BR>リセット時とは以下のような時です<BR>・プレイヤーがシステムメニューを使ってタイトル画面に戻った時<BR>・「シーン回想」モードで話を始めた時<BR>・ゲームが終了してタイトル画面に戻った時</FONT></P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+                  <P><FONT COLOR="#FFFFFF">起動時のみ<BR>初期化</FONT></P></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ゲーム起動時にだけ初期化されます</FONT></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ステータス</FONT></TD>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">インストール後、最初にゲームを起動した時にだけ初期化されます。また、ソフト起動時に値を復帰し、ソフト終了時に値を保存します（その間にプレイヤーが行うゲームセーブ・ロードの影響は受けません）</FONT></TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BR><BR></P>
+</BODY>
+</HTML>

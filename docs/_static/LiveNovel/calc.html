@@ -1,0 +1,3172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>変数・値・関数</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">変数・値</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B><FONT SIZE=3 COLOR="#008080">数値</FONT></B><BR>LiveMakerでは次のような表現の数値を使用することができます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+12345</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+123.45</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+小数</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+$12345</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+16進数</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2></P>
+<P><B><FONT SIZE=3 COLOR="#008080">真(TRUE)と偽(FALSE)</FONT></B><BR>条件に適合している・ON状態・値が0以外を<B>真</B>、条件に適合しない・OFF状態・値が0を<B>偽</B>と言います。LiveMakerでは真をTRUE、偽をFALSEと表すことができます。<BR>例えば左ボタンがクリックされたかどうかを判断する場合、以下は同じ意味です。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+@LClick == TRUE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+@LClick</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>逆に左ボタンがクリックされていないことを判断する場合は以下のようになります。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+@LClick == FALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Not( @LClick )</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2></P>
+<P><B><FONT SIZE=3 COLOR="#008080">文字列</FONT></B><BR>文字列はダブルクォーテーション( &quot; )で囲みます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&quot;あいうえお&quot;</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>文字列中にダブルクォーテーションを使用したい時は\&quot;とします。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&quot;あい\&quot;う\&quot;えお&quot;　→　あい&quot;う&quot;えお</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>また文字列中に\を使用したい時は\\とします。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&quot;あい\\うえお&quot;　→　あい\うえお</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2></P>
+<P><B><FONT SIZE=3 COLOR="#008080">エスケープシーケンス(\) </FONT></B><BR>ダブルクォーテーションで囲まれた文字列の中ではバックスラッシュ( \ )に続く文字は特別な意味を持ちます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#808080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">表記</FONT></TD>
+      <TD BGCOLOR="#808080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">意味</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+\n</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+改行</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+\\</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+\</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+\&quot;</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&quot;</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2></P>
+<P><A NAME="var"></A><B><FONT SIZE=3 COLOR="#008080">変数</FONT></B><BR>変数には数値や文字列を代入することができます。<B>整数</B>(小数が使えない)、<B>実数</B>(小数が使える)、<B>フラグ</B>(TRUE・FALSE)、<B>文字列</B>（文字数制限なし）があり、変数作成時にどの型か指定します。<BR>変数名には半角英数字とアンダーバー( _ )、及び全角文字が使えます。</P>
+<P><B><FONT SIZE=3 COLOR="#008080">配列</FONT><BR>変数名[添え字]</B>という形式で配列を表現できます。添え字は0から始まります。<BR>配列変数を直接作成するコマンドはありません。変数を作成した後にSetArray関数で配列にします。例えば、変数abcを10x10の二次元配列にするなら、<B>SetArray( abc,10,10 )</B>とします。この配列にアクセスする場合は<B>abc[x,y]</B>と記述します。<BR>なお、abc と abc[0] は同じ扱いになります。</P>
+<P><B><FONT SIZE=3 COLOR="#008080">文字列と数値</FONT></B><BR>文字列と数値は混合して使えます。例えば、以下のような２つの変数があったとして、<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#808080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変数名</FONT></TD>
+      <TD BGCOLOR="#808080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">型</FONT></TD>
+      <TD BGCOLOR="#808080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">値</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+N</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+50</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&quot;100&quot;</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>次のような計算をすると<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+N = N + S</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>Nは150になります。また、次のような場合は<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S = S ++ N</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>Sは&quot;10050&quot;になります。</P>
+<P><B><FONT SIZE=3 COLOR="#008080">動作タイプ</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+通常</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲーム起動時またはリセット時に初期化されます<BR>リセット時とは以下のような時です<BR>・プレイヤーがシステムメニューを使ってタイトル画面に戻った時<BR>・「シーン回想」モードで話を始めた時<BR>・ゲームが終了してタイトル画面に戻った時</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+起動時のみ初期化</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲーム起動時にだけ初期化されます</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ステータス</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+インストール後、最初にゲームを起動した時にだけ初期化されます。また、ソフト起動時に値を復帰し、ソフト終了時に値を保存します（その間にプレイヤーが行うゲームセーブ・ロードの影響は受けません）</TD>
+   </TR>
+</TABLE><BR><BR></P>
+<A NAME="sysvar"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">システム変数</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>特殊な変数としてシステム変数があります。システム変数は<B>@</B>で始まり、システムの状態を取得したり設定したりすることができます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">変数名</FONT></B></TD>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">意味</FONT></B></TD>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">設定可</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Year</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の日付の年。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Month</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の日付の月。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Day</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の日付の日。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Week</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+曜日を１(日)～７(土)で返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Hour</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の時刻の時。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Min</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の時刻の分。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Sec</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在の時刻の秒。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@1Hour</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+1日を1とした時の1時間の値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@1Min</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+1日を1とした時の1分の値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@1Sec</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+1日を1とした時の1秒の値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@MouseX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのX座標を返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@MouseY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのY座標を返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@LClick</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左ボタンがクリックされた時にTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@RClick</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+右ボタンがクリックされた時にTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@LPush</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左ボタンが押されている時にTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@RPush</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+右ボタンが押されている時にTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@KeyClick[<A HREF="const.html" TARGET="CONST">キー番号</A>]</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定のキーがクリックされた時にTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@KeyPush[<A HREF="const.html" TARGET="CONST">キー番号</A>]</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定のキーが押されていればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@KeyRepeat[<A HREF="const.html" TARGET="CONST">キー番号</A>]</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定のキーがクリックされた時、または押されている間、一定周期毎にTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Pi</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+円周率</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@TickCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プログラムが開始してからの時間をミリ秒単位で返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@PCTickCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Windowsが起動してからの時間をミリ秒単位で返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Title</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ソフトウェアのタイトルを返す</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@FullScr</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フルスクリーンならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@ScrHeight</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面の高さ。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@ScrWidth</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面の幅。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@SelIndex</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列選択や画像選択でプレイヤーが選択した番号(0～)。画像選択の場合は、LivePreviewMenuで表示される番号と同じものが入る。<BR>※右クリックでクローズした場合は-1。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@SelStr</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列選択や画像選択でプレイヤーが選択した文字列。画像選択の場合は、LivePreviewMenuで付けた名前が入る。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">▼以下の変数はLiveMakerPro用なので、通常LiveMakerでは使いません</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@ActiveCompo</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーボードからの入力を受け取るコンポーネントの名前。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@CGDither</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならフルカラー画像を読み込む時、ディザで減色処理を行う</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Cursor</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+デフォルトのマウスカーソルのファイル名。コンポーネントのカーソルが設定されている場合はそちらが優先される。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<A NAME="@DisplayModeCount"></A>@DisplayModeCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ディスプレイモードの数を返す。ディスプレイモードの情報は<A HREF="calc.html#GetDisplayMode">GetDisplayMode</A>関数で取得できる</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@DisplayModeIndex</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フルスクリーン時のディスプレイモード番号。フルスクリーンの状態でこの変数に値を設定すると即反映される。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@FixedFonts</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システムで使える固定ピッチTrueTypeフォントの名前を改行で区切って返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Fonts</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システムで使えるTrueTypeフォントの名前を改行で区切って返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@HistoryCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+履歴書式登録<BR>している場合</TD>
+               <TD><BASEFONT SIZE=2>
+テキスト履歴の高さ(ピクセル単位)</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+履歴書式登録<BR>していない場合</TD>
+               <TD><BASEFONT SIZE=2>
+呼び出し可能なテキスト履歴の数</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@HistoryMaxCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+記憶可能なテキスト履歴の最大ページ数。<BR><TABLE BORDER=1 CELLPADDING=2 CELLSPACING=0>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+履歴書式登録<BR>している場合</TD>
+               <TD><BASEFONT SIZE=2>
+履歴表示用メッセージボックスでのページ数</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+履歴書式登録<BR>していない場合</TD>
+               <TD><BASEFONT SIZE=2>
+テキスト挿入時のページ数</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@IsDebug</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+デバッグモードで実行中ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@ParamStr</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+引数の値。アクセスできる範囲は<BR>@ParamStr[0] ～ @ParamStr[@ParamCount-1]</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Result</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コール元に返す戻り値を設定する。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Sender</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+呼び出したコンポーネントの名前。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@SoundON</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FALSEでサウンド再生を無効にします。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@StackCount</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コールスタック数。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@Temp</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+AssignTempで変数を割り当てると、その変数の代わりとして使える</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@TextDelay</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキスト挿入のデフォルトウエイト。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@MidiPort</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在のMIDIポート。</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+@MidiPorts[インデックス]</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+使用可能なMIDIポート。インデックスは0～(GetArraySize(@MidiPorts)-1)</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+不可</TD>
+   </TR>
+</TABLE></P>
+<A NAME="calc"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">演算子</FONT></B></TD>
+   </TR>
+</TABLE>
+<P><B><FONT SIZE=3 COLOR="#008080">代入</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">例</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">意味</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 5</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数ｘに5を代入する</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s = &quot;あいうえお&quot;</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数sに文字列 <FONT COLOR="#008080">あいうえお</FONT> を代入する</TD>
+   </TR>
+</TABLE></P>
+<P><B><FONT SIZE=3 COLOR="#008080">算術演算子</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 1 + 3</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+足し算</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 3 - 1</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+引き算</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 5 * 3</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+掛け算</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 5 / 2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+割り算</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x = 5 % 2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+割った余り(この場合は1)</TD>
+   </TR>
+</TABLE></P>
+<P><B><FONT SIZE=3 COLOR="#008080">ビット演算子</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+|</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+論理和(OR)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&amp;</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+論理積(AND)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+^</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+排他的論理和(XOR)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;&lt;</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左シフト</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&gt;&gt;</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+右シフト</TD>
+   </TR>
+</TABLE></P>
+<P><B><FONT SIZE=3 COLOR="#008080">比較演算子</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a == b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aとbが等しければ(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a &lt;&gt; b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aとbが等しくなければ(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a &lt; b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aがbより小さければ(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a &gt; b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aがbより大きければ(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a &lt;= b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aがb以下であれば(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a &gt;= b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aがb以上であれば(文字列でも可)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+(a == 1) &amp; (b == 2)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aが1で、かつ、bが2であれば</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+(a == 1) | (b == 2)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+aが1、または、bが2であれば</TD>
+   </TR>
+</TABLE></P>
+<P><B><FONT SIZE=3 COLOR="#008080">文字列連結</FONT></B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a ++ b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列aとbを連結します</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+a + b</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列aとbを連結します</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>+は、代入先が文字列変数ではない場合に、文字列連結ではなく加算と解釈されてしまいます。++の場合は常に文字列連結となります。</P>
+<A NAME="func"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">関数</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+関数は計算ノードの中で使うことができます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">カテゴリ</FONT></TD>
+      <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">関数</FONT></TD>
+      <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">機能</FONT></TD>
+      <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">引数</FONT></TD>
+      <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">戻り値<BR>の型</FONT></TD>
+      <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">使用例</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetActive</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+現在のアクティブテーブルの名前を返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=DBGetActive()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSort</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのレコードをソートする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ソートキーにする項目名(配列可)<BR>②逆順フラグ(配列可)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;HP&quot;,&quot;MP&quot;}<BR>rev[]={FALSE,TRUE}<BR>f=DBSort(name,rev)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBClearRecord</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のテーブルまたはアクティブテーブルの全レコードを削除する（項目リストは消えない）。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブルの名前(省略時はアクティブテーブル)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBClearRecord()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetRecNo</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のテーブルまたはアクティブテーブルのアクティブレコードの番号を返す。アクティブレコードがない場合は-1を返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブルの名前(省略時はアクティブテーブル)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=DBGetRecNo()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBInsertTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの全てのレコードまたは条件に合致したレコードをアクティブテーブルに追加する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コピー元テーブル名<BR>②レコード条件の項目名(配列可・省略時は無条件)<BR>③レコード条件の内容(配列可・省略時は無条件)<BR>④TRUEなら大小文字を区別しない(省略時はFALSE)<BR>⑤部分一致許可(省略時はFALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBInsertTable(&quot;DB2&quot;,&quot;職業&quot;,2,FALSE,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDeleteTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のテーブルまたはアクティブテーブルを削除する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブルの名前（省略時はアクティブテーブル）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBDeleteTable()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBClearTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+全てのテーブルを削除する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBClearTable()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBCopy</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの内容を指定テーブルに追加する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①追加先テーブルの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBCopy(&quot;DB2&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの指定項目の内容を文字列で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=DBGetStr(&quot;名前&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetActive</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定名のテーブルをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブルの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetActive(&quot;DB1&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBCreateTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定名のテーブルを作成し、そのテーブルをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①名前<BR>②ステータス扱いならTRUE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBCreateTable(&quot;DB1&quot;,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetTableCount</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+存在するテーブルの個数を返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=DBGetTableCount</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定インデックスのテーブル情報を変数にセットする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①インデックス(0～DBGetTableCount-1)<BR>②名前を受け取る変数<BR>③ステータスかどうかを受け取る変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBGetTable(0,Name,IsStatus)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetRecNo</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルの指定番号のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①レコード番号</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetRecNo(0)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBAddField</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルに項目を追加する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名<BR>②<A HREF="const.html#vartype" TARGET="CONST">型</A><BR>③文字数(文字列型の場合のみ)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBAddField(&quot;HP&quot;,PT_INT,0)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetBool</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの指定項目の内容をフラグで返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBGetBool(&quot;男&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetBool</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの内容をフラグで設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名<BR>②内容</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetBool(&quot;男&quot;,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetFloat</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの指定項目の内容を実数値で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+e=DBGetFloat(&quot;成功率&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetFloat</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの内容を実数値で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名<BR>②内容</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetFloat(&quot;成功率&quot;,78.3)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBFindPrior</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの前のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBFindPrior()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBFindNext</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの次のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBFindNext()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBLoadTsvFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルにTSVファイルを読み込む。成功ならTRUEを返す。<BR>※TSVの最初の行はフィールド設定となります</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBLoadTsvFile(&quot;データ.tsv&quot;)<BR><BR>【データ.tsvの例】※&lt;T&gt;はタブ文字<BR>名前 char 10&lt;T&gt;年齢 int&lt;T&gt;視力 float&lt;T&gt;眼鏡 bool<BR>太郎&lt;T&gt;20&lt;T&gt;2.0&lt;T&gt;FALSE<BR>花子&lt;T&gt;18&lt;T&gt;0.1&lt;T&gt;TRUE<BR><BR>フィールド設定は「フィールド名 型 長さ(文字列のみ)」と記述します。型には、int(整数)、float(実数)、bool(フラグ)、char(文字列)があります。文字列の長さは半角文字単位で指定します(指定しなかった場合は80文字)。<BR>フィールド名のみ記述した場合は半角80文字の文字列型となります。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBLocate</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルの中から指定レコードを検索しアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名(配列可)<BR>②内容(配列可)<BR>③TRUEなら大小文字を区別しない(省略時はFALSE)<BR>④部分一致許可(省略時はFALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBLocate(name,val,TRUE,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBRecordCount</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のテーブル(省略時はアクティブテーブル)のレコード数を返す。テーブルが存在しない場合は-1を返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブルの名前（省略可）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=DBRecordCount(&quot;DB1&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの内容を文字列で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名<BR>②内容</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetStr(&quot;名前&quot;,&quot;太郎&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBFindLast</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルの最後のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBFindLast()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBFindFirst</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルの最初のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBFindFirst()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectGetInt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を整数値で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥取り出す項目名<BR>⑦取得できなかった時に返す値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>n=DBDirectGetInt(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;MP&quot;,0)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectGetStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を文字列で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥取り出す項目名<BR>⑦取得できなかった時に返す値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>s=DBDirectGetStr(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;ニックネーム&quot;,&quot;&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectSetBool</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容をフラグで設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥設定する項目名<BR>⑦値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBDirectSetFlag(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;男&quot;,TRUE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBCopyTable</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルの全てのレコードまたは条件に合致したレコードを別のテーブルにコピーする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コピー先テーブル名<BR>②レコード条件の項目名(配列可・省略時は無条件)<BR>③レコード条件の内容(配列可・省略時は無条件)<BR>④TRUEなら大小文字を区別しない(省略時はFALSE)<BR>⑤部分一致許可(省略時はFALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBCopyTable(&quot;DB2&quot;,&quot;職業&quot;,2,FALSE,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectSetStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を文字列で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥設定する項目名<BR>⑦値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBDirectSetStr(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;ニックネーム&quot;,&quot;タロ&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectGetFloat</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を実数値で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥取り出す項目名<BR>⑦取得できなかった時に返す値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>e=DBDirectGetFloat(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;成功率&quot;,54.3)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectSetInt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を整数値で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥設定する項目名<BR>⑦値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBDirectSetInt(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;MP&quot;,10)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectGetBool</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容をフラグで返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥取り出す項目名<BR>⑦取得できなかった時に返す値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBDirectGetBool(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;男&quot;,FALSE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDirectSetFloat</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定テーブルの指定レコードの内容を実数値で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①テーブル名<BR>②レコード条件の項目名(配列可)<BR>③レコード条件の内容(配列可)<BR>④TRUEなら大小文字を区別しない<BR>⑤部分一致許可<BR>⑥設定する項目名<BR>⑦値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+name[]={&quot;名前&quot;,&quot;HP&quot;}<BR>val[]={&quot;太郎&quot;,100}<BR>f=DBDirectSetFloat(&quot;DB1&quot;,name,val,TRUE,FALSE,&quot;成功率&quot;,82.3)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBGetInt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの指定項目の内容を整数値で返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=DBGetInt(&quot;HP&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBSetInt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードの内容を整数値で設定する。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①項目名<BR>②内容</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBSetInt(&quot;HP&quot;,100)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBInsert</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルにレコードを追加し、そのレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①～項目の内容を入れる(省略可)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBInsert(10,TRUE,&quot;太郎&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DB</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DBDelete</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブテーブルのアクティブレコードを削除し、その次のレコードをアクティブにする。成功ならTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+-</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DBDelete()</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A NAME="exists"></A>Exists</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントが存在するか調べ、あればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IF Exists( &quot;画像1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A NAME="FileExists"></A>FileExists</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のファイルが存在すればTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FileExists(&quot;画像\\画像1.gal&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ExtractFileExt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名の拡張子部分(ピリオド含)を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=ExtractFileExt( &quot;画像\\背景\\BG1.GAL&quot; )<BR>S==&quot;.GAL&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ExtractFileName</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名の名前部分と拡張子部分を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=ExtractFileName( &quot;画像\\背景\\BG1.GAL&quot; )<BR>S==&quot;BG1.GAL&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ExtractFilePath</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名のディレクトリ部分を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=ExtractFilePath( &quot;画像\\背景\\BG1.GAL&quot; )<BR>S==&quot;画像\\背景\\&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ChangeFileExt</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名の拡張子を変更し、変更後のファイル名を返す<BR>拡張子文字列を空にすれば、拡張子を取り除くことができる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名<BR>②拡張子</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=ChangeFileExt( &quot;BG1.GAL&quot;,&quot;.LCM&quot; )<BR>S==&quot;BG1.LCM&quot;<BR><BR>S=ChangeFileExt( &quot;BG1.GAL&quot;,&quot;&quot; )<BR>S==&quot;BG1&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SelectOpenFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ユーザーに読み込み用のファイル(パス)を選択させる<BR>ユーザーがファイルを選択した場合はTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名(フルパス)が入る変数<BR>②ファイルマスク（省略可）（表記|マスク|表記|マスク...となる）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=SelectOpenFile( path )<BR>f==&quot;c:\\tmp\\test.txt&quot;<BR><BR>f=SelectOpenFile( path,&quot;PNG|*.png&quot; )<BR><BR>f=SelectOpenFile( path,&quot;PNG|*.png|JPEG|*.jpg;*.jpeg&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SelectSaveFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ユーザーに保存用のファイル(パス)を選択させる<BR>ユーザーがファイルを選択した場合はTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名(フルパス)が入る変数<BR>②ファイルマスク（省略可）（表記|マスク|表記|マスク...となる）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=SelectSaveFile( path )<BR>f==&quot;c:\\tmp\\test.txt&quot;<BR><BR>f=SelectSaveFile( path,&quot;PNG|*.png&quot; )<BR><BR>f=SelectSaveFile( path,&quot;PNG|*.png|JPEG|*.jpg;*.jpeg&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SelectDirectory</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ユーザーにフォルダを選択させる<BR>ユーザーがフォルダを選択した場合はTRUEを返す<BR>パスの末尾には必ず「\」が付く</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①フォルダのフルパスが入る変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=SelectDirectory( path )<BR>f==&quot;c:\\tmp\\&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ExtractFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲームデータから特定のファイルを抽出し保存する<BR>保存した場合はTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①抽出するファイル名（runimageがルート・配列可・ワイルドカード可）<BR>②ユーザーに上書き確認するならTRUE（省略可・省略時はTRUE）<BR>③保存するパス。EXEのあるフォルダがルートとなる。また、{Desktop}でデスクトップ、{MyDocuments}でマイドキュメントを指定できる（省略可・省略時はフォルダ選択ダイアログを表示）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetArray( files,2 )<BR>files[0] = &quot;グラフィック\\test.jpg&quot;<BR>files[1] = &quot;サウンド\\*.ogg&quot;<BR>f=ExtractFile( files,TRUE,&quot;プレゼント&quot; )<BR>↑<BR>実行フォルダの中に「プレゼント」フォルダが作られ、その中に「test.jpg」と、「サウンド」フォルダ内の全てのoggファイルが保存される<BR><BR>f=ExtractFile( files,TRUE,&quot;{Desktop}\\プレゼント&quot; )<BR>↑<BR>デスクトップに「プレゼント」フォルダが作られる</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Hypot</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+直角三角形の斜辺の長さを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①X<BR>②Y</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Hypot(x,y)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Random</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+0 &lt;= X &lt; Range<BR>の範囲の乱数を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①Range</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Random( 100 )<BR>n==0～99</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Fabs</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数の絶対値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Fabs(-100.5)<BR>n==100.5</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArcTan2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArcTan(Y/X) を計算して、正しい象限の角度を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①Y<BR>②X</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=ArcTan2(y,x)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArcTan</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Xのアークタンジェントを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①X</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=ArcTan(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArcSin</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Xのアークサインを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①X(-1～1)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=ArcSin(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArcCos</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Xのアークコサインを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①X(-1～1)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=ArcCos(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Sin</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ラジアン単位で指定した角のサインを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①角</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Sin(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Calc</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列で記述された式を実行し、成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①式</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=Calc(&quot;a = a + b&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Cos</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ラジアン単位で指定した角のコサインを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①角</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Cos(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Tan</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Xのタンジェントを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①X</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Tan(r)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Abs</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数の絶対値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Abs(-100)<BR>n==100</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Min</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+2つの整数値のうち、小さいほうの値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①整数値<BR>②整数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Min(12,45)<BR>n==12</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Max</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+2つの整数値のうち、大きいほうの値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①整数値<BR>②整数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Max(12,45)<BR>n==45</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Fmin</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+2つの実数値のうち、小さいほうの値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①実数値<BR>②実数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Fmin(12.3,45.6)<BR>n==12.3</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+計算</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Fmax</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+2つの実数値のうち、大きいほうの値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①実数値<BR>②実数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Fmax(12.3,45.6)<BR>n==45.6</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+EncodeDate</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+年月日を<A HREF="calc.html#datetime">日時値</A>に変換する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①年<BR>②月<BR>③日</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+dt=EncodeDate(2002,8,10)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetSec</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何秒かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=GetSec(tm)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetMonth</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何月かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+m=GetMonth(dt)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+EncodeTime</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+時分秒を<A HREF="calc.html#datetime">日時値</A>に変換する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①時<BR>②分<BR>③秒</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+tm=EncodeTime(20,10,30)<BR><BR>2002/8/10 20:10 30秒を表すには上記EncodeDateと組み合わせて dt+tm とすればよい</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DecodeDate</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>の日付部分を年月日に変換する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A><BR>②年を受け取る変数<BR>③月を受け取る変数<BR>④日を受け取る変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DecodeDate(dt,y,m,d)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DecodeTime</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>の時間部分を時分秒に変換する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A><BR>②時を受け取る変数<BR>③分受け取る変数<BR>④秒を受け取る変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DecodeTime(tm,h,m,s)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetMin</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何分かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+m=GetMin(tm)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetWeekJStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何曜日かを日本語で返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+w=GetWeekJStr(dt)<BR>w==&quot;月&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetHour</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何時かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+h=GetHour(tm)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetDay</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何日かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+d=GetDay(dt)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetWeek</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何曜日かを整数で返す（日曜日が1、土曜日が7）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+w=GetWeek(dt)<BR>w==2</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetYear</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何年かを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+y=GetYear(dt)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+日時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetWeekStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A HREF="calc.html#datetime">日時値</A>から何曜日かを英語で返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①<A HREF="calc.html#datetime">日時値</A></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+w=GetWeekStr(dt)<BR>w==&quot;Monday&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IndexOfStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列から文字列を検索し、見つかった場合はインデックスを返す。見つからなかった場合は-1を返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②文字列<BR>③大文字小文字を区別するならTRUE（省略した場合はTRUE）<BR>④部分一致も含めるならTRUE(省略した場合はFALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S[0]=&quot;あい&quot;<BR>S[1]=&quot;うえお&quot;<BR>n=IndexOfStr( S,&quot;うえお&quot; )<BR>n==1</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+InsertArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列Bを配列Aの指定位置に結合し、結合後の要素数を返す。なお、配列は1次元でなくてはならない。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列A<BR>②挿入位置(0～)<BR>③配列B</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={0,1}<BR>B[]=={2,3}<BR>InsertArray(A,1,B)<BR>A[]=={0,2,3,1}</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列のサイズを設定する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②～サイズ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n[5,8,2]にする場合は<BR>SetArry( n,5,8,2 )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+LoadTextFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキストファイルの内容を変数に読み込む。変数は行数分の配列変数になる。読み込みに成功した場合はTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+LoadTextFile(S,&quot;Data\\名前.txt&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+AddArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列Bを配列Aの最後に結合し、結合後の要素数を返す。なお、配列は1次元でなくてはならない。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列A<BR>②配列B</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={0,1}<BR>B[]=={2,3}<BR>AddArray(A,B)<BR>A[]=={0,1,2,3}</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StringToArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+改行(または指定文字)で区切られた文字列を配列に変換</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②変数<BR>③区切り文字(複数指定可・全角は禁止)。省略した場合は改行。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StringToArray( &quot;あい\nうえお&quot;,S )<BR>S[0]==&quot;あい&quot; S[1]==&quot;うえお&quot;<BR><BR>StringToArray( &quot;あい+うえお&quot;,S,&quot;+&quot; )<BR>S[0]==&quot;あい&quot; S[1]==&quot;うえお&quot;<BR></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SortStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列を並べ替える</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②TRUEなら逆順(省略可・省略時=FALSE)<BR>③FALSEなら文字列として比較、TRUEなら数値として比較(省略可・省略時=FALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S[0]==&quot;うえお&quot;<BR>S[1]==&quot;あい&quot;<BR>SortStr( S )<BR>S[0]==&quot;あい&quot; S[1]==&quot;うえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetArraySize</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列のサイズを取得</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②次元を指定(省略した場合は１次元配列としてのサイズを返す)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S[]=={10,20}<BR>n=GetArraySize( S,0 )<BR>n==20<BR><BR>n=GetArraySize( S )<BR>n==200</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CopyArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列Aを配列Bの内容と同じにする。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列A<BR>②配列B</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={0}<BR>B[]=={2,3}<BR>CopyArray(A,B)<BR>A[]=={2,3}</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CopyMem</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数2の内容を変数1にコピーする<BR>変数1と変数2は同じ型・同じサイズでなくてはならない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数1<BR>②変数2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CopyMem( n1,n2 )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ArrayToString</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列を改行(または指定文字)区切りの文字列に変換</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列<BR>②区切り文字。省略した場合は改行。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S[0] = &quot;あい&quot;<BR>S[1] = &quot;うえお&quot;<BR>SS=ArrayToString( S )<BR>SS==&quot;あい\nうえお&quot;<BR><BR>SS=ArrayToString( S,&quot;+&quot; )<BR>SS==&quot;あい+うえお&quot;<BR></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DeleteArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列の一部を削除し、削除後の要素数を返す。なお、配列は1次元でなくてはならない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列<BR>②削除位置(0～)<BR>③削除する要素数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={0,1,2,3}<BR>DeleteArray(A,1,2)<BR>A[]=={0,3}</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TrimArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列から指定値を削除し、削除後の要素数を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列<BR>②削除する値(省略時は0または空文字列)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={1,0,2,0,3}<BR>n=TrimArray(A)<BR>A[]=={1,2,3}<BR>n==3</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+UniqueArray</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列から重複した値を削除し、削除後の要素数を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+A[]=={0,1,2,2,3}<BR>n=UniqueArray(A)<BR>A[]=={0,1,2,3}<BR>n==4</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FillMem</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+配列を指定された値で埋める</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数<BR>②値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FillMem( n,0 )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+AddDelimiter</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列が空でない場合に文字列の末尾に区切り文字を付加して返す。文字列が空の場合はそのまま空文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①区切り文字<BR>②文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=AddDelimiter(&quot;+&quot;,&quot;文字列&quot;)<BR>S==&quot;文字列+&quot;<BR><BR>S=AddDelimiter(&quot;+&quot;,&quot;&quot;)<BR>S==&quot;&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+AddBackSlash</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の最後が\でなければ\を付加した文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=AddBackSlash( &quot;画像\\背景&quot; )<BR>S==&quot;画像\\背景\\&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Chr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定されたASCII値に対応する文字を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ASCII値(0～255)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=Chr(65)<BR>S==&quot;A&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CompareStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列を比較<BR>文字列1が文字列2より小さければ負の値を、等しければ0を、1が2より大きければ正の値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列1<BR>②文字列2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = CompareStr(&quot;abc&quot;,&quot;abc&quot;)<BR>n==0</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CompareText</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+大文字と小文字を区別せずに文字列を比較<BR>文字列1が文字列2より小さければ負の値を、等しければ0を、1が2より大きければ正の値を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列1<BR>②文字列2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = CompareText(&quot;ABC&quot;,&quot;abc&quot;)<BR>n==0</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Copy</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の一部を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②何バイト目からコピーするか(1～)<BR>③コピーするバイト数(省略時は最後まで)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SS = &quot;あいうえお&quot;<BR>S = Copy( SS,3,2 )<BR>い</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Delete</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の一部を削除</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②何バイト目から削除するか(1～)<BR>③削除するバイト数(省略時は最後まで)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S = &quot;あいうえお&quot;<BR>Delete( S,3,2 )<BR>S==&quot;あうえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FixStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の末尾に、２バイト文字の先頭バイトがあれば、それを削除してから文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=FixStr( Copy(&quot;あい&quot;,1,3) )<BR>s==&quot;あ&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+HanToZen</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の中に半角文字があれば全角文字に変換して文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=HanToZen(&quot;今日は2月15日だ!&quot;)<BR>s==&quot;今日は２月１５日だ！&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Insert</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列に別の文字列を挿入</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①挿入する文字列<BR>②文字列<BR>③何バイト目に挿入するか(1～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=&quot;あいうえお&quot;<BR>Insert( &quot;かき&quot;,S,3 )<BR>S==&quot;あかきいうえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IntToHex</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数を16進文字列に変換</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変換する整数<BR>②桁数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=IntToHex( 100,3 )<BR>S==&quot;064&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IntToStr</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数を文字列に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変換する整数<BR>②桁数(省略可)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=IntToStr( 87 )<BR>S==&quot;87&quot;<BR><BR>S=IntToStr( 87,3 )<BR>S==&quot;087&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StrToIntDef</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列を整数に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列(16進数の場合は先頭に$を付加)<BR>②変換できない時に返す整数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=StrToIntDef(&quot;$100&quot;,0)<BR>n==256<BR><BR>n=StrToIntDef(&quot;xxx&quot;,-1)<BR>n==-1</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StrToFloatDef</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列を実数に変換</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②変換できない時に返す実数値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=StrToFloatDef(&quot;4.56&quot;,0)<BR>n==4.56<BR><BR>n=StrToFloatDef(&quot;xxx&quot;,0.5)<BR>n==0.5</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IsDelimiter</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の指定位置が区切り文字ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①区切り文字(複数可・全角は禁止)<BR>②文字列<BR>③何バイト目か(1～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=IsDelimiter( &quot;/&quot;,&quot;あい/うえお&quot;,5 )<BR>F==TRUE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IsPathDelimiter</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の指定位置が\ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②何バイト目か(1～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=IsPathDelimiter( &quot;画像\\BG1.GAL&quot;,5 )<BR>F==TRUE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JCopy</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の一部を返す(日本語対応)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②何文字目からコピーするか(1～)<BR>③コピーする文字数(省略時は最後まで)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=JCopy( &quot;あいうえお&quot;,3,2 )<BR>S==&quot;うえ&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JDelete</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の一部を削除(日本語対応)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列<BR>②何文字目から削除するか(1～)<BR>③削除する文字数(省略時は最後まで)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S==&quot;あいうえお&quot;<BR>JDelete( S,3,2 )<BR>S==&quot;あいお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JInsert</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列に別の文字列を挿入(日本語対応)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①挿入する文字列<BR>②文字列<BR>③何文字目に挿入するか(1～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S==&quot;あいうえお&quot;<BR>JInsert( &quot;かき&quot;,S,3 )<BR>S==&quot;あいかきうえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JLength</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の長さ(文字単位)を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=JLength( &quot;あ&quot; )<BR>n==1</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JPos</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列から別の文字列を検索(日本語対応)<BR>文字列2から文字列1を探し、文字のインデックスを返す。見つからなかった場合は0を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列1<BR>②文字列2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=JPos( &quot;うえ&quot;,&quot;あいうえお&quot; )<BR>n==3</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+JTrim</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列から先頭部分および末尾部分の空白(全角含む)と制御文字を取り除く(日本語対応)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=JTrim( &quot;　あいうえお\n&quot; )<BR>S==&quot;あいうえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Length</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の長さ(バイト単位)を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Length( &quot;あ&quot; )<BR>n==2</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+LowerCase</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列を小文字に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=LowerCase(&quot;ABC&quot;)<BR>S==&quot;abc&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Ord</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された文字のASCII値(0～255)を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Ord(&quot;A&quot;)<BR>n==65</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Pos</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列から別の文字列を検索<BR>文字列2から文字列1を探し、文字のインデックスを返す。見つからなかった場合は0を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列1<BR>②文字列2</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=Pos( &quot;うえ&quot;,&quot;あいうえお&quot; )<BR>n==5</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StringOfChar</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定文字を指定した数だけ繰り返してできた文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字<BR>②繰り返す数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=StringOfChar(&quot;あ&quot;,5)<BR>S==&quot;あああああ&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+StringReplace</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の中にある部分文字列を別の文字列に置換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①検索対象文字列<BR>②検索文字列<BR>③置換文字列<BR>④FALSEなら最初に見つかった文字列のみ・TRUEなら全部置換(省略時はFALSE)<BR>⑤TRUEなら大小文字を区別しない(省略時はFALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=StringReplace(&quot;ABCabc&quot;,&quot;A&quot;,&quot;X&quot;)<BR>S==&quot;XBCabc&quot;<BR><BR>S=StringReplace(&quot;ABCabc&quot;,&quot;A&quot;,&quot;X&quot;,TRUE,TRUE)<BR>S==&quot;XBCXbc&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Trim</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列から先頭部分および末尾部分の空白と制御文字を取り除く</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=Trim( &quot; あいうえお\n&quot; )<BR>S==&quot;あいうえお&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+UpperCase</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列を大文字に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=LowerCase(&quot;abc&quot;)<BR>S==&quot;ABC&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ZenToHan</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の中に全角文字があれば半角文字に変換して文字列を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=ZenToHan(&quot;今日は２月１５日だ！&quot;)<BR>s==&quot;今日は2月15日だ!&quot;</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Not</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEとFALSEを反転して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=Not( TRUE )<BR>F==FALSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Int</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数値に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Int(&quot;100&quot;)<BR>n==100<BR><BR>n = Int(1.23)<BR>n==1</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetVarType</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数の型(PT_INT、PT_FLOAT、PT_BOOL、PT_STR))を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=GetVarType(s)<BR>n==PT_STR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+VarExists</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数が存在するか調べ、あればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IF VarExists( &quot;A1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Float</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実数値に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n = Float(&quot;1.23&quot;)<BR>n==1.23<BR><BR>n = Float(100)<BR>n==100</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetItem</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューやプレビューメニューの項目(名)を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前②選択肢のインデックス(0～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+s=GetItem(&quot;メニュー&quot;,0)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetCheck</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューのチェックの状態を取得<BR>チェックが付いていればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=GetCheck( &quot;メニュー1&quot;,3 )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetCheck</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューのチェックの状態を設定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)<BR>③チェックを外す場合はFALSE、付ける場合はTRUE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetCheck( &quot;メニュー1&quot;,3,TRUE )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetEnabled</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの項目が有効ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)または選択肢の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=GetEnabled( &quot;Pメニュー&quot;,&quot;選択肢1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetEnabled</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューのチェックの状態を設定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)<BR>③有効ならTRUE、無効ならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetEnabled( &quot;Pメニュー&quot;,&quot;選択肢1&quot;,TRUE )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetVisible</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの項目が表示されていればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)または選択肢の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=GetVisible( &quot;Pメニュー&quot;,&quot;選択肢1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetVisible</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの項目の表示状態を設定する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)<BR>③表示ならTRUE、非表示ならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetVisible( &quot;Pメニュー&quot;,&quot;選択肢1&quot;,TRUE )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetSelected</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの指定項目が選択状態ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)または選択肢の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+F=GetSelected( &quot;Pメニュー&quot;,&quot;選択肢1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetSelected</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの項目の選択状態を設定する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)または選択肢の名前<BR>③選択するならTRUE、非選択ならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetSelected( &quot;Pメニュー&quot;,&quot;選択肢1&quot;,TRUE )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetGroupIndex</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレビューメニューの項目のグループ番号を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②選択肢のインデックス(0～)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=GetGroupIndex( &quot;Pメニュー&quot;,&quot;選択肢1&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetProp</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティを取得</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②プロパティ番号</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティの型による</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=GetProp( &quot;img&quot;,PR_COUNT )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetProp</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティを設定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②プロパティ番号<BR>③設定する値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetProp( &quot;img&quot;,PR_INDEX,0 )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetCinemaProp</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+シネマ内クリップのプロパティを取得</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②クリップ名<BR>③プロパティ番号</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティの型による</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=GetCinemaProp( &quot;cinema&quot;,&quot;chara&quot;,COP_SOURCE )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetCinemaProp</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+シネマ内クリップのプロパティを設定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②クリップ名<BR>③プロパティ番号<BR>④設定する値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetCinemaProp( &quot;cinema&quot;,&quot;chara&quot;,COP_SOURCE,&quot;グラフィック\\人2.gal&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+InCabinet</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のコンポーネントがキャビネットの中に入っていればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+InCabinet(&quot;画像1&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+InPrimary</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された名前のコンポーネントが表画面にあればTRUEを返す。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+InPrimary(&quot;画像1&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IndexOfMenu</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定された文字列がメニューの項目の何番目に合致するかを返す。最初の項目なら0、2番目なら1、また合致しない場合は-1を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①メニューの名前<BR>②検索する文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=IndexOfMenu(<NOBR>&quot;メニュー1&quot;</NOBR>,<NOBR>&quot;選択肢3&quot;</NOBR>)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ListCompo</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの名前を列挙し、列挙した数を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①名前を格納する変数<BR>②列挙するコンポーネントの種類<BR>LT_NONEなら全種類<BR>③列挙するコンポーネントの[親]の名前<BR>表画面なら&quot;&quot;<BR>裏画面ならBACKSURFACE<BR>省略した場合は(または&quot;ALL&quot;なら)[親]に関係なく全て列挙する<BR>④TRUEなら子を再帰的に検索(省略可・省略時=FALSE)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+全てのコンポーネントを列挙<BR>ListCompo( SS )<BR><BR>表画面に貼り付いている全てのコンポーネントを列挙<BR>ListCompo( SS,LT_NONE,&quot;&quot; )<BR><BR>コンポーネント&quot;BG&quot;に貼り付いている矩形コンポーネントを列挙<BR>ListCompo( SS,LT_BOX,&quot;BG&quot; )<BR><BR>全てのサウンドコンポーネントを列挙<BR>ListCompo( SS,LT_SOUND )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ToClientX</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクリーン上のX座標をコンポーネントから見たX座標に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②X座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x=ToClientX(<NOBR>&quot;画像1&quot;</NOBR>,@MouseX)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ToClientY</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクリーン上のY座標をコンポーネントから見たY座標に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②Y座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+y=ToClientY(<NOBR>&quot;画像1&quot;</NOBR>,@MouseY)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ToScreenX</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネント上のX座標をスクリーンから見たX座標に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②X座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+x=ToScreenX(<NOBR>&quot;画像1&quot;</NOBR>,@MouseX)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ToScreenY</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネント上のY座標をスクリーンから見たY座標に変換して返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネント名<BR>②Y座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+y=ToScreenY(<NOBR>&quot;画像1&quot;</NOBR>,@MouseY)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CreateObject</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+各種コンポーネントを作成する。成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネントの種類②名前③親の名前(省略可・省略した場合は現在の表画面)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=CreateObject(LT_BOX,&quot;箱&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DeleteObject</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントを削除する。成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネントの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=DeleteObject(&quot;箱&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetImeOpened</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定コンポーネントのIMEが開いていればTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネントの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=GetImeOpened(&quot;エディット&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetImeOpened</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定コンポーネントのIMEを開いたり閉じたりする。成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コンポーネントの名前<BR>②開くならTRUE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=SetImeOpened(&quot;エディット&quot;,TRUE)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Alert</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ダイアログメッセージを表示する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+Alert(&quot;OK&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CopyFile</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メモリファイルやセーブデータをコピーする。コピー先データがすでに存在していた場合は上書きする。成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①コピー元のファイル名<BR>②コピー先のファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f=CopyFile(&quot;mem:__savescr.gal&quot;,&quot;save:__savescr3.gal&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+DeleteStack</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定したコールスタックを削除し、成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①削除するスタック番号(0～、積み上げ順)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+f = DeleteStack(@StackCount-1)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A NAME="GetDisplayMode"></A>GetDisplayMode</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定番号のディスプレイモードの情報を変数に設定する。成功ならTRUEを返す。<BR>番号は0 ～ <A HREF="calc.html#@DisplayModeCount">@DisplayModeCount</A>-1</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①番号<BR>②幅を受け取る変数<BR>③高さを受け取る変数<BR>④色深度を受け取る変数<BR>⑤リフレッシュレートを受け取る変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+GetDisplayMode(0,wd,ht,bp,hz)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A NAME="GetSaveCaption"></A>GetSaveCaption</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲームセーブデータの表題を取得</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①番号</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+S=GetSaveCaption( n )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ListSaveCaption</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲームセーブデータの表題と番号を列挙し、列挙した数を返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①表題を格納する変数<BR>②番号を格納する変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=ListSaveCaption(SS,NO)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+OpenUrl</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブラウザでURLを開く</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①URL</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+OpenUrl(&quot;http://www.aaa.com/&quot;)</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SaveScreen</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+実行画面をファイルに保存し、成功ならTRUEを返す<BR><BR>※メモリファイルはソフト終了時に破棄されます(セーブ不可)<BR><BR>※「Save:～」とするとセーブデータ(save.dat)の中に保存されます</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名(.GALのみ、ディレクトリ不可、メモリファイルの場合はMem:～、セーブデータの場合はSave:～)<BR>②リサンプル幅(省略可・0ならオリジナルの幅)<BR>③リサンプル高さ(省略可・0ならオリジナルの高さ)<BR>④裏画面ならTRUE(省略可・省略時=FALSE)<BR>⑤0=ファイルを削除しない 1=ソフト終了時にファイルを削除 2=アンインストール時にファイルを削除(省略可・省略時=0)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SaveScreen( &quot;screen.gal&quot; )<BR>SaveScreen( &quot;mem:screen.gal&quot; )<BR>SaveScreen( &quot;save:screen.gal&quot; )</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システム</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetWallPaper</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+デスクトップの壁紙を設定し、成功したらTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①ファイル名(空文字列なら現在のゲーム画面)<BR>②位置（0:中央 1:並べる 2:拡大）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetWallPaper(&quot;img.gal&quot;,1);</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+AssignTemp</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+@Temp変数に指定変数を割り当てる。成功ならTRUEを返す</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+①変数名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+n=0<BR>AssignTemp( &quot;n&quot; )<BR>@Temp=1<BR><BR>n==1</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><A NAME="datetime"></A><B><FONT COLOR="#008080">※日時値</FONT></B><BR>1899/12/30 午前12:00を0とし、そこから1日経過するごとに1を加算した値（時間は小数部で表す）。<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+</BODY>
+</HTML>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<style type="text/css">
+body,td{ font-size: 13px; line-height: 140%; }
+</style>
+<TITLE>[コマンド] コンポーネント</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#000080">
+<BASEFONT SIZE=2>
+<A NAME="del"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">オブジェクト削除</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B>オブジェクト名</B>で指定されたコンポーネントを削除します。</P>
+<P></P>
+<A NAME="get"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">プロパティ取得</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>コンポーネントのプロパティを取得します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象コンポーネントの名前</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+プロパティ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+取得するプロパティ</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+代入先変数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+取得した値を代入する変数名</TD>
+   </TR>
+</TABLE></P>
+<A NAME="set"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">プロパティ設定</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>コンポーネントのプロパティを設定します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象コンポーネントの名前</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+プロパティ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+設定するプロパティ</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+設定する値<BR>空の文字列を設定する時は、空にせず&quot;&quot;とすること</TD>
+   </TR>
+</TABLE></P>
+<A NAME="propmotion"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">プロパティモーション</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>プロパティの値を指定時間をかけて段階的に変化させます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+このモーションの名前</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+コンポーネント名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象コンポーネントの名前</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+プロパティ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+設定するプロパティ</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+設定する値。実数値として扱われる</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+時間</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化にかかる時間をミリ秒で指定する</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9"><BASEFONT SIZE=2>
+変化タイプ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+値の増減の種類<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">MT_NORMAL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+一定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">MT_INC</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+加速</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">MT_DEC</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+減速</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>プロパティが指定値まで達すると、モーションは自動的に破棄されます。また、対象コンポーネントが破棄された場合も、自動的に破棄されます。<BR><A HREF="../LiveMaker/calc.html#exists"><FONT COLOR="#0000FF">Exists(&quot;モーション名&quot;)</FONT></A>とすれば、モーションが終了したかどうかを調べられます。</P>
+<A NAME="cabinetsave"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">キャビネット保存</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>現在、裏画面にあるコンポーネントをキャビネットの中に移動します。キャビネットに入ったコンポーネントは、以下のような動作になります。</P>
+<UL>
+   <LI TYPE="disc">画面に描画されない
+   <LI TYPE="disc">アップデートされない（動画などが進行しない）
+   <LI TYPE="disc">アイドルイベントが発生しない
+</UL>
+<P>このコマンドは、現在のコンポーネントを、状態を変えずに一時的に退避させたい場合に使います。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キャビネットの名前。同名のキャビネットが既に存在する場合は、新たにキャビネットを作らずに、既存のキャビネットを使用します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+対象外を指定</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">FALSE</FONT></TD>
+               <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+裏画面にあるコンポーネントのうち、<FONT COLOR="#0000FF">対象</FONT>で指定されたものをキャビネットに保存する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">TRUE</FONT></TD>
+               <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+裏画面にあるコンポーネントのうち、<FONT COLOR="#0000FF">対象</FONT>で指定されていないものをキャビネットに保存する</TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2>裏画面にある全てのコンポーネントを対象にするのであれば、TRUEにして、<FONT COLOR="#0000FF">対象</FONT>を空にします。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+対象</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの名前を一行ずつ記述する（&quot;&quot;で囲むのを忘れないように）</TD>
+   </TR>
+</TABLE></P>
+<A NAME="cabinetload"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">キャビネット復帰</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>キャビネットに保存したコンポーネントを裏画面に戻します。キャビネットが空になると、キャビネットは自動的に破棄されます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キャビネットの名前。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+対象外を指定</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">FALSE</FONT></TD>
+               <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+キャビネットにあるコンポーネントのうち、<FONT COLOR="#0000FF">対象</FONT>で指定されたものを復帰する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">TRUE</FONT></TD>
+               <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+キャビネットにあるコンポーネントのうち、<FONT COLOR="#0000FF">対象</FONT>で指定されていないものを復帰する</TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2>キャビネットの中の全てのコンポーネントを対象にするのであれば、TRUEにして、<FONT COLOR="#0000FF">対象</FONT>を空にします。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C1E9F9" NOWRAP><BASEFONT SIZE=2>
+対象</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの名前を一行ずつ記述する（&quot;&quot;で囲むのを忘れないように）</TD>
+   </TR>
+</TABLE><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+</BODY>
+</HTML>

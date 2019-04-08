@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>オプション - 基本設定</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B><FONT SIZE=3>プロジェクトオプション - 基本設定</FONT></B></P>
+<UL>
+   <P><A NAME="title"></A><B>タイトル</B><BR>ゲームのタイトルを入力します。タイトルはゲームのタイトルバーの部分に表示されます。<BR><BR><BR><B>開始チャート</B><BR>ゲーム起動時に最初に実行されるチャートを選択します。<BR><BR><BR><A NAME="reg"></A><B>使用レジストリ</B><BR>インストールの際に使用するレジストリを指定します。通常は <FONT COLOR="#0000FF">メーカー名\ソフト名</FONT> とします（実際のキーは <FONT COLOR="#0000FF">HKEY_CURRENT_USER\Software\メーカー名\ソフト名</FONT> となります）。<BR>レジストリは、インストール済みであることを記録するために使用されます。これは、ソフトがCD-ROMなどで供給される場合に、インストール済みであるにも関わらず自動再生によってインストーラが起動してしまう現象を回避するために使われます。オンラインソフトなどメディアを使用せずに供給する場合や、レジストリを使用したくない場合は、この欄を空にしても構いません。ただし、スクリーンセーバーの場合は、レジストリを使用しないと環境設定ができませんのでご注意ください。<BR><BR><BR><B>識別コード </B><FONT COLOR="#FF0000">(LiveMakerProのみ)</FONT><BR>画像ファイルの識別コードです。半角英数字4文字で記述します。このコードとGraphicsGaleで設定したコードが合っていないと画像を正確に読み込めません。<BR><BR><BR><B>プレイデータ保存</B><BR>プログラム終了時にプレイデータをsave.datというファイルに保存するかどうかを指定します。<BR><BR><BR><B>画面サイズ</B><BR>画面の幅と高さを指定します。<BR><BR><BR><B>背景色</B><BR>画面の背景色を指定します。<BR><BR><BR><B>ディスクチェック対象外拡張子</B><BR>通常、読み込むファイルがディスクに存在しない場合、ディスク入れ替えのメッセージが表示されますが、ここで指定した拡張子のファイルに対してはそのチェックが行われません。拡張子は、「.wav」のようにドットを付加し、また複数の場合は「.wav.ogg」のように連続で記述してください。<BR><BR><BR><B>非アクティブ時の動作</B><BR>「動作停止」にチェックを付けると、アプリケーションが非アクティブになった時に、サウンド再生を含めて動作を停止します。<BR><BR><BR><B>起動時メディアチェック</B><BR>チェックを付けると、起動時にCD-ROM(またはDVD-ROM)が挿入されているかチェックし、挿入されていなければ続行できないようにします。<BR><BR><BR><B>メニューバー</B><BR>チェックを付けると、ウィンドウ上部にメニューバーが表示されます。<BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>キー・マウス</FONT></B></P>
+<UL>
+   <P><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">進行</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+テキストを進めるためのキーを指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ホイールで進行</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスホイールを手前に回転させた時にテキストを進めます</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">テキスト消去</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+メッセージボックスを非表示にするためのキーを指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">システム画面</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+システム画面を呼び出すためのキーを指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">テキスト履歴・進む</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+既読文章表示時に文章を進めるためのキーを指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">テキスト履歴・戻る</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+既読文章表示時に文章を戻すためのキーを指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ホイールでテキスト履歴</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+既読文章表示時にマウスホイールを使って文章を前後させます</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>テキスト消去用キー</B><BR>メッセージボックスを消去するためのキーを指定します。<BR><BR><BR><B>システム画面用キー</B><BR>システム画面を出すためのキーを指定します。<BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>シナリオ</FONT></B></P>
+<UL>
+   <P><A NAME="replaysnd"></A><B>テキスト履歴でサウンドリプレイ</B><BR>ボイス付きシナリオで、すでに再生済みの音声をもう一度聞きたい場合に使う機能です。テキスト履歴(バックログ)上に音声を再生させるためのボタンが表示されます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">再生ボタン画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+再生ボタンの画像を指定します ※必須</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ボタン：ホバー画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ボタンの上にマウスカーソルが乗ったときの画像を指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ボタン上マージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ボタンの上側の余白を指定します</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ボタン領域の幅</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+この値の分だけテキスト履歴の左側にボタンを置くための余白ができます。ボタンの幅以上の値を指定するようにしてください</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR>※テキスト履歴ではなく、現在表示されているテキストの音声をもう一度再生させるには、<A HREF="option3.html#prevmenu">メッセージボックスのプレビューメニュー</A>を設定してください。<BR></P>
+</UL>
+<P><B><FONT SIZE=3>特殊イベント</FONT></B></P>
+<UL>
+   <P><B>右クリック処理チャート</B><BR>画面を右クリックした時に呼び出されるチャートを指定します。このチャートを指定した場合、標準のシステム画面は表示されません。<BR>この処理は、シナリオの途中で呼び出されるため、処理が終わったら必ず終了して、処理を元に戻してやる必要があります。また、この処理に使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「右クリック処理」に設定してください。<BR>この処理の中で、文章の表示、一時停止、改ページと言ったコマンドは使えません。また、文字列選択や画像選択は使えますが、「選択値」ではなく「最終選択値」を参照するようにしてください。同様に「選択番号」「選択タイムアウト」も「最終選択番号」「最終選択タイムアウト」としてください。<BR>変数「シナリオジャンプ」にTRUEを設定してから処理を戻すと、それまでのシナリオを中断して、後述する「シナリオジャンプ処理チャート」に処理が移ります。<BR><BR><BR><B>ユーザーメニュー処理チャート</B><BR>ユーザー定義メニューが選択されたときに呼び出されるチャートを指定します。チャートが呼び出される際、変数「選択値」に選択されたメニューのキャプションが代入されます。この処理は、メニュー処理の途中で呼び出されるため、処理が終わったら必ず終了して、処理を元に戻してやる必要があります。また、「ユーザーメニュー処理チャート」として使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「ユーザーメニュー処理」に設定してください。<BR><FONT COLOR="#FF0000">※現在、ユーザーメニュー処理チャート内で使用できるコマンドは画像選択のみです</FONT><BR><BR><BR><A NAME="link"></A><B>リンク処理チャート</B><BR>リンク文字列をクリックした時に呼び出されるチャートを指定します。<BR>この処理は、シナリオの途中で呼び出されるため、処理が終わったら必ず終了して、処理を元に戻してやる必要があります。また、この処理に使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「リンク処理」に設定してください。<BR>この処理の中で、文章の表示、一時停止、改ページと言ったコマンドは使えません。また、文字列選択や画像選択は使えますが、「選択値」ではなく「最終選択値」を参照するようにしてください。同様に「選択番号」「選択タイムアウト」も「最終選択番号」「最終選択タイムアウト」としてください。<BR>クリックした文字列に設定されているリンク値が変数「選択値」に入っています。<BR>変数「シナリオジャンプ」にTRUEを設定してから処理を戻すと、それまでのシナリオを中断して、後述する「シナリオジャンプ処理チャート」に処理が移ります。<BR><BR><BR><B>シナリオジャンプ処理チャート</B><BR>右クリック処理やリンク処理でシナリオジャンプを実行した場合に、移動してくるチャートを指定します。<BR>この処理は、呼び出しではなく移動なので戻る必要はありません。通常のシナリオとして構築してください。また、この処理に使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「シナリオジャンプ処理」に設定してください。<BR><BR><BR><B>メッセージコントロール処理チャート</B><BR>メッセージボックスに付けるコントロールに存在するボタンの内、システムで用意された名前以外のものは、ここで指定したチャートで処理できます。<BR>この処理は、シナリオの途中で呼び出されるため、処理が終わったら必ず終了して、処理を元に戻してやる必要があります。また、この処理に使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「メッセージコントロール処理」に設定してください。<BR>この処理の中で、文章の表示、一時停止、改ページと言ったコマンドは使えません。また、文字列選択や画像選択は使えますが、「選択値」ではなく「最終選択値」を参照するようにしてください。同様に「選択番号」「選択タイムアウト」も「最終選択番号」「最終選択タイムアウト」としてください。<BR>押したボタンの名前は、変数「選択値」に入っています。<BR>変数「シナリオジャンプ」にTRUEを設定してから処理を戻すと、それまでのシナリオを中断して、前述の「シナリオジャンプ処理チャート」に処理が移ります。<BR><BR><BR><B>ロード後処理チャート</B><BR>プレイデータをロードした後に呼び出されるチャートを指定します。<BR>この処理は、シナリオの途中で呼び出されるため、処理が終わったら必ず終了して、処理を元に戻してやる必要があります。また、この処理に使用するチャートについては、チャートのプロパティを開いて「特殊用途」を「ロード後処理」に設定してください。<BR>プレイデータのロードが実行されると、セーブ実行直後の時点に処理が移ります。つまり、セーブ後もロード後も同じ処理を辿ります。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=0>
+      <TR>
+         <TD ALIGN="center" BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">セーブ呼び出し</FONT></TD>
+         <TD ALIGN="center">
+</TD>
+         <TD ALIGN="center" BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ロード呼び出し</FONT></TD>
+      </TR>
+      <TR>
+         <TD ALIGN="center"><BASEFONT SIZE=2>
+↓</TD>
+         <TD ALIGN="center">
+</TD>
+         <TD ALIGN="center"><BASEFONT SIZE=2>
+↓</TD>
+      </TR>
+      <TR>
+         <TD ALIGN="center" BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">処理</FONT></TD>
+         <TD ALIGN="center"><BASEFONT SIZE=2>
+←</TD>
+         <TD ALIGN="center" BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ここに移行する</FONT></TD>
+      </TR>
+      <TR>
+         <TD ALIGN="center"><BASEFONT SIZE=2>
+↓</TD>
+         <TD ALIGN="center">
+</TD>
+         <TD ALIGN="center">
+</TD>
+      </TR>
+      <TR>
+         <TD ALIGN="center" BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">…</FONT></TD>
+         <TD ALIGN="center">
+</TD>
+         <TD ALIGN="center">
+</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR>ロード後にだけ行いたい処理がある場合、この「ロード後処理チャート」に記述してください。<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+</UL>
+</BODY>
+</HTML>

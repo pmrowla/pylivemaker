@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>オプション - シーン回想</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B><FONT SIZE=3>プロジェクトオプション - シーン回想</FONT></B></P>
+<UL>
+   <P>シーン回想は、クリア済みのシーンをもう一度鑑賞できるモードです。クリアしていないシーンのサムネイルは黒くなって選ぶことができません。<BR><BR><BR><B>対象ノード</B><BR>このリスト順にサムネイルが並びます。<BR><BR><B><FONT COLOR="#0000FF">「タグ」について</FONT></B><BR>タグを使えば、特定のシーンのみを抽出してサムネイルを表示することができます。<BR>例えば、「人物A」と「人物B」というキャラクターがいて、それぞれ別のサムネイル画面を表示させる場合、人物Aに関するシーンのタグを「人物A」、人物Bに関するシーンのタグを「人物B」と設定します。そして、人物Aのサムネイル画面を表示する時は、「回想ターゲット」という変数に「人物A」と代入してから「シーン回想」を呼び出します。<BR>下記の「背景画像」や「プレビューメニュー」もタグで切り替えることが可能です。<BR><FONT COLOR="#FF0000">※タグを使用する場合は、シーン、背景画像、プレビューメニューの全ての項目にタグを設定してください(空文字列は不可)</FONT><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>デザイン</FONT></B></P>
+<UL>
+   <P><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">X,Y</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サムネイルの開始座標を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">横・縦の間隔</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+隣のサムネイルまでの距離を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">横・縦の個数</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サムネイルを何個並べるか指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">背景画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+背景に表示する画像ファイルを指定します。なくても構いません。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレビューメニュー</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+            <P>インターフェースに使用するプレビューメニューファイルを指定します。なくても構いません。<BR>プレビューメニューの中の画像(ボタン)は名前によって機能が決まります。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+前</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+前のページに移動します</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+次</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+次のページに移動します</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+終了</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+CGモードを終了します</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+数値</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+数値で示されるページに移動します</TD>
+               </TR>
+            </TABLE></P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ページ用数字画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+            <P>サムネイル一覧のページ番号用の画像ファイルを指定します。ページを表示しない場合は空にしてください。<BR>画像ファイルには、数字を0～9の順で並べて置いてください。<BR><IMG SRC="ln_number.png" WIDTH=100 HEIGHT=12 ALT="数字"></P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ページ表示位置</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ページを表示する座標を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">達成率用数字画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+            <P>達成率を表示するための数字の画像ファイルを指定します。達成率を表示しない場合は空にしてください。<BR>画像ファイルには、数字を0～9の順で並べて置いてください。<BR><IMG SRC="ln_number.png" WIDTH=100 HEIGHT=12 ALT="数字"></P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">達成率表示位置</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+達成率を表示する座標を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>サウンド</FONT></B></P>
+<UL>
+   <P>CGモードで使用するサウンドファイルを指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">BGM</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+BGMです</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ホバー音</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サムネイルの上にマウスが乗ったときに鳴らす音です</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">決定音</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サムネイルをクリックした時に鳴らす音です</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">メニュークリック音</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+プレビューメニューの中の画像(ボタン)をクリックした時に鳴らす音です</TD>
+      </TR>
+   </TABLE></P>
+</UL>
+</BODY>
+</HTML>

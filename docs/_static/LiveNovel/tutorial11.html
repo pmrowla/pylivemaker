@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">選択肢で分岐</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>画面に選択肢を表示し、プレイヤーに選択させ、その結果によって分岐させてみます。<BR><BR>このような流れになります。<BR><TABLE WIDTH=400 BORDER=0 CELLPADDING=2 CELLSPACING=2 BGCOLOR="#ECF9FE">
+   <TR>
+      <TD ALIGN="center" COLSPAN=2><BASEFONT SIZE=2>
+         <P><FONT COLOR="#0000FF">①</FONT>床にバナナが落ちている。どうしようか・・・<BR>↓</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2>
+<TABLE WIDTH=300 BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#000080">
+            <TR>
+               <TD ALIGN="center" WIDTH=150 BGCOLOR="#D5DCFF" NOWRAP><BASEFONT SIZE=2>
+思い切って食べてみよう</TD>
+               <TD ALIGN="center" BGCOLOR="#D5DCFF" NOWRAP><BASEFONT SIZE=2>
+腹を壊すぞ。やめておこう</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" WIDTH=200 NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">②</FONT>よーし、食べてみよう<BR>もぐもぐ・・・。う、うまい</P></TD>
+      <TD ALIGN="center" NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">③</FONT>腹を壊すぞ。やめておこう<BR>ぐるるぅ～。は、腹が減ってきた・・・</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><IMG SRC="ln_turorial42.png" ALIGN="left" WIDTH=161 HEIGHT=130 HSPACE=8 VSPACE=8><BR>まず、<FONT COLOR="#0000FF">①②③</FONT>をそれぞれシナリオノードとして作成し、文章を入力してください。<BR>結果、チャートは左のようになります。<BR><BR>次に「文字列選択」追加ボタンをクリックしてください。<BR><IMG SRC="ln_selstr01.png" WIDTH=108 HEIGHT=32 HSPACE=8 VSPACE=8 ALT="文字列選択"><BR CLEAR="left"><IMG SRC="ln_turorial46.png" ALIGN="left" WIDTH=159 HEIGHT=155 HSPACE=8 VSPACE=8><BR>文字列選択ノードが作成されたら、適当な位置まで移動してください。<BR>文字列選択ノードは、画面に選択肢を表示してプレイヤーに選択させるノードです。<BR CLEAR="left"><IMG SRC="ln_turorial79.png" ALIGN="left" WIDTH=172 HEIGHT=173 HSPACE=8 VSPACE=8 ALT="ln_turorial79.png"><BR><FONT COLOR="#0000FF">①</FONT>の「床にバナナが」から文字列選択ノードにジャンプするように矢印を引いてください。<BR><BR>では、文字列選択ノードをダブルクリックしてください。設定ダイアログが表示されます。<BR CLEAR="left"><IMG SRC="ln_turorial77.png" ALIGN="left" WIDTH=246 HEIGHT=222 HSPACE=8 VSPACE=8 ALT="ln_turorial77.png"><BR>右クリックし、メニューの[追加]ボタンを選択します。<BR CLEAR="left"><IMG SRC="ln_turorial78.png" ALIGN="left" WIDTH=326 HEIGHT=101 HSPACE=8 VSPACE=8 ALT="ln_turorial78.png"><BR><B>「キャプション」</B>は選択肢として表示する文字列です。ここでは「思い切って食べてみよう」とします。<BR><BR><B>「条件」</B>は、ある条件を満たしている場合にだけこの選択肢を表示するというものです。ここでは使いません。<BR CLEAR="left">OKをクリックしてダイアログを閉じます。<BR>同じようにもうひとつの選択肢も作ってください。<BR>最終的には以下のようになります。<BR><IMG SRC="ln_turorial43.png" WIDTH=285 HEIGHT=114 HSPACE=8 VSPACE=8><BR>OKをクリックしてダイアログを閉じます。<BR><BR>次に、選択結果によって分岐させるために、条件付きのジャンプを作成します。<BR><IMG SRC="ln_turorial45.png" ALIGN="left" WIDTH=159 HEIGHT=159 HSPACE=8 VSPACE=8><BR>文字列選択ノードから、<FONT COLOR="#0000FF">②</FONT>と<FONT COLOR="#0000FF">③</FONT>のノードそれぞれに矢印を引いてください。<BR CLEAR="left"><FONT COLOR="#0000FF">②</FONT>に引いた矢印をダブルクリックします。<BR><IMG SRC="ln_turorial80.png" ALIGN="left" WIDTH=222 HEIGHT=125 HSPACE=8 VSPACE=8 ALT="ln_turorial80.png"><BR>設定ダイアログが表示されます。<BR>「条件」の「追加」ボタンをクリックします。<BR CLEAR="left">プレイヤーが選択した番号が「選択番号」という変数に入ります。番号は0から始まるので、条件は以下のようになります。<BR><IMG SRC="ln_turorial81.png" WIDTH=600 HEIGHT=124 HSPACE=8 VSPACE=8 ALT="ln_turorial81.png"><BR>「==」は左辺と右辺が同じという意味です。<BR>変数「選択値」には選択した文字列が入るので、条件を「選択値 == &quot;思い切って食べてみよう&quot;」としても構いません。<BR><BR>OKをクリックしてダイアログを閉じます。<BR><IMG SRC="ln_turorial82.png" ALIGN="left" WIDTH=163 HEIGHT=168 HSPACE=8 VSPACE=8 ALT="ln_turorial82.png"><BR>条件が設定されたジャンプは、赤い矢印になります。<BR><BR>ここでは２つの選択肢しかないので、「食べない」へのジャンプの条件は付けなくても構いませんが、付ける場合は「選択番号 == 1」か「選択値 == &quot;腹を壊すぞ。やめておこう&quot;」になります。<BR CLEAR="left"><BR>ではF5を押して実行してみてください。<BR><IMG SRC="ln_turorial44.png" WIDTH=200 HEIGHT=156 HSPACE=0 VSPACE=8><BR>選択肢が表示されたらそれぞれ選択して、正しく進むか確認してください。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<A HREF="tutorial10.html">←戻る</A></TD>
+      <TD ALIGN="right"><BASEFONT SIZE=2>
+<A HREF="tutorial12.html">進む→</A></TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

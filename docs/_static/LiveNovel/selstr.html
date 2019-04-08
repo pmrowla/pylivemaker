@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>文字列選択</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">文字列選択</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>画面に複数の選択肢を表示し、プレイヤーに選択させます。プレイヤーが選択した後、変数「選択番号」、「選択値」、「選択タイムアウト」に値が入るので、その内容によって分岐させることができます。</P>
+<DIV ALIGN="center">
+<P><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF">
+</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択した時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キャンセルした時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+制限時間を超えた時</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択番号</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">選択した番号（0～）</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">-1</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">-1</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択値</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P><FONT COLOR="#0000FF">選択した文字列</FONT></P></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">（空）</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">（空）</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択タイムアウト</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUE</TD>
+   </TR>
+</TABLE></P>
+</DIV>
+<P><BR><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=4>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selstr01.png" ALIGN="absmiddle" WIDTH=108 HEIGHT=32 HSPACE=4 VSPACE=4 ALT="文字列選択"></TD>
+      <TD><BASEFONT SIZE=2>
+ツールバーの<B>[文字列選択]</B>追加ボタンをクリックします。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selstr02.png" ALIGN="absmiddle" WIDTH=108 HEIGHT=44 HSPACE=4 VSPACE=4 ALT="文字列選択"></TD>
+      <TD><BASEFONT SIZE=2>
+         <P><B>[文字列選択]</B>ノードが作成されます。<BR>ノードをダブルクリックして、設定ダイアログを表示します。</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selstr08.png" WIDTH=177 HEIGHT=87 HSPACE=4 VSPACE=4 ALT="表示位置"></TD>
+      <TD><BASEFONT SIZE=2>
+<B>横の位置：</B><BR>選択ウィンドウを表示する横の位置を、左寄せ・中央寄せ・右寄せの中から選ぶか、または直接座標で指定します。<BR><BR><B>縦の位置：</B><BR>選択ウィンドウを表示する縦の位置を、上寄せ・中央寄せ・下寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selstr03.png" ALIGN="absmiddle" WIDTH=288 HEIGHT=169 HSPACE=4 VSPACE=4 ALT="文字列選択"></TD>
+      <TD><BASEFONT SIZE=2>
+選択肢リストの上で右クリックし、メニューの<B>[追加]</B>を選択します。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2 BGCOLOR="#808080">
+<IMG SRC="ln_selstr04.png" ALIGN="absmiddle" WIDTH=444 HEIGHT=275 HSPACE=4 VSPACE=4 ALT="文字列選択"></TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=2><BASEFONT SIZE=2>
+         <P><B>[キャプション]</B>は選択肢として表示する文字列です。変数の内容を表示する場合は<B>[式として記述]</B>のチェックを付けてください。式にすると、例えば「basho」という変数を使って「basho」や「basho ++ &quot;に行く&quot;」といった記述ができます。<BR><B>[条件]</B>は、この選択肢を表示するかどうかの条件です。条件の設定方法の詳細は<A HREF="cond.html">こちら</A>をご覧ください。</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr05.png" ALIGN="absmiddle" WIDTH=164 HEIGHT=82 HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+         <P>このようにして選択肢を追加します。<BR><B>[キャンセル許可]</B>のチェックを付けると、プレイヤーが右クリックで選択をキャンセルすることができます。</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr09.png" ALIGN="absmiddle" WIDTH=280 HEIGHT=85 HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+<B>[効果音]</B>には、選択肢の上にマウスカーソルが乗った時と、選択した時の効果音を指定します。なくても構いません。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr06.png" ALIGN="absmiddle" HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+２つのシナリオノードを作り、文字列選択からそれらノードに矢印を伸ばします。<BR>※「学校に行った話」、「学校をサボった話」の順で矢印を引きます</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr10.png" ALIGN="absmiddle" HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+「学校に行った話」に伸びる矢印を右クリックして「プロパティ」選択します。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr11.png" ALIGN="absmiddle" WIDTH=300 HEIGHT=216 HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+「条件」を右クリックして「追加」を選択します。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr12.png" ALIGN="absmiddle" HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+条件を「選択値 == &quot;学校に行く&quot;」とします。<BR>※このケースの場合、「選択番号 == 0」でも同様の結果になります</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selstr07.png" ALIGN="absmiddle" HSPACE=4 VSPACE=4 ALT="文字列選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+最終的にチャートはこのようになります。<BR>このケースは２択なので「学校をサボった話」に進むジャンプには条件を付けていません。３択なら最初と２番目に条件を付け、３番目には条件を付けない、となります。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><BR><B><FONT SIZE=3>【制限時間を指定する】</FONT></B><BR>「制限時間」を使うと、プレイヤーが選択可能な時間を制限することができます。<BR><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#C8F7C3" NOWRAP><BASEFONT SIZE=2>
+<B>動作タイプ</B></TD>
+      <TD ALIGN="center" BGCOLOR="#C8F7C3"><BASEFONT SIZE=2>
+<B>内容</B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+制限時間なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>制限時間なしで選択できます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+制限時間あり</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択可能な時間をミリ秒単位(1秒=1000)で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+シネマファイル再生</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定したシネマファイルを再生します。プレイヤーはシネマが再生されている間だけ選択できます。<BR>シネマの表示座標は(0,0)になります。また、シネマは画面の最も手前に配置されます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>プレイヤーが制限時間内に選択しなかった場合、変数「選択タイムアウト」にTRUEが入ります。<BR><BR><FONT COLOR="#0000FF">【使い方の例】</FONT><BR>①タイトル画面で一定時間操作がないときにデモ画面に移行する。<B><FONT COLOR="#0000FF">→</FONT></B>タイトル画面で「制限時間あり」の文字列選択を実行。<BR>②制限時間付きのクイズ<B><FONT COLOR="#0000FF">→</FONT></B>「シネマファイル再生」で文字列選択を実行。「9,8,7...」とカウントダウンするシネマを再生する。<BR><BR><BR><BR><B><FONT SIZE=3>【選択肢が１つの場合は選択を省略】</FONT></B><BR>「選択肢が１つの場合は選択を省略」にチェックを付けると、有効な選択肢が１つしかない場合に、選択ウィンドウの表示処理を省略します。<BR><BR><BR></P>
+</BODY>
+</HTML>

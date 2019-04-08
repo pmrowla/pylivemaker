@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">マスター作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>ゲームが完成したら、配布するためのファイルを作成します。<BR><BR>「プロジェクト」メニューの「オプション」をクリックして、オプションダイアログを表示します。最低でも、以下の項目を設定してください。<BR><BR><B>基本設定</B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タイトル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ウィンドウのタイトルバーに表示される文字列です。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+使用レジストリ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>インストーラが使用します。一般的には「メーカー名\ソフト名」とします（例えば「HumanBalance\GTESP」）。<BR>インターネットで配布するような場合は指定する必要はありません。ただし、スクリーンセーバーで指定しなかった場合は、スクリーンセーバーの設定を保存できません。(<A HREF="option1.html#reg" TARGET="_blank">詳細</A>)</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><B>インストーラ</B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP>
+</TD>
+      <TD WIDTH="30%" BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">インターネットなどで配布する場合<BR>(インストーラを作成しない場合)</FONT></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">CD-ROMなどのメディアで供給する場合<BR>(インストーラを作成する場合)</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+インストールタイプ</TD>
+      <TD WIDTH="30%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+「EXEファイル化」を選択してください</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+「通常インストール」を選択してください</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+出力ファイル／フォルダ</TD>
+      <TD COLSPAN=2 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+インストール用ファイルが作成されるフォルダを指定します。空のフォルダを指定してください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ファイル選択</TD>
+      <TD WIDTH="30%" BGCOLOR="#FFFFFF">
+</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>インターネットで配布するような場合は、「フルインストールのみ」にして、さらに「１ファイル化」にチェックを付けてください。<BR>CD-ROMなどのメディアで配布する場合は、どのように設定しても構いません。ただし、ファイル容量が大きすぎると１ファイル化はできません。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ディスク枚数</TD>
+      <TD WIDTH="30%" BGCOLOR="#FFFFFF">
+</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+インターネットで配布するような場合は、１にしてください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+1ファイル化</TD>
+      <TD WIDTH="30%" BGCOLOR="#FFFFFF">
+</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+インターネットで配布するような場合は、チェックを付けてください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+         <P>DirectXをインストール<BR>WindowsMediaPlayer<BR>をインストール</P></TD>
+      <TD WIDTH="30%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>チェックを外してください。<BR></P></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+これらのファイルを同梱したい場合は、チェックを付け、あらかじめ次のファイルをコピーしておいてください。<BR>DirectXは、DirectXの再配布用ファイルを「LiveMaker\DirectX」フォルダに、WindowsMediaPlayerは、mp71.exeを「LiveMaker\WinMedia」フォルダにコピーしてください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイコン</TD>
+      <TD COLSPAN=2 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+EXEファイルのアイコンになるファイルを指定してください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+EXEの名前</TD>
+      <TD COLSPAN=2 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>EXEファイルのファイル名を指定します。「game.exe」「demo.exe」など、拡張子を「.exe」にしてください。<BR>また、スクリーンセーバーにする場合は、「demo.scr」など、拡張子を「.scr」にしてください。</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>EXEファイルのアイコンを書き換えるためには、ResourceHackerという別のソフトをインストールしておく必要があります。メニューの[ツール]→[自動アップデート]を使ってインストールできます。<BR>手動でインストールする場合は、まず<A HREF="http://www.users.on.net/johnson/resourcehacker/" TARGET="_blank">ResourceHackerのホームページ</A>に行き、プログラムのファイルをダウンロードしてください（英語版、日本語版どちらでも構いません）。次に、ダウンロードしたファイルを解凍し、その中の「ResHacker.exe」をLiveMakerのフォルダ（通常はC:\Program Files\LiveMaker）に移動してください。<BR><BR>１ファイル化した場合は、「Install.exe」と「Autorun.inf」が作成されます。このうち「Autorun.inf」は、メディア挿入時にプログラムを自動実行させるためのファイルなので、インターネットで配布するような場合は必要ありません。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<A HREF="tutorial17.html">←戻る</A></TD>
+      <TD ALIGN="right">
+</TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

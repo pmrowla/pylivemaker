@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">２回目のプレイで分岐</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>１度ゲームをクリアした後、２回目のプレイで１回目にはなかった新たな展開が出現する場合があります。こういったことを実現するには、ステータス変数を使います。<BR><BR>通常の変数はプレイ単位での扱いになりますが、ステータス変数は全体的な扱いになります。<BR><BR><B>【プレイ単位の扱いとは】</B><BR>例えば、アイテムを持っていない時、持っている時、それぞれの状態でセーブしたとします。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アイテムを持っていない</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──セーブ─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ１</FONT></TD>
+   </TR>
+   <TR>
+      <TD HEIGHT="4">
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アイテムを持っている</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──セーブ─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ２</FONT></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>そして後でロードした時、当然セーブした時の状態が復元します。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ１</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──ロード─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アイテムを持っていない</FONT></TD>
+   </TR>
+   <TR>
+      <TD HEIGHT="4">
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ２</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──ロード─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アイテムを持っている</FONT></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>これがプレイ単位の扱いです。つまり、それぞれの状態は独立していて、お互いに影響しないということです。<BR><BR><B>【全体的な扱いとは】</B><BR>これに対して、ステータス変数は全体でひとつの存在です。例えば、BGMの音量を記憶することを考えてみてください。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量最大</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──セーブ─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ１</FONT></TD>
+   </TR>
+   <TR>
+      <TD HEIGHT="4">
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量最小</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──セーブ─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ２</FONT></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>プレイ単位で音量を記憶してしまうと、ロードするプレイデータによって音量が変わってしまいます。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ１</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──ロード─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量最大</FONT></TD>
+   </TR>
+   <TR>
+      <TD HEIGHT="4">
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイデータ２</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+──ロード─→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量最小</FONT></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>本来、音量は最後に設定した値が維持されるべきで、ロードによって変化しては困ります。このような時にステータス変数を使います。ステータス変数はプレイ単位に関係なく、最後に設定した値が記憶されます。<BR><BR><B>【２回目のプレイで分岐】</B><BR>①「ステータス_ゲームクリア」という名前のステータス変数を作っておきます。初期値はFALSEです。<BR>②「ゲームクリア」という名前の通常変数も作っておきます。<BR>③ゲーム本編が開始した時に、「ゲームクリア」変数に「ステータス_ゲームクリア」変数の内容を代入します。<BR>④分岐ポイントまで来たら、「ゲームクリア」変数を見て、TRUEなら新たな展開に進み、FALSEなら⑤に進みます。<BR>⑤ゲームをクリアした時に「ステータス_ゲームクリア」変数にTRUEを入れます。<BR><BR>ステータス変数を直接使わず、開始時に通常変数にコピーしているところがポイントです。ステータス変数を直接見るようにしてしまうと、次のような問題が起きます。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">①分岐直前</FONT></TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">②分岐ポイント</FONT></TD>
+      <TD><BASEFONT SIZE=2>
+→</TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">④新たな展開</FONT></TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">③ゲームクリア</FONT></TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ステータス変数=TRUE</FONT></TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>ゲームクリア前に①でセーブしたとします。その後、ゲームをクリアし、ステータス変数がTRUEにセットされます。それから、最初にセーブした①のデータをロードすると、この時は既にステータス変数がTRUEなので、②の分岐ポイントで④に進むことになってしまいます。④は、クリア後にもう一度最初からプレイした場合に進むべきで、古いデータのロードによって進むべきではありません。これを防ぐために上記のような手法を取っているわけです。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<A HREF="tutorial17.html">←戻る</A></TD>
+      <TD ALIGN="right">
+</TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

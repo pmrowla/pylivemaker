@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">フラグで分岐</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>アイテムを持っているか、誰々と会ったか、などの状態によって話を分岐させることがあります。LiveNovelでこういったことを実現するには「変数」を使います。<BR>例えば、先ほどの続きを次のようにしたいとします。<BR><BR><TABLE WIDTH=400 BORDER=0 CELLPADDING=2 CELLSPACING=2 BGCOLOR="#ECF9FE">
+   <TR>
+      <TD ALIGN="center" COLSPAN=2><BASEFONT SIZE=2>
+         <P><FONT COLOR="#0000FF">①</FONT>床にバナナが落ちている。どうしようか・・・<BR>↓</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2>
+<TABLE WIDTH=300 BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#000080">
+            <TR>
+               <TD ALIGN="center" WIDTH=150 BGCOLOR="#D5DCFF" NOWRAP><BASEFONT SIZE=2>
+思い切って食べてみよう</TD>
+               <TD ALIGN="center" BGCOLOR="#D5DCFF" NOWRAP><BASEFONT SIZE=2>
+腹を壊すぞ。やめておこう</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" WIDTH=200 NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">②</FONT>よーし、食べてみよう<BR>もぐもぐ・・・。う、うまい</P></TD>
+      <TD ALIGN="center" NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">③</FONT>腹を壊すぞ。やめておこう<BR>ぐるるぅ～。は、腹が減ってきた・・・</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2 NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">④</FONT>授業が始まった・・・<BR>・・・<BR>昼になった<BR>↓</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2 NOWRAP>
+<TABLE WIDTH=300 BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#000080">
+            <TR>
+               <TD ALIGN="center" WIDTH=150 BGCOLOR="#D2F4D7" NOWRAP><BASEFONT SIZE=2>
+バナナを食べた場合</TD>
+               <TD ALIGN="center" BGCOLOR="#D2F4D7" NOWRAP><BASEFONT SIZE=2>
+バナナを食べなかった場合</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" WIDTH=200 NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">⑤</FONT>あたた・・・腹が痛い・・・</P></TD>
+      <TD ALIGN="center" NOWRAP><BASEFONT SIZE=2>
+         <P>↓<BR><FONT COLOR="#0000FF">⑥</FONT>やっと飯の時間だ～</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>見てのとおり、最初の選択で<FONT COLOR="#0000FF">②</FONT>を選んでも<FONT COLOR="#0000FF">③</FONT>を選んでも<FONT COLOR="#0000FF">④</FONT>につながります。そしてしばらく話が続いた後、バナナを食べたかどうかで<FONT COLOR="#0000FF">⑤</FONT>と<FONT COLOR="#0000FF">⑥</FONT>に話が分岐します。<BR><BR>では、まず変数を用意するところから始めます。「変数リスト」ウィンドウを表示してください。そして、「変数」メニューの「追加」を選択します。ダイアログが出ますので、項目を順に設定していきます。<BR><BR><B>「名前」</B>は変数に付ける名前です。ここでは「バナナを食べた」とします。<BR><BR><B>「変数タイプ」</B>はどういった値を扱うかといった設定です。以下のような種類があります。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">整数</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+小数の扱えない数値</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">実数</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+小数も扱える数値</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フラグ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+扱える値は<B>FALSE</B>と<B>TRUE</B>だけ</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字列</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>ここでは食べたか食べてないかの状態を保持するだけなので「フラグ」変数を使います。ちなみに<B>FALSE</B>はOFF、<B>TRUE</B>はONという意味です。<BR><BR><B>「初期値」</B>はゲーム起動時またはリセット時に変数に入れる値です。ここでは「FALSE」にします。<BR><BR><B>「動作タイプ」</B>には以下の種類があります。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>ゲーム起動時またはリセット時に初期化されます<BR>リセット時とは以下のような時です<BR>・プレイヤーがシステムメニューを使ってタイトル画面に戻った時<BR>・「シーン回想」モードで話を始めた時<BR>・ゲームが終了してタイトル画面に戻った時</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">起動時のみ初期化</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ゲーム起動時にだけ初期化されます</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ステータス</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+インストール後、最初にゲームを起動した時にだけ初期化されます。また、ソフト起動時に値を復帰し、ソフト終了時に値を保存します（その間にプレイヤーが行うゲームセーブ・ロードの影響は受けません）</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>ここでは、ゲームが始まるたびに初期化されてほしいので「通常」タイプにします。<BR>OKをクリックしてダイアログを閉じます。<BR><BR>変数を操作する時は「計算」ノードを使います。「シナリオ」メニューの『「計算」追加』を選択してください。<BR><IMG SRC="ln_turorial55.png" WIDTH=47 HEIGHT=20 HSPACE=8 VSPACE=8><BR>このようなノードが作成されます。<BR>まず、分りやすいように<B>「名前」</B>を「バナナを食べた=TRUE」にします。<BR>次にノードをダブルクリックして編集ウィンドウを開き、右クリックメニューから「追加」→「計算式」を選択します。そして「バナナを食べた = TRUE」と入力してOKボタンをクリックしてください。<BR><IMG SRC="ln_turorial56.png" WIDTH=165 HEIGHT=32 HSPACE=8 VSPACE=8><BR>これは「バナナを食べた」と言う名前の変数にTRUEを入れる、という意味です。では、OKをクリックしてください。<BR><BR>食べた場合にだけこの計算を実行させたいので、<FONT COLOR="#0000FF">②</FONT>のノードからだけこのノードにジャンプさせます。<BR><IMG SRC="ln_turorial57.png" WIDTH=163 HEIGHT=90 HSPACE=8 VSPACE=8><BR><FONT COLOR="#0000FF">④</FONT>のノードを作り、合流するようにそれぞれジャンプさせます。<BR><IMG SRC="ln_turorial58.png" WIDTH=154 HEIGHT=122 HSPACE=8 VSPACE=8><BR>ここから「バナナを食べた」変数の内容によって<FONT COLOR="#0000FF">⑤</FONT>と<FONT COLOR="#0000FF">⑥</FONT>に分岐させるので、「授業中」ノードのジャンプ先は以下のようになります。<BR><IMG SRC="ln_turorial59.png" WIDTH=397 HEIGHT=82 HSPACE=8 VSPACE=8><BR>最終的にチャートは以下のようになります。<BR><IMG SRC="ln_turorial61.png" WIDTH=188 HEIGHT=290 HSPACE=8 VSPACE=8><BR>では、ゲームを実行して、正しく分岐するか確かめてください。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<A HREF="tutorial12.html">←戻る</A></TD>
+      <TD ALIGN="right"><BASEFONT SIZE=2>
+<A HREF="tutorial14.html">進む→</A></TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

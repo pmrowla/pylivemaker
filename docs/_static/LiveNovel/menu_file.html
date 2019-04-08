@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>「ファイル」メニュー</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">「ファイル」メニュー</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B>プロジェクトの新規作成</B></P>
+<UL>
+   <P>新しいプロジェクトを作ります。<BR>フォルダ選択ダイアログが表示されますので、空のフォルダを指定してください。</P>
+</UL>
+<P><B>プロジェクトを開く</B></P>
+<UL>
+   <P>既存のプロジェクトを開きます。</P>
+</UL>
+<P><B>プロジェクトを保存</B></P>
+<UL>
+   <P>現在編集中のプロジェクトをディスクに保存します。</P>
+</UL>
+<P><B>プロジェクトのインポート</B></P>
+<UL>
+   <P>現在編集中のプロジェクトに、他のプロジェクトを取り込みます。チャート、変数、ファイルの順に取り込みます。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+チャート</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定したチャート（シナリオを含む）を取り込みます。既に同名のチャートがある場合でも、別のチャートとして取り込みます。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+変数</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数リストを取り込みます。同名の変数がある場合の処理を「同名変数は取り込まない」、「全て上書き」、「名前を変えて取り込む」の中から選択します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ファイル</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+            <P>画像やサウンドなどの素材ファイルを取り込みます（runimageフォルダ・雛形ファイルは除く）。同名のファイルが存在する場合の処理を「更新日時の新しいもののみ上書き」、「同名ファイルはコピーしない」、「全て上書き」の中から選択します。<BR>「上書き時にバックアップファイルを作成」にチェックを付けると、上書きコピーする際に、既存のファイルの名前を「ファイル名.bak」に変えます（リネーム時に「ファイル名.bak」があった場合は削除されます）。</P></TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2></P>
+</UL>
+<P><B>プロジェクトをバックアップ</B></P>
+<UL>
+   <P>現在編集中のプロジェクト(画像などの素材含む)をZIP形式で圧縮して保存します。<BR><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+保存ファイル名</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+保存するファイル名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+素材ファイルを保存しない</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チェックすると、「runimage」フォルダを保存しません。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+雛形部分を保存しない</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チェックすると、「runimage\ノベルシステム」フォルダを保存しません。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マスターファイルを保存しない</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チェックすると、インストーラ設定で指定した「出力ファイル／フォルダ」を保存しません。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF" NOWRAP>
+</TD>
+         <TD BGCOLOR="#FFFFFF">
+</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2></P>
+</UL>
+<P><B>プロジェクトファイルをテキストエディタで開く</B></P>
+<UL>
+   <P>現在編集中のプロジェクトファイルを外部テキストエディタで開きます。使用するテキストエディタは<A HREF="menu_file.html#tool">環境設定</A>で登録できます。<BR></P>
+</UL>
+<P><B>環境設定</B></P>
+<UL>
+   <P>LiveNovelの環境を設定します。<BR><BR><B>【チャート】</B><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+      <TR>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<A NAME="grid"></A>グリッド</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チャートのグリッドの間隔と表示方法を設定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ダブルクリック</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+            <P>ノードをダブルクリックした時の動作を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FFFFFF">
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">開くorプロパティ</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">シナリオと計算の場合は編集ウィンドウを開き、それ以外はプロパティを開きます</FONT></TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">開く</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">常にプロパティを開きます</FONT></TD>
+               </TR>
+            </TABLE></P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チャートを開くときの動作</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+            <P>チャートを編集するエディタを開くときの動作を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FFFFFF">
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">新しいウィンドウを作る</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">常に新しいウィンドウで編集エディタ開きます</FONT></TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">新しいウィンドウを作らない</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">既にチャート編集ウィンドウがある場合は、そのウィンドウの中でエディタを開きます</FONT></TD>
+               </TR>
+            </TABLE></P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ノードを開くときの動作</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+            <P>シナリオや計算を編集するエディタを開くときの動作を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FFFFFF">
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">新しいウィンドウを作る</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">常に新しいウィンドウで編集エディタを開きます</FONT></TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">新しいウィンドウを作らない</FONT></TD>
+                  <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">既に編集ウィンドウがある場合は、そのウィンドウの中でエディタが開きます</FONT></TD>
+               </TR>
+            </TABLE></P></TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>【ショートカットキー】</B><BR>各コマンドにショートカットキーを割り当てることができます。<BR><BR><BR><B>【ポップアップメニュー】</B><BR>各編集ウィンドウで右クリックした時に表示されるポップアップメニューの内容を編集できます。<BR><BR><BR><A NAME="tool"></A><B>【外部ツール】</B><BR>使用する外部ツールを登録します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+      <TR>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキストエディタ</TD>
+         <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロジェクトファイルやシナリオファイルを開くツールを登録します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR></P>
+</UL>
+<P><B>終了</B></P>
+<UL>
+   <P>アプリケーションを終了します。</P>
+</UL>
+</BODY>
+</HTML>

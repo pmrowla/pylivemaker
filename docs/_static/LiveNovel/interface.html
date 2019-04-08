@@ -1,0 +1,4501 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<style type="text/css">
+body,td{ font-size: 13px; line-height: 140%; }
+</style>
+<TITLE>[コマンド] インターフェース</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#000080">
+<BASEFONT SIZE=2>
+<A NAME="menu"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">メニュー作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>メニューを作成します。メニューは複数の選択肢を表示し、プレイヤーに選択させるコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+色。塗らない場合は<FONT COLOR="#0000FF">COLOR_NULL</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+枠幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠の幅。枠が無い場合は0</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BORDERWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+枠色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠の色。塗らない場合は<FONT COLOR="#0000FF">COLOR_NULL</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BORDERCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント名</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTNAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントサイズ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの高さ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントスタイル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+太字、斜体、下線、抹消線の指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSTYLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+行間</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+行間スペースの幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LINESPACE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントの縁の幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁取り文字の縁の幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTBORDER</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントの縁の色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁取り文字の縁の色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTBORDERCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントの影の位置</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影付き文字の影の位置（右下にずらすドット数）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSHADOW</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントの影の色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影付き文字の影の色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSHADOWCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォント色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時のフォントの色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTHOVERCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォントの縁の幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時の縁取り文字の縁の幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTBORDER</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォントの縁の色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時の縁取り文字の縁の色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTBORDERCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォントの影の位置</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時の影付き文字の影の位置（右下にずらすドット数）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSHADOW</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォントの影の色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時の影付き文字の影の色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSHADOWCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>フォントスタイル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+項目の上にマウスカーソルがある時の太字、斜体、下線、抹消線の指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTHOVERSTYLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の上にマウスカーソルがある時の背景色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HOVERCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アンチエイリアス</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならアンチエイリアスで表示</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANTIALIAS</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ウエイト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューが出現するまでの時間をミリ秒単位で指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_DELAY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEで動作停止。選択もできない。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+動画停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEでアニメーション停止。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANIPAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+行数</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一度に表示可能な行数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ROWCOUNT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+テキスト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢の文字列。\nで区切る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TEXT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左右の余白</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列と左右枠の間の幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MARGINX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+上下の余白</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列と上下枠の間の幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MARGINY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横の揃え</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列の揃え<BR>HA_LEFT(左)、HA_CENTER(中央)、HA_RIGHT(右)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HALIGN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+枠画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠の画像ファイルを指定<BR>上下左右、及び背景の画像は、サイズが足りない場合はタイル状に描画される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BORDERSOURCETL<BR>PR_BORDERSOURCETC<BR>PR_BORDERSOURCETR<BR>PR_BORDERSOURCETCL<BR>PR_BORDERSOURCETCC<BR>PR_BORDERSOURCETCR<BR>PR_BORDERSOURCETBL<BR>PR_BORDERSOURCETBC<BR>PR_BORDERSOURCETBR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+枠横揃え</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+HA_LEFT</TD>
+               <TD><BASEFONT SIZE=2>
+左端に合わせて描画</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+HA_CENTER</TD>
+               <TD><BASEFONT SIZE=2>
+中央に合わせて描画</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+HA_RIGHT</TD>
+               <TD><BASEFONT SIZE=2>
+右端に合わせて描画</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BORDERHALIGNT<BR>PR_BORDERHALIGNC<BR>PR_BORDERHALIGNB<BR></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+枠縦揃え</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+VA_TOP</TD>
+               <TD><BASEFONT SIZE=2>
+上端に合わせて描画</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+VA_CENTER</TD>
+               <TD><BASEFONT SIZE=2>
+中央に合わせて描画</TD>
+            </TR>
+            <TR>
+               <TD><BASEFONT SIZE=2>
+VA_BOTTOM</TD>
+               <TD><BASEFONT SIZE=2>
+下端に合わせて描画</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BORDERVALIGNL<BR>PR_BORDERVALIGNC<BR>PR_BORDERVALIGNR<BR></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+スクロールバー画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロールバーに使用する画像ファイル<BR><IMG SRC="../LiveMaker/scrollbar.gif" WIDTH=140 HEIGHT=20 ALT="scrollbar.gif"><BR>画像は、上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SCROLLSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+チェック画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢の左に付けるチェックの画像ファイル<BR>これを指定すると画像の幅分スペースが取られるので、チェックが要らない場合は指定しないこと<BR><IMG SRC="../LiveMaker/check.gif" WIDTH=32 HEIGHT=7 ALT="check.gif"><BR>画像は通常のチェック、マウスが上にある時のチェックの順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CHECKSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+自動破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、選択肢をクリックした時に自動的に破棄される<BR>その際、@SelStrに選択画像の名前、@SelIndexに0から始まるインデックスが入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_AUTOSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右クリックで破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、右クリックした時に自動的に閉じて破棄される<BR>その際、@SelIndexに-1が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_RCLICKSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最上部インデックス</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+何行目から表示するか指定する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOPINDEX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カウント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニュー項目の数を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COUNT</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ左ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">左ボタンダウン</FONT>以後、左ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ右ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">右ボタンダウン</FONT>以後、右ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが下方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが上方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+選択</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢をクリックした時に発生する<BR>引数は、@ParamStr[0]に選択した文字列、@ParamStr[1]に選択した番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONSELECT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+オープン前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューが開く直前に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONOPENING</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+オープン後</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューが開いた直後に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONOPENED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クローズ前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューが閉じる直前に発生する<BR><A HREF="object.html#del">オブジェクト削除</A>コマンドで破棄された場合は発生しないので注意</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONCLOSING</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クローズ後</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニューが閉じた直後に発生する<BR><A HREF="object.html#del">オブジェクト削除</A>コマンドで破棄された場合は発生しないので注意</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONCLOSED</TD>
+   </TR>
+</TABLE></P>
+<A NAME="menuclose"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">メニュークローズ</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B>メニューの名前</B>で指定したメニューを閉じて破棄します。</P>
+<A NAME="button"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ボタン作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>ボタンを作成します。ボタンは、プレイヤーの決定を待つ、またはON/OFF状態を選択するためのコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像またはモーションファイル名<BR>モーションの場合は、以下のプロパティのうち、ズーム、反転、アルファ、中心座標、クリップ、角度、明るさ、ズーム座標が無視される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ズームX(実数)</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の拡縮率。1で等倍。0.5で1/2、2で2倍（ズームX(整数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FLOATZOOMX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ズームY(実数)</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の拡縮率。1で等倍。0.5で1/2、2で2倍（ズームY(整数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FLOATZOOMY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ズームX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の拡縮率。256で等倍。128で1/2、512で2倍（ズームX(実数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ZOOMX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ズームY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の拡縮率。256で等倍。128で1/2、512で2倍（ズームY(実数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ZOOMY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横反転</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左右に反転する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FLIPH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+縦反転</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上下に反転する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FLIPV</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら押すことができない。動画も止まる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+動画停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEでアニメーション(またはモーション)が停止</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANIPAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+角度(実数)</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+実数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">XY中心座標</FONT>を基準に回転した角度。@Pi*2で360度（角度(整数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FLOATANGLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+角度</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">XY中心座標</FONT>を基準に回転した角度。256で360度（角度(実数)も書き換わります）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANGLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+明るさ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像の輝度。255で真っ白、-255で真っ黒</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BRIGHTNESS</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+テキスト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ボタンの上に表示する文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TEXT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+自動破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならクリック後、自動的に破棄される<BR>(グループ番号が0以外の時は無視される)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_AUTOSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルがボタンの上にある時の画像またはモーションファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HOVERSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+押された時の画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ボタンが押された時の画像またはモーションファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRESSEDSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリック後の画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+クリック後に表示する画像またはモーションファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLICKEDSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+グループ番号</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+0なら普通のボタン<BR>0以外にするとON/OFFのスイッチ式ボタンになる。また、同じグループ内でON状態のボタンはひとつだけになる(OFF状態のボタンをクリックすると、代わりに今までON状態だったボタンがOFFになる)。加えて<B>全解除許可</B>がTRUEの場合は、グループ内の全てのボタンがOFFになることができる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_GROUPINDEX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+全解除許可</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+機能については上記<B>グループ番号</B>を参照<BR>グループ間で全解除許可の値が違う場合は、最後に設定された値に統一される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALLOWALLUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+選択</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら押された状態になる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SELECTED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス位置を<BR>マスクで判断</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、マウスカーソルが領域内にあるかどうかを調べる時に、画像のアルファチャンネルの値が128以上の部分だけを対象にする</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPTUREMASK</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マスク判断値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクと判断する不透過度の最低値(1～255)。デフォルト値は128</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPMASKLEVEL</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ズーム座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEにすると、<FONT COLOR="#0000FF">XY座標</FONT>に<FONT COLOR="#0000FF">ズーム</FONT>値をかけた値が実際の座標になります(ズームした時に親からずれるのを防ぎます)。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_POSZOOMED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カウント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像のフレームの数を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COUNT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+インデックス</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するフレーム番号（0～）</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_INDEX</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+再生終了</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>クリック後の画像</B>の表示が終了した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONPLAYEND</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+汎用イベント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+クリックされた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+</TABLE></P>
+<A NAME="scrollbar"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">スクロールバー作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>スクロールバーを作成します。スクロールバーは、プレイヤーが指定範囲内で値を調節するためのコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの部分の画像ファイル<BR><IMG SRC="../LiveMaker/bar.gif" WIDTH=160 HEIGHT=16 ALT="bar.gif"><BR>画像は、通常時、クリック時の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+つまみ画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの部分の画像ファイル<BR><IMG SRC="../LiveMaker/barthumb.gif" WIDTH=48 HEIGHT=16 ALT="barthumb.gif"><BR>画像は、通常時、マウスオーバー時、ホールド時の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_THUMBSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ボタン画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端にあるボタン部分の画像ファイル。指定しなければボタンのないスクロールバーになる<BR><IMG SRC="../LiveMaker/barbtn.gif" WIDTH=96 HEIGHT=16 ALT="barbtn.gif"><BR>画像は、通常時(左or上)、マウスオーバー時(左or上)、押下時(左or上)、通常時(右or下)、マウスオーバー時(右or下)、押下時(右or下)の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BUTTONSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+方向</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+OT_HORIZONTALなら水平、OT_VERTICALなら垂直</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ORIENTATION</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最小値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最小値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最大値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最大値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MAX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの位置</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VALUE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+変化量</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端のボタンをクリックした時の変化量</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SMALLCHANGE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+大きい変化量</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーをクリックした時の変化量</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LARGECHANGE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら操作不可</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス位置を<BR>マスクで判断</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、マウスカーソルが領域内にあるかどうかを調べる時に、画像のアルファチャンネルの値が128以上の部分だけを対象にする</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPTUREMASK</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マスク判断値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクと判断する不透過度の最低値(1～255)。デフォルト値は128</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPMASKLEVEL</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+汎用イベント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレイヤーの操作によって値が変更された時に発生する<BR>引数は、@ParamStr[0]に変化後の値が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ左ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">左ボタンダウン</FONT>以後、左ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ右ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">右ボタンダウン</FONT>以後、右ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが下方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが上方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホールド</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみを掴んだ時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONHOLD</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+リリース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみを離した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRELEASE</TD>
+   </TR>
+</TABLE></P>
+<A NAME="slider"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">スライダー作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>スライダーを作成します。スライダーは、プレイヤーが指定範囲内で値を調節するためのコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの部分の画像ファイル<BR><IMG SRC="../LiveMaker/slider.gif" WIDTH=200 HEIGHT=7 ALT="slider.gif"><BR>画像は、未再生時、再生完了時の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+つまみ画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの部分の画像ファイル<BR><IMG SRC="../LiveMaker/sliderthumb.gif" WIDTH=39 HEIGHT=15 ALT="sliderthumb.gif"><BR>画像は、通常時、マウスオーバー時、ホールド時の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_THUMBSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ボタン画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端にあるボタン部分の画像ファイル。指定しなければボタンのないスライダーになる<BR><IMG SRC="../LiveMaker/sliderbtn.gif" WIDTH=48 HEIGHT=9 ALT="sliderbtn.gif"><BR>画像は、通常時(左or上)、マウスオーバー時(左or上)、押下時(左or上)、通常時(右or下)、マウスオーバー時(右or下)、押下時(右or下)の順に並べておくこと</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BUTTONSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+方向</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+OT_HORIZONTALなら水平、OT_VERTICALなら垂直</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ORIENTATION</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最小値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最小値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最大値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最大値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MAX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの位置</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VALUE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+変化量</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端のボタンをクリックした時の変化量</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SMALLCHANGE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら操作不可</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス位置を<BR>マスクで判断</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、マウスカーソルが領域内にあるかどうかを調べる時に、画像のアルファチャンネルの値が128以上の部分だけを対象にする</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPTUREMASK</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マスク判断値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクと判断する不透過度の最低値(1～255)。デフォルト値は128</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CAPMASKLEVEL</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+汎用イベント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレイヤーの操作によって値が変更された時に発生する<BR>引数は、@ParamStr[0]に変化後の値が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ左ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">左ボタンダウン</FONT>以後、左ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ右ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">右ボタンダウン</FONT>以後、右ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが下方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが上方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホールド</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみを掴んだ時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONHOLD</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+リリース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみを離した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRELEASE</TD>
+   </TR>
+</TABLE></P>
+<A NAME="gauge"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ゲージ作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>ゲージを作成します。ゲージは、指定範囲内の指定数値をバーで表示するコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲージの画像ファイル<BR><IMG SRC="../LiveMaker/gauge.gif" WIDTH=200 HEIGHT=8 ALT="gauge.gif"><BR>画像は、ゲージ、減少時一時ゲージの順に並べておくこと<BR><B>減少時一時ゲージ</B>はゲージの減少量を表す。ゲージが減った瞬間、減った部分が<B>減少時一時ゲージ</B>になり、その後徐々にその部分がなくなっていく</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+方向</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+OT_HORIZONTALなら水平、OT_VERTICALなら垂直</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ORIENTATION</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最小値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最小値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+最大値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>値</B>が取ることのできる最大値</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MAX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+値</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの位置</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VALUE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ウエイト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲージの増減の速度。最小から最大までにかかる時間をミリ秒単位で指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_DELAY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら動作停止。クリックイベントも発生しない。</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+持続時間</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>減少時一時ゲージ</B>が表示されてから減り始めるまでの時間をミリ秒単位で指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_DURATION</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+再生中</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲージが動いているときTRUEを返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PLAYING</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ左ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">左ボタンダウン</FONT>以後、左ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ右ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">右ボタンダウン</FONT>以後、右ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが下方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが上方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+</TABLE></P>
+<A NAME="edit"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">エディット作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>エディットを作成します。エディットは、プレイヤーに一行の文字列を入力させるためのコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_WIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+高さ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+背景色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント名</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTNAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントサイズ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの高さ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントスタイル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+太字、斜体、下線、抹消線の指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSTYLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら入力フォーカスを与えることができない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+テキスト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+初期文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TEXT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+編集禁止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら編集不可(コピーは可)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_READONLY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+IMEモード</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IMEモードを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_DISABLE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IMEを禁止</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLOSE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを閉じる</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_OPEN</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開く</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_DONTCARE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+現状維持</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SALPHA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて半角ローマ字入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALPHA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角ローマ字入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_HIRA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角ひらがな入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SKATA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて半角カタカナ入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_KATA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角カタカナ入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CHINESE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて2バイト中国語入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SHANGUEL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて1バイト韓国語入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_HANGUEL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて2バイト韓国語入力にする</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IMEMODE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+汎用イベント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数は、@ParamStr[0]に押されたキー番号、@ParamStr[1]に現在のテキストが入る<BR>キー番号はシステム定数のVkmBack～VkmF12</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+</TABLE></P>
+<A NAME="memo"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">メモ作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>メモを作成します。メモは、プレイヤーに複数行の文字列を入力させるためのコンポーネントです。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+幅</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_WIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+高さ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+背景色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント名</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTNAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントサイズ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの高さ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォントスタイル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+太字、斜体、下線、抹消線の指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTSTYLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォント色</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの色</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_FONTCOLOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら入力フォーカスを与えることができない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+テキスト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+初期文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TEXT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横の揃え</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+HA_LEFT(左)、HA_CENTER(中央)、HA_RIGHT(右)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HALIGN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+編集禁止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら編集不可(コピーは可)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_READONLY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+IMEモード</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+IMEモードを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_DISABLE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IMEを禁止</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLOSE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを閉じる</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_OPEN</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開く</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_DONTCARE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+現状維持</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SALPHA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて半角ローマ字入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALPHA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角ローマ字入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_HIRA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角ひらがな入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SKATA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて半角カタカナ入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_KATA</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて全角カタカナ入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CHINESE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて2バイト中国語入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_SHANGUEL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて1バイト韓国語入力にする</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_HANGUEL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+IME変換ウィンドウを開いて2バイト韓国語入力にする</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IMEMODE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+汎用イベント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数は、@ParamStr[0]に押されたキー番号、@ParamStr[1]に現在のテキストが入る<BR>キー番号はシステム定数のVkmBack～VkmF12</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+</TABLE></P>
+<A NAME="mapimg"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">選択画像サーフェス作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>選択画像サーフェスを作成します。選択画像は、複数の矩形・円・多角形で指定された範囲をプレイヤーが選択できるボタンのような画像です。画像が動画の場合は必ずリピートします。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイル名</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アルファ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+透過度。255でベタ塗り、0～254でアルファブレンディング、256～511で加算合成</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ALPHA</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEで動作停止。クリックイベントも発生しない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+動画停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEでアニメーションが停止</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANIPAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+明るさ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像の輝度。255で真っ白、-255で真っ黒</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_BRIGHTNESS</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+自動破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、選択範囲をクリックした時に自動的に破棄される<BR>その際、@SelStrに選択画像の名前、@SelIndexに0から始まるインデックスが入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_AUTOSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右クリックで破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、右クリックした時に自動的に破棄される<BR>その際、@SelIndexに-1が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_RCLICKSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスオーバー時の<BR>画像</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスが上にある時の画像ファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HOVERSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択範囲を記述したマップファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_MAPSOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス移動</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内を移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEMOVE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内に入った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域外に移動した時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMOUSEOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ左ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">左ボタンダウン</FONT>以後、左ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONLBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが領域内にあり、かつ右ボタンが押された時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右ボタンアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上記の<FONT COLOR="#0000FF">右ボタンダウン</FONT>以後、右ボタンが離れた時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONRBTNUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが下方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ホイールアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホイールが上方向に回った時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONWHEELUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+選択</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択範囲をクリックした時に発生する<BR>引数は、@ParamStr[0]に範囲の名前、@ParamStr[1]に範囲の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONSELECT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マップイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが選択範囲に入った時に発生する<BR>@ParamStr[0]に範囲の名前、@ParamStr[1]に範囲の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMAPIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マップアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが選択範囲から出た時に発生する<BR>@ParamStr[0]に範囲の名前、@ParamStr[1]に範囲の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMAPOUT</TD>
+   </TR>
+</TABLE></P>
+<A NAME="prevmenu"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">プレビューメニュー作成</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>プレビューメニューを作成します。プレビューメニューは、プレビュー画像を表示する機能を持った選択画像を複数個配置し、プレイヤーに選択させるたコンポーネントです。プレビュー画像は、マウスイン時、マウスアウト時、クリック時に表示することができます。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+親</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親コンポーネントの名前<BR>表画面に置くなら空に、裏画面に置くなら<FONT COLOR="#0000FF">BACKSURFACE</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PARENT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ソース</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+LivePreviewMenuで作成したファイル</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_SOURCE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_LEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置。画面の絶対座標ではなく、親から見たオフセット座標</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+プライオリティ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+同じ親を持つコンポーネントの中で比較し、より値が大きい方が画面手前に来る。同じ値の場合、どちらが手前にくるかは不定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PRIORITY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+X中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の基準点。例えばこの座標を右端にすると、右端が<FONT COLOR="#0000FF">X座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETX</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+Y中心座標</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の基準点。例えばこの座標を下端にすると、下端が<FONT COLOR="#0000FF">Y座標</FONT>に合うように自動的に位置が調節される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_OFFSETY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップX</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD VALIGN="top" ROWSPAN=4 BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する領域を矩形で指定する。この領域以外は(子も含めて)表示されない<BR>なお、幅か高さが0の場合はクリッピングは行われず、全体が表示される</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPLEFT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップY</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPTOP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ幅</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPWIDTH</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+クリップ高さ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CLIPHEIGHT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEで動作停止。クリックできない</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+動画停止</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEでアニメーション(またはモーション)が停止</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ANIPAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+可視</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示するならTRUE、表示しないならFALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_VISIBLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+自動破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、選択画像をクリックした時に自動的に破棄される<BR>その際、@SelStrに選択画像の名前、@SelIndexに0から始まるインデックスが入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_AUTOSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+右クリックで破棄</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEなら、右クリックした時に自動的に破棄される<BR>その際、@SelIndexに-1が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_RCLICKSCRAP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マウス透過</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスイベントを扱うかどうかを指定する<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_NONE</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを受け取る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_ALL</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+全てのマウスイベントを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_CLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリック、右クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_LCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+左クリックを無視する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#008080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">IM_RCLICK</FONT></TD>
+               <TD BGCOLOR="#C8C8C8"><BASEFONT SIZE=2>
+右クリックを無視する</TD>
+            </TR>
+         </TABLE></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_IGNOREMOUSE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キー処理</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならキーボードからの入力を受け取り、キーボード関係のイベントを発生させる</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_HANDLEKEY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カーソル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルのファイル名<BR>コンポーネントの領域内にマウスカーソルがある場合だけ有効</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_CURSOR</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">実行時のみ使用できるプロパティ</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+種類</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コンポーネントの種類番号を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COMPOTYPE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+カウント</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メニュー項目の数を返す。読み出し専用</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_COUNT</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=4 BGCOLOR="#000080"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+<B><FONT COLOR="#FFFFFF">以下イベント</FONT></B>
+         </DIV></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+再生終了</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択画像をクリック後、画像が最終フレームまで表示されると発生する。<FONT COLOR="#0000FF">自動破棄</FONT>がTRUEの場合は発生しない<BR>引数は、@ParamStr[0]に選択画像の名前、@ParamStr[1]に選択画像の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONPLAYEND</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+アイドル</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１表示周期毎に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONIDLE</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+選択</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択画像をクリックした時に発生する<BR>引数は、@ParamStr[0]に選択画像の名前、@ParamStr[1]に選択画像の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONSELECT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マップイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが選択画像に入った時に発生する<BR>@ParamStr[0]に選択画像の名前、@ParamStr[1]に選択画像の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMAPIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+マップアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マウスカーソルが選択画像から出た時に発生する<BR>@ParamStr[0]に選択画像の名前、@ParamStr[1]に選択画像の番号(0～)が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONMAPOUT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーダウン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYDOWN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーアップ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーから指が離れた時に発生する<BR>引数には離されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYUP</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+キーリピート</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キーが押された時、または押されている間、一定周期毎に発生する<BR>引数には押されたすべてのキーの番号が入る</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONKEYREPEAT</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスイン</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+アクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSIN</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+フォーカスアウト</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のコンポーネントがアクティブになった時に発生する</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONFOCUSOUT</TD>
+   </TR>
+</TABLE></P>
+<P><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+<P></P>
+</BODY>
+</HTML>

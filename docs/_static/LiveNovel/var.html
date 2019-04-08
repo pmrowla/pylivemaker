@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>変数</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">チャートと計算の変数</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><IMG SRC="ln_var01.gif" ALIGN="left" WIDTH=130 HEIGHT=56 HSPACE=8 VSPACE=8 ALT="ln_var01.gif">チャートと計算ノードの編集ウィンドウには「変数」というタブが付いています。<BR><BR><BR><BR><BR><BR><B>[チャートの場合]</B><BR>変数リストにある変数とは別に、このチャートの中でのみ使用できる変数を設定します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変数が作成されるタイミング</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+このチャートの「開始」ノードが実行されたとき</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変数が破棄されるタイミング</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>①このチャートが「<IMG SRC="ln_turorial11.png" WIDTH=16 HEIGHT=16 ALT="ln_turorial11.png">チャート呼び出し」で呼ばれていて、呼び出し元に戻るとき<BR>②このチャートから「<IMG SRC="ln_turorial10.png" WIDTH=16 HEIGHT=16 ALT="ln_turorial10.png">チャート移動」を使って別チャートに移動するとき</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>なお、このチャートから「<IMG SRC="ln_turorial11.png" WIDTH=16 HEIGHT=16 ALT="ln_turorial11.png">チャート呼び出し」を行う場合は破棄されません。そのため、呼び出し先で同名の変数を設定している場合は、現在の変数がそのまま使われ破棄されますのでご注意ください。<BR><BR><B>[計算ノードの場合]</B><BR>変数リストにある変数とは別に、この計算ノードの中でのみ使用できる変数を設定します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変数が作成されるタイミング</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+この計算が始まる前</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#008080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変数が破棄されるタイミング</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+この計算の実行が終わったとき</TD>
+   </TR>
+</TABLE><BR><BR><BR><BR><BR><BR></P>
+</BODY>
+</HTML>

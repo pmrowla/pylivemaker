@@ -1,0 +1,755 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>オプション - システム画面</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B><FONT SIZE=3>プロジェクトオプション - システム画面</FONT></B></P>
+<UL>
+   <P><B>背景タイプ</B><BR>システム画面の背景を指定します。。<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ゲーム画面</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+その時点での実行画面を背景にします。<BR><B>明るさ</B>で画面を暗くすることができます(-255～0)。<BR>文章を消す場合は<B>メッセージボックスを消す</B>にチェックを付けます。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">単色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+背景を<B>背景色</B>で塗りつぶします。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">画像ファイル</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+<B>背景画像</B>で指定された画像ファイルを表示します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>画面効果</B><BR>画面を切り替える時の効果を指定します。<BR><A HREF="menu_scenario.html#preset"><B>プリセット機能について</B></A><BR><BR><BR><B>画面上部に現在位置を表示</B><BR>チェックすると、システム画面の画面上部に「システム画面＞オプション」といった形式で現在位置を表示します。<BR><BR><BR><B>メニュー項目</B><BR>ゲームのオプション画面で表示する項目を設定します。メニューには、システム定義メニューとユーザー定義メニューがあります。<BR>システム定義メニューは、表示順とキャプションは変更できますが、表示場所の変更や削除することはできません。表示させたくない場合は、「プレイヤー操作」の「許可」のチェックを外してください。<BR>ユーザー定義メニューは、システム側で定義されていない新しいメニューを実現するためのものです。ユーザー定義メニューが選択されると、後述する「ユーザーメニュー処理チャート」が呼び出されます。<BR><BR>メニュー項目の設定値は以下の通りです。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">場所</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目を表示する場所を、システム画面トップかオプション選択時か指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">キャプション</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画面に表示する項目名です。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プレイヤー操作</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目を表示し、プレイヤーが選択できるようにします。ユーザー定義メニューの場合は必ずONになります。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">初期値</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+最初の値を設定します。ユーザー定義メニューにはありません。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>メインメニュー</FONT></B></P>
+<UL>
+   <P>システム画面のメインメニューを設定します。<BR><BR><B>書体名</B><BR>フォントの書体名を指定します。<BR><BR><BR><B>アンチエイリアス</B><BR>チェックすると文字を中間色で補正して描画します。<BR><BR><BR><B>フォントサイズ</B><BR>フォントの高さをピクセル単位で指定します。<BR><BR><BR><B>行間</B><BR>項目間の隙間をピクセル単位で指定します。<BR><BR><BR><B>通常時の文字装飾</B><BR>通常時のフォントを設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の有無や、付ける場合は影の位置と色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の有無や、付ける場合は縁の幅と色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>マウスオーバー時の文字装飾</B><BR>設定項目の上にマウスカーソルがある時のフォントを設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の有無や、付ける場合は影の位置と色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の有無や、付ける場合は縁の幅と色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>オプションメニュー</FONT></B></P>
+<UL>
+   <P>システム画面のオプションメニューを設定します。<BR><BR><B>チェック画像</B><BR>項目が選択されていることを示すチェック用の画像ファイルを指定します。<BR><IMG SRC="check.gif" WIDTH=32 HEIGHT=7 ALT="check.gif"><BR>画像は、左側に通常のチェック、右側にマウスが上にある時のチェックを置いてください。<BR><BR><BR><B>書体名</B><BR>フォントの書体名を指定します。<BR><BR><BR><B>アンチエイリアス</B><BR>チェックすると文字を中間色で補正して描画します。<BR><BR><BR><B>フォントサイズ</B><BR>フォントの高さをピクセル単位で指定します。<BR><BR><BR><B>行間</B><BR>項目間の隙間をピクセル単位で指定します。<BR><BR><BR><B>通常時の文字装飾</B><BR>通常時のフォントを設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の有無や、付ける場合は影の位置と色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の有無や、付ける場合は縁の幅と色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>マウスオーバー時の文字装飾</B><BR>設定項目の上にマウスカーソルがある時のフォントを設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の有無や、付ける場合は影の位置と色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の有無や、付ける場合は縁の幅と色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>オプション各項目</FONT></B></P>
+<UL>
+   <P>オプション画面の各項目を設定します。<BR><BR><B>テキスト速度</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラックバー画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+速度を調節するためのトラックバーの画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの部分の画像ファイル<BR><IMG SRC="slider_bar.gif" ALT="scrollbar.gif"><BR>空状態、100%状態の画像を左右に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+つまみ</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの部分の画像ファイル<BR><IMG SRC="slider_thumb.gif" ALT="scrollbar.gif"><BR>通常時、マウスオーバー時、ホールド時の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ボタン</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端にあるボタン部分の画像ファイル。指定しなければボタンのないスライダーになる<BR><IMG SRC="slider_btn.gif" ALT="scrollbar.gif"><BR>画像は、通常時(左or上)、マウスオーバー時(左or上)、押下時(左or上)、通常時(右or下)、マウスオーバー時(右or下)、押下時(右or下)の順に並べておくこと</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横の位置、縦の位置</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠画像の中での座標を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バーの幅</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの幅を指定する。0なら画像の幅をそのまま適用する</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><B>自動送り</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラックバー画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+速度を調節するためのトラックバーの画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの部分の画像ファイル<BR><IMG SRC="slider_bar.gif" ALT="scrollbar.gif"><BR>空状態、100%状態の画像を左右に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+つまみ</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの部分の画像ファイル<BR><IMG SRC="slider_thumb.gif" ALT="scrollbar.gif"><BR>通常時、マウスオーバー時、ホールド時の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ボタン</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端にあるボタン部分の画像ファイル。指定しなければボタンのないスライダーになる<BR><IMG SRC="slider_btn.gif" ALT="scrollbar.gif"><BR>画像は、通常時(左or上)、マウスオーバー時(左or上)、押下時(左or上)、通常時(右or下)、マウスオーバー時(右or下)、押下時(右or下)の順に並べておくこと</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横の位置、縦の位置</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠画像の中での座標を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バーの幅</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの幅を指定する。0なら画像の幅をそのまま適用する</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字書体名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+秒数を表示する文字の書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字太字・斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+秒数を表示する文字の装飾を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ONにすると、秒数文字を中間色で補正して描画します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+秒数を表示する文字のサイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+秒数を表示する文字の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><B>フォント選択</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左上～右下</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+各位置の画像を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+スクロールバー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロールバー部分の画像ファイル<BR><IMG SRC="scrollbar.gif"><BR>上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+チェック</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢の左に付けるチェックの画像ファイル<BR><IMG SRC="check.gif"><BR>通常のチェック、マウスが上にある時のチェックの順に並べる</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">表示行数</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+一度に表示可能な行数を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">左右・上下のマージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列と枠の間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字書体名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字太字・斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の装飾を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ONにすると、文字を中間色で補正して描画します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字のサイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">行間</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時背景色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字の背景色を指定します。-1なら背景は塗られません。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><B>音量</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラックバー画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+音量を調節するためのトラックバーの画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの部分の画像ファイル<BR><IMG SRC="slider_bar.gif" ALT="scrollbar.gif"><BR>空状態、100%状態の画像を左右に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+つまみ</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+つまみの部分の画像ファイル<BR><IMG SRC="slider_thumb.gif" ALT="scrollbar.gif"><BR>通常時、マウスオーバー時、ホールド時の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+ボタン</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+両端にあるボタン部分の画像ファイル。指定しなければボタンのないスライダーになる<BR><IMG SRC="slider_btn.gif" ALT="scrollbar.gif"><BR>画像は、通常時(左or上)、マウスオーバー時(左or上)、押下時(左or上)、通常時(右or下)、マウスオーバー時(右or下)、押下時(右or下)の順に並べておくこと</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+横の位置、縦の位置</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+枠画像の中での座標を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+バーの幅</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バーの幅を指定する。0なら画像の幅をそのまま適用する</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">左・上マージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+枠とトラックバーの間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">バー間マージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+トラックバーと次のトラックバーの間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">バー・文字間マージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+トラックバーと項目名(BGMなど)の間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字書体名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字太字・斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の装飾を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ONにすると、文字を中間色で補正して描画します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字のサイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アクティブ時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目が調節中の時の文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">非アクティブ時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+他項目が調節中の時の文字の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><B>MIDI</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左上～右下</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+各位置の画像を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+スクロールバー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロールバー部分の画像ファイル<BR><IMG SRC="scrollbar.gif"><BR>上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+チェック</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢の左に付けるチェックの画像ファイル<BR><IMG SRC="check.gif"><BR>通常のチェック、マウスが上にある時のチェックの順に並べる</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">表示行数</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+一度に表示可能な行数を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">左右・上下のマージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列と枠の間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字書体名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字太字・斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の装飾を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ONにすると、文字を中間色で補正して描画します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字のサイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">行間</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時背景色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字の背景色を指定します。-1なら背景は塗られません。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><B>画面モード</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">枠画像</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+土台になる画像を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+左上～右下</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+各位置の画像を指定する</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+スクロールバー</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロールバー部分の画像ファイル<BR><IMG SRC="scrollbar.gif"><BR>上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べる</TD>
+               </TR>
+               <TR>
+                  <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+チェック</TD>
+                  <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択肢の左に付けるチェックの画像ファイル<BR><IMG SRC="check.gif"><BR>通常のチェック、マウスが上にある時のチェックの順に並べる</TD>
+               </TR>
+            </TABLE></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">表示行数</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+一度に表示可能な行数を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">左右・上下のマージン</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列と枠の間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字書体名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字太字・斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の装飾を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ONにすると、文字を中間色で補正して描画します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字のサイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">行間</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+項目間の隙間を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時文字色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">選択時背景色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスが上にある時の文字の背景色を指定します。-1なら背景は塗られません。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>セーブメニュー</FONT></B></P>
+<UL>
+   <P>プレイデータを保存する画面の設定です。<BR><BR><B>書体名</B><BR>フォントの書体名を指定します。<BR><BR><BR><B>アンチエイリアス</B><BR>チェックすると文字を中間色で補正して描画します。<BR><BR><BR><B>フォントサイズ</B><BR>フォントの高さをピクセル単位で指定します。<BR><BR><BR><B>行間</B><BR>項目間の隙間をピクセル単位で指定します。<BR><BR><BR><B>文字装飾</B><BR>項目を太字で表示する場合、チェックを付けてください。<BR><BR><BR><B>文字の影</B><BR>文字の影の有無や、付ける場合は影の位置を指定します。<BR><BR><BR><B>文字の縁</B><BR>文字の縁の有無や、付ける場合は縁の幅を指定します。<BR><BR><BR><B>通常時の色</B><BR>通常時の色を設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>マウスオーバー時の色</B><BR>設定項目の上にマウスカーソルがある時の色を設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">背景色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の背景の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>日付、時刻</B><BR>セーブメニューのリストに表示される日付、時刻の形式を指定します。<BR><BR><BR><B>文章最大長</B><BR>セーブメニューのリストに表示される文章の最大長を半角文字単位で指定します。<BR>0に設定すると文章は付加されません。<BR><BR><BR><B>サムネイル</B><BR>セーブ時の画面をサムネイルとして保存するか指定します。サムネイルは、セーブメニューまたはロードメニューのリストにマウスが乗ったときに表示されます。サムネイルの大きさは画面の大きさに対する比率で指定します。<BR><BR><BR><B>メモ入力</B><BR>セーブメニューのリストに表示される文字列をユーザーに入力させるかどうかを指定します。<BR><BR><BR><B>最大セーブ数</B><BR>セーブできる最大数を指定します。<BR><BR><BR><B>表示行数</B><BR>一度に表示できる行数を指定します。<BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>セーブメニュー画像</FONT></B></P>
+<UL>
+   <P>プレイデータを保存する画面の設定です。<BR><BR><B>枠</B><BR>セーブメニューに使う枠の画像ファイルを指定します。<BR>上、左、背景、右、下の画像はメニューの大きさに合うように、自動的に並べて表示されます。<BR><BR><BR><B>スクロールバー</B><BR>セーブメニューの右側に付くスクロールバーの画像ファイルを指定します。<BR><IMG SRC="scrollbar.gif" WIDTH=140 HEIGHT=20 ALT="scrollbar.gif"><BR>画像は左から、上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べてください。<BR><BR><BR><B>最新チェック</B><BR>セーブメニューの最新データの横に付くマークの画像ファイルを指定します。<BR><IMG SRC="new.gif" WIDTH=50 HEIGHT=9 ALT="new.gif"><BR>画像は、左側に通常のマーク、右側にマウスが上にある時のマークを置いてください。<BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>ロードメニュー</FONT></B></P>
+<UL>
+   <P>プレイデータを読み込む画面の設定です。<BR><BR><B>書体名</B><BR>フォントの書体名を指定します。<BR><BR><BR><B>アンチエイリアス</B><BR>チェックすると文字を中間色で補正して描画します。<BR><BR><BR><B>フォントサイズ</B><BR>フォントの高さをピクセル単位で指定します。<BR><BR><BR><B>行間</B><BR>項目間の隙間をピクセル単位で指定します。<BR><BR><BR><B>文字装飾</B><BR>項目を太字で表示する場合、チェックを付けてください。<BR><BR><BR><B>文字の影</B><BR>文字の影の有無や、付ける場合は影の位置を指定します。<BR><BR><BR><B>文字の縁</B><BR>文字の縁の有無や、付ける場合は縁の幅を指定します。<BR><BR><BR><B>通常時の色</B><BR>通常時の色を設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>マウスオーバー時の色</B><BR>設定項目の上にマウスカーソルがある時の色を設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">背景色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の背景の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">影の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の影の色を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縁の色</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字の縁の色を指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>ロード時の画面効果</B><BR>プレイデータをロードした時の画面切替効果を指定します。<BR><BR><BR><B>表示行数</B><BR>一度に表示できる行数を指定します。<BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>ロードメニュー画像</FONT></B></P>
+<UL>
+   <P>プレイデータを読み込む画面の設定です。<BR><BR><B>枠</B><BR>ロードメニューに使う枠の画像ファイルを指定します。<BR>上、左、背景、右、下の画像はメニューの大きさに合うように、自動的に並べて表示されます。<BR><BR><BR><B>スクロールバー</B><BR>ロードメニューの右側に付くスクロールバーの画像ファイルを指定します。<BR><IMG SRC="scrollbar.gif" WIDTH=140 HEIGHT=20 ALT="scrollbar.gif"><BR>画像は左から、上ボタン、押された上ボタン、下ボタン、押された下ボタン、背景部分、押された背景部分、掴む部分、の順に並べてください。<BR><BR><BR><B>最新チェック</B><BR>ロードメニューの最新データの横に付くマークの画像ファイルを指定します。<BR><IMG SRC="new.gif" WIDTH=50 HEIGHT=9 ALT="new.gif"><BR>画像は、左側に通常のマーク、右側にマウスが上にある時のマークを置いてください。<BR><BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>シナリオ回想</FONT></B></P>
+<UL>
+   <P>既読文章を表示する画面の設定です。<BR><BR><B>デザイン</B><BR>フォントなどのデザインを設定する場合は「指定」を、標準設定で良い場合は「既定」を選択してください。<BR><BR><BR><B>テキスト領域</B><BR>文章が表示される領域（枠は含みません）のサイズを指定します。<BR><BR><BR><B>アンチエイリアス</B><BR>フォントをアンチエイリアスで描画するか指定します。<BR><BR><BR><B>書体名</B><BR>フォントの書体名を指定します。「ユーザー選択」にチェックを付けた場合は、ユーザーがオプション画面で選択したフォントが適用されます。<BR><BR><BR><B>フォントサイズ</B><BR>フォントのサイズをピクセル単位で指定します。<BR><BR><BR><B>行間</B><BR>行間スペースをピクセル単位で指定します。<BR><BR><BR><B>文字の色</B><BR>フォントの標準色を指定します。<BR><BR><BR><B>リンクの色</B><BR>リンク文字列の標準色を指定します。<BR><BR><BR><B>影</B><BR>文字に付ける影の有無、及びその位置と色を指定します。<BR><BR><BR><B>縁</B><BR>文字に付ける縁の有無、及びその太さと色を指定します。<BR><BR><BR><BR></P>
+</UL>
+<P><B><FONT SIZE=3>シナリオ回想画像</FONT></B></P>
+<UL>
+   <P>既読文章を表示する画面の設定です。<BR><BR><B>枠</B><BR>文章表示に使う枠の画像ファイルを指定します。<BR>上、左、背景、右、下の画像はメニューの大きさに合うように、自動的に並べて表示されます。<BR><BR><BR><B>スクロールバー</B><BR>長い文章をスクロールさせるためのスクロールバーの画像ファイルを指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">バー</FONT><IMG SRC="histbar1.gif" ALIGN="absmiddle" HSPACE=4 VSPACE=0></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+バーの部分の画像です。左側に通常時の画像、右側にクリックされた時の画像を置いてください。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">つまみ</FONT><IMG SRC="histbar2.gif" ALIGN="absmiddle" WIDTH=48 HEIGHT=16 HSPACE=4 VSPACE=0></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+マウスで掴むつまみ部分の画像です。左から順に、通常時、マウスが上に乗った時、掴んだ時の画像を置いてください。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ボタン</FONT><IMG SRC="histbar3.gif" ALIGN="absmiddle" WIDTH=96 HEIGHT=16 HSPACE=4 VSPACE=0></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+上下の端に付くボタンの画像です。左から順に、通常時の上ボタン、マウスが上に乗った時の上ボタン、押された時の上ボタン、通常時の下ボタン、マウスが上に乗った時の下ボタン、押された時の下ボタンの画像を置いてください。</TD>
+      </TR>
+   </TABLE><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+   <P></P>
+</UL>
+</BODY>
+</HTML>

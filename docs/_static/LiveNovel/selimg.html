@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>画像選択</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">画像選択</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>画面に複数の画像を表示し、プレイヤーに選択させます。プレイヤーが選択した後、変数「選択番号」、「選択値」、「選択タイムアウト」に値が入るので、その内容によって分岐させることができます。また、プレビューメニューで「グループ番号」を0以外に設定した選択肢のON/OFFの状態は、配列変数「選択状態[n] <FONT COLOR="#0000FF">※nは0から始まる選択肢番号</FONT>」に値(FALSEかTRUE)が入ります。</P>
+<DIV ALIGN="center">
+<P><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF">
+</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択した時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+キャンセルした時</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+制限時間を超えた時</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択番号</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">選択した番号（0～）</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">-1</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">-1</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択値</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P><FONT COLOR="#0000FF">選択した項目名</FONT><BR>（LivePreviewMenuで設定した名前）</P></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">（空）</FONT></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">（空）</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+<B>選択タイムアウト</B></TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+FALSE</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUE</TD>
+   </TR>
+</TABLE></P>
+</DIV>
+<P><BR><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=4>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selimg01.png" ALIGN="absmiddle" WIDTH=103 HEIGHT=31 HSPACE=4 VSPACE=4 ALT="画像選択"></TD>
+      <TD><BASEFONT SIZE=2>
+ツールバーの[画像選択]追加ボタンをクリックします。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg02.png" ALIGN="absmiddle" WIDTH=91 HEIGHT=36 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+         <P>[画像選択]ノードが作成されます。<BR>ノードをダブルクリックして、設定ダイアログを表示します。</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=2 BGCOLOR="#808080">
+<IMG SRC="ln_selimg03.png" ALIGN="absmiddle" WIDTH=492 HEIGHT=444 HSPACE=4 VSPACE=4 ALT="画像選択"></TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=2>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#808080">
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>ファイル</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+LivePreviewMenuで作成したファイルを指定します。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>背景画像</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+                  <P>選択画像の土台となる画像の名前です。なくても構いません。<BR>プレビューメニューが自動消去される場合、背景画像も自動的に消えます。</P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>表示時間</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択画像が画面に出現する際のフェードインに要する時間（ミリ秒単位）です。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>キャンセル</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレイヤーが右クリックで選択をキャンセルすることができます。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>自動消去</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレイヤーが選択後、選択画像を自動的に消去するかどうかの指定です。自動消去しない場合は、必ず背景画像を指定し、後で背景画像を消してください。親である背景画像が消えることで、選択画像も消えます。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>消去時間</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フェードアウトに要する時間（ミリ秒単位）です。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<B>効果音</B></TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択画像の上にマウスカーソルが乗った時と選択した時の効果音を指定します。なくても構いません。</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg04.png" ALIGN="absmiddle" WIDTH=356 HEIGHT=106 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+選択結果によって分岐させる場合は、左記のように条件を付けてジャンプさせます。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg05.png" ALIGN="absmiddle" WIDTH=235 HEIGHT=83 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+最終的にチャートはこのようになります。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B><FONT SIZE=3>【有効条件を使う場合】</FONT></B><BR>「有効条件」を使うと、指定条件に合致しない場合、選択肢を表示しない、または選択できないようにすることができます。<BR>例えば、上の例で、一度学校に行くまでは公園の選択肢を表示しないようにしてみます。<BR><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=4>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg08.png" ALIGN="absmiddle" WIDTH=320 HEIGHT=230 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+「変数リスト」で変数「学校に行った」を追加します。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg09.png" ALIGN="absmiddle" WIDTH=267 HEIGHT=124 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+「学校に行った話」ノードが終わったら、変数「学校に行った」にTRUEを代入するようにし、さらに「画像選択」に戻るようにします。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+         <P><IMG SRC="ln_selimg06.png" ALIGN="absmiddle" WIDTH=150 HEIGHT=61 HSPACE=4 VSPACE=4 ALT="画像選択"><BR></P></TD>
+      <TD><BASEFONT SIZE=2>
+「画像選択」のプロパティを表示し、「条件」タブをクリックします。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selimg07.png" WIDTH=310 HEIGHT=124 ALT="画像選択"></TD>
+      <TD><BASEFONT SIZE=2>
+有効条件リスト上で右クリックし、メニューから「追加」を選択します。<BR>そして、「選択肢の名前」を「公園」、「条件」を「学校に行った == TRUE」とします。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selimg10.png" WIDTH=250 HEIGHT=195 ALT="画像選択"></TD>
+      <TD><BASEFONT SIZE=2>
+実行すると、学校だけが表示されます。<BR>条件が満たされていないので、公園は表示されません。<BR><BR>では、学校を選択してください。</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center"><BASEFONT SIZE=2>
+▼</TD>
+      <TD ALIGN="center">
+</TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#808080">
+<IMG SRC="ln_selimg11.png" WIDTH=250 HEIGHT=195 ALT="画像選択"></TD>
+      <TD><BASEFONT SIZE=2>
+学校の話が終わり、また画像選択に戻ってくると、今度は公園も表示され選択できるようになりました。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>上記の例では、条件を満たしていない場合、公園の選択肢を表示しないようにしましたが、選択できない画像を表示することもできます。<BR>まず、LivePreviewMenuを起動し、プレビューメニューファイルを開きます。そして、公園画像を選択し、プロパティの「無効時の画像」に、選択できない時の公園の画像ファイルを選択します(ここではグレイスケールの画像を用意しました)。最後にファイルを上書き保存してください。<BR><BR>これで実行すると、最初の画像選択が次のように表示されます。<BR><IMG SRC="ln_selimg12.png" WIDTH=250 HEIGHT=195 ALT="画像選択"><BR>公園の画像は表示されますが、選択はできません。マウスを乗せても無反応です。<BR><BR><BR>なお、有効条件を設定していない選択肢は常に有効になります。また、条件の設定方法の詳細は<A HREF="cond.html">こちら</A>をご覧ください。<BR><BR><BR><B><FONT SIZE=3>【表示条件を使う場合】</FONT></B><BR>「表示条件」を使うと、指定条件に合致しない場合、選択肢を表示させないようにすることができます。<BR>使い方は「有効条件」と同じです。<BR>なお、表示条件を設定していない選択肢は常に表示されます。<BR>条件の設定方法の詳細は<A HREF="cond.html">こちら</A>をご覧ください。<BR><BR><BR><B><FONT SIZE=3>【選択条件を使う場合】</FONT></B><BR>プレビューメニューの「グループ番号」を使うと、クリックするたびにONとOFFが切り替わる形式の選択肢が作れます。<BR>「選択条件」を使うと、このON/OFFの初期状態を設定することができます。<BR>使い方は「有効条件」と同じです。<BR>なお、選択条件を設定していない選択肢は常にOFFとなります。<BR>条件の設定方法の詳細は<A HREF="cond.html">こちら</A>をご覧ください。<BR><BR><BR><B><FONT SIZE=3>【制限時間を指定する】</FONT></B><BR>「制限時間」を使うと、プレイヤーが選択可能な時間を制限することができます。<BR><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#C8F7C3" NOWRAP><BASEFONT SIZE=2>
+<B>動作タイプ</B></TD>
+      <TD ALIGN="center" BGCOLOR="#C8F7C3"><BASEFONT SIZE=2>
+<B>内容</B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+制限時間なし</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>制限時間なしで選択できます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+制限時間あり</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+選択可能な時間をミリ秒単位(1秒=1000)で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+シネマファイル再生</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定したシネマファイルを再生します。プレイヤーはシネマが再生されている間だけ選択できます。<BR>シネマの表示座標は(0,0)になります。また、シネマは画面の最も手前に配置されます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>プレイヤーが制限時間内に選択しなかった場合、変数「選択タイムアウト」にTRUEが入ります。<BR><BR><FONT COLOR="#0000FF">【使い方の例】</FONT><BR>①タイトル画面で一定時間操作がないときにデモ画面に移行する。<B><FONT COLOR="#0000FF">→</FONT></B>タイトル画面で「制限時間あり」の画像選択を実行。<BR>②制限時間付きのクイズ<B><FONT COLOR="#0000FF">→</FONT></B>「シネマファイル再生」で画像選択を実行。「9,8,7...」とカウントダウンするシネマを再生する。<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+</BODY>
+</HTML>

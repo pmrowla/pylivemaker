@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P CLASS="text"><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">素材ファイルの用意</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>LiveNovelの作業に入る前に、まずグラフィックやサウンドなどの素材ファイルを用意します。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#0000FF">
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">グラフィック</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>LiveNovelで扱えるグラフィックには以下の2種類があります。<BR><BR><B><FONT COLOR="#0000FF">GraphicsGaleファイル</FONT></B><BR>ビットマップデータファイルです。複数フレームが扱えるため、単純な動画を作ることも可能です。<BR>また、特定の色を透過にしたり、アルファチャンネルを設定することもできます。<BR><BR><B><FONT COLOR="#0000FF">シネマファイル</FONT></B><BR>複数の画像ファイルやサウンドファイルを組み合わせた動画ファイルです。時間の経過に沿って画像の位置、大きさ、角度などを変化させることができ、GraphicsGaleよりも複雑な動画を作ることができます。<BR>シネマファイルは命令を記述したファイルなので、シネマの中で使用している画像ファイルなどは実行時にも必要です。<BR><BR></P>
+<P CLASS="text"><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#008080">
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">GraphicsGaleファイルの作成方法</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>GraphicsGaleで保存する他、BmpToGaleを使ってBMPファイルからコンバートすることもできます。<BR>ここではBmpToGaleを使ってキャラクタのグラフィックをコンバートする方法を説明します。</P>
+<DIV ALIGN="center">
+<P><TABLE WIDTH="90%" BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#FF0000">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P CLASS="text"><FONT COLOR="#FF0000">《重要》 LiveMakerProのみ</FONT><BR>インストール後、コンバート作業を始める前に、GraphcisGaleを起動して環境設定を開き、「識別コード」を設定してGraphcisGaleを終了してください。このコードとLiveNovelで設定するコードが一致しないと、LiveNovel上で正しく画像が表示されません。</P></TD>
+   </TR>
+</TABLE></P>
+</DIV>
+<P><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=8>
+   <TR>
+      <TD ALIGN="center" VALIGN="bottom">
+<IMG SRC="ln_turorial01.png" WIDTH=100 HEIGHT=120></TD>
+      <TD ALIGN="center" VALIGN="bottom">
+<IMG SRC="ln_turorial02.png" WIDTH=100 HEIGHT=120></TD>
+      <TD VALIGN="top" ROWSPAN=2><BASEFONT SIZE=2>
+         <P CLASS="text">BMPファイルを用意します。通常、キャラクタの場合は主線が綺麗に出るようにマスク画像を合成します。マスク画像はグレイスケール画像で、白い所ほど本体がはっきりと表示され、黒い所ほど本体が透けて表示されます。<BR>マスク画像は本体画像のファイル名に <FONT COLOR="#0000FF">-m</FONT> を付加した名前にしてください。上記の例で言うと、本体画像が chara1.bmp なので、マスク画像は chara1-m.bmp になります。</P></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" VALIGN="top"><BASEFONT SIZE=2>
+         <P CLASS="text"><B>chara1.bmp</B><BR>本体画像</P></TD>
+      <TD ALIGN="center" VALIGN="top"><BASEFONT SIZE=2>
+         <P CLASS="text"><B>chara1-m.bmp</B><BR>マスク画像</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>BmpToGaleを起動し、chara1.bmp をBmpToGaleのウィンドウにドラッグ＆ドロップしてください。<BR></P>
+<DIV ALIGN="center">
+<P><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2>
+   <TR>
+      <TD>
+<IMG SRC="ln_turorial03.png" ALIGN="absmiddle" WIDTH=200 HEIGHT=107 ALT="ln_turorial3.png"></TD>
+      <TD ALIGN="center" NOWRAP><BASEFONT SIZE=2>
+         <P>←---------<BR>BmpToGaleに<BR>ドラッグ＆ドロップ</P></TD>
+      <TD>
+<IMG SRC="ln_turorial01.png" WIDTH=100 HEIGHT=120 ALT="ln_turorial1.png"></TD>
+   </TR>
+   <TR>
+      <TD ALIGN="center" COLSPAN=3>
+</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2></P>
+</DIV>
+<P CLASS="text">コンバートが成功すると、BMPファイルと同じフォルダにGaleファイルが作成されます(上記で言うと chara1.gal )。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#008080">
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">シネマファイルの作成方法</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>シネマファイルは専用のエディタである<A HREF="../Cinema/index.html" TARGET="_parent">LiveCinema</A>で作成します。<BR>シネマファイル(.lcm)とその中で使用している素材ファイル(.galや.wavなど)とのフォルダの親子関係が変わると再生できなくなるのでご注意ください。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#0000FF">
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">サウンド</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>LiveNovelで扱えるサウンドファイルは、WAV、MIDI、OGG、WMAです。圧縮サウンドに関しては、ライセンスの関係上、WMAよりOGGを推奨します。<BR>OGGのコンバートには<A HREF="http://www.vorbis.com/download_win.psp" TARGET="_blank">Oggdrop</A>などをお使いください。<BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD>
+</TD>
+      <TD ALIGN="right"><BASEFONT SIZE=2>
+<A HREF="tutorial02.html">進む→</A></TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

@@ -1,0 +1,740 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>「挿入」メニュー</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">「挿入」メニュー</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><A NAME="pause"></A><B>クリック待ち</B><BR>メッセージボックスにカーソルを表示し、プレイヤーがマウスをクリックするまで、シナリオ進行を一時停止します。<BR>ただし、プレイヤーが文章スキップを実行した時や、既読文章のスキップ機能が働いた時は停止しません。常にクリック待ちさせたい時は、以下の<B>ウエイト</B>コマンドを使ってください。<BR><BR><BR><B>ウエイト</B><BR>指定した時間だけシナリオ進行を停止します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+停止する時間をミリ秒単位で指定します。0を指定すると、時間制限なしで停止します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">クリックで中断</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、指定時間前でもプレイヤーがマウスをクリックした時にシナリオを進行します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文章スキップ中は実行しない</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、既読スキップやCTRLキースキップが行われている時、ウエイトを実行しません。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>再生終了待ち</B><BR>指定した名前の画像またはシネマまたはサウンドの再生が終了するまで、シナリオ進行を停止します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">終了を待つ部品</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+再生終了を待つ画像・シネマ・サウンドの名前を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">クリックで中断</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、プレイヤーがマウスをクリックした時に再生終了を待たずにシナリオを進行します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>画像表示</B><BR>画像を表示します。標準グラフィックであるGALファイルの他、LiveCinemaで作成したシネマファイルも表示できます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルのパスを指定します。単色ボタンで色を指定すると、ファイルではなく、画面サイズ一杯の単色塗りつぶし画像になります。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「グラフィック」フォルダがデフォルトパスになるので、例えば変数の値が「背景.GAL」なら「グラフィック\背景.GAL」が読み込まれます。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像に付ける名前を入力します。表示した後に画像を変更したり消去する場合にこの名前が必要になります。<BR>名前の最初に#を付けると、その画像はインターフェース扱いになります(「文字を消す」を実行した時に消える)。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">横の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する横の位置を、左寄せ・中央寄せ・右寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縦の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する縦の位置を、上寄せ・中央寄せ・下寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">反転</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像を左右または上下に反転して表示します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">不透過度</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+不透過度を下げると重なっている奥の画像が透けて見えるようになります。完全透明0～完全不透明255 の間で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プライオリティ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画面の奥にあるか手前にあるかという指定です。プライオリティのリストはプロジェクトオプションで編集できます。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">画面効果</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像を表示する際の画面効果を指定します。[裏画面に配置]を指定すると、その場では表示せず、次に画像表示・画像変更・画像消去を実行する時に一緒に表示します。<BR><BR><A NAME="preset"></A><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#F6B474">
+            <TR>
+               <TD BGCOLOR="#FFFEEF"><BASEFONT SIZE=2>
+<B>【プリセット機能について】</B><BR>プリセット機能を使うと、画面効果の設定値に名前を付けて記憶させることができます。頻繁に使う画面効果の設定値を登録しておけば、プリセット名を選択するだけで設定値を呼び出すことができます。</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">再生タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルが動画の場合にその再生方法を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+通常再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループせずに一回だけ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リピート再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生終了まで待つ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一回再生し、再生が終了するまでシナリオ進行を停止します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生後自動破棄</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生が終わると自動的に破棄されます。</TD>
+            </TR>
+         </TABLE></P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">動的クリップ変更</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ソースがシネマまたはモーションの場合、内部のクリップのプロパティを動的に変更できます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象クリップ名</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更対象のクリップの名前を指定します。LiveCinema上であらかじめ「名前」を設定する必要があります</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更するプロパティを指定します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数名</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+代入する値が入った変数の名前を指定します</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>画像変更</B><BR>既に画面に表示されている画像の内容を変更します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルのパスを指定します。単色ボタンで色を指定すると、ファイルではなく、画面サイズ一杯の単色塗りつぶし画像になります。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「グラフィック」フォルダがデフォルトパスになるので、例えば変数の値が「背景.GAL」なら「グラフィック\背景.GAL」が読み込まれます。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変更する対象の画像の名前を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">反転</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像を左右または上下に反転して表示します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">不透過度</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+不透過度を下げると重なっている奥の画像が透けて見えるようになります。完全透明0～完全不透明255 の間で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">画面効果</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像を表示する際の画面効果を指定します。[裏画面に配置]を指定すると、その場では表示せず、次に画像表示・画像変更・画像消去を実行する時に一緒に表示します。<BR><BR><A HREF="menu_scenario.html#preset"><B>プリセット機能について</B></A></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">再生タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルが動画の場合にその再生方法を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+通常再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループせずに一回だけ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リピート再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生終了まで待つ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一回再生し、再生が終了するまでシナリオ進行を停止します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生後自動破棄</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生が終わると自動的に破棄されます。</TD>
+            </TR>
+         </TABLE></P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">動的クリップ変更</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ソースがシネマまたはモーションの場合、内部のクリップのプロパティを動的に変更できます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象クリップ名</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更対象のクリップの名前を指定します。LiveCinema上であらかじめ「名前」を設定する必要があります</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プロパティ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更するプロパティを指定します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数名</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+代入する値が入った変数の名前を指定します</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>画像消去</B><BR>既に画面に表示されている画像を消去します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>消去する画像の名前を指定します。複数まとめて消去することもできます。<BR>名前を変数で指定する場合は、「?変数名」としてください。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">画面効果</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像を消去する際の画面効果を指定します。<BR><BR><A HREF="menu_scenario.html#preset"><B>プリセット機能について</B></A></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>顔表示</B><BR>メッセージボックスの左に画像を表示します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルのパスを指定します。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「グラフィック\顔」フォルダがデフォルトパスになるので、例えば変数の値が「主人公.GAL」なら「グラフィック\顔\主人公.GAL」が読み込まれます。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>顔消去</B><BR>顔画像を消去します。<BR><BR><BR><A NAME="name"></A><B>名前表示</B><BR>メッセージボックスの左上に画像を表示します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルのパスを指定します。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「グラフィック\名前」フォルダがデフォルトパスになるので、例えば変数の値が「主人公.GAL」なら「グラフィック\名前\主人公.GAL」が読み込まれます。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>名前消去</B><BR>名前画像を消去します。<BR><BR><BR><A NAME="imgchar"></A><B>画像文字表示</B><BR>ユーザーが作成したフォント画像を文字として表示します。なお、表示内容を変更する場合は「画像文字変更」コマンドを、消去する場合は「画像消去」コマンドを使います。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">設定</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する画像文字の設定を選択します。画像文字設定はあらかじめ<A HREF="option_frame.html">プロジェクトオプション</A>の中で作っておく必要があります。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像文字に付ける名前です。表示した後に内容を変更したり消去する場合にこの名前が必要になります。<BR>名前の最初に#を付けると、その画像文字はインターフェース扱いになります(「文字を消す」を実行した時に消える)。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">親の名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像文字の親を指定します（指定しなくても構いません）。親を指定すると、その親の上に貼り付き、親が消えると画像文字も同時に消えます。また、親を指定した場合、位置、座標、プライオリティは、全体の中での値ではなく親の中での相対値になりますのでご注意ください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">横の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する横の位置を、左寄せ・中央寄せ・右寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縦の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する縦の位置を、上寄せ・中央寄せ・下寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">揃え</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列が複数行の時の横の揃えを指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">行間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字列が複数行の時の行間スペースをピクセル単位で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プライオリティ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画面の奥にあるか手前にあるかという指定です。プライオリティのリストはプロジェクトオプションで編集できます。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字列</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する文字列を指定します。当然、設定側にない文字は表示できません。変数の内容や計算式の結果を表示したい場合は、<B>式として記述</B>にチェックを付けてください。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>画像文字変更</B><BR>既に画面上に表示されている画像文字の内容を変更します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像文字に付ける名前です。表示した後に内容を変更したり消去する場合にこの名前が必要になります。<BR>名前の最初に#を付けると、その画像文字はインターフェース扱いになります(「文字を消す」を実行した時に消える)。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">文字列</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する文字列を指定します。当然、設定側にない文字は表示できません。変数の内容や計算式の結果を表示したい場合は、<B>式として記述</B>にチェックを付けてください。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>画像文字の内容を変更するには、計算ノードを使って行う方法もあります。計算ノードに次のような式を挿入します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#C0C0C0">
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+(空)</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+=</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+SetProp( &quot;画像文字の名前&quot;,PR_TEXT,&quot;文字列&quot; )</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+代入</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+(空)</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>この方法のほうが処理速度が速いです。ただし、「横の位置」と「縦の位置」が数値以外の場合、座標は自動的に調整されません。<BR><BR><BR><B>画像ロック</B><BR>画像ファイルを読み込みロックします。ロックしている間は、画像を素早く読み込むことができます。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「グラフィック」フォルダがデフォルトパスになるので、例えば変数の値が「背景.GAL」なら「グラフィック\背景.GAL」がロックされます。変数名の他、式を使うこともできます。<BR><BR><BR><B>画像ロック解除</B><BR>画像のロックを解除します。<BR><BR><BR><B>壁紙設定</B><BR>指定の画像ファイルをデスクトップの壁紙に設定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>設定するファイルのパスを指定します。空にすると、現在のゲーム画面を壁紙にすることができます。<BR>また、ファイル名を変数で指定する場合は、「?変数名」としてください。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+壁紙の表示方法を[中央に表示]、[並べて表示]、[拡大して表示]の中から指定します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>絵文字</B><BR>文章の中に画像を挿入します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>表示するファイルのパスを指定します。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">揃え</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像の縦の揃えを[上]、[中央]、[下]の中から指定します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>変数内容表示</B><BR>変数の内容を文章中に展開して表示します。<BR><BR><BR><B>テキストクリア</B><BR>メッセージボックスを空にします。<BR><BR><BR><A NAME="showmes"></A><B>メッセージボックス表示</B><BR>メッセージボックスを表示します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フェードイン時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+何ミリ秒かけてフェードインするか指定します。0なら即表示します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">後で反映</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックを付けると、その場では画面に反映されず、後で行われる<B>画像表示</B>や<B>画像変更</B>などの際に一緒に反映されます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>メッセージボックス非表示</B><BR>メッセージボックスを隠します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フェードアウト時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+何ミリ秒かけてフェードアウトするか指定します。0なら即消去します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">後で反映</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックを付けると、その場では画面に反映されず、後で行われる<B>画像表示</B>や<B>画像変更</B>などの際に一緒に反映されます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><A NAME="chgmes"></A><B>メッセージボックス変更</B><BR>メッセージボックスのスタイルを変更します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">スタイル</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変更するメッセージボックスのスタイルの名前を指定します。スタイルは<A HREF="option_frame.html">プロジェクトオプション</A>で設定します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>テキスト速度－標準・ノーウエイト・スロー</B><BR>テキストが進行する速度を、<B>標準</B>(50ms)・<B>ノーウエイト</B>(0ms)・<B>スロー</B>(300ms)の中から指定します。<BR><BR><BR><B>テキスト速度変更</B><BR>テキストが進行する速度を、ミリ秒単位で指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">１文字の表示時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+１文字を表示させる時間をミリ秒単位で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">実行時の速度設定を無視</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、実行時オプションの「テキスト速度」の影響を受けません。また、クリックやCTRLキーによるスキップもできません。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><A NAME="sound"></A><B>サウンド再生</B><BR>サウンドファイルを再生します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>再生するファイルのパスを指定します。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「サウンド」フォルダがデフォルトパスになるので、例えば変数の値が「BGM.WAV」なら「サウンド\BGM.WAV」が再生されます。変数名の他、式を使うこともできます。<BR>CD-DAを再生する場合は、&quot;CD_n&quot;とします(nにはトラック番号(1～)が入ります)。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラック</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+再生に使用するトラックを指定します。既に同じトラックでサウンドが再生されている場合、そのサウンドは停止します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">再生タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>再生方法を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+通常再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループせずに一回だけ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リピート再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループ再生します</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生終了まで待つ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一回再生し、再生が終了するまでシナリオ進行を停止します</TD>
+            </TR>
+         </TABLE></P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">リピート位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+曲がリピートする時に巻き戻す位置をミリ秒単位で指定します。イントロがある曲などに使用します。<BR>なお、この指定は、.OGG及び.WAVファイルにのみ有効です。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サウンドの音量の割合を、1～1000の間で指定します。1000で100%の音量になります。<BR>変数で指定する場合は、「?変数名」としてください。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">リプレイ対象</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックを付けると、聞き逃したサウンドをもう一度再生させたり、テキスト履歴(バックログ)上で過去のサウンドを再生することができます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>サウンド再生連番</B><BR>上記の<B>サウンド再生</B>を挿入し、さらに自動的に連番のファイル名を設定します。例えば、このコマンドの後方にある<B>サウンド再生</B>のファイル名が「sound100.ogg」なら、「sound101.ogg」となります。<BR><BR><BR><B>サウンド停止</B><BR>サウンドを停止します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラック</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+停止するトラックを指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フェードアウト時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+何ミリ秒かけてフェードアウトするか指定します。0なら即停止します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">停止するまで待つ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サウンドが完全に停止するまで待ってから次の処理に移ります。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>ムービー表示</B><BR>ムービーを再生します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ファイル名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>再生するファイルのパスを指定します。<BR>ファイル名を変数で指定する場合は、「?変数名」としてください。「MOVIE」フォルダがデフォルトパスになるので、例えば変数の値が「DEMO.MPG」なら「MOVIE\DEMO.MPG」が読み込まれます。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">横の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する横の位置を、左寄せ・中央寄せ・右寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">縦の位置</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+表示する縦の位置を、上寄せ・中央寄せ・下寄せの中から選ぶか、または直接座標で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">再生タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>再生方法を指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+通常再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループせずに一回だけ再生します。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リピート再生</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ループ再生します。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生終了まで待つ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一回再生し、再生が終了するまでシナリオ進行を停止します。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生後自動破棄</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生が終わると自動的に破棄されます。</TD>
+            </TR>
+         </TABLE></P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">オーバーレイ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF">
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+オーバーレイ</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ムービーが最前面に表示されます。ハードウェアで処理するため処理は軽くなります。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+合成表示</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像と同じように任意の奥行きに表示できます。ソフトウェアで処理するため処理は重くなります。</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プライオリティ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画面の奥にあるか手前にあるかという指定です。プライオリティのリストはプロジェクトオプションで編集できます。<BR>この項目は「再生タイプ」が「オーバーレイ」の場合は無視されます。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">不透明度</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+不透明度を0(透明)～255(不透明)で指定します。<BR>この項目は「再生タイプ」が「オーバーレイ」の場合は無視されます。</TD>
+   </TR>
+</TABLE><BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=0>
+   <TR>
+      <TD BGCOLOR="#F4D5C6"><BASEFONT SIZE=2>
+<B>【正常にムービー再生が行われない場合】</B><BR>通常ムービーはDirectShow経由で再生されますが、正常に再生されない場合の回避策として、WindowsMediaPlayerコンポーネントで再生することができます。メモ帳などで、以下の内容のテキストを作成し、ゲームをインストールしたフォルダに「game.ini」というファイル名で保存してください。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1 BGCOLOR="#808080">
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+[Video]<BR>UseWMP=1</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>ムービー消去</B><BR>ムービーを停止し消去します。<BR><BR><BR><B>一時停止</B><BR>サウンドまたはムービーの再生を一時停止します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラック</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+一時停止するトラックを指定します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>一時停止解除</B><BR>サウンドまたはムービーの再生を再開します。「一時停止」を行った後に使います。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラック</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+一時停止を解除するトラックを指定します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>音量変更</B><BR>サウンドまたはムービーの音量を変更します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">トラック</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+音量を変更するトラックを指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">音量</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+サウンドの音量を、1～1000の間で指定します。1000で100%の音量になります。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変更にかける時間をミリ秒単位で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変わるまで待つ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、音量変更が完了するまで、シナリオ進行を停止します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>モーション</B><BR>コンポーネントのプロパティ値を段階的に変化させます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+モーションに名前を付けます。「再生終了待ち」コマンドで使用できます。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">コンポーネント名</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+画像やサウンドなど、変化させる対象コンポーネントの名前を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プロパティ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変化させる対象プロパティを指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">値</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変化後の値を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+変化に要する時間をミリ秒単位で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">変化タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+推移の仕方を一定、加速、減速の中から選択します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">終了まで待つ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、変化が完了するまで、シナリオ進行を停止します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>画面揺らし</B><BR>表示されている画像を揺らします。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">名前</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+         <P>揺らす画像の名前を指定します。複数指定できます。<BR>名前を変数で指定する場合は、「?変数名」としてください。変数名の他、式を使うこともできます。</P></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">タイプ</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+揺れの種類です。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ランダム</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+揺れる方向がランダムに変わる。<IMG SRC="quake1.gif" WIDTH=97 HEIGHT=12></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+波</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+波のような動き。<IMG SRC="quake2.gif" WIDTH=97 HEIGHT=12></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+バウンド</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+跳ねるような動き。<IMG SRC="quake3.gif" WIDTH=97 HEIGHT=12></TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">移動量</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+横方向、縦方向の揺れ幅を指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+揺らす時間をミリ秒単位で指定します。0なら停止するまで止まりません。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">周期</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+揺れパターンの周期をミリ秒単位で指定します。</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ずらす</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックすると、揺れ幅に誤差を生じさせます。複数画像の場合は画像と画像がずれて表示されます。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>【設定例１・衝撃】　タイプ=ランダム、移動量X=15、Y=15、時間=500、周期=30、ずらす=ON<BR>【設定例２・波の上】　タイプ=波、移動量X=0、Y=10、時間=0、周期=2000、ずらす=ON<BR><BR><BR><B>画面揺らし停止</B><BR>画面の揺れを止めます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+   <TR>
+      <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">時間</FONT></TD>
+      <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+停止にかける時間をミリ秒単位で指定します。0なら即停止します。</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR><BR><B>URLを開く</B><BR>ブラウザで指定のURLを開きます。<BR><BR><BR><B>システムメニュー許可</B><BR>プレイヤーが右クリックした時にシステムメニューが出るようにします。<BR><BR><BR><B>システムメニュー禁止</B><BR>プレイヤーが右クリックしてもシステムメニューが出ないようにします。<BR><BR><BR><B>セーブロード許可</B><BR>プレイヤーがプレイ状態をセーブできるようにします。<BR><BR><BR><B>セーブロード禁止</B><BR>プレイヤーがプレイ状態をセーブできないようにします。<BR><BR><BR><B>コメント</B><BR>コメントを挿入します。シナリオには影響を与えません。</P>
+</BODY>
+</HTML>

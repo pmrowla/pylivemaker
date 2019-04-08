@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>オプション - インストーラ</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B><FONT SIZE=3>プロジェクトオプション - インストーラ</FONT></B></P>
+<UL>
+   <P><B>インストールタイプ</B><BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">通常インストール</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+通常のインストールです。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">追加／アップデート</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+            <P>ユーザーのパソコンに既にソフト本体がインストールされていて、その内容を修正したり追加したりします。以下のような場面で使用します。<BR>・リリース済みソフトのバグ修正のためのアップデート<BR>・リリース済みソフトへ新たなシナリオを追加する<BR>「自動設定」を行うと、更新元プロファイルの内容に沿って、「旧マスター」などの項目が自動的に設定されます。</P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">EXEファイル化</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+インストーラを作成せずに、実行用ファイルだけを出力します。画像やサウンドなどの素材ファイルもEXEファイルの中に格納されます。なお、ファイル容量の上限は1GBです。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">プログラムのみ更新</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+ユーザーのパソコンに既にソフト本体がインストールされていて、そのプログラムを新しいものに更新します。リリース済みソフトのバグ修正のためのアップデートに使用しますが、「追加／アップデート」とは違い、シナリオ、画像、サウンドなどのファイルは更新されません。<BR>「自動設定」を行うと、更新元プロファイルの内容に沿って、「旧マスター」などの項目が自動的に設定されます。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>出力ファイル／フォルダ</B><BR>マスターファイルを出力するフォルダ（インストールタイプが「追加／アップデート」の場合はファイル名）を指定します。<BR><BR><BR><B>旧マスター</B><BR>インストールタイプが「追加／アップデート」の場合は、差分を作成するため、更新の元となるマスターファイル(オリジナルマスター)のフォルダを指定する必要があります。マスター作成の際には、オリジナルマスターに存在しないファイル、または更新されたファイルだけが抽出され、インストール用ファイルが作られます。<BR>オリジナルマスターが１ファイル化されている場合はオリジナルマスターのInstall.exeを選択しても構いません。<BR><BR><BR><B>ディスク枚数</B><BR>ファイルの容量が大きくて1枚のディスクに収録できない場合、複数ディスクに分けて収録することができます。<BR>インターネットで配布するような場合は「1枚」にしてください。<BR><BR><BR><B>１ファイル化</B><BR>データファイルをセットアッププログラムの中に内包します。<B>ディスク枚数</B>が１枚でファイル容量が1GB以下の場合、適用可能です。<BR>また、１ファイル化した場合、<B>ファイル選択</B>はフルインストールのみとなります。<BR><BR><BR><B>ファイル選択</B><BR>インストール時にユーザーがファイルを選択できるかどうかを指定します。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">許可する</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+            <P>ユーザーがデータファイルをインストールするかどうか選択できるようにします。<BR>CD-ROMなどのメディアで供給する場合に、実行時にメディアを併用することでインストール容量を抑制することができます。インターネットで配布するような場合は選択しないでください。</P></TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フルインストールのみ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+常にデータファイルをインストールするようにします。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2><BR><BR><B>DirectXをインストール</B><BR>製品にDirectXを添付するかどうかを指定します。LiveMakerで制作されたソフトウェアは、Windows98以降、標準でインストールされているDirectXで動作しますので、通常は必要ありません。<BR><BR><BR><B>WindowsMediaPlayerをインストール</B><BR>製品にWindowsMediaPlayerを添付するかどうかを指定します。作品内で、WMAファイルやWMVファイルを使用している場合は、プレイヤーの環境にもWindowsMediaPlayerがインストールされている必要があります。WAV、OGG、AVI、MPEGファイルしか使用していない場合は必要ありません。<BR><BR><BR><B>ファイル暗号化</B><BR>ファイルのデータを暗号化するかどうかを指定します。暗号化した場合、データの抽出はされにくくなりますが、実行時の速度が若干下がります。<BR><BR><BR><B>タイトル</B><BR>ゲームのタイトルを入力します。タイトルはゲームのタイトルバーの部分に表示されます。また、「&lt;ProgramFiles&gt;\タイトル\」のように、デフォルトのインストール先として使われます。<BR>指定しない場合は<A HREF="option1.html#title">基本設定のタイトル</A>が使われます。<BR><BR><BR><B>セットアップ画面のタイトル</B><BR>インストーラ画面のタイトルバー部分に表示する文字列です。<BR><BR><BR><B>コピーライト</B><BR>インストーラ画面下部に表示される著作権表記です。<BR><BR><BR><B>背景画像</B><BR>インストーラ画面の背景に表示する画像ファイルを指定します。なくても構いません。<BR><BR><BR><B>メディア表記</B><BR>CD-ROMなどのメディアを何と呼ぶか指定します。<BR><BR><BR><B>挨拶文</B><BR>インストーラ起動時に表示される文章を入力します（省略可）。<BR><BR><BR><B>ライセンス同意書</B><BR>ユーザーに表示するライセンス文章を入力します（省略可）。<BR>ユーザーは、画面に表示される「同意する」にチェックを付けなければ、インストール作業を続行できません。<BR><BR><BR><B>マニュアル</B><BR>ヘルプファイルやREADMEファイルがある場合に指定します。なくても構いません。<BR><B>インストールタイプ</B>が「通常インストール」の場合は、このファイルがスタートメニューに「お読みください」という名前で登録されます。また、<B>インストール後に開く</B>にチェックを付けると、インストール後、自動的にこのファイルを開きます。<BR><BR><BR><B>アイコン</B><BR>プログラムのアイコンファイルを指定します。<BR><BR><BR><B>EXEの名前</B><BR>プログラムのファイル名を指定します。ゲームなどの場合は拡張子を「EXE」に、またスクリーンセーバーの場合は「SCR」としてください<BR><BR><BR><B>ムービーファイルをアーカイブ化</B><BR>チェックすると、ムービーファイルをアーカイブファイルの中に格納します。<BR><BR><BR><B>対象</B><BR>インストール対象のチャートとフォルダを指定します。複数ディスクで構成される場合は、「ディスク番号」を選択してから指定してください。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">対象を指定</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックを付けたチャート（またはフォルダ）をインストールの対象にします。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">対象外を指定</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+チェックを付けたチャート（またはフォルダ）をインストールの対象から外します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2>フォルダの場合は、そのフォルダの中にあるファイルにのみ影響し、サブフォルダには影響しません。<BR><BR>チャートやフォルダをインストール対象から除外する場合は、その状態で動作することをテストして確認してください。<BR>なお、シナリオ内で、特定のフォルダが存在するかどうかを調べるには、<A HREF="calc.html#FileExists" TARGET="_parent">FileExists</A>関数でそのフォルダの中にあるファイルの存在を調べてください。<BR><BR><BR><B>不要ファイル除外・対象フォルダ</B><BR>チェックの付いたフォルダの中にある不要ファイルをインストール対象から外します。<BR>たとえファイルを使用していても、ファイル名を変数や式で指定している場合は認識できませんのでご注意ください。<BR><BR><BR><B>フォント</B><BR>開発環境に存在するフォントをインストールデータに埋め込みます。これにより、実行環境にそのフォントが無くても、メッセージボックスなどの各インターフェースでその書体を使うことができます。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">フォント名</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+書体名を指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">サイズ</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+文字サイズを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">太字</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+太字か指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">斜体</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+斜体か指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">アンチエイリアス</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+アンチエイリアスを指定します。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">使用文字ファイル</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+空の場合は全ての文字がパッケージされます。<BR>テキストファイルを指定した場合は、そのテキストファイルの中にある文字だけがパッケージされます。使う文字が限定されている場合は、この指定でファイルサイズを減らすことができます。</TD>
+      </TR>
+      <TR>
+         <TD BGCOLOR="#000080" NOWRAP><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ユーザー選択可</FONT></TD>
+         <TD BGCOLOR="#E1E1FF"><BASEFONT SIZE=2>
+オプション画面でフォントを選択するとき、この書体名がリストに列挙されるか指定します。</TD>
+      </TR>
+   </TABLE><BASEFONT SIZE=2>サイズや書式が違う場合は別物として扱われますので注意してください。完全に合致するものがない場合は、「ＭＳ ゴシック」が適用されます。<BR><BR><TABLE BORDER=0 CELLPADDING=8 CELLSPACING=0 BGCOLOR="#FFE7FF">
+      <TR>
+         <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#FF0000">[注意] フォントのライセンスについて</FONT></B><BR>フォントを埋め込む場合は、フォントの利用規約をよくご確認ください。市販フォントの場合は、ほとんどこのような使い方を認めていないようなので、特にご注意ください。<BR>また、フリーフォントの場合も、利用規約をよくご確認ください。<BR>なお、LiveMakerでは、フォントのベクトルデータではなく、ビットマップ化したものを埋め込んでいます。</TD>
+      </TR>
+   </TABLE><BR><TABLE BORDER=0 CELLPADDING=8 CELLSPACING=0 BGCOLOR="#E9F7FD">
+      <TR>
+         <TD><BASEFONT SIZE=2>
+<B><FONT COLOR="#0000FF">開発環境での動作テストについて</FONT></B><BR>開発環境にはすでにフォントがインストールされているので、フォントがない環境でのテストが行えません。<BR>この動作テストを行えるように、インストール済みフォントを無効にするオプションを用意しています。ゲームのEXEファイルがあるフォルダに「game.ini」という名前でテキストファイルを作成し、中に下記の内容を記述してください。<BR><B>[Font]<BR>DefaultOnly=1</B><BR>これで実行すると、「ＭＳ Ｐゴシック」「ＭＳ Ｐ明朝」「ＭＳ ゴシック」「ＭＳ 明朝」の4書体だけがインストールされた状態でテストを行うことができます。</TD>
+      </TR>
+   </TABLE><BR><BR><BR><BR><BR><BR><BR><BR></P>
+</UL>
+</BODY>
+</HTML>

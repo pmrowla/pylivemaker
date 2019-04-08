@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<style type="text/css">
+body,td{ font-size: 13px; line-height: 140%; }
+</style>
+<TITLE>[コマンド] 実行制御</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#0000FF" ALINK="#000080">
+<BASEFONT SIZE=2>
+<A NAME="if"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">IF・ELSE IF・ELSE</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件判断によって処理を分岐させるコマンドです。まず最初に<B>IF</B>で判断し、<B>条件</B>が成立した場合はインデントされた次の行に移行します。成立しない場合は現在のインデントと同じ(またはそれ以下の)インデントの行まで飛びます。その行が<B>ELSE IF</B>ならまた条件判断を行い、<B>ELSE</B>なら無条件でインデントされた次の行に移行します。</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">①</FONT></TD>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+<FONT COLOR="#FF0000">ＩＦ</FONT>　ａ　＝＝　０</TD>
+      <TD><BASEFONT SIZE=2>
+←aが0ならば②へ、違うなら④へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">②</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｂ　＝　ｂ　＋　１</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">③</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｃ　＝　ｃ　＋　１</TD>
+      <TD><BASEFONT SIZE=2>
+←終わったら⑩へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">④</FONT></TD>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+<FONT COLOR="#FF0000">ＥＬＳＥ　ＩＦ</FONT>　ａ　＝＝　１
+</TD>
+      <TD><BASEFONT SIZE=2>
+←aが1ならば⑤へ、違うなら⑦へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑤</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｃ　＝　ｃ　＋　１</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑥</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｄ　＝　ｄ　＋　１</TD>
+      <TD><BASEFONT SIZE=2>
+←終わったら⑩へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑦</FONT></TD>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+<FONT COLOR="#FF0000">ＥＬＳＥ</FONT>
+</TD>
+      <TD><BASEFONT SIZE=2>
+←⑧へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑧</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｄ　＝　ｄ　＋　１</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑨</FONT></TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ｅ　＝　ｅ　＋　１</TD>
+      <TD><BASEFONT SIZE=2>
+←終わったら⑩へ</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<FONT COLOR="#0000FF">⑩</FONT></TD>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+<FONT COLOR="#FF0000">ＩＦ</FONT>　ｂ　＝＝　０
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD>
+</TD>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+：<BR>：<BR>：
+         </DIV></TD>
+      <TD>
+</TD>
+   </TR>
+</TABLE><BR>
+<A NAME="loop"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ループ</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件に合致する間、処理を繰り返すコマンドです。<BR>まず最初に<B>初期化</B>に記述されている式が実行されます。<BR>次に<B>条件</B>が成立するか判断され、成立した場合はインデントされた次の行に移行します。インデントされた行が終わると、<B>ループ時</B>の式が実行され、また条件判断に戻ります。<BR>条件が成立しない場合はループコマンドと同じ(またはそれ以下の)インデントの行まで飛びます。</P>
+同じ処理を100回繰り返す場合は以下のようになります(変数ｉは既に作成されているものとします)。<BR><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+   <TR>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+<B>ループ</B>　初期化:i = 0　条件:i &lt; 100　ループ時:i = i + 1</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ここに繰り返す処理を書く</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD WIDTH=50>
+</TD>
+      <TD BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+         <DIV ALIGN="center">
+：<BR>：<BR>：
+         </DIV></TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD COLSPAN=2 BGCOLOR="#81D3F5"><BASEFONT SIZE=2>
+ループが終了するとここに来る</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD WIDTH=50>
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD WIDTH=50>
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD WIDTH=50>
+</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+   </TR>
+</TABLE><BR>
+<A NAME="break"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ループ脱出</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件が成立した場合にループ処理から抜け出ます。<BR></P>
+<A NAME="continue"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ループ先頭へ</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件が成立した場合にループ処理の先頭へ戻ります(初期化の式は実行されません)。</P>
+<A NAME="label"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ラベル</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>ジャンプ先として指定することができます。<BR>※同一チャート内では、ノードが違っても同じラベル名を使うことはできません<BR><BR></P>
+<A NAME="jump"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ジャンプ</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件が成立した場合に、他のページまたはラベルに移動します。<BR>ページ内のラベルに移動する時は、「ページ:ラベル」とコロンを挟んで表記します。また、「:ラベル」と言うようにラベルだけ指定されている時は、現在のページの指定ラベルに移動します。</P>
+<A NAME="call"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">コール</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件が成立した場合に、他のページを呼び出します。呼び出されたページでリターンが実行されるか、ページの最後まで実行されると、呼び出したコールの次の行に処理が移ります。<BR>ページ内のラベルを呼び出す時は、「ページ:ラベル」とコロンを挟んで表記します。また、「:ラベル」と言うようにラベルだけ指定されている時は、現在のページの指定ラベルを呼び出します。<BR><B>引数</B>に文字列を入力すると引数を渡すことができます(1行に１パラメータ)。呼び出されたページでは@ParamStr[0]～で引数を取り出せます。<BR><B>戻り値用変数</B>に変数名を記述しておくと、呼出先ページからの戻り値をその変数で受け取ることができます。呼出先ページでは、<B>@Result</B>に値を代入することで戻り値を返すことができます。</P>
+<A NAME="return"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">リターン</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>条件が成立した場合に、コール元に処理を戻します。イベント駆動で呼び出された場合にも使用できます。</P>
+<A NAME="wait"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">ウエイト</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><B>待機条件</B>が成立した場合に、処理をストップします。条件が成立していても<B>タイムアウト</B>になった場合は次の行に進みます。なお、タイムアウト時間を0にすれば、タイムアウトはなくなります。<BR><B>イベント禁止</B>がTRUEなら、待機中にイベントを処理しません。<BR></P>
+<A NAME="timer"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">タイマー</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>タイマーコンポーネントを作成します。タイマーは指定された間隔を経過するたびにページを呼び出します。間隔を0にすると、必ず毎回呼び出します。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">名称</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">型</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">内容</FONT></B></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<B><FONT COLOR="#FFFFFF">プロパティ値</FONT></B></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+任意の名前</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_NAME</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ページ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+コール先ページ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_ONNOTIFY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+間隔</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+整数</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ページを呼び出すまでの間隔をミリ秒単位で指定</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_DELAY</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+一時停止</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラグ</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+TRUEならページはコールされません</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_PAUSED</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+タグ</TD>
+      <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+文字列</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+自由に使える文字列領域</TD>
+      <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+PR_TAG</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>タイマーを破棄する場合は<A HREF="object.html#del">オブジェクト削除</A>コマンドを使います。<BR></P>
+<A NAME="pcreset"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">PCリセット</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>プログラムカウンタ(PC)を指定ページにリセットします(結果、処理はそのページに移行します)。イベント駆動で呼び出された先で、メインルーチンの実行ポイントを変更したい時に使います。<BR><B>スタッククリア</B>にチェックを付けると、今までのコール元の情報(スタック)が全てクリアされます。チェックを付けないと、スタックの情報は保持されます。<BR><BR><TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+①スタート</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+②コール</TD>
+      <TD><BASEFONT SIZE=2>
+→</TD>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+③処理</TD>
+      <TD ALIGN="center" WIDTH=200><BASEFONT SIZE=2>
+………………………………＞</TD>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+ここで⑤にPCリセット</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD ALIGN="center" WIDTH=200><BASEFONT SIZE=2>
+この処理中にイベントが発生</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+④処理</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+⑤処理</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+⑥処理</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+↓</TD>
+      <TD>
+</TD>
+      <TD>
+</TD>
+      <TD WIDTH=200>
+</TD>
+      <TD>
+</TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>例えば、③を処理中に<B>スタッククリア</B>OFFで⑤へPCリセットを実行すると、④をスキップして⑤に移り、それが終わると⑥に移行します。同様の処理を<B>スタッククリア</B>ONで行うと、⑤に移った後、⑥には行かずそのまま終了します。<BR>なお、<B>スタッククリア</B>ONの場合は全ての、<B>スタッククリア</B>OFFの場合はリセット前に実行中の(上記で言うと③)ページで作成した<B>自動破棄</B>変数が削除されます。<BR>ページ内のラベルをリセット先にする時は、「ページ:ラベル」とコロンを挟んで表記します。また、「:ラベル」と言うようにラベルだけ指定されている時は、現在のページの指定ラベルがリセット先になります。</P>
+<A NAME="reset"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">リセット</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>全てのコンポーネント、変数(ステータス変数は除く)、スタックを削除し、指定ページに処理を移します。<BR>ページ内のラベルをリセット先にする時は、「ページ:ラベル」とコロンを挟んで表記します。また、「:ラベル」と言うようにラベルだけ指定されている時は、現在のページの指定ラベルがリセット先になります。</P>
+<A NAME="terminate"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">終了</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>プログラムを終了します。</P>
+<A NAME="doevent"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=4 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=4 COLOR="#FFFFFF">DoEvent</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P>メッセージを処理し、デッドロックを回避します。</P>
+<P><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></P>
+</BODY>
+</HTML>

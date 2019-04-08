@@ -1,0 +1,1410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>シナリオスクリプト</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">シナリオスクリプト</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2>
+<P><A HREF="prop.html">シナリオの外部ファイル</A>の構文です。</P>
+<UL>
+   <LI TYPE="disc">[省略値]がある値は省略可能です
+   <LI TYPE="disc">タグの大小文字の区別はありません
+   <LI TYPE="disc">行頭に;がある行はコメント。行頭で文字として;を記述したい場合は \; としてください
+   <LI TYPE="disc">文章で特殊文字({、}、&lt;、&gt;、\)を使う場合はそれぞれ \{、\}、\&lt;、\&gt;、\\ と表記してください
+</UL>
+サンプル：<A HREF="スクリプト例.txt">「GTE・SP」の最初のシーン</A><BR><BR>
+<TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#808080">
+   <TR>
+      <TD ALIGN="center" BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+タグ</TD>
+      <TD ALIGN="center" WIDTH="70%" BGCOLOR="#C0C0C0"><BASEFONT SIZE=2>
+説明</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;BR&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+         <P>改行</P></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;PG&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+カーソルを表示してクリックを待ち、その後改ページ</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;PS&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+カーソルを表示してクリックを待つ。文章スキップ中は実行されない</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CLR&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文章を消去</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;WAIT TIME=n CLICKABORT=[ON/OFF] SKIPENABLED=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ウエイト<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+停止する時間(ミリ秒単位)。0なら時間制限なし。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CLICKABORT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+クリックで中断する。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SKIPENABLED</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文章をスキップしている時はウエイトを実行しない。省略値=ON</TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2> </TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;WAITFOR NAME=s CLICKABORT=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+指定部品が終了するまで待つ<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+部品の名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CLICKABORT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+クリックで中断する。省略値=OFF</TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2> </TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;FLIP NAME=s EFFECT=s TIME=n REVERSE=[ON/OFF] PARAM1=n PARAM2=n SOURCE=s DEFAULT=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フリップの効果を設定し、名前を付けて記憶させる<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+この設定の名前。&lt;IMAGE&gt;のFLIPなどで指定できる</TD>
+            </TR>
+            <TR>
+               <TD VALIGN="top" BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+EFFECT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面効果の名前<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#800080">
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+NONE</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+裏画面に配置</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+FADE</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フェード<BR>PARAM1=開始X<BR>PARAM2=開始Y</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLINDH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブラインド横<BR>PARAM1=短冊の幅 <BR>PARAM2=短冊１枚の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLINDV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブラインド縦<BR>PARAM1=短冊の幅<BR>PARAM2=短冊１枚の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+CURTAINH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+カーテン横<BR>PARAM1=短冊の幅<BR>PARAM2=短冊１枚の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+CURTAINV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+カーテン縦<BR>PARAM1=短冊の幅<BR>PARAM2=短冊１枚の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SCROLLH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロール横</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SCROLLV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スクロール縦</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+GRID</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+格子<BR>PARAM1=格子のサイズ<BR>PARAM2=格子１個の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+GRIDH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+格子横<BR>PARAM1=格子のサイズ<BR>PARAM2=格子１個の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+GRIDV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+格子縦<BR>PARAM1=格子のサイズ<BR>PARAM2=格子１個の出現時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+DITHER</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ディザ</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+WHITE</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ホワイト</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLACK</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブラック</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+FLASH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フラッシュ</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+MOSAIC</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+モザイク</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SCRATCHH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+すだれ横</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SCRATCHV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+すだれ縦</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SPOT</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スポットライト</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+MASK</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクフェード<BR>SOURCE=マスクファイル名</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+MASKW</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクホワイト<BR>SOURCE=マスクファイル名</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+MASKB</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マスクブラック<BR>SOURCE=マスクファイル名</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+SMALL</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表画面縮小<BR>PARAM1=回転角度(256で一周)</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BIG</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+裏画面拡大<BR>PARAM1=回転角度(256で一周)</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+RIPPLE</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+波紋<BR>PARAM1=波の高さ</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLURW</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+白ぼかし</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLURB</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+黒ぼかし</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+TWISTH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ひねり横</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+TWISTV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ひねり縦</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+CRACK</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+チップ落下<BR>PARAM1=チップのサイズ<BR>PARAM2=次のチップまでの時間</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+ZOOMIN</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ズームイン<BR>PARAM1=ズームインX座標<BR>PARAM2=ズームインY座標</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+CLOCKHAND</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+時計の針<BR>PARAM1=初期角度</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+RUBBERH</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゴム横</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+RUBBERV</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゴム縦</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+FAN</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+扇<BR>PARAM1=初期角度</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+WFAN</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+扇(両側)<BR>PARAM1=初期角度</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+CIRCLE</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+円</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLOCKCOIL</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブロック(とぐろ)<BR>PARAM1=ブロックサイズ</TD>
+                     </TR>
+                     <TR>
+                        <TD BGCOLOR="#DEDBF5"><BASEFONT SIZE=2>
+BLOCKRANDOM</TD>
+                        <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブロック(ランダム)<BR>PARAM1=ブロックサイズ</TD>
+                     </TR>
+                  </TABLE></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フリップにかける時間(ミリ秒単位)。省略値=1000</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+REVERSE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+逆方向。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+DIFFERENCEONLY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ONなら表画面と裏画面の差異部分だけをフリップの対称にする。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PARAM1</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+パラメータ1。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PARAM2</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+パラメータ2。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名(&quot;runimage&quot;からの相対パス)。省略値=&quot;&quot;</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+DEFAULT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+この設定をこれ以降の省略時のデフォルト値にする(ノード内のみ有効)。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;IMAGE NAME=s SOURCE=s X=[L/C/R/n] Y=[T/C/B/n] FLIPH=[ON/OFF] FLIPV=[ON/OFF] ALPHA=n PRIORITY=s FLIP=s MODE=[N/R/W/F] CLIPFILE=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+新規に画像を表示する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイル名(&quot;runimage\グラフィック&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+X</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置(L:左寄せ C:中央寄せ R:右寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+Y</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置(T:上寄せ C:中央寄せ B:下寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIPH</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左右反転するならON。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIPV</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上下反転するならON。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ALPHA</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+不透過度(透明0～255不透明)を指定する。省略値=255</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PRIORITY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+手前・奥の値。プライオリティ定数の名前を指定する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIP</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フリップ時に使用する効果の設定名(&lt;FLIP&gt;で設定済みのもの)。省略可</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+MODE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生タイプ(N:通常再生 R:リピート再生 W:再生終了まで待つ F:再生後自動破棄)。省略値=N</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CLIPFILE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ソースがシネマまたはモーションの場合、内部のクリップのプロパティを変更する。対象のクリップは、あらかじめLiveCinema上で「名前」を設定すること<BR><FONT COLOR="#0000FF">クリップ名:プロパティ=変数名<BR>例) キャラクター1:COP_SOURCE=Filename1</FONT><BR>複数の値を指定する場合はカンマで区切る<BR><FONT COLOR="#0000FF">例) キャラクター1:COP_SOURCE=Filename1,キャラクター2:COP_SOURCE=Filename2</FONT></TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2> </TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CHGIMG NAME=s SOURCE=s FLIPH=[ON/OFF] FLIPV=[ON/OFF] FLIP=s MODE=[N/R/W/F]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面上にある画像の画像ファイルを変更する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+新しく設定する画像ファイル名(&quot;runimage\グラフィック&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更する画像の名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIPH</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+左右反転するならON。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIPV</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+上下反転するならON。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ALPHA</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+不透過度(透明0～255不透明)を指定する。省略値=255</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIP</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フリップ時に使用する効果の設定名(&lt;FLIP&gt;で設定済みのもの)。省略可</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+MODE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生タイプ(N:通常再生 R:リピート再生 W:再生終了まで待つ F:再生後自動破棄)。省略値=N</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CLIPFILE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ソースがシネマまたはモーションの場合、内部のクリップのプロパティを変更する。対象のクリップは、あらかじめLiveCinema上で「名前」を設定すること<BR><FONT COLOR="#0000FF">クリップ名:プロパティ=変数名<BR>例) キャラクター1:COP_SOURCE=Filename1</FONT><BR>複数の値を指定する場合はカンマで区切る<BR><FONT COLOR="#0000FF">例) キャラクター1:COP_SOURCE=Filename1,キャラクター2:COP_SOURCE=Filename2</FONT></TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;DELIMG NAME=s,s... FLIP=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面上にある画像を消去する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+消去する画像の名前。複数の場合は,で区切る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+FLIP</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フリップ時に使用する効果の設定名(&lt;FLIP&gt;で設定済みのもの)。省略可</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;FACE SOURCE=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+顔画像を表示する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+顔の画像ファイル名(&quot;runimage\グラフィック\顔&quot;からの相対パス)</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;DELFACE&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+顔画像を消去する</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;NAME SOURCE=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前画像を表示する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前の画像ファイル名(&quot;runimage\グラフィック\名前&quot;からの相対パス)</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;DELNAME&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前画像を消去する</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CGCHAR SET=s NAME=s PARENT=s X=[L/C/R/n] Y=[T/C/B/n] ALIGN=[L/C/R] LINESPACE=n PRIORITY=s TEXT=s CALC=[ON/OFF]&gt;</TD>
+      <TD VALIGN="top" WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像文字を表示する。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SET</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する画像文字に使用する設定の名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PARENT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+親の名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+X</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置(L:左寄せ C:中央寄せ R:右寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+Y</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置(T:上寄せ C:中央寄せ B:下寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ALIGN</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+揃え(L:左寄せ C:中央寄せ R:右寄せ)。省略値=L</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+LINESPACE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+行間スペース。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PRIORITY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+手前・奥の値。プライオリティ定数の名前を指定する</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TEXT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する文字列</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CALC</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+「TEXT」の内容が式ならON。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CHGCGCHAR NAME=s TEXT=s CALC=[ON/OFF]&gt;</TD>
+      <TD VALIGN="top" WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像文字の文字列を変更する。<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+対象画像文字の名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TEXT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示する文字列</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CALC</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+「TEXT」の内容が式ならON。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;LOCKIMG SOURCE=s,s...&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイルをロックする(先読みしておく)<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ロックする画像ファイル名(&quot;runimage\グラフィック&quot;からの相対パス)。複数の場合は,で区切る</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;UNLOCKIMG&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイルのロックを解除する</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;WALLPAPER SOURCE=s POSITION=[C/T/S]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイルを壁紙に設定する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ロックする画像ファイル名(&quot;runimage\グラフィック&quot;からの相対パス)。複数の場合は;で区切る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+POSITION</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+壁紙の位置(C:中央に表示 T:並べて表示 S:拡大して表示)。省略値=C</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;VAR NAME=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数の内容を表示する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数名</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;MESBOX TIME=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メッセージボックスを表示する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示にかける時間(ミリ秒単位)。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;DELMESBOX TIME=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メッセージボックスを消去する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+消去にかける時間(ミリ秒単位)。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CHGMESBOX NAME=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+メッセージボックスの形状を変更する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+スタイルの名前。省略値=&quot;(標準)&quot;</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SOUND SOURCE=s TRACK=[B/V/S/B2/V2/S2] MODE=[N/R/W] VOLUME=n REPEATPOS=n CANREPLAY=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドファイルを再生する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドファイル名(&quot;runimage\サウンド&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TRACK</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+使用するトラック(B:BGM V:ボイス S:効果音 B2:BGM2 V2:ボイス2 S2:効果音2)。省略値=B</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+MODE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生タイプ(N:通常再生 R:リピート再生 W:再生終了まで待つ)。省略値=N</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+VOLUME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+音量(1～1000)。省略値=1000</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+REPEATPOS</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リピート位置をミリ秒単位で指定する。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CANREPLAY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リプレイの対象にする場合は1を指定する。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;BGM SOURCE=s CANREPLAY=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SOUND SOURCE=s TRACK=B MODE=R VOLUME=1000 REPEATPOS=0&gt;と同じ<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドファイル名(&quot;runimage\サウンド&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CANREPLAY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リプレイの対象にする場合は1を指定する。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;VOICE SOURCE=s CANREPLAY=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SOUND SOURCE=s TRACK=V MODE=N VOLUME=1000 REPEATPOS=0&gt;と同じ<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドファイル名(&quot;runimage\サウンド&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CANREPLAY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リプレイの対象にする場合は1を指定する。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SE SOURCE=s CANREPLAY=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SOUND SOURCE=s TRACK=S MODE=N VOLUME=1000 REPEATPOS=0&gt;と同じ<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドファイル名(&quot;runimage\サウンド&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CANREPLAY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リプレイの対象にする場合は1を指定する。省略値=0</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;STOPSND TRACK=[B/V/S/B2/V2/S2] TIME=n WAIT=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンドを停止する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TRACK</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+停止するトラック(B:BGM V:ボイス S:効果音 B2:BGM2 V2:ボイス2 S2:効果音2)。省略値=B</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フェードアウトにかける時間(ミリ秒単位)。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+WAIT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ONなら停止するまで待つ。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;CHGVOL TRACK=[B/V/S/B2/V2/S2] VOLUME=n TIME=n WAIT=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+サウンド・ムービーの音量を変更する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TRACK</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+音量変更するトラック(B:BGM V:ボイス S:効果音 B2:BGM2 V2:ボイス2 S2:効果音2 M:ムービー)。省略値=B</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+VOLUME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+音量(1～1000)。省略値=1000</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変更にかける時間(ミリ秒単位)。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+WAIT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ONなら変更完了まで待つ。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;MOVIE SOURCE=s ZOOM=n X=[L/C/R/n] Y=[T/C/B/n] MODE=[N/R/W/F]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ムービーを再生する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ムービーファイル名(&quot;runimage\MOVIE&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ZOOM</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+表示倍率(100で等倍)。省略値=100</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+X</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の位置(L:左寄せ C:中央寄せ R:右寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+Y</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の位置(T:上寄せ C:中央寄せ B:下寄せ n:数値指定)。省略値=C</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+MODE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+再生タイプ(N:通常再生 R:リピート再生 W:再生終了まで待つ F:再生後自動破棄)。省略値=N</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+OVERLAY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ONにするとオーバーレイ、OFFなら合成表示。省略値=ON</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PRIORITY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+手前・奥の値。プライオリティ定数の名前を指定する。オーバーレイの場合は無視される。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+OPACITY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+不透明度。0(透明)～255(不透明)で指定。オーバーレイの場合は無視される。省略値=255</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;STOPMOV&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ムービーを消去する</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;TEXTSPD TIME=n ABSOLUTE=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキスト表示速度を変更する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+１文字を表示する時間をミリ秒単位で指定。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ABSOLUTE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ONにすると、実行時オプションの「テキスト速度」の影響を受けない。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;TXSPN&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキスト表示速度を標準値にする</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;TXSPF&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキスト表示速度をノーウエイトにする</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;TXSPS&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+テキスト表示速度をスローにする</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SYSMENUON&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システムメニュー許可</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SYSMENUOFF&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+システムメニュー禁止</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SAVELOADON&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+セーブロード許可</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SAVELOADOFF&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+セーブロード禁止</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;INCLUDE SOURCE=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+別のソースファイルをこの位置に読み込む<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ファイル名(現在のソースファイルがある位置からの相対パス)</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;B&gt;～&lt;/B&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+太字</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;I&gt;～&lt;/I&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+斜体</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;U&gt;～&lt;/U&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+下線</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;S&gt;～&lt;/S&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+抹消線</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;NOBR&gt;～&lt;/NOBR&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+改行禁止</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;FONT SIZE=n COLOR=#RRGGBB BCOLOR=#RRGGBB SCOLOR=#RRGGBB BORDER=n SHADOW=n&gt;～&lt;/FONT&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの形状を指定する。全ての値を記述する必要はなく、指定する値のみを記述する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SIZE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの高さをピクセル単位で指定(0ならデフォルト値)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+COLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+BCOLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SCOLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+BORDER</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁の幅</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SHADOW</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影の位置</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;RUBY VALUE=s&gt;～&lt;/RUBY&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+タグで囲んだ文字列に対してルビを振る<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+VALUE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ルビ</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;A HREF=s&gt;～&lt;/A&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+タグで囲んだ文字列に対してリンク文字列を設定する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+HREF</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+リンク文字列</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;SETSTYLE NAME=s SIZE=n COLOR=#RRGGBB BCOLOR=#RRGGBB SCOLOR=#RRGGBB BORDER=n SHADOW=n B=[ON/OFF] I=[ON/OFF] U=[ON/OFF] S=[ON/OFF] NOBR=[ON/OFF] RUBY=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの形状を設定し、名前を付けて記憶させる<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+この設定の名前。&lt;FONT&gt;のNAMEで指定できる</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SIZE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの高さをピクセル単位で指定(0ならデフォルト値)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+COLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+文字の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+BCOLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SCOLOR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影の色を赤緑青の順で16進数で指定</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+BORDER</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縁の幅(0なら縁なし)。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SHADOW</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+影の位置(0なら影なし)。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+B</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+太字。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+I</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+斜体。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+U</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+下線。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+S</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+抹消線。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NOBR</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+改行禁止。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+RUBY</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ルビ。省略値=&quot;&quot;</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;STYLE NAME=s&gt;～&lt;/STYLE&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+フォントの形状を指定スタイルにする<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;STYLESET&gt;で設定した名前</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;MACRO NAME=s&gt;～&lt;/MACRO&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マクロ定義。定義後、{s %1 %2...} とすると～の部分が展開される。%1,%2...は引数として使用できる<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+マクロの名前</TD>
+            </TR>
+         </TABLE><BASEFONT SIZE=2><BR>[例]<BR>&lt;MACRO NAME=&quot;標準文字&quot;&gt;&lt;FONT COLOR=<NOBR>%1</NOBR>&gt;<NOBR>%2</NOBR>&lt;/FONT&gt;&lt;/MACRO&gt;<BR>と定義して、<BR>{標準文字 #ff0000 あいうえお}<BR>とすると、以下のように展開される<BR>&lt;FONT COLOR=#ff0000&gt;あいうえお&lt;/FONT&gt;</TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;IMGCHAR SOURCE=s ALIGN=[T/C/B]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+絵文字を挿入する<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+SOURCE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画像ファイル名(&quot;runimage\グラフィック&quot;からの相対パス)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+ALIGN</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+揃え(T:上 C:中央 B:下)。省略値=C</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;OPENURL URL=s&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ブラウザでURLを開く<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+URL</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+URL</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;QUAKE NAME=s TYPE=[Q/W/B] RANDOM=[ON/OFF] X=n Y=n TIME=n CYCLE=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面を揺らす<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+消去する画像の名前。複数の場合は,で区切る</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TYPE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+動きの種類（Q:ランダム W:波 B:バウンド）。省略値=Q</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+RANDOM</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+複数画像をずらす。省略値=OFF</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+X</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+横の揺れ幅。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+Y</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+縦の揺れ幅。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+揺らす時間。省略値=0</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+CYCLE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+揺れの周期。省略値=1</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;STOPQUAKE TIME=n&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面の揺れを停止<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+停止にかける時間</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+   <TR>
+      <TD VALIGN="top" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+&lt;MOTION NAME=s TARGET=s PROP=s VALUE=n TIME=n TYPE=[N/I/D] WAIT=[ON/OFF]&gt;</TD>
+      <TD WIDTH="70%" BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+座標などのプロパティ値を段階的に変化させる<BR><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#0000FF">
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+NAME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+このモーションの名前(省略可)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TARGET</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化させるオブジェクトの名前</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+PROP</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+X座標=LEFT<BR>Y座標=TOP<BR>不透過度=ALPHA<BR>音量=VOLUME</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+VALUE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化後の値</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TIME</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化に要する時間(ミリ秒)</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+TYPE</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化タイプ（N:一定 I:加速 D:減速）。省略値=N</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#E5F4F7"><BASEFONT SIZE=2>
+WAIT</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変化が終わるまで待つ。省略値=OFF</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BR>
+</BODY>
+</HTML>

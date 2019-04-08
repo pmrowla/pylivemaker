@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>ノードの種類</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">ノードの種類</FONT></B></TD>
+   </TR>
+</TABLE>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=1>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial06.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>開始ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+                  <P>チャートはこのノードから始まります。このノード自体に機能はなく、実行されるとすぐにジャンプ先に移動します。<BR>開始ノードはチャートが作成されると自動的に作成され、削除や追加はできません。</P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial07.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>終了ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+                  <P>現在のチャートを終了することを意味します。これは他のチャートから呼び出されている場合に有効で、終了ノードが実行されると呼び出し元に戻ります。<BR>終了ノードはひとつのチャートの中にいくつでも作成することができます。</P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial08.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>シナリオノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+                  <P>文章や画像を表示したり、サウンドを鳴らす、といったゲームのメイン部分を記述するノードです。<BR>ノードを右クリックし、<B>「説明文として扱う」</B>にチェックを付けると、そのノードに書いた文章はテキスト履歴に残らず、また既読スキップの対象からも外れます。</P></TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial09.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>計算ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+変数を操作するノードです。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial74.png" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0 ALT="ln_turorial74.png">文字列選択ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面に文字列で選択肢を表示し、プレイヤーに選択させます。（<A HREF="selstr.html">詳細</A>）</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial75.png" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0 ALT="ln_turorial75.png">画像選択ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+画面に画像で選択肢を表示し、プレイヤーに選択させます。（<A HREF="selimg.html">詳細</A>）</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial87.png" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0 ALT="ln_turorial87.png">文字列入力ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+プレイヤーに文字列を入力させ、値を指定の変数に入れます。（<A HREF="inptext.html">詳細</A>）</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial11.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>チャート呼び出しノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+他のチャート(の開始ノード)に移動し、そのチャートの実行が終了するとまた戻ってきます。<BR>チャートに「指定ページ呼び出し」を選択すると、<A HREF="node.html#syscall">システムルーチン</A>を呼び出すことができます。「引数」が必要な場合は、引数のリストをダブルクリックして編集してください。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial10.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>チャート移動ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+他のチャート(の開始ノード)に移動します。「チャート呼び出し」とは違い、移動先のチャートが終了しても戻ってきません。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<A NAME="replay"></A><IMG SRC="ln_turorial12.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>回想開始ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+「シーン回想」モードでは、開始ノードではなく、このノードから実行されます。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial13.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>回想許可ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+このノードまで来れば、そのシーンがクリアされたものとなり、「シーン回想」でこのシーンが選択できるようになります。このノードは「回想開始」とセットで使用します。</TD>
+            </TR>
+            <TR>
+               <TD BGCOLOR="#FFFFFF" NOWRAP><BASEFONT SIZE=2>
+<IMG SRC="ln_turorial14.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=4 VSPACE=0>ゲーム終了ノード</TD>
+               <TD BGCOLOR="#FFFFFF"><BASEFONT SIZE=2>
+ゲームをリセットし、<A HREF="option1.html">開始チャート</A>(の開始ノード)から実行します。</TD>
+            </TR>
+         </TABLE></TD>
+   </TR>
+</TABLE><BR><BR><A NAME="syscall"></A><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">システムルーチン</FONT></B></TD>
+   </TR>
+</TABLE>
+<P><TABLE BORDER=0 CELLPADDING=4 CELLSPACING=1 BGCOLOR="#008080">
+   <TR>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">ルーチン</FONT></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">機能</FONT></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">引数</FONT></TD>
+      <TD BGCOLOR="#000080"><BASEFONT SIZE=2>
+<FONT COLOR="#FFFFFF">戻り値</FONT></TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] MIDI出力ポート選択</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+MIDI出力ポートを選択するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] サウンド再生設定</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+サウンド再生の許可状態を変更します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+再生するならTRUE、再生しないならFALSEを指定してください。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] テキスト速度設定</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+テキスト速度を調節するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] ディスプレイモード</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ディスプレイモード(解像度)を選択するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] フォント選択</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+フォントを選択するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] フルスクリーン</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+フルスクリーン状態を変更します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+フルスクリーンにするならTRUE、ウィンドウ表示にするならFALSEを指定してください。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] 既読スキップ設定</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+既読スキップ状態を変更します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+スキップするならTRUE、スキップを解除するならFALSEを指定してください。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] 自動テキスト送り時間設定</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+自動テキスト送り時間を調節するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+[オプション] 音量調節</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+音量を調節するウィンドウを表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ウィンドウを表示するXY座標。省略した場合はマウスカーソルの位置に表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+オプションメニュー表示</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+オプション画面を表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+シナリオ回想</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+表示済みシナリオ（バックログ）を表示します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+<A NAME="save"></A>セーブ</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+プレイデータを保存します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+【データ番号】0から始まるデータ番号を指定します。プレイヤーに番号を選択させる場合は空にしてください。<BR>【キャプション】番号指定で保存する場合のみ、データの名称を入力してください（&quot;&quot;で囲む）。<BR>【サムネイル作成スキップ】TRUEなら保存データ用サムネイルを作成（更新）しません。独自のシステムメニューを構築している場合、例えば、右クリック→システム画面→セーブ、と言う処理を行うと、サムネイルにシステム画面が写ってしまいます。これを回避するには、右クリック→<A HREF="node.html#savethumb">セーブ用サムネイル作成</A>→システム画面→セーブ（本フラグをTRUE）、とします。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ロード</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+プレイデータを読み込みます。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+0から始まるデータ番号を指定します。プレイヤーに番号を選択させる場合は空にしてください。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+<A NAME="savethumb"></A>セーブ用サムネイル作成</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+保存データ用サムネイルを作成（更新）します。詳細は<A HREF="node.html#save">セーブ</A>をご覧ください。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+既読スキップ</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+既読文章のスキップを開始します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+自動テキスト送り</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+自動テキスト送りを開始します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+プログラム終了</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ゲームを終了します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+CGモード</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+CGモードへ移行します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+シーン回想</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+シーン回想モード（シーン選択画面）に移行します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+ダイレクトシーン回想</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+特定のシーンを回想モードで実行します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+実行する<A HREF="node.html#replay">回想開始ノード</A>のIDを指定してください（&quot;&quot;で囲む）。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+なし</TD>
+   </TR>
+   <TR>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+シーンクリア判定</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+指定したシーンがクリア済みかどうか判定します。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+判定する<A HREF="node.html#replay">回想開始ノード</A>のIDを指定してください（&quot;&quot;で囲む）。</TD>
+      <TD BGCOLOR="#E9F7FD"><BASEFONT SIZE=2>
+変数「戻り値フラグ」に、クリア済みならTRUE、未クリアならFALSEが入ります。</TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<STYLE TYPE="text/css"><!--
+body,td{ font-size: 13px; line-height: 140%; }
+--></STYLE>
+<TITLE>チュートリアル</TITLE>
+</HEAD>
+<BODY BGCOLOR="#F4FFF4" TEXT="#000000" LINK="#0000FF" VLINK="#000080" ALINK="#000080">
+<BASEFONT SIZE=2>
+<P><B>チュートリアル</B></P>
+<P><TABLE WIDTH="100%" BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#000080">
+   <TR>
+      <TD>
+<B><FONT SIZE=3 COLOR="#FFFFFF">シーン回想を付ける</FONT></B></TD>
+   </TR>
+</TABLE><BASEFONT SIZE=2><BR>シーン回想は、クリア済みの特定の場面を鑑賞するためのモードです。シーン回想を実現するには、まず回想するためのシーンの範囲を決めなければなりません。<BR><IMG SRC="ln_turorial68.png" ALIGN="left" WIDTH=124 HEIGHT=249 HSPACE=8 VSPACE=8><BR>例えば、チャートが左のようになっているとして、「展開」から「クライマックス」までを１つの回想用シーンにしたいとします。<BR><BR>まず、このチャートに「回想開始」ノード<IMG SRC="ln_turorial12.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=2 VSPACE=2>を追加します。「回想開始」ノードが回想用シーンの先頭になります。つまり、プレイヤーが回想を始めると、最初にこのノードに飛んでくることになります。<BR>このノードは名前とジャンプ先しか編集できません。名前は何でも構いませんが、ここでは「クライマックス」にします。そして「展開」ノードにジャンプさせたいところですが、ここで問題があります。シナリオの内容にも依りますが、恐らくこのシナリオでは「序盤」ノードの段階で、背景を表示したりBGMを鳴らしているはずです。そうだとすると、回想でいきなり「展開」ノードに入ると、背景がなかったりBGMが鳴っていなかったり、という状況で始まってしまいます。そこで、回想の時は、「展開」ノードに入る前にその辺りの準備をしておきます。<BR CLEAR="left">結果、次のようなチャートになります。<BR><IMG SRC="ln_turorial69.png" WIDTH=231 HEIGHT=87 HSPACE=8 VSPACE=8><BR>「始まり」ができたので次は「終わり」です。このまま進むと「終盤」ノードに行ってしまうので、その前に終了しなければなりません。そのために「回想番号」という変数を使います。この変数には現在行っている回想のシーン番号が入ります。また、回想モードでない場合は-1が入ります。つまり、この変数が0以上なら回想実行中というわけです。<BR>以上を踏まえると、「クライマックス」ノードのジャンプ先は次のようになります。<BR><IMG SRC="ln_turorial70.png" WIDTH=379 HEIGHT=67 HSPACE=8 VSPACE=8><BR>次は、どこまで来たらこのシーンを回想できるようにするか、クリアとするか、という設定です。これには「回想許可」ノード<IMG SRC="ln_turorial13.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=2 VSPACE=2>を使います。「回想許可」ノードは、指定した「回想開始」ノードを回想できるようにするノードです。<BR>では、「回想許可」ノードを追加してください。そして、<B>「許可するシーン」</B>を上記で作った「回想開始」ノードにしてください。これで、この「回想許可」ノード<IMG SRC="ln_turorial13.png" ALIGN="absmiddle" WIDTH=16 HEIGHT=16 HSPACE=2 VSPACE=2>まで来れば、このシーンを回想できるようになります。<BR>このノードを挿入する位置ですが、「クライマックス」ノードが終わればクリアとしたいので、「クライマックス」ノードと「終盤」ノードの間に入れます。<BR><BR>これでチャートは完成です。以下のようになります。<BR><IMG SRC="ln_turorial71.png" WIDTH=240 HEIGHT=243 HSPACE=8 VSPACE=8><BR><BR>次はオプション設定です。「プロジェクト」メニューの「オプション」を選択してください。オプションダイアログが出たら、「シーン回想」タブを選択します。<BR><B>「リスト」</B>には、「回想開始」ノードが自動的に抽出されて表示されます。この順でサムネイルが並ぶことになるので、適当な順に並び替えてください。<BR><B>「デザイン」</B>はサムネイル画面をどのようにデザインするかといった設定、<B>「サウンド」</B>はシーン回想で使用するBGMや効果音の設定です。どちらも詳細は<A HREF="option7.html">こちら</A>をご覧ください。<BR>設定が終わったらOKをクリックしてダイアログを閉じます。<BR><BR>次にサムネイル画面用の画像ファイルを用意します。画像の大きさは自由ですが、うまく画面に並ぶように<A HREF="option7.html">オプション</A>のデザイン設定を調整してください。サムネイル用の画像ファイルはグラフィックフォルダの中の「シーン回想」フォルダの中に入れてください。ファイル名は「回想開始」ノードの名前と同じにしてください。上の例で言うと <FONT COLOR="#0000FF">クライマックス.GAL</FONT> になります。<BR><BR>実際にシーン回想を実行するには、「チャート呼び出し」ノードを使って、『［指定ページ呼び出し］シーン回想』を呼び出します。<BR><IMG SRC="ln_turorial72.png" WIDTH=306 HEIGHT=190 HSPACE=8 VSPACE=8><BR><BR><BR><TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>
+   <TR>
+      <TD><BASEFONT SIZE=2>
+<A HREF="tutorial16.html">←戻る</A></TD>
+      <TD ALIGN="right"><BASEFONT SIZE=2>
+<A HREF="tutorial18.html">進む→</A></TD>
+   </TR>
+</TABLE></P>
+</BODY>
+</HTML>
