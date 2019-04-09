@@ -217,7 +217,7 @@ def validate(input_file):
 
 
 @lmlsb.command()
-@click.option('-m', '--mode', type=click.Choice(['text', 'xml']), default='text',
+@click.option('-m', '--mode', type=click.Choice(['text', 'xml', 'lines']), default='text',
               help='Output mode (defaults to text)')
 @click.option('-e', '--encoding', type=click.Choice(['cp932', 'utf-8']), default='utf-8',
               help='Output text encoding (defaults to utf-8).')
@@ -227,10 +227,9 @@ def dump(mode, encoding, input_file):
 
     For text mode, the full LSB will be output as human-readable text.
 
-    For script mode, only decompiled script content will be output (i.e. the TpWord content
-    in any TComTextIns text commands).
-
     For xml mode, the full LSB file will be output as an XML document.
+
+    For lines mode, only text lines will be output.
     """
     for path in input_file:
         with open(path, 'rb') as f:
@@ -243,6 +242,18 @@ def dump(mode, encoding, input_file):
         if mode == 'xml':
             root = lsb.to_xml()
             print(etree.tostring(root, encoding=encoding, pretty_print=True, xml_declaration=True).decode(encoding))
+        elif mode == 'lines':
+            lsb_path = Path(path)
+            for line, name, scenario in lsb.text_scenarios():
+                if name:
+                    name = '{}-{}.lns'.format(lsb_path.stem, name)
+                if not name:
+                    name = '{}-line{}.lns'.format(lsb_path.stem, line)
+                print(name)
+                print('------')
+                dec = LNSDecompiler(text_only=True)
+                print(dec.decompile(scenario))
+                print()
         else:
             for c in lsb.commands:
                 if c.Mute:

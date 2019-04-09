@@ -105,6 +105,9 @@ class BaseTWdGlyph(BaseSerializable):
     A tag from LiveNovel's documented "HTML-like" scenario script format can generally be
     mapped to a TWdGlyph subclass.
 
+    Args:
+        Condition (int): Index for the condition to be applied to this glyph
+
     """
 
     type = None
@@ -119,11 +122,6 @@ class BaseTWdGlyph(BaseSerializable):
     )
 
     def __init__(self, condition=None, **kwargs):
-        """
-        Args:
-            Condition (int): Index for the condition to be applied to this glyph
-
-        """
         self._keys = set(('type', 'condition'))
         self.condition = condition
 
@@ -176,6 +174,16 @@ class BaseTWdGlyph(BaseSerializable):
 
 
 class BaseTWdReal(BaseTWdGlyph):
+    """Base class for TWdReal types.
+
+    Args:
+        link_name (str): Name of referenced link for this glyph.
+            Used in LNScript version < 105.
+        link (int): Index of referenced link for this glyph.
+            Used in LNScript version >= 105.
+        text_speed (int): Text display speed for this glyph.
+
+    """
 
     # BaseTWdReal is an abstract type and is always used via a subclass
     type = None
@@ -193,15 +201,6 @@ class BaseTWdReal(BaseTWdGlyph):
     )
 
     def __init__(self, link_name=None, link=None, text_speed=0, **kwargs):
-        """
-        Args:
-            link_name (str): Name of referenced link for this glyph.
-                Used in LNScript version < 105.
-            link (int): Index of referenced link for this glyph.
-                Used in LNScript version >= 105.
-            text_speed (int): Text display speed for this glyph.
-
-        """
         super().__init__(**kwargs)
         self._keys.update(('link_name', 'link', 'text_speed'))
         self.link_name = link_name
@@ -227,6 +226,11 @@ class TWdChar(BaseTWdReal):
 
     All text in a LiveNovel script is compiled into runs of TWdChar glyphs.
 
+    Args:
+        ch (str): The character.
+        decorator (int): Index of the decorator (style) to be applied to this
+            character.
+
     """
 
     type = TWdType.TWdChar
@@ -237,13 +241,6 @@ class TWdChar(BaseTWdReal):
     )
 
     def __init__(self, ch='', decorator=0, **kwargs):
-        """
-        Args:
-            ch (str): The character.
-            decorator (int): Index of the decorator (style) to be applied to this
-                character.
-
-        """
         super().__init__(**kwargs)
         self._keys.update(('ch', 'decorator'))
         self.ch = ch
@@ -265,7 +262,16 @@ class TWdChar(BaseTWdReal):
 
 
 class TWdOpeDiv(BaseTWdGlyph):
-    """Specify div (row) attributes."""
+    """Specify div (row) attributes.
+
+    Args:
+        align (int): Horizontal alignment.
+        padleft (int): Left padding.
+        padright (int): Right padding.
+        noheight (int): TRUE if this line has no height (the next line will
+            be drawn at the same y-coordiante as this one).
+
+    """
 
     type = TWdType.TWdOpeDiv
     _struct_fields = construct.Struct(
@@ -286,15 +292,6 @@ class TWdOpeDiv(BaseTWdGlyph):
     )
 
     def __init__(self, align=0, padleft=0, padright=0, noheight=0, **kwargs):
-        """
-        Args:
-            align (int): Horizontal alignment.
-            padleft (int): Left padding.
-            padright (int): Right padding.
-            noheight (int): TRUE if this line has no height (the next line will
-                be drawn at the same y-coordiante as this one).
-
-        """
         super().__init__(**kwargs)
         self._keys.update(('align', 'padleft', 'padright', 'noheight'))
         self.align = int(align)
@@ -313,7 +310,12 @@ class TWdOpeDiv(BaseTWdGlyph):
 
 
 class TWdOpeReturn(BaseTWdGlyph):
-    """Insert a line or page break."""
+    """Insert a line or page break.
+
+    Args:
+        break_type (int): Break type.
+
+    """
 
     type = TWdType.TWdOpeReturn
     _struct_fields = construct.Struct(
@@ -362,7 +364,12 @@ class TWdOpeUndent(BaseTWdGlyph):
 
 
 class TWdOpeEvent(BaseTWdGlyph):
-    """Run the specified event."""
+    """Run the specified event.
+
+    Args:
+        event (str): Event name and arguments.
+
+    """
 
     type = TWdType.TWdOpeEvent
     _struct_fields = construct.Struct(
@@ -371,11 +378,6 @@ class TWdOpeEvent(BaseTWdGlyph):
     )
 
     def __init__(self, event='', **kwargs):
-        """
-        Args:
-            event (str): Event name and arguments.
-
-        """
         super().__init__(**kwargs)
         self._keys.add('event')
         self.event = event
@@ -396,7 +398,18 @@ class TWdOpeEvent(BaseTWdGlyph):
 
 
 class TWdOpeVar(BaseTWdGlyph):
-    """Insert the value of the specified variable."""
+    """Insert the value of the specified variable.
+
+    Args:
+        decorator (int): Index of the decorator to be applied to this text
+        unk3: Unknown.
+        link_name: Name of the link to be applied to this glyph.
+            Used in LN scenario script versions 100 to 104 (inclusive).
+        link: Index of the link to be applied to this glyph. Used in LN scenario script version > 104.
+        var_name_params (:class:`LiveParser`): Variable name. Used in LN scenario script version < 102.
+        var_name (str): Variable name. Used in LN scenario script version >= 102.
+
+    """
 
     type = TWdType.TWdOpeVar
     _struct_fields = construct.Struct(
@@ -420,17 +433,6 @@ class TWdOpeVar(BaseTWdGlyph):
 
     def __init__(self, decorator=0, unk3=None, link_name=None, link=None,
                  var_name_params=None, var_name=None, **kwargs):
-        """
-        Args:
-            decorator (int): Index of the decorator to be applied to this text
-            unk3: Unknown.
-            link_name: Name of the link to be applied to this glyph.
-                Used in LN scenario script versions 100 to 104 (inclusive).
-            link: Index of the link to be applied to this glyph. Used in LN scenario script version > 104.
-            var_name_params (:class:`LiveParser`): Variable name. Used in LN scenario script version < 102.
-            var_name (str): Variable name. Used in LN scenario script version >= 102.
-
-        """
         super().__init__(**kwargs)
         self._keys.update(('decorator', 'unk3', 'link_name', 'link', 'var_name_params', 'var_name'))
         self.decorator = decorator
@@ -456,7 +458,23 @@ class TWdOpeVar(BaseTWdGlyph):
 
 
 class TWdImg(BaseTWdReal):
-    """Display an image in the text box."""
+    """Display an image in the text box.
+
+    Args:
+        src (str): Dispaly image.
+        align (int): Vertical alignment.
+        hoversrc (str): Image to display on mouse hover.
+        mgnleft (int): Left margin in pixels.
+        mgnright (int): Right margin in pixels.
+        mgntop (int): Top margin in pixels.
+        mgnbottom (int): Bottom margin in pixels.
+        downsrc (str): Image to display on mouse click.
+
+    Note:
+        This displays the image inline with text, and is not the same thing as displaying a CG.
+        One use case is to insert icons for replaying sounds into the history backlog.
+
+    """
 
     type = TWdType.TWdImg
     _struct_fields = construct.Struct(
@@ -490,18 +508,6 @@ class TWdImg(BaseTWdReal):
 
     def __init__(self, src='', align=0, hoversrc='', mgnleft=0, mgnright=0,
                  mgntop=0, mgnbottom=0, downsrc='', **kwargs):
-        """
-        Args:
-            src (str): Dispaly image.
-            align (int): Vertical alignment.
-            hoversrc (str): Image to display on mouse hover.
-            mgnleft (int): Left margin in pixels.
-            mgnright (int): Right margin in pixels.
-            mgntop (int): Top margin in pixels.
-            mgnbottom (int): Bottom margin in pixels.
-            downsrc (str): Image to display on mouse click.
-
-        """
         super().__init__(**kwargs)
         self._keys.update(('src', 'align', 'hoversrc', 'mgnleft', 'mgnright', 'mgntop', 'mgnbottom', 'downsrc'))
         self.src = src
@@ -547,15 +553,13 @@ class TDecorate(BaseSerializable):
     to an entry in the font/style table for this LiveMaker game when
     compiling to LSB.
 
+    Args:
+        count: The total number of TWd glyphs affected by this decorator.
+
     """
 
     def __init__(self, count=0, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0,
                  unk8='', unk9='', unk10=0, unk11=0, **kwargs):
-        """
-        Args:
-            count: The total number of TWd glyphs affected by this decorator.
-
-        """
         self.count = count
         self.unk2 = unk2
         self.unk3 = unk3
@@ -625,15 +629,13 @@ class TWdCondition(BaseSerializable):
     Display condition for a glyph determines things like whether or not it will
     be only displayed the history backlog.
 
+    Args:
+        count: The total number of TWd glyphs affected by this condition.
+        target: Target message box (i.e. history message box).
+
     """
 
     def __init__(self, count=0, target='', **kwargs):
-        """
-        Args:
-            count: The total number of TWd glyphs affected by this condition.
-            target: Target message box (i.e. history message box).
-
-        """
         self.count = count
         self.target = target
 
@@ -669,16 +671,16 @@ class TWdCondition(BaseSerializable):
 
 
 class TWdLink(BaseSerializable):
-    """Hyperlink (i.e. make a glyph clickable)."""
+    """Hyperlink (i.e. make a glyph clickable).
+
+    Args:
+        count: The total number of TWd glyphs affected by this link.
+        event: Event to run on click.
+        unk3: Unknown.
+
+    """
 
     def __init__(self, count=0, event='', unk3='', **kwargs):
-        """
-        Args:
-            count: The total number of TWd glyphs affected by this link.
-            event: Event to run on click.
-            unk3: Unknown.
-
-        """
         self.count = count
         self.event = event
         self.unk3 = unk3
@@ -727,21 +729,21 @@ class _TpWordVersionAdapter(construct.Adapter):
 
 
 class TpWord(BaseSerializable):
-    """Compiled LiveNovel scenario script."""
+    """Compiled LiveNovel scenario script.
+
+    Args:
+        version (int): LiveNovel scenario script version.
+        decorators (list(:class:)`TDecorate`)): List of decorators (text styles) used in this script.
+        conditions (list(:class:`TWdCondition`)): List of conditions used in this script.
+        links (list(:class:`TWdLink`)): List of links used in this script.
+        body (list(:class:`BaseTWdGlyph`))): Compiled script text body.
+
+    Note:
+        LiveNovel scenario script version is independent of LiveMaker (command) script version.
+
+    """
 
     def __init__(self, version=0, decorators=[], conditions=[], links=[], body=[], **kwargs):
-        """
-        Args:
-            version (int): LiveNovel scenario script version.
-            decorators (list(:class:)`TDecorate`)): List of decorators (text styles) used in this script.
-            conditions (list(:class:`TWdCondition`)): List of conditions used in this script.
-            links (list(:class:`TWdLink`)): List of links used in this script.
-            body (list(:class:`BaseTWdGlyph`))): Compiled script text body.
-
-        Note:
-            LiveNovel scenario script version is independent of LiveMaker (command) script version.
-
-        """
         self.version = version
         if isinstance(decorators, construct.ListContainer):
             decorators = [TDecorate.from_struct(x) for x in decorators]
@@ -884,20 +886,20 @@ class LNSDecompiler(object):
     """Attempt to decompile a TpWord text block into something that resembles
     LiveMaker's LiveNovel scenario script format.
 
+    Args:
+        sep (str): Output line separator (defaults to ``os.linesep``).
+        include_comments (bool): Include comment lines in output.
+        text_only (bool): Output text only (all tags will be removed except for variable names).
+
+    Raises:
+        ValueError: If `tpword` is not a :class:`TpWord` instance.
+
     """
 
-    def __init__(self, sep=os.linesep, include_comments=True):
-        """
-        Args:
-            sep (str): Output line separator (defaults to ``os.linesep``).
-            include_comments (bool): Include comment lines in output.
-
-        Raises:
-            ValueError: If `tpword` is not a :class:`TpWord` instance.
-
-        """
+    def __init__(self, sep=os.linesep, include_comments=True, text_only=False):
         self.sep = sep
         self.include_comments = include_comments
+        self.text_only = text_only
         self._reset()
 
     def _reset(self):
@@ -1023,13 +1025,7 @@ class LNSDecompiler(object):
             self._line.append(LNSTag.close(LNSTag.div))
             self._endl()
 
-    def decompile(self, tpword):
-        """Decompile the specified TpWord scenario script.
-
-        Args:
-            tpword (:class:`TpWord`): TpWord object to decompile.
-
-        """
+    def _decompile_full(self, tpword):
         self._reset()
         self.tpword = tpword
         self._lines.extend(self._header())
@@ -1098,6 +1094,33 @@ class LNSDecompiler(object):
             ])
         return self.sep.join(self._lines)
 
+    def decompile(self, tpword):
+        """Decompile the specified TpWord scenario script.
+
+        Args:
+            tpword (:class:`TpWord`): TpWord object to decompile.
+
+        """
+        if self.text_only:
+            self._reset()
+            for w in tpword.body:
+                if w.type == TWdType.TWdChar:
+                    self._line.append(str(w.ch))
+                elif w.type == TWdType.TWdOpeReturn:
+                    self._endl()
+                elif w.type == TWdType.TWdOpeVar:
+                    self._line.append(str(w))
+                elif w.type == TWdType.TWdOpeHistChar:
+                    if self._line:
+                        self._endl()
+                    # tag gets its own line
+                    self._lines.append(str(w))
+            if self._line:
+                self._endl()
+            return self.sep.join(self._lines)
+        else:
+            return self._decompile_full(tpword)
+
 
 # Regular expressions used for parsing
 
@@ -1159,7 +1182,6 @@ class LNSCompiler(_markupbase.ParserBase):
     END_TAGS = (LNSTag.a.name, LNSTag.style.name, LNSTag.div.name)
 
     def __init__(self):
-        """Initialize and reset this instance."""
         self.reset()
 
     def reset(self):

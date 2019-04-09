@@ -89,6 +89,23 @@ class LMScript(BaseSerializable):
     One LiveMaker/LiveNovel "Chart" will be serialized as one script
     file.
 
+    Args:
+        version (int): Version number. If `version` is not in the range [`MIN_LSB_VERSION`, `MAX_LSB_VERSION`],
+            this LMScript cannot be compiled into a binary LSB.
+        param_type: Unknown type flag (always 1?).
+        flags (int): Unknown (always 0?).
+        call_name (str): String name for calling this script (only used for documentation).
+        novel_params (iterable): Iterable containing string descriptions for parameters that
+            this script accepts (only used for documentation).
+        command_params (iterable(iterable(bool))): Two dimensional array of booleans specifying the command
+            parameters are for Component type commands.
+            (i.e. `command_params[CommandType.BoxNew][PropertyType.PR_NAME] == True`
+            means that `BoxNew` takes a `PR_NAME` parameter.)
+        commands (iterable): Iterable containing this script's `Command` objects.
+
+    Raises:
+        BadLsbError: If the specified LMScript would be invalid or unsupported.
+
     """
 
     # internal use field to specify where this LMScript came from
@@ -96,26 +113,6 @@ class LMScript(BaseSerializable):
 
     def __init__(self, version=DEFAULT_LSB_VERSION, param_type=1, flags=0,
                  call_name='', novel_params=[], command_params=[[]], commands=[], **kwargs):
-        """Initialize a LMScript.
-
-        Args:
-            version (int): Version number. If `version` is not in the range [`MIN_LSB_VERSION`, `MAX_LSB_VERSION`],
-                this LMScript cannot be compiled into a binary LSB.
-            param_type: Unknown type flag (always 1?).
-            flags (int): Unknown (always 0?).
-            call_name (str): String name for calling this script (only used for documentation).
-            novel_params (iterable): Iterable containing string descriptions for parameters that
-                this script accepts (only used for documentation).
-            command_params (iterable(iterable(bool))): Two dimensional array of booleans specifying the command
-                parameters are for Component type commands.
-                (i.e. `command_params[CommandType.BoxNew][PropertyType.PR_NAME] == True`
-                means that `BoxNew` takes a `PR_NAME` parameter.)
-            commands (iterable): Iterable containing this script's `Command` objects.
-
-        Raises:
-            BadLsbError: If the specified LMScript would be invalid or unsupported.
-
-        """
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
             log.warn('LSB compilation unsupported for LMScript version {}'.format(version))
         self.version = version

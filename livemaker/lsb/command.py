@@ -229,9 +229,14 @@ class LabelReference(BaseSerializable):
 class BaseCommand(BaseSerializable):
     """Base command class.
 
-    Note:
-        The order `args` are initialized is important, since they will be serialized
-        in the same order.
+    Args:
+        Indent: Indentation level. `Indent` level specifies the scope for commands like `If`/`WhileLoop`/etc.
+        Mute: True if this command can be ignored during processing (used for comments).
+        NotUpdate: Unknown.
+        Color: Unknown (always False for novels?).
+        LineNo: LineNo (line number) for this command. When a script is compiled into a binary LSB,
+            target label name references (for jumps and calls) are replaced with a reference to
+            the LineNo of the target label command.
 
     Attributes:
         type (:class:`CommandType`): Command type.
@@ -242,24 +247,16 @@ class BaseCommand(BaseSerializable):
             for the .lsc formats consistent with how construct handles optional (version specific)
             values when reading to/from binary .lsb format.
 
+    Note:
+        The order `args` are initialized is important, since they will be serialized
+        in the same order.
+
     """
 
     type = None
     _struct_fields = construct.Struct()
 
     def __init__(self, Indent=0, Mute=False, NotUpdate=False, Color=0, LineNo=0, **kwargs):
-        """Instantiate a script LiveMaker Command.
-
-        Args:
-            Indent: Indentation level
-            Mute: True if this command can be ignored during processing (used for comments).
-            NotUpdate: Unknown.
-            Color: Unknown (always False for novels?).
-            LineNo: LineNo (line number) for this command. When a script is compiled into a binary LSB,
-                target label name references (for jumps and calls) are replaced with a reference to
-                the LineNo of the target label command.
-
-        """
         self.Indent = Indent
         self.Mute = Mute
         self.NotUpdate = NotUpdate
@@ -291,9 +288,11 @@ class BaseCommand(BaseSerializable):
         return v
 
     def keys(self):
+        """Return a list of dictionary keys for this command."""
         return ['type', 'LineNo', 'Indent', 'Mute', 'NotUpdate'] + list(self.args.keys())
 
     def items(self):
+        """Return a list of (key, value) pairs for this command."""
         return [(k, self[k]) for k in self.keys()]
 
     def to_lsc(self):
@@ -398,6 +397,9 @@ class If(BaseCommand):
 
     Conditional block nesting is handled by the `Command.Indent` attribute.
 
+    Args:
+        Calc (:class:`LiveParser`): Conditional expression.
+
     """
 
     type = CommandType.If
@@ -406,11 +408,6 @@ class If(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
-        """
-        Args:
-            Calc (:class:`LiveParser`): Conditional expression.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -446,6 +443,9 @@ class Else(BaseCommand):
 class Label(BaseCommand):
     """Insert a named label which can be used as a Jump or Call target.
 
+    Args:
+        Name (str): Label name.
+
     Note:
         Original label names may not be available when decompiling a binary LSB.
 
@@ -457,11 +457,6 @@ class Label(BaseCommand):
     )
 
     def __init__(self, Name='', **kwargs):
-        """
-        Args:
-            Name (str): Label name.
-
-        """
         super().__init__(**kwargs)
         self.args['Name'] = Name
 
@@ -475,7 +470,13 @@ class Label(BaseCommand):
 
 
 class Jump(BaseCommand):
-    """Conditionally branch to a `Label` or the start of a script."""
+    """Conditionally branch to a :class:`Label` or the start of a script.
+
+    Args:
+        Page (:class:`LabelReference`): Target label.
+        Calc (:class:`LiveParser`): Jump to target label if `Calc` evaluates to True.
+
+    """
 
     type = CommandType.Jump
     _struct_fields = construct.Struct(
@@ -484,12 +485,6 @@ class Jump(BaseCommand):
     )
 
     def __init__(self, Page=LabelReference(), Calc=LiveParser(), **kwargs):
-        """
-        Args:
-            Page (:class:`LabelReference): Target label.
-            Calc (:class:`LiveParser`): Jump to target label if `Calc` evaluates to True.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             Page = LabelReference.from_struct(Page)
@@ -511,7 +506,16 @@ class Jump(BaseCommand):
 
 
 class Call(BaseCommand):
-    """Conditionally call a `Label` or script with optional parameter arguments."""
+    """Conditionally call a :class:`Label` or script with optional parameter arguments.
+
+    Args:
+        Page (:class:`LabelReference`): Target label.
+        Result (str): Variable name to store call return value, if unset (empty string)
+            the return value will not be stored.
+        Calc (:class:`LiveParser`): Call target script if `Calc` evaluates to True.
+        Params (:class:`LiveParserArray`): List of parameters to be passed into the called script.
+
+    """
 
     type = CommandType.Call
     _struct_fields = construct.Struct(
@@ -522,15 +526,6 @@ class Call(BaseCommand):
     )
 
     def __init__(self, Page=LabelReference(), Result='', Calc=LiveParser(), Params=LiveParserArray(), **kwargs):
-        """
-        Args:
-            Page (:class:`LabelReference`): Target label.
-            Result (str): Variable name to store call return value, if unset (empty string)
-                the return value will not be stored.
-            Calc (:class:`LiveParser`): Call target script if `Calc` evaluates to True.
-            Params (:class:`LiveParserArray`): List of parameters to be passed into the called script.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             Page = LabelReference.from_struct(Page)
@@ -564,7 +559,12 @@ class Call(BaseCommand):
 
 
 class Exit(BaseCommand):
-    """Conditionally return from the current script."""
+    """Conditionally return from the current script.
+
+    Args:
+        Calc (:class:`LiveParser`): Return if `Calc` evaluates to True.
+
+    """
 
     type = CommandType.Exit
     _struct_fields = construct.Struct(
@@ -572,11 +572,6 @@ class Exit(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
-        """
-        Args:
-            Calc (:class:`LiveParser`): Return if `Calc` evaluates to True.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -592,7 +587,15 @@ class Exit(BaseCommand):
 
 
 class Wait(BaseCommand):
-    """Conditionally wait for some amount of time."""
+    """Conditionally wait for some amount of time.
+
+    Args:
+        Calc (:class:`LiveParser`): Wait if `Calc` evaluates to True.
+        Time (:class:`LiveParser`): Time to wait in milliseconds.
+        StopEvent (:class:`LiveParser`): Event processing will be stopped while waiting
+            if `StopEvent` evaluates to True. Only used in LM versions 107 and later.
+
+    """
 
     type = CommandType.Wait
     _struct_fields = construct.Struct(
@@ -603,11 +606,6 @@ class Wait(BaseCommand):
 
     def __init__(self, Calc=LiveParser(), Time=LiveParser(), StopEvent=None, **kwargs):
         """
-        Args:
-            Calc (:class:`LiveParser`): Wait if `Calc` evaluates to True.
-            Time (:class:`LiveParser`): Time to wait in milliseconds.
-            StopEvent (:class:`LiveParser`): Event processing will be stopped while waiting
-                if `StopEvent` evaluates to True. Only used in LM versions 107 and later.
 
         """
         super().__init__(**kwargs)
@@ -651,6 +649,11 @@ class BaseComponentCommand(BaseCommand):
     depends on which parameters are enabled for a given command (i.e. the boolean flag
     list of parameters from the top level LMScript).
 
+    Args:
+        components (iterable(:class:`LiveParser`)): Iterable containing the parameters for this command.
+            Each parameter should correspond to an enabled PropertyType for this command.
+        command_params (list(bool)): List containing enabled parameter flags for this command.
+
     """
 
     # NOTE: We don't use LiveParserArray here because we would still need to do
@@ -664,13 +667,6 @@ class BaseComponentCommand(BaseCommand):
     )
 
     def __init__(self, components=[], command_params=[], **kwargs):
-        """
-        Args:
-            components (iterable(:class:`LiveParser`)): Iterable containing the parameters for this command.
-                Each parameter should correspond to an enabled PropertyType for this command.
-            command_params (list(bool)): List containing enabled parameter flags for this command.
-
-        """
         super().__init__(**kwargs)
         if len(components) > sum(command_params):
             raise BadLsbError('Got more param components than expected for this LM version,'
@@ -767,6 +763,22 @@ class Flip(BaseCommand):
     flip type. See the LiveNovel docs for detailed information on flip types and
     parameters.
 
+    Args:
+        Wipe (:class:`LiveParser`): Flip effect name.
+        Time (:class:`LiveParser`): Flip duration.
+        Reverse (:class:`LiveParser`): If evaluates to True, flip direction will be reversed.
+        Act (:class:`LiveParser`): If evaluates to FL_STAY, object will remain on screen
+            after flip (i.e. a fade-in effect), if FL_OUT, object will be removed after
+            flip (i.e. a fade-out).
+        Targets (:class:`LiveParserArray`): List of objects to be affected by this flip.
+        Delete (:class:`LiveParser`): If evaluates to TRUE, object will be deleted after this flip.
+        Source (:class:`LiveParser`): Source for this flip. Only used in LM version > 100.
+        DifferenceOnly (:class:`LiveParser`): Unknown. Only used in LM version > 116.
+        StopEvent (:class:`LiveParser`): If evaluates to TRUE, event processing will be
+            stopped during this flip. Only used in LM version > 106.
+        Param (:class:`LiveParserArray`): List of parameter arguments for this flip, optional
+            optional depending on flip type.
+
     """
 
     type = CommandType.Flip
@@ -787,24 +799,6 @@ class Flip(BaseCommand):
                  Act=LiveParser(), Targets=LiveParserArray(), Delete=LiveParser(),
                  Source=None, DifferenceOnly=None, StopEvent=None,
                  Param=LiveParserArray(prefixed=False), **kwargs):
-        """
-        Args:
-            Wipe (:class:`LiveParser`): Flip effect name.
-            Time (:class:`LiveParser`): Flip duration.
-            Reverse (:class:`LiveParser`:) If evaluates to True, flip direction will be reversed.
-            Act (:class:`LiveParser`:) If evaluates to FL_STAY, object will remain on screen
-                after flip (i.e. a fade-in effect), if FL_OUT, object will be removed after
-                flip (i.e. a fade-out).
-            Targets (:class:`LiveParserArray`): List of objects to be affected by this flip.
-            Delete (:class:`LiveParser`): If evaluates to TRUE, object will be deleted after this flip.
-            Source (:class:`LiveParser`): Source for this flip. Only used in LM version > 100.
-            DifferenceOnly (:class:`LiveParser`): Unknown. Only used in LM version > 116.
-            StopEvent (:class:`LiveParser`): If evaluates to TRUE, event processing will be
-                stopped during this flip. Only used in LM version > 106.
-            Param (:class:`LiveParserArray`): List of parameter arguments for this flip, optional
-                optional depending on flip type.
-
-        """
         # TODO: lsb and lsc XML serialization order are different (lsb is by
         # version, and XML always puts Param last), for now we assume text lsc
         # version uses the same order as XML lsc, and NOT the same order as
@@ -861,6 +855,9 @@ class Calc(BaseCommand):
 
     Generally used to store the result of some calculation into a variable.
 
+    Args:
+        Calc (:class:`LiveParser`): Expression to evaluate.
+
     """
 
     type = CommandType.Calc
@@ -869,11 +866,6 @@ class Calc(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
-        """
-        Args:
-            Calc (:class:`LiveParser`): Expression to evaluate.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -889,7 +881,15 @@ class Calc(BaseCommand):
 
 
 class VarNew(BaseCommand):
-    """Create a new variable and optionally initialize it."""
+    """Create a new variable and optionally initialize it.
+
+    Args:
+        Name (str): Variable name.
+        Type (int or :class:`ParamType`): Data type.
+        InitVal: Initial value.
+        Scope: Variable scope (0 = global).
+
+    """
 
     type = CommandType.VarNew
     _struct_fields = construct.Struct(
@@ -901,11 +901,6 @@ class VarNew(BaseCommand):
 
     def __init__(self, Name='', Type=0, InitVal=LiveParser(), Scope=0, **kwargs):
         """
-        Args:
-            Name (str): Variable name.
-            Type (int or :class:`ParamType`): Data type.
-            InitVal: Initial value.
-            Scope: Variable scope (0 = global).
 
         """
         super().__init__(**kwargs)
@@ -937,7 +932,12 @@ class VarNew(BaseCommand):
 
 
 class VarDel(BaseCommand):
-    """Delete a variable."""
+    """Delete a variable.
+
+    Args:
+        Name (str): Variable to delete.
+
+    """
 
     type = CommandType.VarDel
     _struct_fields = construct.Struct(
@@ -945,11 +945,6 @@ class VarDel(BaseCommand):
     )
 
     def __init__(self, Name='', **kwargs):
-        """
-        Args:
-            Name (str): Variable to delete.
-
-        """
         super().__init__(**kwargs)
         self.args['Name'] = Name
 
@@ -963,7 +958,14 @@ class VarDel(BaseCommand):
 
 
 class GetProp(BaseCommand):
-    """Get the specified object property."""
+    """Get the specified object property.
+
+    Args:
+        ObjName (:class:`LiveParser`): Object name.
+        ObjProp (:class:`LiveParser`): Property name.
+        VarName (str): Object property will be stored in `VarName`.
+
+    """
 
     type = CommandType.GetProp
     _struct_fields = construct.Struct(
@@ -974,10 +976,6 @@ class GetProp(BaseCommand):
 
     def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), VarName='', **kwargs):
         """
-        Args:
-            ObjName (:class:`LiveParser`): Object name.
-            ObjProp (:class:`LiveParser`): Property name.
-            VarName (str): Object property will be stored in `VarName`.
 
         """
         super().__init__(**kwargs)
@@ -1003,7 +1001,14 @@ class GetProp(BaseCommand):
 
 
 class SetProp(BaseCommand):
-    """Set the specified object property."""
+    """Set the specified object property.
+
+    Args:
+        ObjName (:class:`LiveParser`): Object name.
+        ObjProp (:class:`LiveParser`): Property name.
+        Value (:class:`LiveParser`): Object property will be set to `Value`.
+
+    """
 
     type = CommandType.SetProp
     _struct_fields = construct.Struct(
@@ -1013,13 +1018,6 @@ class SetProp(BaseCommand):
     )
 
     def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), Value=LiveParser(), **kwargs):
-        """
-        Args:
-            ObjName (:class:`LiveParser`): Object name.
-            ObjProp (:class:`LiveParser`): Property name.
-            Value (:class:`LiveParser`): Object property will be set to `Value`.
-
-        """
         super().__init__(**kwargs)
         if isinstance(ObjName, construct.Container):
             ObjName = LiveParser.from_struct(ObjName)
@@ -1043,7 +1041,11 @@ class SetProp(BaseCommand):
 
 
 class ObjDel(BaseCommand):
-    """Delete the specified object."""
+    """Delete the specified object.
+
+    Args:
+        Name (:class:`LiveParser`): Name of object to delete.
+    """
 
     type = CommandType.ObjDel
     _struct_fields = construct.Struct(
@@ -1063,6 +1065,16 @@ class TextIns(BaseCommand):
     The text block will be in a "compiled" TpWord format, rather than in the
     "HTML-like" LiveNovelScript format.
 
+    Args:
+        Text (:class:`TpWord`): The text block to insert.
+        Target (:class:`LiveParser`): Name of the message box to display the text.
+        Hist (:class:`LiveParser`): If TRUE, add the text to history.
+        Wait (:class:`LiveParser`): If TRUE, wait until all text is read and message box
+            is cleared before proceeding.
+        StopEvent (:class:`LiveParser`): If TRUE, stop event processing while displaying
+            this text. If FALSE, the value of `Wait` will be ignored. Only used if LM
+            version > 106.
+
     """
 
     type = CommandType.TextIns
@@ -1077,18 +1089,6 @@ class TextIns(BaseCommand):
 
     def __init__(self, Text=TpWord(), Target=LiveParser(), Hist=LiveParser(),
                  Wait=LiveParser(), StopEvent=None, **kwargs):
-        """
-        Args:
-            Text (:class:`TpWord`): The text block to insert.
-            Target (:class:`LiveParser`): Name of the message box to display the text.
-            Hist (:class:`LiveParser`): If TRUE, add the text to history.
-            Wait (:class:`LiveParser`): If TRUE, wait until all text is read and message box
-                is cleared before proceeding.
-            StopEvent (:class:`LiveParser`): If TRUE, stop event processing while displaying
-                this text. If FALSE, the value of `Wait` will be ignored. Only used if LM
-                version > 106.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Text, construct.Container):
             Text = TpWord.from_struct(Text)
@@ -1126,7 +1126,18 @@ class TextIns(BaseCommand):
 
 
 class MovieStop(BaseCommand):
-    """Stop playback and delete the specified media clip."""
+    """Stop playback and delete the specified media clip.
+
+    Args:
+        Target (:class:`LiveParser`): Name of media clip to stop.
+        Time (:class:`LiveParser`): Time for playback to fade out in milliseconds
+            (0 is immediate with no fade out).
+        Wait (:class:`LiveParser`): If TRUE, command processing will not proceed until
+            the media clip is deleted.
+        StopEvent (:class:`LiveParser`): If TRUE, event processing will be stopped until
+            media clip is deleted. Only used in LM version > 106
+
+    """
 
     type = CommandType.MovieStop
     _struct_fields = construct.Struct(
@@ -1137,17 +1148,6 @@ class MovieStop(BaseCommand):
     )
 
     def __init__(self, Target=LiveParser(), Time=LiveParser(), Wait=LiveParser(), StopEvent=None, **kwargs):
-        """
-        Args:
-            Target (:class:`LiveParser`): Name of media clip to stop.
-            Time (:class:`LiveParser`): Time for playback to fade out in milliseconds
-                (0 is immediate with no fade out).
-            Wait (:class:`LiveParser`): If TRUE, command processing will not proceed until
-                the media clip is deleted.
-            StopEvent (:class:`LiveParser`): If TRUE, event processing will be stopped until
-                media clip is deleted. Only used in LM version > 106
-
-        """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
@@ -1202,7 +1202,12 @@ class Menu(BaseComponentCommand):
 
 
 class MenuClose(BaseCommand):
-    """Close the specified menu."""
+    """Close the specified menu.
+
+    Args:
+        Target (:class:`LiveParser`): Menu to close.
+
+    """
 
     type = CommandType.MenuClose
     _struct_fields = construct.Struct(
@@ -1231,7 +1236,12 @@ class Comment(Label):
 
 
 class TextClr(BaseCommand):
-    """Clear the specified text."""
+    """Clear the specified text.
+
+    Args:
+        Target (:class:`LiveParser`): Message box to clear.
+
+    """
 
     type = CommandType.TextClr
     _struct_fields = construct.Struct(
@@ -1240,9 +1250,6 @@ class TextClr(BaseCommand):
 
     def __init__(self, Target=LiveParser(), **kwargs):
         """
-        Args:
-            Target (:class:`LiveParser`): Message box to clear.
-
         """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
@@ -1259,7 +1266,19 @@ class TextClr(BaseCommand):
 
 
 class CallHist(BaseCommand):
-    """Open the text history."""
+    """Open the text history (backlog).
+
+    Args:
+        Target (:class:`LiveParser`): Message box to display history.
+        Index (:class:`LiveParser`): Index of line to start showing history from.
+        Count (:class:`LiveParser`): Number of lines to show.
+        CutBreak (:class:`LiveParser`): Normally a gap is displayed separating script
+            pages (scenario pages) in the history. If `CutBreak` is TRUE, this gap
+            will be removed.
+        FormatName (:class:`LiveParser`): Name of history formatter to use. Only used in
+            LM version > 110.
+
+    """
 
     type = CommandType.CallHist
     _struct_fields = construct.Struct(
@@ -1272,18 +1291,6 @@ class CallHist(BaseCommand):
 
     def __init__(self, Target=LiveParser(), Index=LiveParser(), Count=LiveParser(),
                  CutBreak=LiveParser(), FormatName=None, **kwargs):
-        """
-        Args:
-            Target (:class:`LiveParser`): Message box to display history.
-            Index (:class:`LiveParser`): Index of line to start showing history from.
-            Count (:class:`LiveParser`): Number of lines to show.
-            CutBreak (:class:`LiveParser`): Normally a gap is displayed separating script
-                pages (scenario pages) in the history. If `CutBreak` is TRUE, this gap
-                will be removed.
-            FormatName (:class:`LiveParser`): Name of history formatter to use. Only used in
-                LM version > 110.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
@@ -1326,6 +1333,14 @@ class Button(BaseComponentCommand):
 class While(BaseCommand):
     """Insert while loop block conditional statement.
 
+    Args:
+        Calc (:class:`LiveParser`): Loop conditional expression (i.e. i < 10). If TRUE
+            the loop will be run, otherwise execution will branch to `End` + 2 (Since
+            `End` is followed by the closing `WhileLoop` command).
+        End (int): Index of the last command contained by the loop. The command at `End`
+            will be followed by the closing `WhileLoop` command for this loop.
+
+
     Note:
         We do not fully support serializing loops to and from XML. In an LSB file,
         a loop block looks like::
@@ -1355,15 +1370,6 @@ class While(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser(), End=0, **kwargs):
-        """
-        Args:
-            Calc (:class:`LiveParser`): Loop conditional expression (i.e. i < 10). If TRUE
-                the loop will be run, otherwise execution will branch to `End` + 2 (Since
-                `End` is followed by the closing `WhileLoop` command).
-            End (int): Index of the last command contained by the loop. The command at `End`
-                will be followed by the closing `WhileLoop` command for this loop.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -1372,7 +1378,12 @@ class While(BaseCommand):
 
 
 class WhileInit(BaseCommand):
-    """Initialize a while loop."""
+    """Initialize a while loop.
+
+    Args:
+        Calc (:class:`LiveParser`): Loop initialization statement (i.e. i = 0).
+
+    """
 
     type = CommandType.WhileInit
     _struct_fields = construct.Struct(
@@ -1380,11 +1391,6 @@ class WhileInit(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser, **kwargs):
-        """
-        Args:
-            Calc (:class:`LiveParser`): Loop initialization statement (i.e. i = 0).
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -1402,6 +1408,16 @@ class WhileInit(BaseCommand):
 class WhileLoop(WhileInit):
     """Close a while loop.
 
+    Args:
+        Start (int): Index of the command preceding this loop. After evaluating the
+            statement in `Calc`, command processing will return to `Start` + 1,
+            which should be the opening `WhileInit`/`While` commands.
+
+    Note:
+        `WhileLoop` is handled a subclass of :class:`WhileInit` for struct parsing purposes.
+        `Calc` is an expression to be evaluated when reaching the end of the loop
+        (i.e. i = i + 1).
+
     """
 
     type = CommandType.WhileLoop
@@ -1411,24 +1427,21 @@ class WhileLoop(WhileInit):
     )
 
     def __init__(self, Start=0, **kwargs):
-        """
-        Args:
-            Start (int): Index of the command preceding this loop. After evaluating the
-                statement in `Calc`, command processing will return to `Start` + 1,
-                which should be the opening `WhileInit`/`While` commands.
-
-        Note:
-            `WhileLoop` is handled a subclass of :class:`WhileInit` for struct parsing purposes.
-            `Calc` is an expression to be evaluated when reaching the end of the loop
-            (i.e. i = i + 1).
-
-        """
         super().__init__(**kwargs)
         self.args['Start'] = int(Start)
 
 
 class Break(Exit):
-    """Loop break statement."""
+    """Loop break statement.
+
+    Args:
+        End (int): Index for the end of the current loop.
+
+    Note:
+        `Break` is handled a subclass of :class:`Exit` for struct parsing purposes.
+        If `Calc` is TRUE, command processing will exit the current loop.
+
+    """
 
     type = CommandType.Break
     _struct_fields = construct.Struct(
@@ -1437,20 +1450,21 @@ class Break(Exit):
     )
 
     def __init__(self, End=0, **kwargs):
-        """
-        Args:
-            End (int): Index for the end of the current loop.
-
-        Note:
-            `Break` is handled a subclass of :class:`Exit` for struct parsing purposes.
-            If `Calc` is TRUE, command processing will exit the current loop.
-
-        """
         super().__init__(**kwargs)
         self.args['End'] = int(End)
 
 
 class Continue(Exit):
+    """Loop continue statement.
+
+    Args:
+        Start (int): Index for the start of the current loop.
+
+    Note:
+        `Continue` is handled a subclass of :class:`Exit` for struct parsing purposes.
+        If `Calc` is TRUE, command processing will return to the start of the current loop.
+
+    """
 
     type = CommandType.Continue
     _struct_fields = construct.Struct(
@@ -1459,15 +1473,6 @@ class Continue(Exit):
     )
 
     def __init__(self, Start=0, **kwargs):
-        """
-        Args:
-            Start (int): Index for the start of the current loop.
-
-        Note:
-            `Continue` is handled a subclass of :class:`Exit` for struct parsing purposes.
-            If `Calc` is TRUE, command processing will return to the start of the current loop.
-
-        """
         super().__init__(**kwargs)
         self.args['Start'] = int(Start)
 
@@ -1485,7 +1490,16 @@ class FireNew(BaseComponentCommand):
 
 
 class GameSave(BaseCommand):
-    """Create a game save."""
+    """Create a game save.
+
+    Args:
+        No (:class:`LiveParser`): Save slot number to use.
+        Page (str): Save location is normally the command following this `GameSave`.
+            If `Page` is specified, it will be used as the save location.
+        Label (int): Label index in `Page` to load. Only used in LM version > 104.
+        Caption (:class:`LiveParser`): Caption for this save.
+
+    """
 
     type = CommandType.GameSave
     # NOTE: LabelReference is not used since the label field is versioned for
@@ -1498,15 +1512,6 @@ class GameSave(BaseCommand):
     )
 
     def __init__(self, No=LiveParser(), Page='', Label=None, Caption=LiveParser(), **kwargs):
-        """
-        Args:
-            No (:class:`LiveParser`): Save slot number to use.
-            Page (str): Save location is normally the command following this `GameSave`.
-                If `Page` is specified, it will be used as the save location.
-            Label (int): Label index in `Page` to load. Only used in LM version > 104.
-            Caption (:class:`LiveParser`): Caption for this save.
-
-        """
         super().__init__(**kwargs)
         if isinstance(No, construct.Container):
             No = LiveParser.from_struct(No)
@@ -1522,7 +1527,12 @@ class GameSave(BaseCommand):
 
 
 class GameLoad(BaseCommand):
-    """Load a game save."""
+    """Load a game save.
+
+    Args:
+        No (:class:`LiveParser`): Save slot number to load.
+
+    """
 
     type = CommandType.GameLoad
     _struct_fields = construct.Struct(
@@ -1530,11 +1540,6 @@ class GameLoad(BaseCommand):
     )
 
     def __init__(self, No=LiveParser(), **kwargs):
-        """
-        Args:
-            No (:class:`LiveParser`): Save slot number to load.
-
-        """
         super().__init__(**kwargs)
         if isinstance(No, construct.Container):
             No = LiveParser.from_struct(No)
@@ -1546,6 +1551,11 @@ class PCReset(BaseCommand):
 
     See LiveNovel documentation for details.
 
+    Args:
+        Page (:class:`LabelReference`): PC will be reset to `Page`.
+        AllClear (int): If non-zero, all call stack information will be
+            cleared after the reset.
+
     """
 
     type = CommandType.PCReset
@@ -1555,13 +1565,6 @@ class PCReset(BaseCommand):
     )
 
     def __init__(self, Page=LabelReference(), AllClear=0, **kwargs):
-        """
-        Args:
-            Page (:class:`LabelReference`): PC will be reset to `Page`.
-            AllClear (int): If non-zero, all call stack information will be
-                cleared after the reset.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             LabelReference.from_struct(Page)
@@ -1653,7 +1656,12 @@ class CGCaption(BaseComponentCommand):
 
 
 class MediaPlay(BaseCommand):
-    """Play the specified media."""
+    """Play the specified media.
+
+    Args:
+        Target (:class:`LiveParser`): Media object to play.
+
+    """
 
     type = CommandType.MediaPlay
     _struct_fields = construct.Struct(
@@ -1662,9 +1670,6 @@ class MediaPlay(BaseCommand):
 
     def __init__(self, Target=LiveParser(), **kwargs):
         """
-        Args:
-            Target (:class:`LiveParser`): Media object to play.
-
         """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
@@ -1679,7 +1684,18 @@ class PrevMenuNew(BaseComponentCommand):
 
 
 class PropMotion(BaseCommand):
-    """Gradually change the specified object property to the specified value over time."""
+    """Gradually change the specified object property to the specified value over time.
+
+    Args:
+        Name (:class:`LiveParser`): Name of this motion.
+        ObjName (:class:`LiveParser`): Object to modify.
+        ObjProp (:class:`LiveParser`): Property to modify.
+        Value (:class:`LiveParser`): Value to set.
+        Time (:class:`LiveParser`): Duration in milliseconds.
+        MoveType (:class:`LiveParser`): Move type, see LiveNovel docs for details.
+        Paused: (:class:`LiveParser`): Unknown. Only used for LM version > 107.
+
+    """
 
     type = CommandType.PropMotion
     _struct_fields = construct.Struct(
@@ -1695,17 +1711,6 @@ class PropMotion(BaseCommand):
     def __init__(self, Name=LiveParser(), ObjName=LiveParser(), ObjProp=LiveParser(),
                  Value=LiveParser(), Time=LiveParser(), MoveType=LiveParser(),
                  Paused=None, **kwargs):
-        """
-        Args:
-            Name (:class:`LiveParser`): Name of this motion.
-            ObjName (:class:`LiveParser`): Object to modify.
-            ObjProp (:class:`LiveParser`): Property to modify.
-            Value (:class:`LiveParser`): Value to set.
-            Time (:class:`LiveParser`): Duration in milliseconds.
-            MoveType (:class:`LiveParser`): Move type, see LiveNovel docs for details.
-            Paused: (:class:`LiveParser`): Unknown. Only used for LM version > 107.
-
-        """
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
             Name = LiveParser.from_struct(Name)
@@ -1731,7 +1736,13 @@ class PropMotion(BaseCommand):
 
 
 class FormatHist(BaseCommand):
-    """Register a history display format."""
+    """Register a history display format.
+
+    Args:
+        Name (:class:`LiveParser`): Name of this format.
+        Target (:class:`LiveParser`): Target message box. Only used in LM version > 110.
+
+    """
 
     type = CommandType.FormatHist
     _struct_fields = construct.Struct(
@@ -1741,10 +1752,6 @@ class FormatHist(BaseCommand):
 
     def __init__(self, Name=LiveParser(), Target=LiveParser(), **kwargs):
         """
-        Args:
-            Name (:class:`LiveParser`): Name of this format.
-            Target (:class:`LiveParser`): Target message box. Only used in LM version > 110.
-
         """
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
@@ -1760,6 +1767,11 @@ class SaveCabinet(BaseComponentCommand):
 
     See LiveNovel docs for details.
 
+    Args:
+        Act (:class:`LiveParser`): If FALSE the specified screen objects will be saved.
+            If TRUE, all screen objects other than the specified ones will be saved.
+        Targets (:class:`LiveParserArray`): List of objects to save.
+
     """
 
     type = CommandType.SaveCabinet
@@ -1771,11 +1783,6 @@ class SaveCabinet(BaseComponentCommand):
 
     def __init__(self, Act=LiveParser(), Targets=LiveParserArray(), **kwargs):
         """
-        Args:
-            Act (:class:`LiveParser`): If FALSE the specified screen objects will be saved.
-                If TRUE, all screen objects other than the specified ones will be saved.
-            Targets (:class:`LiveParserArray`): List of objects to save.
-
         """
         super().__init__(**kwargs)
         if isinstance(Act, construct.Container):

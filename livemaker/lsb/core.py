@@ -413,24 +413,21 @@ class Param(BaseSerializable):
     Internally, LiveMaker subclasses each possible TParam type,
     but in pylivemaker we handle them all here.
 
+    Args:
+        value: The value for this parameter.
+        type (:class:`ParamType`): The data type for this parameter.
+            If type is not specified, it will be guessed based on value.
+
+    Note:
+        If `value` is a variable name, ``Var`` type must be explicity specified,
+        otherwise it will incorrectly be guessed to be ``Str``.
+
+        If `value` is an integer flag, ``Flag`` type must be explicitly specified,
+        otherwise it will be incorrectly guessed to be ``Int``.
+
     """
 
     def __init__(self, value=None, type=None, **kwargs):
-        """Construct a new Param.
-
-        Args:
-            value: The value for this parameter.
-            type (:class:`ParamType`): The data type for this parameter.
-                If type is not specified, it will be guessed based on value.
-
-        Note:
-            If `value` is a variable name, ``Var`` type must be explicity specified,
-            otherwise it will incorrectly be guessed to be ``Str``.
-
-            If `value` is an integer flag, ``Flag`` type must be explicitly specified,
-            otherwise it will be incorrectly guessed to be ``Int``.
-
-        """
         self.value = value
         if type is None:
             if isinstance(value, int):
@@ -507,18 +504,17 @@ class OpeData(BaseSerializable):
     """Expression operator class.
 
     Internal LiveMaker TOpeData class.
+
+    Args:
+        type (:class:`OpeDataType`): Operator type for this expression.
+        name (str): The name of result variable for this expression.
+        func (:class:`OpeFuncType`): Function for this expression (only applicable if
+            `type` is `OpeDataType.Func`.
+        operands (list(:class:`Param`)): The operands for this expression.
+
     """
 
     def __init__(self, type=OpeDataType.None_, name='', func=None, operands=[], **kwargs):
-        """
-        Args:
-            type (:class:`OpeDataType`): Operator type for this expression.
-            name (str): The name of result variable for this expression.
-            func (:class:`OpeFuncType`: Function for this expression (only applicable if
-                `type` is `OpeDataType.Func`.
-            operands (list(:class:`Param`)): The operands for this expression.
-
-        """
         self.type = OpeDataType(int(type))
         self.name = name
         if self.type == OpeDataType.Func:
@@ -787,14 +783,14 @@ class OpeData(BaseSerializable):
 
 
 class LiveParser(BaseSerializable):
-    """Parses a list of OpeData expressions into one result expression."""
+    """Parses a list of OpeData expressions into one result expression.
+
+    Args:
+        entries (list(:class:`OpeData`)): List of child expressions
+
+    """
 
     def __init__(self, entries=[], **kwargs):
-        """
-        Args:
-            entries (list(:class:`OpeData`)): List of child expressions
-
-        """
         if isinstance(entries, construct.ListContainer):
             entries = [OpeData.from_struct(x) for x in entries]
         self.entries = entries
@@ -877,15 +873,15 @@ class LiveParser(BaseSerializable):
 
 
 class LiveParserArray(BaseSerializable):
-    """Internal use convenience class for handling arrays of :obj:`LiveParser` objects."""
+    """Internal use convenience class for handling arrays of :obj:`LiveParser` objects.
+
+    Args:
+        parsers (iterable): Iterable containing this array's parsers.
+        name (str): Name for this field, used as XML tag name when serializing.
+
+    """
 
     def __init__(self, parsers=[], prefixed=True):
-        """
-        Args:
-            parsers (iterable): Iterable containing this array's parsers.
-            name (str): Name for this field, used as XML tag name when serializing.
-
-        """
         if isinstance(parsers, construct.ListContainer):
             parsers = [LiveParser.from_struct(x) for x in parsers]
         self.parsers = parsers

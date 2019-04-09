@@ -369,7 +369,27 @@ class LMArchive(object):
     Behaves in the same manner as Python ``tarfile.TarFile`` or ``zipfile.ZipFile``.
     Can be used inside a Python ``with`` statement (in the same way as zip/tar files).
 
+    Args:
+        name: Pathname for the archive. `name` can be a string or path-like object.
+            If omitted, `fp` must be specified.
+        mode: Either ``'r'`` to read from an existing archive or ``'w'`` to create a new file
+            (overwriting an existing one). Defaults to ``'r'``.
+        fp: If `fileobj` is given, it will be used for reading and writing data.
+            If it can be determined, `mode` will be overridden by `fp`'s mode. `fileobj`
+            will be used from position 0.
+        exe: Pathname for LiveMaker executable (``.exe``) file. If `exe` is given and
+            `mode` is ``w``, the output file will be an executable with the archive
+            appended to the end (i.e. a LiveMaker ``.exe`` file). If `exe` is not given,
+            the output file will be a standalone archive (i.e. a LiveMaker ``.dat`` file).
+            `exe` does nothing when opening a file for reading.
+        version: Archive version, only applies to write mode.
+
     Note:
+        `fp` is not closed when `LiveMakerArchive` is closed.
+
+        ``'a'`` is an invalid `mode` for `LiveMakerArchive`. Archives cannot be modified
+        in place, to patch an existing archive, you must write to a new file.
+
         When opened in write mode, the output archive file will not be written until
         `LMArchive.close()` is called. As entries are added to the archive, they will
         be written to a temporary file. Upon calling `close()`, the exe (if it exists)
@@ -379,30 +399,6 @@ class LMArchive(object):
     """
 
     def __init__(self, name=None, mode='r', fp=None, exe=None, version=DEFAULT_VERSION):
-        """Open LiveMaker archive `name` for reading or writing.
-
-        Args:
-            name: Pathname for the archive. `name` can be a string or path-like object.
-                If omitted, `fp` must be specified.
-            mode: Either ``'r'`` to read from an existing archive or ``'w'`` to create a new file
-                (overwriting an existing one). Defaults to ``'r'``.
-            fp: If `fileobj` is given, it will be used for reading and writing data.
-                If it can be determined, `mode` will be overridden by `fp`'s mode. `fileobj`
-                will be used from position 0.
-            exe: Pathname for LiveMaker executable (``.exe``) file. If `exe` is given and
-                `mode` is ``w``, the output file will be an executable with the archive
-                appended to the end (i.e. a LiveMaker ``.exe`` file). If `exe` is not given,
-                the output file will be a standalone archive (i.e. a LiveMaker ``.dat`` file).
-                `exe` does nothing when opening a file for reading.
-            version: Archive version, only applies to write mode.
-
-        Note:
-            `fp` is not closed when `LiveMakerArchive` is closed.
-
-            ``'a'`` is an invalid `mode` for `LiveMakerArchive`. Archives cannot be modified
-            in place, to patch an existing archive, you must write to a new file.
-
-        """
         self.closed = True
         if not name and fp:
             raise ValueError('Nothing to open')
