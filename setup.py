@@ -16,7 +16,6 @@ requirements = [
     'construct>=2.9',
     'lxml>=4.3',
     'numpy>=1.16',
-    'Pillow>=5.4.1',
 ]
 
 setup_requirements = ['pytest-runner', ]
@@ -51,7 +50,7 @@ setup(
     include_package_data=True,
     keywords='LiveMaker',
     name='pylivemaker',
-    packages=find_packages(include=['livemaker']),
+    packages=find_packages(include=['livemaker', 'livemaker.lsb']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
