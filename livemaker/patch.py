@@ -39,8 +39,8 @@ log.addHandler(fh)
 @click.command()
 # @lmlsb.option('-r', '--recursive', is_flag=True, default=False)
 @click.argument('exe_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('patched_lsb', required=True, type=click.Path(exists=True, dir_okay=False))
-def lmpatch(exe_file, patched_lsb):
+#@click.argument('patched_lsb', required=True, type=click.Path(exists=True, dir_okay=False))
+def lmpatch(exe_file):
     """Patch a LiveMaker game.
 
     Any existing version of patched_lsb will be replaced in the specified
@@ -69,7 +69,7 @@ def lmpatch(exe_file, patched_lsb):
     else:
         tmp_exe = None
 
-    lsb_path = PureWindowsPath(patched_lsb)
+    #lsb_path = PureWindowsPath(patched_lsb)
     try:
         fd, tmpfile_path = tempfile.mkstemp()
         tmpfile_path = Path(tmpfile_path)
@@ -89,17 +89,17 @@ def lmpatch(exe_file, patched_lsb):
                 for info in bar:
                     # data = orig_lm.read(info, decompress=False)
                     # new_lm.writebytes(info, data)
-                    if info.path == lsb_path:
+                    if os.path.isfile(info.path):#if file exists in current folder
                         # replace existing with patch version, use original
                         # compress type
-                        new_lm.write(lsb_path, compress_type=info.compress_type)
-                        log.info('patched {}'.format(lsb_path))
+                        new_lm.write(info.path, compress_type=info.compress_type)
+                        print('patched {}'.format(info))
                         # print('patched')
                     else:
                         # copy original version
                         data = orig_lm.read(info, decompress=False)
                         new_lm.writebytes(info, data)
-                        log.info('copied {}'.format(lsb_path))
+                        print('copied {}'.format(info))
                     # print(info.name)
         orig_lm.close()
         tmpfp.close()
