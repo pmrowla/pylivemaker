@@ -82,6 +82,7 @@ class VAlignEnum(enum.IntEnum):
     TOP = 1
     CENTER = 2
     BOTTOM = 3
+    UNKNOWN = 4
 
 
 class TWdType(enum.IntEnum):
@@ -513,9 +514,17 @@ class TWdImg(BaseTWdReal):
         self.src = src
         self.align = int(align)
         self.hoversrc = hoversrc
+        if mgnleft is None:
+            mgnleft = 0
         self.mgnleft = int(mgnleft)
+        if mgnright is None:
+            mgnright = 0
         self.mgnright = int(mgnright)
+        if mgntop is None:
+            mgntop = 0
         self.mgntop = int(mgntop)
+        if mgnbottom is None:
+            mgnbottom = 0
         self.mgnbottom = int(mgnbottom)
         self.downsrc = downsrc
 
