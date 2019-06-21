@@ -788,12 +788,12 @@ class TpWord(BaseSerializable):
         return [(k, self[k]) for k in self.keys()]
 
     def to_lsc(self):
-        dec = LNSDecompiler(self)
-        return dec.decompile(sep='', strip_comments=True)
+        dec = LNSDecompiler(sep='')
+        return dec.decompile(self)
 
     def to_xml(self):
-        dec = LNSDecompiler(self)
-        xml = '<![CDATA[\n{}\n]]>'.format(dec.decompile())
+        dec = LNSDecompiler()
+        xml = '<![CDATA[\n{}\n]]>'.format(dec.decompile(self))
         if '\x01' in xml:
             log.warn('Removing illegal xml char \\x01')
             xml = xml.replace('\x01', '*')
