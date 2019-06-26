@@ -22,6 +22,7 @@ import logging
 import os
 import sys
 import tempfile
+import shutil
 from pathlib import Path, PureWindowsPath
 
 import click
@@ -106,8 +107,12 @@ def lmpatch(exe_file, patched_lsb):
 
         # backup original file
         exe_path.rename(backup_path)
-        # mv tmpfile
-        tmpfile_path.rename(exe_path)
+        # copy tmpfile to output path then remove the tmp copy.
+        # this operation needs to be a copy instead of rename (move)
+        # in case windows system temp directory is on a different
+        # logical drive than the output path
+        shutil.copy(tmpfile_path, exe_path)
+        tmpfile_path.unlink()
     except Exception as e:
         log.error(e)
         # remove
