@@ -13,7 +13,8 @@ Command-line tools
 lmar
 ^^^^
 
-Use ``lmar`` to work with LiveMaker archives and executables::
+Use ``lmar`` to work with LiveMaker archives and executables.
+When handling split VFF archives, lmar should be passed the path to the ``.ext`` index file::
 
     $ lmar --help
     Usage: lmar [OPTIONS] COMMAND [ARGS]...

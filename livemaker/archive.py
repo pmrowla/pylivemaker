@@ -34,6 +34,7 @@ Note:
 
 import enum
 import logging
+import os.path
 import shutil
 import struct
 import tempfile
@@ -382,6 +383,9 @@ class LMArchive(object):
             appended to the end (i.e. a LiveMaker ``.exe`` file). If `exe` is not given,
             the output file will be a standalone archive (i.e. a LiveMaker ``.dat`` file).
             `exe` does nothing when opening a file for reading.
+        split: If opening in write mode and `split` is ``True``, the archive data will be split
+            into smaller files across 1GB boundaries. `split` has no effect in read mode or when
+            writing an executable archive.
         version: Archive version, only applies to write mode.
 
     Note:
@@ -398,9 +402,9 @@ class LMArchive(object):
 
     """
 
-    def __init__(self, name=None, mode='r', fp=None, exe=None, version=DEFAULT_VERSION):
+    def __init__(self, name=None, mode='r', fp=None, exe=None, split=False, version=DEFAULT_VERSION):
         self.closed = True
-        if not name and fp:
+        if not name and not fp:
             raise ValueError('Nothing to open')
         modes = {'r': 'rb', 'w': 'wb'}
         if mode not in modes:
@@ -420,21 +424,27 @@ class LMArchive(object):
         self.fp = fp
         self.closed = False
 
-        if name:
-            self.name = str(Path(name).resolve())
-        else:
-            self.name = None
+        self.name = str(Path(name).resolve())
 
         self.filelist = []
         self.name_info = {}
 
         try:
             if mode == 'w':
+                self._read_fps = []
                 if exe:
                     self.exefp = open(exe, 'rb')
                     self.is_exe = True
+                    self.is_split = False
                 else:
                     self.is_exe = False
+                    if split:
+                        self.is_split = True
+                        _, ext = os.path.splitext(self.name)
+                        if ext.lower() != '.ext':
+                            log.warn('Writing split archive index without .ext file extension.')
+                    else:
+                        self.is_split = False
                     self.exefp = None
                 self.tmpfp = tempfile.TemporaryFile()
                 self.version = version
@@ -442,13 +452,32 @@ class LMArchive(object):
                 self.exefp = None
                 self.is_exe = False
                 self.tmpfp = None
+                self._read_fps = []
                 savepos = self.fp.tell()
                 self.archive_offset = self._find_archive_offset()
                 self._parse_directory()
+                root, ext = os.path.splitext(self.name)
+                if ext.lower() == '.ext':
+                    self.is_split = True
+                    self._split_base = root
+                    dat_file = '{}.dat'.format(self._split_base)
+                    if not os.path.isfile(dat_file):
+                        raise BadLiveMakerArchive(
+                            'Could not find (.dat) data file for split archive index {}.'.format(self.name))
+                    self._read_fps.append(open(dat_file, self._mode))
+                    for i in range(1, 100):
+                        dat_file = '{}.{:03}'.format(self._split_base, i)
+                        if os.path.isfile(dat_file):
+                            self._read_fps.append(open(dat_file, self._mode))
+                else:
+                    self.is_split = False
         except Exception as e:
             if self._extfp:
                 self.fp.seek(savepos)
             else:
+                if self._read_fps:
+                    for fp in self._read_fps:
+                        fp.close()
                 self.fp.close()
             self.closed = True
             raise e
@@ -485,6 +514,9 @@ class LMArchive(object):
                 self.exefp.close()
             if self.tmpfp:
                 self.tmpfp.close()
+            if self._read_fps:
+                for fp in self._read_fps:
+                    fp.close()
             self.closed = True
 
     def namelist(self):
@@ -648,8 +680,23 @@ class LMArchive(object):
             info = self.getinfo(name)
         if decompress and info.compress_type not in SUPPORTED_COMPRESSIONS:
             raise UnsupportedLiveMakerCompression('{} is unsupported'.format(info.compress_type))
-        self.fp.seek(self.archive_offset + info._offset)
-        data = self.fp.read(info.compressed_size)
+        if self._read_fps:
+            # archive data is split on 1GB (1024 * 1024 * 1024 bytes) boundaries
+            # start reading from whichever data file contains the start of
+            # this node, and then continue reading across boundary as needed
+            offset = self.archive_offset + info._offset
+            data = b''
+            while len(data) < info.compressed_size:
+                bytes_needed = info.compressed_size - len(data)
+                fp = self._read_fps[offset // 1073741824]
+                fp.seek(offset % 1073741824)
+                tmp = fp.read(bytes_needed)
+                data += tmp
+                offset += len(tmp)
+        else:
+            fp = self.fp
+            fp.seek(self.archive_offset + info._offset)
+            data = self.fp.read(info.compressed_size)
         if not skip_checksum and info.checksum is not None:
             if info.checksum != LMArchiveDirectory.checksum(data):
                 log.warn('Bad checksum for file {}.'.format(info.name))
@@ -829,13 +876,29 @@ class LMArchive(object):
 
     def _write_archive(self):
         # copy data from temp file into final archive
-        self.tmpfp.seek(0)
-        shutil.copyfileobj(self.tmpfp, self.fp)
+        if self.is_split:
+            self.tmpfp.seek(0, 2)
+            total_size = self.tmpfp.tell()
+            extra_files = total_size // 1073741824
+            if total_size and (total_size % 1073741824) == 0:
+                extra_files -= 1
+            self.tmpfp.seek(0)
+            dat_file = '{}.dat'.format(self._split_base)
+            with open(dat_file, self._mode) as fp:
+                shutil.copyfileobj(self.tmpfp, fp, 1073741824)
+            for i in range(1, extra_files + 1):
+                dat_file = '{}.{:03}'.format(self._split_base, i)
+                with open(dat_file, self._mode) as fp:
+                    shutil.copyfileobj(self.tmpfp, fp, 1073741824)
+        else:
+            self.tmpfp.seek(0)
+            shutil.copyfileobj(self.tmpfp, self.fp)
 
     def _write_trailer(self):
-        data = struct.pack('<I', self.archive_offset)
-        self.fp.write(data)
-        self.fp.write(b'lv')
+        if not self.is_split:
+            data = struct.pack('<I', self.archive_offset)
+            self.fp.write(data)
+            self.fp.write(b'lv')
 
 
 class LMArchiveInfo(object):
