@@ -10,6 +10,10 @@ Look at the `livemaker.cli` and `livemaker.patch` modules for usage examples.
 Command-line tools
 ------------------
 
+.. note:: Windows users running the pylivemaker CLI tools in CMD Prompt or PowerShell should ensure that your terminal font supports Japanese characters, otherwise the pylivemaker console output may be unreadable.
+    The default terminal font in Windows 10 (Consolas) does not support Japanese characters, and needs to be changed to some font which includes Japanese characters (such as MS Gothic).
+    Running pylivemaker CLI tools should not require changing your entire Windows system locale to Japanese.
+
 lmar
 ^^^^
 
