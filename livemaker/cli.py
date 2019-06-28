@@ -605,7 +605,7 @@ def edit(lsb_file, line_number):
                     if op.type == ParamType.Int or op.type == ParamType.Flag:
                         op.value = int(value)
                     elif op.type == ParamType.Float:
-                        op.value = numpy.float128(value)
+                        op.value = numpy.longdouble(value)
                     else:
                         op.value = value
         else:
@@ -616,7 +616,7 @@ def edit(lsb_file, line_number):
                     if param_type == ParamType.Int or param_type == ParamType.Flag:
                         value = int(value)
                     elif param_type == ParamType.Float:
-                        value = numpy.float128(value)
+                        value = numpy.longdouble(value)
                     op = Param(value, param_type)
                     e = OpeData(type=OpeDataType.To, name='___arg', operands=[op])
                     parser.entries.append(e)

@@ -121,7 +121,9 @@ class ParamType(enum.IntEnum):
     """Floating point value.
 
     LiveMaker TParamFloats are IEEE 80-bit precision floats, in pylivemaker we handle them
-    as numpy `float128`.
+    as numpy `longdouble`.
+    According to numpy docs, ``np.longdouble` is either `float96` or ``float128`` depending on platform,
+    and in both cases they are actually ``float80`` padded with zeroes to 96 or 128 bits.
     """
 
     Flag = 0x03
@@ -432,9 +434,9 @@ class Param(BaseSerializable):
         if type is None:
             if isinstance(value, int):
                 self.type = ParamType.Int
-            elif isinstance(value, (float, numpy.float128)):
+            elif isinstance(value, (float, numpy.longdouble)):
                 self.type = ParamType.Float
-                self.value = numpy.float128(value)
+                self.value = numpy.longdouble(value)
             elif isinstance(value, bool):
                 self.type = ParamType.Flag
             elif isinstance(value, str):
@@ -486,8 +488,8 @@ class Param(BaseSerializable):
                     'Float': construct.ExprAdapter(
                         construct.Bytes(10),
                         lambda obj, ctx: numpy.frombuffer(obj.rjust(16, b'\x00'),
-                                                          dtype=numpy.float128),
-                        lambda obj, ctx: numpy.float128(obj).tobytes()[-10:]
+                                                          dtype=numpy.longdouble),
+                        lambda obj, ctx: numpy.longdouble(obj).tobytes()[-10:]
                     ),
                     'Flag': construct.Byte,
                     'Str': construct.PascalString(construct.Int32ul, 'cp932'),
