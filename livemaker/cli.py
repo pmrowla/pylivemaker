@@ -33,7 +33,7 @@ from .archive import LMArchive
 from .exceptions import LiveMakerException, BadLsbError
 from .lsb import LMScript
 from .lsb.command import BaseComponentCommand, CommandType
-from .lsb.core import OpeDataType, ParamType
+from .lsb.core import OpeData, OpeDataType, Param, ParamType
 from .lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
 
 _version = """%(prog)s, version %(version)s
@@ -369,6 +369,188 @@ def insert(encoding, lsb_file, script_file, line_number):
         sys.exit('Could not generate new LSB file: {}'.format(e))
 
 
+# Known property data types
+EDITABLE_PROPERTY_TYPES = {
+    # PR_NONE = 0x00
+    # PR_NAME = 0x01
+    # PR_PARENT = 0x02
+    # PR_SOURCE = 0x03
+    # PR_LEFT = 0x04
+    # PR_TOP = 0x05
+    # PR_WIDTH = 0x06
+    # PR_HEIGHT = 0x07
+    # PR_ZOOMX = 0x08
+    # PR_COLOR = 0x09
+    # PR_BORDERWIDTH = 0x0a
+    # PR_BORDERCOLOR = 0x0b
+    # PR_ALPHA = 0x0c
+    'PR_PRIORITY': ParamType.Int,
+    # PR_OFFSETX = 0x0e
+    # PR_OFFSETY = 0x0f
+    # PR_FONTNAME = 0x10
+    'PR_FONTHEIGHT': ParamType.Int,
+    # PR_FONTSTYLE = 0x12
+    'PR_LINESPACE': ParamType.Int,
+    'PR_FONTCOLOR': ParamType.Int,
+    'PR_FONTLINKCOLOR': ParamType.Int,
+
+    'PR_FONTBORDERCOLOR': ParamType.Int,
+
+    'PR_FONTHOVERCOLOR': ParamType.Int,
+
+    # PR_FONTHOVERSTYLE = 0x18
+    # PR_HOVERCOLOR = 0x19
+    'PR_ANTIALIAS': ParamType.Flag,
+    # PR_DELAY = 0x1b
+    'PR_PAUSED': ParamType.Flag,
+    # PR_VOLUME = 0x1d
+    # PR_REPEAT = 0x1e
+    # PR_BALANCE = 0x1f
+    # PR_ANGLE = 0x20
+    # PR_ONPLAYING = 0x21
+    # PR_ONNOTIFY = 0x22
+    # PR_ONMOUSEMOVE = 0x23
+    # PR_ONMOUSEOUT = 0x24
+    # PR_ONLBTNDOWN = 0x25
+    # PR_ONLBTNUP = 0x26
+    # PR_ONRBTNDOWN = 0x27
+    # PR_ONRBTNUP = 0x28
+    # PR_ONWHEELDOWN = 0x29
+    # PR_ONWHEELUP = 0x2a
+    # PR_BRIGHTNESS = 0x2b
+    # PR_ONPLAYEND = 0x2c
+    # PR_INDEX = 0x2d
+    # PR_COUNT = 0x2e
+    # PR_ONLINK = 0x2f
+    'PR_VISIBLE': ParamType.Flag,
+    # PR_COLCOUNT = 0x31
+    # PR_ROWCOUNT = 0x32
+    # PR_TEXT = 0x33
+    # PR_MARGINX = 0x34
+    # PR_MARGINY = 0x35
+    # PR_HALIGN = 0x36
+    # PR_BORDERSOURCETL = 0x37
+    # PR_BORDERSOURCETC = 0x38
+    # PR_BORDERSOURCETR = 0x39
+    # PR_BORDERSOURCECL = 0x3a
+    # PR_BORDERSOURCECC = 0x3b
+    # PR_BORDERSOURCECR = 0x3c
+    # PR_BORDERSOURCEBL = 0x3d
+    # PR_BORDERSOURCEBC = 0x3e
+    # PR_BORDERSOURCEBR = 0x3f
+    # PR_BORDERHALIGNT = 0x40
+    # PR_BORDERHALIGNC = 0x41
+    # PR_BORDERHALIGNB = 0x42
+    # PR_BORDERVALIGNL = 0x43
+    # PR_BORDERVALIGNC = 0x44
+    # PR_BORDERVALIGNR = 0x45
+    # PR_SCROLLSOURCE = 0x46
+    # PR_CHECKSOURCE = 0x47
+    # PR_AUTOSCRAP = 0x48
+    # PR_ONSELECT = 0x49
+    # PR_RCLICKSCRAP = 0x4a
+    # PR_ONOPENING = 0x4b
+    # PR_ONOPENED = 0x4c
+    # PR_ONCLOSING = 0x4d
+    # PR_ONCLOSED = 0x4e
+    # PR_CARETX = 0x4f
+    # PR_CARETY = 0x50
+    'PR_IGNOREMOUSE': ParamType.Int,
+    'PR_TEXTPAUSED': ParamType.Flag,
+    # PR_TEXTDELAY = 0x53
+    # PR_HOVERSOURCE = 0x54
+    # PR_PRESSEDSOURCE = 0x55
+    # PR_GROUPINDEX = 0x56
+    # PR_ALLOWALLUP = 0x57
+    # PR_SELECTED = 0x58
+    # PR_CAPTUREMASK = 0x59
+    # PR_POWER = 0x5a
+    # PR_ORIGWIDTH = 0x5b
+    # PR_ORIGHEIGHT = 0x5c
+    # PR_APPEARX = 0x5d
+    # PR_APPEARY = 0x5e
+    # PR_PARTMOTION = 0x5f
+    # PR_PARAM = 0x60
+    # PR_PARAM2 = 0x61
+    # PR_TOPINDEX = 0x62
+    # PR_READONLY = 0x63
+    # PR_CURSOR = 0x64
+    # PR_POSZOOMED = 0x65
+    # PR_ONPLAYSTART = 0x66
+    # PR_PARAM3 = 0x67
+    # PR_ONMOUSEIN = 0x68
+    # PR_ONMAPIN = 0x69
+    # PR_ONMAPOUT = 0x6a
+    # PR_MAPSOURCE = 0x6b
+    # PR_AMP = 0x6c
+    # PR_WAVELEN = 0x6d
+    # PR_SCROLLX = 0x6e
+    # PR_SCROLLY = 0x6f
+    # PR_FLIPH = 0x70
+    # PR_FLIPV = 0x71
+    # PR_ONIDLE = 0x72
+    # PR_DISTANCEX = 0x73
+    # PR_DISTANCEY = 0x74
+    # PR_CLIPLEFT = 0x75
+    # PR_CLIPTOP = 0x76
+    # PR_CLIPWIDTH = 0x77
+    # PR_CLIPHEIGHT = 0x78
+    # PR_DURATION = 0x79
+    # PR_THUMBSOURCE = 0x7a
+    # PR_BUTTONSOURCE = 0x7b
+    # PR_MIN = 0x7c
+    # PR_MAX = 0x7d
+    # PR_VALUE = 0x7e
+    # PR_ORIENTATION = 0x7f
+    # PR_SMALLCHANGE = 0x80
+    # PR_LARGECHANGE = 0x81
+    # PR_MAPTEXT = 0x82
+    # PR_GLYPHWIDTH = 0x83
+    # PR_GLYPHHEIGHT = 0x84
+    # PR_ZOOMY = 0x85
+    # PR_CLICKEDSOURCE = 0x86
+    # PR_ANIPAUSED = 0x87
+    # PR_ONHOLD = 0x88
+    # PR_ONRELEASE = 0x89
+    # PR_REVERSE = 0x8a
+    # PR_PLAYING = 0x8b
+    # PR_REWINDONLOAD = 0x8c
+    # PR_COMPOTYPE = 0x8d
+    'PR_FONTSHADOWCOLOR': ParamType.Int,
+    'PR_FONTBORDER': ParamType.Int,
+    'PR_FONTSHADOW': ParamType.Int,
+    # PR_ONKEYDOWN = 0x91
+    # PR_ONKEYUP = 0x92
+    # PR_ONKEYREPEAT = 0x93
+    'PR_HANDLEKEY': ParamType.Flag,
+    # PR_ONFOCUSIN = 0x95
+    # PR_ONFOCUSOUT = 0x96
+    # PR_OVERLAY = 0x97
+    # PR_TAG = 0x98
+    'PR_CAPTURELINK': ParamType.Flag,
+    # PR_FONTHOVERBORDER = 0x9a
+    # PR_FONTHOVERBORDERCOLOR = 0x9b
+    # PR_FONTHOVERSHADOW = 0x9c
+    # PR_FONTHOVERSHADOWCOLOR = 0x9d
+    # PR_BARSIZE = 0x9e
+    # PR_MUTEONLOAD = 0x9f
+    # PR_PLUSX = 0xa0
+    # PR_PLUSY = 0xa1
+    # PR_CARETHEIGHT = 0xa2
+    # PR_REPEATPOS = 0xa3
+    # PR_BLURSPAN = 0xa4
+    # PR_BLURDELAY = 0xa5
+    'PR_FONTCHANGEABLED': ParamType.Flag,
+    # PR_IMEMODE = 0xa7
+    # PR_FLOATANGLE = 0xa8
+    # PR_FLOATZOOMX = 0xa9
+    # PR_FLOATZOOMY = 0xaa
+    # PR_CAPMASKLEVEL = 0xab
+    # PR_PADDINGLEFT = 0xac
+    # PR_PADDING_RIGHT = 0xad
+}
+
+
 @lmlsb.command()
 @click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay=False))
 @click.argument('line_number', required=True, type=int)
@@ -380,6 +562,9 @@ def edit(lsb_file, line_number):
 
     The original LSB file will be backed up to <lsb_file>.bak
 
+    Note: Setting empty fields to improper data types may cause
+    undefined behavior in the LiveMaker engine.
+
     """
     with open(lsb_file, 'rb') as f:
         try:
@@ -387,9 +572,12 @@ def edit(lsb_file, line_number):
         except LiveMakerException as e:
             sys.exit('Could not open LSB file: {}'.format(e))
 
-    try:
-        cmd = lsb.commands[line_number]
-    except IndexError:
+    cmd = None
+    for c in lsb.commands:
+        if c.LineNo == line_number:
+            cmd = c
+            break
+    else:
         sys.exit('Command {} does not exist in the specified LSB'.format(line_number))
 
     print('{}: {}'.format(line_number, str(cmd).replace('\r', '\\r').replace('\n', '\\n')))
@@ -403,19 +591,37 @@ def edit(lsb_file, line_number):
         # TODO: editing complex fields and adding values for empty fields will
         # require full LiveParser expression parsing, for now we can only edit
         # simple scalar values.
-        if len(parser.entries) != 1 or parser.entries[0].type != OpeDataType.To:
+        if len(parser.entries) > 1 or \
+                (len(parser.entries) == 1 and parser.entries[0].type != OpeDataType.To) or \
+                (len(parser.entries) == 0 and key not in EDITABLE_PROPERTY_TYPES):
             print('{} [{}]: <skipping uneditable field>'.format(key, parser))
             continue
-        e = parser.entries[0]
-        op = e.operands[-1]
-        value = click.prompt(key, default=op.value)
-        if value != op.value:
-            if op.type == ParamType.Int or op.type == ParamType.Flag:
-                op.value = int(value)
-            elif op.type == ParamType.Float:
-                op.value = numpy.float128(value)
-            else:
-                op.value = value
+        if parser.entries:
+            e = parser.entries[0]
+            op = e.operands[-1]
+            if op:
+                value = click.prompt(key, default=op.value)
+                if value != op.value:
+                    if op.type == ParamType.Int or op.type == ParamType.Flag:
+                        op.value = int(value)
+                    elif op.type == ParamType.Float:
+                        op.value = numpy.float128(value)
+                    else:
+                        op.value = value
+        else:
+            value = click.prompt(key, default='')
+            if value:
+                param_type = EDITABLE_PROPERTY_TYPES[key]
+                try:
+                    if param_type == ParamType.Int or param_type == ParamType.Flag:
+                        value = int(value)
+                    elif param_type == ParamType.Float:
+                        value = numpy.float128(value)
+                    op = Param(value, param_type)
+                    e = OpeData(type=OpeDataType.To, name='___arg', operands=[op])
+                    parser.entries.append(e)
+                except ValueError:
+                    print('Invalid datatype for {}, skipping.'.format(key))
 
     print('Backing up original LSB.')
     shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
