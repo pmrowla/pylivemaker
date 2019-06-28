@@ -221,8 +221,10 @@ def validate(input_file):
               help='Output mode (defaults to text)')
 @click.option('-e', '--encoding', type=click.Choice(['cp932', 'utf-8']), default='utf-8',
               help='Output text encoding (defaults to utf-8).')
+@click.option('-o', '--output-file', type=click.Path(dir_okay=False),
+              help='Output file. If unspecified, output will be dumped to stdout.')
 @click.argument('input_file', required=True, nargs=-1, type=click.Path(exists=True, dir_okay='False'))
-def dump(mode, encoding, input_file):
+def dump(mode, encoding, output_file, input_file):
     """Dump the contents of the specified LSB file(s) to stdout in a human-readable format.
 
     For text mode, the full LSB will be output as human-readable text.
@@ -231,6 +233,11 @@ def dump(mode, encoding, input_file):
 
     For lines mode, only text lines will be output.
     """
+    if output_file:
+        outf = open(output_file, mode='w', encoding=encoding)
+    else:
+        outf = sys.stdout
+
     for path in input_file:
         with open(path, 'rb') as f:
             data = f.read()
@@ -241,7 +248,8 @@ def dump(mode, encoding, input_file):
             continue
         if mode == 'xml':
             root = lsb.to_xml()
-            print(etree.tostring(root, encoding=encoding, pretty_print=True, xml_declaration=True).decode(encoding))
+            print(etree.tostring(root, encoding=encoding, pretty_print=True, xml_declaration=True).decode(encoding),
+                  file=outf)
         elif mode == 'lines':
             lsb_path = Path(path)
             for line, name, scenario in lsb.text_scenarios():
@@ -249,11 +257,11 @@ def dump(mode, encoding, input_file):
                     name = '{}-{}.lns'.format(lsb_path.stem, name)
                 if not name:
                     name = '{}-line{}.lns'.format(lsb_path.stem, line)
-                print(name)
-                print('------')
+                print(name, file=outf)
+                print('------', file=outf)
                 dec = LNSDecompiler(text_only=True)
-                print(dec.decompile(scenario))
-                print()
+                print(dec.decompile(scenario), file=outf)
+                print(file=outf)
         else:
             for c in lsb.commands:
                 if c.Mute:
@@ -262,10 +270,10 @@ def dump(mode, encoding, input_file):
                     mute = ''
                 s = ['{}{:4}: {}'.format(mute, c.LineNo, '    ' * c.Indent)]
                 s.append(str(c).replace('\r', '\\r').replace('\n', '\\n'))
-                print(''.join(s))
+                print(''.join(s), file=outf)
                 if c.type == CommandType.TextIns:
                     dec = LNSDecompiler()
-                    print(dec.decompile(c.get('Text')))
+                    print(dec.decompile(c.get('Text')), file=outf)
 
 
 @lmlsb.command()
