@@ -343,7 +343,7 @@ class BaseCommand(BaseSerializable):
             item = etree.SubElement(root, k)
             if hasattr(v, 'to_xml'):
                 x = v.to_xml()
-                if isinstance(x, str):
+                if isinstance(x, (str, etree.CDATA)):
                     item.text = x
                 elif isinstance(x, list):
                     for child in x:

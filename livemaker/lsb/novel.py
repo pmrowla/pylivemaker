@@ -26,6 +26,8 @@ import _markupbase
 
 import construct
 
+from lxml import etree
+
 from .core import BaseSerializable, LiveParser
 from ..exceptions import BadLnsError
 
@@ -793,11 +795,11 @@ class TpWord(BaseSerializable):
 
     def to_xml(self):
         dec = LNSDecompiler()
-        xml = '<![CDATA[\n{}\n]]>'.format(dec.decompile(self))
+        xml = dec.decompile(self)
         if '\x01' in xml:
             log.warn('Removing illegal xml char \\x01')
             xml = xml.replace('\x01', '*')
-        return xml
+        return etree.CDATA(xml)
 
     @classmethod
     def _struct(cls):
