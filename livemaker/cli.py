@@ -618,7 +618,7 @@ def edit(lsb_file, line_number):
                     elif param_type == ParamType.Float:
                         value = numpy.longdouble(value)
                     op = Param(value, param_type)
-                    e = OpeData(type=OpeDataType.To, name='___arg', operands=[op])
+                    e = OpeData(type=OpeDataType.To, name='____arg', operands=[op])
                     parser.entries.append(e)
                 except ValueError:
                     print('Invalid datatype for {}, skipping.'.format(key))
