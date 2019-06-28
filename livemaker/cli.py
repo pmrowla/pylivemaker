@@ -25,13 +25,15 @@ import sys
 from pathlib import Path
 
 import click
+import numpy
 
 from lxml import etree
 
 from .archive import LMArchive
 from .exceptions import LiveMakerException, BadLsbError
 from .lsb import LMScript
-from .lsb.command import CommandType
+from .lsb.command import BaseComponentCommand, CommandType
+from .lsb.core import OpeDataType, ParamType
 from .lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
 
 _version = """%(prog)s, version %(version)s
@@ -355,6 +357,65 @@ def insert(encoding, lsb_file, script_file, line_number):
             break
     else:
         sys.exit('No matching TextIns command in the specified LSB.')
+
+    print('Backing up original LSB.')
+    shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
+    try:
+        new_lsb_data = lsb.to_lsb()
+        with open(lsb_file, 'wb') as f:
+            f.write(new_lsb_data)
+        print('Wrote new LSB.')
+    except LiveMakerException as e:
+        sys.exit('Could not generate new LSB file: {}'.format(e))
+
+
+@lmlsb.command()
+@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument('line_number', required=True, type=int)
+def edit(lsb_file, line_number):
+    """Edit the specified command within an LSB file.
+
+    Only specific command types and specific fields can be edited
+    (currently this is limited to subclasses of BaseComponentCommand).
+
+    The original LSB file will be backed up to <lsb_file>.bak
+
+    """
+    with open(lsb_file, 'rb') as f:
+        try:
+            lsb = LMScript.from_file(f)
+        except LiveMakerException as e:
+            sys.exit('Could not open LSB file: {}'.format(e))
+
+    try:
+        cmd = lsb.commands[line_number]
+    except IndexError:
+        sys.exit('Command {} does not exist in the specified LSB'.format(line_number))
+
+    print('{}: {}'.format(line_number, str(cmd).replace('\r', '\\r').replace('\n', '\\n')))
+    if not isinstance(cmd, BaseComponentCommand):
+        sys.exit('Cannot edit {} commands.'.format(cmd.type.name))
+
+    print()
+    print('Enter new value for each field (or keep existing value)')
+    for key in cmd._component_keys:
+        parser = cmd[key]
+        # TODO: editing complex fields and adding values for empty fields will
+        # require full LiveParser expression parsing, for now we can only edit
+        # simple scalar values.
+        if len(parser.entries) != 1 or parser.entries[0].type != OpeDataType.To:
+            print('{} [{}]: <skipping uneditable field>'.format(key, parser))
+            continue
+        e = parser.entries[0]
+        op = e.operands[-1]
+        value = click.prompt(key, default=op.value)
+        if value != op.value:
+            if op.type == ParamType.Int or op.type == ParamType.Flag:
+                op.value = int(value)
+            elif op.type == ParamType.Float:
+                op.value = numpy.float128(value)
+            else:
+                op.value = value
 
     print('Backing up original LSB.')
     shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
