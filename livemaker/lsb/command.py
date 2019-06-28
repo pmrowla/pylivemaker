@@ -681,7 +681,8 @@ class BaseComponentCommand(BaseCommand):
                     c = components[i]
                     if isinstance(c, construct.Container):
                         c = LiveParser.from_struct(c)
-                    param_type = PropertyType(type_index)
+                    # type_index is 1-indexed (0 is PR_NONE and is ignored)
+                    param_type = PropertyType(type_index + 1)
                     if param_type == PropertyType.PR_NAME:
                         # PR_NAME is a special case
                         self.args['Name'] = c
