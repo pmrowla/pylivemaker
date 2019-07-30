@@ -32,8 +32,8 @@ from lxml import etree
 from .archive import LMArchive
 from .exceptions import LiveMakerException, BadLsbError
 from .lsb import LMScript
-from .lsb.command import BaseComponentCommand, CommandType
-from .lsb.core import OpeData, OpeDataType, Param, ParamType
+from .lsb.command import BaseComponentCommand, Calc, CommandType, Jump
+from .lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
 from .lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
 
 _version = """%(prog)s, version %(version)s
@@ -551,39 +551,128 @@ EDITABLE_PROPERTY_TYPES = {
 }
 
 
-@lmlsb.command()
-@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('line_number', required=True, type=int)
-def edit(lsb_file, line_number):
-    """Edit the specified command within an LSB file.
+def _edit_parser_op(op, prompt='Operand'):
+    if op.type == ParamType.Str:
+        orig = '"{}"'.format(op.value)
+    else:
+        orig = op.value
+    value = click.prompt(prompt, default=orig)
+    if value != orig:
+        if op.type == ParamType.Str:
+            if value.startswith('"'):
+                value = value[1:]
+            else:
+                print('Warning: String literals should be entered as double quoted (") strings, '
+                      'assuming you meant to enter "{}"'.format(value))
+            if value.endswith('"'):
+                value = value[:-1]
+            else:
+                print('Warning: String literals should be entered as double quoted (") strings, '
+                      'assuming you meant to enter "{}"'.format(value))
+        elif op.type in (ParamType.Flag, ParamType.Int):
+            try:
+                value = int(value)
+            except ValueError:
+                print('Expected an integer value, skipping field')
+                return
+        elif op.type == ParamType.Float:
+            try:
+                value = float(value)
+            except ValueError:
+                print('Expected a floating point value, skipping field')
+                return
+        elif op.type == ParamType.Var and value.startswith('"'):
+            print('Expected a variable name, var names cannot start with ", skipping field')
+            return
+        op.value = value
 
-    Only specific command types and specific fields can be edited
-    (currently this is limited to subclasses of BaseComponentCommand).
 
-    The original LSB file will be backed up to <lsb_file>.bak
+def _edit_parser(parser):
+    """Edit fields in a TLiveParser."""
+    # map ____<arg> variables to the appropriate entry index for this parser
+    print('  {}'.format(parser))
+    entry_index = {}
+    for i, entry in enumerate(parser.entries):
+        if entry.type == OpeDataType.To and entry.name.startswith('____'):
+            if len(entry.operands) != 1:
+                print('Got unexpected OpeDataType.To entry')
+                continue
+            entry_index[entry.name] = i
+        elif entry.type == OpeDataType.Func:
+            if entry.func == OpeFuncType.AddArray:
+                # Format should be AddArray(<array_variable>, <value>)
+                if len(entry.operands) != 2:
+                    print('Skipping complex AddArray entry')
+                    continue
+                array_var_op = entry.operands[0]
+                if array_var_op.type != ParamType.Var:
+                    print('AddArray operand 0 is not a variable name: {}'.format(entry))
+                    continue
+                value_entry_index = entry_index.get(entry.operands[1].value)
+                if value_entry_index is None:
+                    print('AddArray operand 1 does not point to a valid parser ____<arg> entry: {}'.format(entry))
+                    continue
+                value_entry_op = parser.entries[value_entry_index].operands[0]
+                _edit_parser_op(array_var_op, '  Array variable')
+                _edit_parser_op(value_entry_op, '  Array entry')
+            else:
+                print('Skipping uneditable parser func type: {}'.format(entry))
+        elif entry.type == OpeDataType.To:
+            if len(entry.operands) > 1:
+                print('Skipping complex assignment')
+                continue
+            value = click.prompt('  Destination variable', entry.name)
+            if value != entry.name:
+                entry.name = value
+            _edit_parser_op(entry.operands[0], '  Value')
+        elif entry.type in (
+                OpeDataType.Equal,
+                OpeDataType.Big,
+                OpeDataType.Small,
+                OpeDataType.EBig,
+                OpeDataType.ESmall,
+                OpeDataType.NEqual):
+            # boolean comparison
+            lhs_op = entry.operands[0]
+            if lhs_op.type == ParamType.Var:
+                if lhs_op.value.startswith('____'):
+                    index = entry_index.get(lhs_op.value)
+                    if index is None:
+                        print('Comparison operand 0 does not point to a valid parser ____<arg> entry')
+                        continue
+                    lhs_op = parser.entries[index].operands[0]
+            _edit_parser_op(lhs_op, '  Left hand side')
+            rhs_op = entry.operands[1]
+            if rhs_op.type == ParamType.Var:
+                if rhs_op.value.startswith('____'):
+                    index = entry_index.get(rhs_op.value)
+                    if index is None:
+                        print('Comparison operand 1 does not point to a valid parser ____<arg> entry')
+                        continue
+                    rhs_op = parser.entries[index].operands[0]
+            _edit_parser_op(rhs_op, '  Right hand side')
+        else:
+            print('Skipping uneditable parser entry: {}'.format(entry))
 
-    Note: Setting empty fields to improper data types may cause
-    undefined behavior in the LiveMaker engine.
+
+def _edit_calc(cmd):
+    """Edit a Calc command.
+
+    Note:
+        Only a limited set of OpeFuncType calc types can be edited.
 
     """
-    with open(lsb_file, 'rb') as f:
-        try:
-            lsb = LMScript.from_file(f)
-        except LiveMakerException as e:
-            sys.exit('Could not open LSB file: {}'.format(e))
+    parser = cmd.get('Calc')
+    if not parser:
+        print('Skipping empty Calc() command.')
+        return
+    print()
+    print('Editing Calc expression')
+    _edit_parser(parser)
 
-    cmd = None
-    for c in lsb.commands:
-        if c.LineNo == line_number:
-            cmd = c
-            break
-    else:
-        sys.exit('Command {} does not exist in the specified LSB'.format(line_number))
 
-    print('{}: {}'.format(line_number, str(cmd).replace('\r', '\\r').replace('\n', '\\n')))
-    if not isinstance(cmd, BaseComponentCommand):
-        sys.exit('Cannot edit {} commands.'.format(cmd.type.name))
-
+def _edit_component(cmd):
+    """Edit a BaseComponent (or subclass) command."""
     print()
     print('Enter new value for each field (or keep existing value)')
     for key in cmd._component_keys:
@@ -622,6 +711,71 @@ def edit(lsb_file, line_number):
                     parser.entries.append(e)
                 except ValueError:
                     print('Invalid datatype for {}, skipping.'.format(key))
+
+
+def _edit_jump(cmd):
+    """Edit a jump command."""
+    page = cmd.get('Page')
+    if not page:
+        print('Skipping Jump() command with no jump target')
+    print()
+    value = click.prompt('Jump target page', page.Page)
+    if value != page.Page:
+        page.Page = value
+    value = click.prompt('Jump target label ID', page.Label)
+    if value != page.Label:
+        page.Label = value
+    parser = cmd.get('Calc')
+    if not parser:
+        # conditional calc optional
+        return
+    print('Editing jump condition expression')
+    _edit_parser(parser)
+
+
+@lmlsb.command()
+@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument('line_number', required=True, type=int)
+def edit(lsb_file, line_number):
+    """Edit the specified command within an LSB file.
+
+    Only specific command types and specific fields can be edited.
+
+    The original LSB file will be backed up to <lsb_file>.bak
+
+    WARNING: This command should only be used by advanced users familiar with the LiveMaker engine.
+    Improper use of this command may cause undefined behavior (or a complete crash)
+    in the LiveMaker engine during runtime.
+
+    Note: Setting empty fields to improper data types may cause
+    undefined behavior in the LiveMaker engine. When editing a field,
+    the data type of the new value is assumed to be the same as the
+    original data type.
+
+    """
+    with open(lsb_file, 'rb') as f:
+        try:
+            lsb = LMScript.from_file(f)
+        except LiveMakerException as e:
+            sys.exit('Could not open LSB file: {}'.format(e))
+
+    cmd = None
+    for c in lsb.commands:
+        if c.LineNo == line_number:
+            cmd = c
+            break
+    else:
+        sys.exit('Command {} does not exist in the specified LSB'.format(line_number))
+
+    print('{}: {}'.format(line_number, str(cmd).replace('\r', '\\r').replace('\n', '\\n')))
+    if isinstance(cmd, BaseComponentCommand):
+        _edit_component(cmd)
+    elif isinstance(cmd, Calc):
+        _edit_calc(cmd)
+    elif isinstance(cmd, Jump):
+        _edit_jump(cmd)
+    else:
+        sys.exit('Cannot edit {} commands.'.format(cmd.type.name))
 
     print('Backing up original LSB.')
     shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
