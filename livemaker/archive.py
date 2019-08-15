@@ -137,6 +137,9 @@ VF_CHECKSUM_KEYS = [
 MIN_ARCHIVE_VERSION = 100
 DEFAULT_VERSION = 102
 
+# Max size of one split archive part (1GB)
+SPLIT_ARCHIVE_PART_SIZE = 1073741824
+
 
 class LMObfuscator(object):
     """Class for (de)obfuscating LiveMaker directory fields.
@@ -425,6 +428,7 @@ class LMArchive(object):
         self.closed = False
 
         self.name = str(Path(name).resolve())
+        root, ext = os.path.splitext(self.name)
 
         self.filelist = []
         self.name_info = {}
@@ -436,15 +440,22 @@ class LMArchive(object):
                     self.exefp = open(exe, 'rb')
                     self.is_exe = True
                     self.is_split = False
+                    self.has_ext = False
                 else:
                     self.is_exe = False
                     if split:
                         self.is_split = True
-                        _, ext = os.path.splitext(self.name)
-                        if ext.lower() != '.ext':
-                            log.warn('Writing split archive index without .ext file extension.')
+                        self._split_base = root
+                        self._split_files = set([self.name])
+                        if ext.lower() not in ['.dat', '.ext']:
+                            log.warn('Writing split archive index without .dat or .ext file extension.')
+                        elif ext.lower() == '.ext':
+                            self.has_ext = True
+                        else:
+                            self.has_ext = False
                     else:
                         self.is_split = False
+                        self.has_ext = False
                     self.exefp = None
                 self.tmpfp = tempfile.TemporaryFile()
                 self.version = version
@@ -456,28 +467,37 @@ class LMArchive(object):
                 savepos = self.fp.tell()
                 self.archive_offset = self._find_archive_offset()
                 self._parse_directory()
-                root, ext = os.path.splitext(self.name)
-                if ext.lower() == '.ext':
+                if ext.lower() in ['.dat', '.ext']:
                     self.is_split = True
                     self._split_base = root
-                    dat_file = '{}.dat'.format(self._split_base)
-                    if not os.path.isfile(dat_file):
-                        raise BadLiveMakerArchive(
-                            'Could not find (.dat) data file for split archive index {}.'.format(self.name))
-                    self._read_fps.append(open(dat_file, self._mode))
+                    self._split_files = set([self.name])
+                    if ext.lower() == '.ext':
+                        self.has_ext = True
+                        dat_file = '{}.dat'.format(self._split_base)
+                        if not os.path.isfile(dat_file):
+                            raise BadLiveMakerArchive(
+                                'Could not find (.dat) data file for split archive index {}.'.format(self.name))
+                        self._split_files.add(dat_file)
+                        self._read_fps.append(open(dat_file, self._mode))
+                    else:
+                        self.has_ext = False
+                        self._read_fps.append(self.fp)
                     for i in range(1, 100):
                         dat_file = '{}.{:03}'.format(self._split_base, i)
                         if os.path.isfile(dat_file):
                             self._read_fps.append(open(dat_file, self._mode))
+                            self._split_files.add(dat_file)
                 else:
                     self.is_split = False
+                    self.has_ext = False
         except Exception as e:
             if self._extfp:
                 self.fp.seek(savepos)
             else:
                 if self._read_fps:
                     for fp in self._read_fps:
-                        fp.close()
+                        if fp != self.fp:
+                            fp.close()
                 self.fp.close()
             self.closed = True
             raise e
@@ -508,15 +528,16 @@ class LMArchive(object):
                 self._write_archive()
                 self._write_trailer()
         finally:
-            if not self._extfp:
-                self.fp.close()
             if self.exefp:
                 self.exefp.close()
             if self.tmpfp:
                 self.tmpfp.close()
             if self._read_fps:
                 for fp in self._read_fps:
-                    fp.close()
+                    if fp != self.fp:
+                        fp.close()
+            if not self._extfp:
+                self.fp.close()
             self.closed = True
 
     def namelist(self):
@@ -543,7 +564,7 @@ class LMArchive(object):
         """Print a list of archive entries to stdout."""
         print(self.name)
         print('-------- ------ -------- -------- ------- ------')
-        print(' Length   mode    unk1    chksum   flags   Name')
+        print(' Length   Mode    unk1    Chksum   Flags   Name')
         print('-------- ------ -------- -------- ------- ------')
         for info in self.infolist():
             print('{:8} {:6} {:08x} {:08x} {:02x} {}'.format(
@@ -688,8 +709,8 @@ class LMArchive(object):
             data = b''
             while len(data) < info.compressed_size:
                 bytes_needed = info.compressed_size - len(data)
-                fp = self._read_fps[offset // 1073741824]
-                fp.seek(offset % 1073741824)
+                fp = self._read_fps[offset // SPLIT_ARCHIVE_PART_SIZE]
+                fp.seek(offset % SPLIT_ARCHIVE_PART_SIZE)
                 tmp = fp.read(bytes_needed)
                 data += tmp
                 offset += len(tmp)
@@ -722,7 +743,7 @@ class LMArchive(object):
         self.fp.seek(0)
         return self.fp.read(self.archive_offset)
 
-    def write(self, filename, arcname=None, compress_type=None):
+    def write(self, filename, arcname=None, compress_type=None, unk1=None):
         """Write the file named `filename` into the archive.
 
         Args:
@@ -767,6 +788,8 @@ class LMArchive(object):
                 compress_type = LMCompressType.NONE
         if compress_type == LMCompressType.ZLIB:
             data = zlib.compress(data)
+        if unk1 is not None:
+            info.unk1 = unk1
         info.compress_type = compress_type
         info.compressed_size = len(data)
         info.checksum = LMArchiveDirectory.checksum(data)
@@ -860,16 +883,22 @@ class LMArchive(object):
             # info offset will be the offset of this entry in the temporary
             # file (i.e. starting at 0). archive offsets need to start from the
             # end of the directory.
-            offsets.append(LMArchiveDirectory.split_offset(info._offset + directory_size))
+            offset = info._offset
+            if not self.is_split or not self.has_ext:
+                offset = info._offset + directory_size
+            offsets.append(LMArchiveDirectory.split_offset(offset))
             compress_types.append(info.compress_type)
             unk1s.append(info.unk1)
             checksums.append(info.checksum)
             encrypt_flags.append(info.encrypt_flag)
         last_entry = self.filelist[-1]
         if last_entry is not None:
-            offsets.append(LMArchiveDirectory.split_offset(
-                last_entry._offset + directory_size + last_entry.compressed_size))
+            offset = last_entry._offset + last_entry.compressed_size
+            if not self.is_split or not self.has_ext:
+                offset += directory_size
+            offsets.append(LMArchiveDirectory.split_offset(offset))
         else:
+            # handle empty archive
             offsets.append(LMArchiveDirectory.split_offset(archive_offset))
         data = LMArchiveDirectory.struct().build(directory)
         self.fp.write(data)
@@ -878,18 +907,30 @@ class LMArchive(object):
         # copy data from temp file into final archive
         if self.is_split:
             self.tmpfp.seek(0, 2)
-            total_size = self.tmpfp.tell()
-            extra_files = total_size // 1073741824
-            if total_size and (total_size % 1073741824) == 0:
+            data_offset = self.fp.tell()
+            if data_offset > SPLIT_ARCHIVE_PART_SIZE:
+                raise BadLiveMakerArchive('Cannot generate split archive with exe+directory size > 1GB')
+            if self.has_ext:
+                total_size = self.tmpfp.tell()
+                extra_files = total_size // SPLIT_ARCHIVE_PART_SIZE
+            else:
+                total_size = data_offset + self.tmpfp.tell()
+                extra_files = total_size // SPLIT_ARCHIVE_PART_SIZE
+            if total_size and (total_size % SPLIT_ARCHIVE_PART_SIZE) == 0:
                 extra_files -= 1
             self.tmpfp.seek(0)
-            dat_file = '{}.dat'.format(self._split_base)
-            with open(dat_file, self._mode) as fp:
-                shutil.copyfileobj(self.tmpfp, fp, 1073741824)
+            if self.has_ext:
+                dat_file = '{}.dat'.format(self._split_base)
+                with open(dat_file, self._mode) as fp:
+                    fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE))
+                self._split_files.add(dat_file)
+            else:
+                self.fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE - data_offset))
             for i in range(1, extra_files + 1):
                 dat_file = '{}.{:03}'.format(self._split_base, i)
                 with open(dat_file, self._mode) as fp:
-                    shutil.copyfileobj(self.tmpfp, fp, 1073741824)
+                    fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE))
+                self._split_files.add(dat_file)
         else:
             self.tmpfp.seek(0)
             shutil.copyfileobj(self.tmpfp, self.fp)
