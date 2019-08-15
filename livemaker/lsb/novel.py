@@ -1156,7 +1156,7 @@ attrfind_tolerant = re.compile(
     r'((?<=["\s/])[^\s/>}][^\s/=>}]*)(\s*=+\s*'
     r'("[^"\\]*(?:\\.[^"\\]*)*"|(?!["])[^>\s]*))?(?:\s|/(?![>}]))*')
 locatestarttagend_tolerant = re.compile(r"""
-  (?<!\\)[<{][a-zA-Z][^\t\n\r\f />\x00]*       # tag name
+  (?<!\\)[<{][a-zA-Z][^\t\n\r\f />}\x00]*       # tag name
   (?:[\s/]*                          # optional whitespace before attribute name
     (?:(?<=['"\s/])[^\s/>}][^\s/=>}]*  # attribute name
       (?:\s*=+\s*                    # value indicator
