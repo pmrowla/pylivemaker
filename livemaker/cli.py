@@ -305,16 +305,19 @@ def extract(encoding, output_dir, input_file):
         print('Extracting scripts from {}'.format(path))
         lsb_path = Path(path)
         lsb = LMScript.from_file(path)
-        for line, name, scenario in lsb.text_scenarios():
-            if name:
-                name = '{}-{}.lns'.format(lsb_path.stem, name)
-            if not name:
-                name = '{}-line{}.lns'.format(lsb_path.stem, line)
-            output_path = output_dir.joinpath(name)
-            dec = LNSDecompiler()
-            with open(output_path, 'w', encoding=encoding) as f:
-                f.write(dec.decompile(scenario))
-            print('  wrote {}'.format(output_path))
+        lsbRefFileName = '{}.lsbref'.format(lsb_path.stem)
+        with open(output_dir.joinpath(lsbRefFileName), 'w', encoding=encoding) as lsbRefFile:
+            for line, name, scenario in lsb.text_scenarios():
+                if name:
+                    name = '{}-{}.lns'.format(lsb_path.stem, name)
+                if not name:
+                    name = '{}-line{}.lns'.format(lsb_path.stem, line)
+                output_path = output_dir.joinpath(name)
+                dec = LNSDecompiler()
+                with open(output_path, 'w', encoding=encoding) as f:
+                    f.write(dec.decompile(scenario))
+                print('  wrote {}'.format(output_path))
+                lsbRefFile.write('{}:{}\n'.format(name, line))
 
 
 @lmlsb.command()
