@@ -305,8 +305,8 @@ def extract(encoding, output_dir, input_file):
         print('Extracting scripts from {}'.format(path))
         lsb_path = Path(path)
         lsb = LMScript.from_file(path)
-        lsbRefFileName = '{}.lsbref'.format(lsb_path.stem)
-        with open(output_dir.joinpath(lsbRefFileName), 'w', encoding=encoding) as lsbRefFile:
+        lsb_ref_filename = '{}.lsbref'.format(lsb_path.stem)
+        with open(output_dir.joinpath(lsb_ref_filename), 'w', encoding=encoding) as lsb_ref_file:
             for line, name, scenario in lsb.text_scenarios():
                 if name:
                     name = '{}-{}.lns'.format(lsb_path.stem, name)
@@ -317,7 +317,7 @@ def extract(encoding, output_dir, input_file):
                 with open(output_path, 'w', encoding=encoding) as f:
                     f.write(dec.decompile(scenario))
                 print('  wrote {}'.format(output_path))
-                lsbRefFile.write('{}:{}\n'.format(name, line))
+                lsb_ref_file.write('{}:{}\n'.format(name, line))
 
 
 @lmlsb.command()
@@ -342,7 +342,7 @@ def insert(encoding, lsb_file, script_file, line_number, no_backup):
     --no-backup option is specified.
 
     """
-    insert_LNS(encoding, lsb_file, script_file, line_number, no_backup)
+    insert_lns(encoding, lsb_file, script_file, line_number, no_backup)
     
 @lmlsb.command()
 @click.option('-e', '--encoding', type=click.Choice(['cp932', 'utf-8']), default='utf-8',
@@ -371,16 +371,16 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup):
         print('Backing up original LSB.')
         shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
     lsb_path = Path(lsb_file)
-    lsbRefFileName = '{}.lsbref'.format(lsb_path.stem)
-    with open(script_dir.joinpath(lsbRefFileName), 'r', encoding=encoding) as lsbRefFile:
+    lsb_ref_filename = '{}.lsbref'.format(lsb_path.stem)
+    with open(script_dir.joinpath(lsb_ref_filename), 'r', encoding=encoding) as lsb_ref_file:
         while True:
-            ln = lsbRefFile.readline()
+            ln = lsb_ref_file.readline()
             if ln == '':
                 break
             lnsplt = ln.split(':')
             script_file = script_dir.joinpath(lnsplt[0])
             line_number = int(lnsplt[1])
-            insert_LNS(encoding, lsb_file, script_file, line_number, True)
+            insert_lns(encoding, lsb_file, script_file, line_number, True)
 
 
 # Known property data types
@@ -805,7 +805,7 @@ def edit(lsb_file, line_number):
 def main():
     pass
 
-def insert_LNS(encoding, lsb_file, script_file, line_number, no_backup):
+def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
     """Compile specified LNS script and insert it into the specified LSB file.
 
     The LSB command at line_number must be a TextIns command. The existing text
