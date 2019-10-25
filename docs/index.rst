@@ -8,6 +8,7 @@ Welcome to pylivemaker's documentation!
    readme
    installation
    usage
+   cli
    modules
    contributing
    authors
