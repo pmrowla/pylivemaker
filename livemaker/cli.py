@@ -22,12 +22,16 @@
 import hashlib
 import shutil
 import sys
+from io import BytesIO
 from pathlib import Path
 
 import click
 import numpy
 
 from lxml import etree
+
+from PIL import Image
+from . import GalImagePlugin
 
 from .archive import LMArchive
 from .exceptions import LiveMakerException, BadLsbError
@@ -65,19 +69,53 @@ def lmar():
 @lmar.command()
 @click.option('-n', '--dry-run', is_flag=True, default=False,
               help='Show what would be done without extracting any files.')
+@click.option('-i', '--image-format', type=click.Choice(['gal', 'png', 'both']), default='gal',
+              help='Format for extracted images, defaults to GAL (original) format. If set to png, images will be'
+                   ' converted before extraction. If set to both, both the original GAL and converted PNG images will'
+                   ' be extracted')
 @click.option('-o', '--output-dir', nargs=1, help='Output directory, defaults to current working directory.')
 @click.option('-v', '--verbose', is_flag=True, default=False)
 @click.argument('input_file', metavar='file', required=True, type=click.Path(exists=True, dir_okay=False))
-def x(dry_run, output_dir, verbose, input_file):
+def x(dry_run, image_format, output_dir, verbose, input_file):
     """Extract the specified archive."""
     if not output_dir:
         output_dir = Path.cwd()
     with LMArchive(input_file) as lm:
         for info in lm.infolist():
-            if not dry_run:
-                lm.extract(info, output_dir)
-            if verbose or dry_run:
-                print(info.path)
+            if str(info.path).lower().endswith('.gal'):
+                if not dry_run:
+                    data = lm.read(info)
+                if image_format in ('gal', 'both'):
+                    if not dry_run:
+                        path = Path.joinpath(output_dir, info.path).expanduser().resolve()
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        with path.open('wb') as f:
+                            f.write(data)
+                    if verbose or dry_run:
+                        print(info.path)
+                if image_format in ('png', 'both'):
+                    try:
+                        png_path = info.path.parent.joinpath('{}.png'.format(info.path.stem))
+                        if not dry_run:
+                            path = Path(output_dir).joinpath(png_path).expanduser().resolve()
+                            im = Image.open(BytesIO(data))
+                            path.parent.mkdir(parents=True, exist_ok=True)
+                            im.save(path)
+                        if verbose or dry_run:
+                            print(png_path)
+                    except IOError as e:
+                        print('Error: Failed to convert image to PNG: {}'.format(e))
+                        if image_format == 'png':
+                            print('  Original GAL image will be used as fallback.')
+                            if not dry_run:
+                                lm.extract(info, output_dir)
+                            if verbose or dry_run:
+                                print(info.path)
+            else:
+                if not dry_run:
+                    lm.extract(info, output_dir)
+                if verbose or dry_run:
+                    print(info.path)
 
 
 @lmar.command()
@@ -343,7 +381,8 @@ def insert(encoding, lsb_file, script_file, line_number, no_backup):
 
     """
     insert_lns(encoding, lsb_file, script_file, line_number, no_backup)
-    
+
+
 @lmlsb.command()
 @click.option('-e', '--encoding', type=click.Choice(['cp932', 'utf-8']), default='utf-8',
               help='The text encoding of script_file (defaults to utf-8).')
@@ -805,6 +844,7 @@ def edit(lsb_file, line_number):
 def main():
     pass
 
+
 def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
     """Compile specified LNS script and insert it into the specified LSB file.
 
@@ -851,6 +891,32 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
         print('Wrote new LSB.')
     except LiveMakerException as e:
         sys.exit('Could not generate new LSB file: {}'.format(e))
+
+
+@click.command()
+@click.option('-f', '--force', is_flag=True, default=False,
+              help='Overwrite output file if it exists.')
+@click.argument('input_file', required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument('output_file', required=True, type=click.Path(dir_okay=False))
+def galconvert(force, input_file, output_file):
+    """Convert the image to another format.
+
+    GAL(X) images can only be read (for conversion to JPEG/PNG/etc) at this time.
+
+    Output format will be determined based on file extension.
+
+    """
+    try:
+        im = Image.open(input_file)
+    except IOError as e:
+        raise e
+        # sys.exit('Error opening {}: {}'.format(input_file, e))
+    if Path(output_file).exists() and not force:
+        sys.exit('{} already exists'.format(output_file))
+    print('Converting {} to {}'.format(input_file, output_file))
+    im.load()
+    im.save(output_file)
+
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover

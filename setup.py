@@ -16,6 +16,7 @@ requirements = [
     'construct>=2.9',
     'lxml>=4.3',
     'numpy>=1.16',
+    'Pillow>=6.2.1',
 ]
 
 setup_requirements = ['pytest-runner', ]
@@ -42,6 +43,7 @@ setup(
             'lmar=livemaker.cli:lmar',
             'lmlsb=livemaker.cli:lmlsb',
             'lmpatch=livemaker.patch:lmpatch',
+            'galconvert=livemaker.cli:galconvert',
         ],
     },
     install_requires=requirements,

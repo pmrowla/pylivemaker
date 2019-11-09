@@ -64,7 +64,20 @@ This command should generally only be used by interested in reverse engineering 
 x (extract)
 ^^^^^^^^^^^
 
-Extract the contents of a LiveMaker archive or executable. ::
+Extract the contents of a LiveMaker archive or executable.
+
+Image format modes:
+
+gal (default)
+    LiveMaker GAL (.gal) images will be extracted in their original format.
+png
+    Images will be converted to PNG before extraction.
+both
+    Both the original GAL image and a converted PNG version will be extracted.
+
+.. note:: Refer to the documentation for ``galconvert`` for details on image conversion.
+
+::
 
     $ lmar x --help
     Usage: lmar x [OPTIONS] file
@@ -73,6 +86,12 @@ Extract the contents of a LiveMaker archive or executable. ::
 
     Options:
       -n, --dry-run          Show what would be done without extracting any files.
+      -i, --image-format [gal|png|both]
+                                  Format for extracted images, defaults to GAL
+                                  (original) format. If set to png, images
+                                  will be converted before extraction. If set
+                                  to both, both the original GAL and converted
+                                  PNG images will be extracted
       -o, --output-dir TEXT  Output directory, defaults to current working
                              directory.
       -v, --verbose
@@ -325,3 +344,32 @@ Use ``lmpatch`` to replace individual LSB files in an existing LiveMaker archive
 
     Options:
       --help  Show this message and exit.
+
+galconvert
+----------
+
+``galconvert`` can be used to convert from LiveMaker's Gale/GaleX (GAL) image format into any format supported by
+PIL/Pillow.
+
+.. note:: It is recommended to convert to image formats which support transparency (alpha channel) such as PNG.
+    If a GAL image contains multiple frames, only the first frame will be used when converting to a format which
+    does not support multiple frames.
+
+    Conversion to GAL format is not currently supported. If you need to generate GAL images, it is recommended to
+    use LiveMaker's ``BmpToGale`` program.
+
+::
+
+    galconvert --help
+    Usage: galconvert [OPTIONS] INPUT_FILE OUTPUT_FILE
+
+      Convert the image to another format.
+
+      GAL(X) images can only be read (for conversion to JPEG/PNG/etc) at this
+      time.
+
+      Output format will be determined based on file extension.
+
+    Options:
+      -f, --force  Overwrite output file if it exists.
+      --help       Show this message and exit.
