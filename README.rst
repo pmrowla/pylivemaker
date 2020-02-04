@@ -47,7 +47,7 @@ License
 pylivemaker / irl
 ^^^^^^^^^^^^^^^^^
 
-Copyright (C) 2019 Peter Rowlands
+Copyright (C) 2020 Peter Rowlands
 
 Copyright (C) 2014 tinfoil
 
