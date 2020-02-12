@@ -606,6 +606,20 @@ EDITABLE_PROPERTY_TYPES = {
 }
 
 
+def _check_string_literal(value):
+    if value.startswith('"'):
+        value = value[1:]
+    else:
+        print('Warning: String literals should be entered as double quoted (") strings, '
+              'assuming you meant to enter "{}"'.format(value))
+    if value.endswith('"'):
+        value = value[:-1]
+    else:
+        print('Warning: String literals should be entered as double quoted (") strings, '
+              'assuming you meant to enter "{}"'.format(value))
+    return value
+
+
 def _edit_parser_op(op, prompt='Operand'):
     if op.type == ParamType.Str:
         orig = '"{}"'.format(op.value)
@@ -614,16 +628,7 @@ def _edit_parser_op(op, prompt='Operand'):
     value = click.prompt(prompt, default=orig)
     if value != orig:
         if op.type == ParamType.Str:
-            if value.startswith('"'):
-                value = value[1:]
-            else:
-                print('Warning: String literals should be entered as double quoted (") strings, '
-                      'assuming you meant to enter "{}"'.format(value))
-            if value.endswith('"'):
-                value = value[:-1]
-            else:
-                print('Warning: String literals should be entered as double quoted (") strings, '
-                      'assuming you meant to enter "{}"'.format(value))
+            value = _check_string_literal(value)
         elif op.type in (ParamType.Flag, ParamType.Int):
             try:
                 value = int(value)
@@ -640,6 +645,26 @@ def _edit_parser_op(op, prompt='Operand'):
             print('Expected a variable name, var names cannot start with ", skipping field')
             return
         op.value = value
+
+
+def _edit_delimited_string_op(str_op, sep_op, prompt='String'):
+    """Edit delimited string str_op (delimited by sep_op)."""
+    if str_op.type != ParamType.Str or str_op.type != ParamType.Str:
+        print('Expected a delimited string and separator, skipping field.')
+        return
+    new_strs = []
+    sep = sep_op.value
+    for i, s in enumerate(str_op.value.split(sep)):
+        while True:
+            value = click.prompt('{} {}'.format(prompt, i), default='"{}"'.format(s))
+            if sep in value:
+                print('  Entry strings cannot contain the delimiter string ("{}")')
+            else:
+                break
+        new_strs.append(_check_string_literal(value))
+    str_op.value = sep.join(new_strs)
+    value = click.prompt('{} separator'.format(prompt), default='"{}"'.format(sep))
+    sep_op.value = _check_string_literal(value)
 
 
 def _edit_parser(parser):
@@ -670,6 +695,31 @@ def _edit_parser(parser):
                 value_entry_op = parser.entries[value_entry_index].operands[0]
                 _edit_parser_op(array_var_op, '  Array variable')
                 _edit_parser_op(value_entry_op, '  Array entry')
+            elif entry.func == OpeFuncType.StringToArray:
+                # Format should be StringToArray(<delimited_string>,
+                #   <array_variable>, <separator>)
+                # where array entries are delimited by <separator>.
+                #
+                # i.e. StringToArray("foo,bar", my_array, ",") sets
+                # my_array = ["foo", "bar"]
+                #
+                # NOTE: we allow editing of array entry strings for translation
+                # purposes, but do not allow adding or removing entire entries
+                # since modifying the array length would most likely break LM
+                # core engine scripts.
+                if len(entry.operands) != 3 or (
+                        entry.operands[0].type != ParamType.Str or
+                        entry.operands[1].type != ParamType.Var or
+                        entry.operands[2].type != ParamType.Var):
+                    print('Skipping unexpected StringToArray entry')
+                    continue
+                sep_entry_index = entry_index.get(entry.operands[2].value)
+                if sep_entry_index is None:
+                    print('StringToArray operand 2 does not point to a valid parser ____<arg> entry: {}'.format(entry))
+                    continue
+                sep_entry_op = parser.entries[sep_entry_index].operands[0]
+                _edit_parser_op(entry.operands[1], '  Array variable')
+                _edit_delimited_string_op(entry.operands[0], sep_entry_op, '  Array entry')
             else:
                 print('Skipping uneditable parser func type: {}'.format(entry))
         elif entry.type == OpeDataType.To:
