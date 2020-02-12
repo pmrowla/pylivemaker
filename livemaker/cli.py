@@ -78,7 +78,9 @@ def lmar():
 @click.argument('input_file', metavar='file', required=True, type=click.Path(exists=True, dir_okay=False))
 def x(dry_run, image_format, output_dir, verbose, input_file):
     """Extract the specified archive."""
-    if not output_dir:
+    if output_dir:
+        output_dir = Path(output_dir)
+    else:
         output_dir = Path.cwd()
     with LMArchive(input_file) as lm:
         for info in lm.infolist():
@@ -97,7 +99,7 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                     try:
                         png_path = info.path.parent.joinpath('{}.png'.format(info.path.stem))
                         if not dry_run:
-                            path = Path(output_dir).joinpath(png_path).expanduser().resolve()
+                            path = output_dir.joinpath(png_path).expanduser().resolve()
                             im = Image.open(BytesIO(data))
                             path.parent.mkdir(parents=True, exist_ok=True)
                             im.save(path)
