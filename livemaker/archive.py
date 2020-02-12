@@ -25,11 +25,6 @@ The API for `archive` behaves similary to Python's ``zipfile`` module,
 with the exception that archives cannot be modified in-place (i.e. mode ``'a'``
 is unavailable).
 
-Note:
-    Reading (and writing) files which are encrypted via LiveMaker Pro is not
-    supported, but any non-encrypted files from a LiveMaker Pro archive can
-    be extracted.
-
 """
 
 import enum
@@ -45,6 +40,7 @@ from pathlib import Path, PureWindowsPath
 import construct
 
 from .exceptions import BadLiveMakerArchive, UnsupportedLiveMakerCompression
+from .scramble import decrypt
 
 
 log = logging.getLogger(__name__)
@@ -60,7 +56,9 @@ class LMCompressType(enum.IntEnum):
 
 SUPPORTED_COMPRESSIONS = [
     LMCompressType.NONE,
-    LMCompressType.ZLIB
+    LMCompressType.ZLIB,
+    LMCompressType.ENCRYPTED,
+    LMCompressType.ENCRYPTED_ZLIB,
 ]
 
 # LM3 seed for TpRandom
@@ -722,8 +720,14 @@ class LMArchive(object):
             if info.checksum != LMArchiveDirectory.checksum(data):
                 log.warn('Bad checksum for file {}.'.format(info.name))
         if decompress:
-            if info.compress_type == LMCompressType.ZLIB:
-                data = zlib.decompress(data)
+            if info.compress_type in (LMCompressType.ENCRYPTED, LMCompressType.ENCRYPTED_ZLIB):
+                data = decrypt(data)
+
+            if info.compress_type in (LMCompressType.ZLIB, LMCompressType.ENCRYPTED_ZLIB):
+                try:
+                    data = zlib.decompress(data)
+                except zlib.error as e:
+                    raise UnsupportedLiveMakerCompression(str(e))
         return data
 
     def read_exe(self):

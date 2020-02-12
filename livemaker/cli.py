@@ -34,7 +34,7 @@ from PIL import Image
 from . import GalImagePlugin
 
 from .archive import LMArchive
-from .exceptions import LiveMakerException, BadLsbError
+from .exceptions import LiveMakerException, BadLsbError, UnsupportedLiveMakerCompression
 from .lsb import LMScript
 from .lsb.command import BaseComponentCommand, Calc, CommandType, Jump
 from .lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
@@ -86,7 +86,11 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
         for info in lm.infolist():
             if str(info.path).lower().endswith('.gal'):
                 if not dry_run:
-                    data = lm.read(info)
+                    try:
+                        data = lm.read(info)
+                    except UnsupportedLiveMakerCompression as e:
+                        print('  Error extracting {}: {}'.format(info.path, e))
+                        continue
                 if image_format in ('gal', 'both'):
                     if not dry_run:
                         path = Path.joinpath(output_dir, info.path).expanduser().resolve()
@@ -115,7 +119,10 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                                 print(info.path)
             else:
                 if not dry_run:
-                    lm.extract(info, output_dir)
+                    try:
+                        lm.extract(info, output_dir)
+                    except UnsupportedLiveMakerCompression as e:
+                        print('  Error extracting {}: {}'.format(info.path, e))
                 if verbose or dry_run:
                     print(info.path)
 

@@ -28,7 +28,7 @@ from pathlib import Path, PureWindowsPath
 
 import click
 
-from livemaker import LMArchive
+from livemaker import LMArchive, LMCompressType
 from livemaker.exceptions import LiveMakerException
 
 
@@ -116,9 +116,16 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force):
             with click.progressbar(orig_lm.infolist(), item_show_func=bar_show) as bar:
                 for info in bar:
                     if info.path == lsb_path:
-                        # replace existing with patch version, use original
-                        # compress type
-                        new_lm.write(lsb_path, compress_type=info.compress_type, unk1=info.unk1)
+                        # replace existing with patch version
+                        #
+                        # TODO: support writing encrypted files
+                        if info.compress_type == LMCompressType.ENCRYPTED:
+                            compress_type = LMCompressType.NONE
+                        elif info.compress_type == LMCompressType.ENCRYPTED_ZLIB:
+                            compress_type = LMCompressType.ZLIB
+                        else:
+                            compress_type = info.compress_type
+                        new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1)
                         log.info('patched {}'.format(lsb_path))
                         # print('patched')
                     else:
