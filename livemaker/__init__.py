@@ -24,7 +24,7 @@ __license__ = 'GPLv3'
 __version__ = '0.1.3-dev'
 
 
-from .archive import LMArchive, LMArchiveInfo
+from .archive import LMArchive, LMArchiveInfo, LMCompressType
 from .lsb import LMScript, LNSCompiler, LNSDecompiler
 
-__all__ = ['LMArchive', 'LMArchiveInfo', 'LMScript', 'LNSCompiler', 'LNSDecompiler']
+__all__ = ['LMArchive', 'LMArchiveInfo', 'LMCompressType', 'LMScript', 'LNSCompiler', 'LNSDecompiler']
