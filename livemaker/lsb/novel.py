@@ -70,21 +70,25 @@ class LNSTag(enum.Enum):
         return '</{}>'.format(tag.value)
 
 
-class HAlignEnum(enum.IntEnum):
-    """Horizontal alignment."""
+class AlignEnum(enum.IntEnum):
+    """Horizontal or vertical alignment.
+
+    Original script tags have separate possible values for horizontal/vertical alignment
+    depending on the tag, but internally LM handles them all as a single enum type when
+    compiled into a binary script.
+
+    Note: When translating scripts, users should be aware that pylivemaker will accept
+    all possible alignment values for any tags that take "ALIGN" attributes,
+    but LM behavior may be undefined depending on specific tag/alignment combinations.
+    Refer to the official LiveNovel documentation for information on which tags horizontal (L/C/R)
+    alignment values and which tags take vertical (T/C/B) values.
+    """
 
     LEFT = 1
-    CENTER = 2
-    RIGHT = 3
-
-
-class VAlignEnum(enum.IntEnum):
-    """Vertical alignment."""
-
-    TOP = 1
-    CENTER = 2
-    BOTTOM = 3
-    UNKNOWN = 4
+    RIGHT = 2
+    CENTER = 3
+    TOP = 4
+    BOTTOM = 5
 
 
 class TWdType(enum.IntEnum):
@@ -304,7 +308,7 @@ class TWdOpeDiv(BaseTWdGlyph):
 
     def __str__(self):
         attrs = {
-            'ALIGN': HAlignEnum(self.align).name,
+            'ALIGN': AlignEnum(self.align).name,
             'PADLEFT': self.padleft,
             'PADRIGHT': self.padright,
             'NOHEIGHT': self.noheight
@@ -535,7 +539,7 @@ class TWdImg(BaseTWdReal):
             'SRC': self.src,
             'HOVERSRC': self.hoversrc,
             'DOWNSRC': self.downsrc,
-            'ALIGN': VAlignEnum(self.align).name,
+            'ALIGN': AlignEnum(self.align).name,
             'MGNLEFT': self.mgnleft,
             'MGNRIGHT': self.mgnright,
             'MGNTOP': self.mgntop,
@@ -1459,7 +1463,7 @@ class LNSCompiler(_markupbase.ParserBase):
         elif tag == LNSTag.condition:
             self.condition = int(attrs.get('ID', 0))
         elif tag == LNSTag.div:
-            d['align'] = HAlignEnum[attrs.get('ALIGN', 'LEFT')].value
+            d['align'] = AlignEnum[attrs.get('ALIGN', 'LEFT')].value
             d['padleft'] = int(attrs.get('PADLEFT', 0))
             d['padright'] = int(attrs.get('PADRIGHT', 0))
             d['noheight'] = int(attrs.get('NOHEIGHT', 0))
@@ -1476,7 +1480,7 @@ class LNSCompiler(_markupbase.ParserBase):
             self.tpword_body.append(TWdOpeIndent(**d))
         elif tag == LNSTag.img:
             if 'ALIGN' in attrs:
-                attrs['ALIGN'] = VAlignEnum[attrs['ALIGN']].value
+                attrs['ALIGN'] = AlignEnum[attrs['ALIGN']].value
             for k in attrs:
                 d[k.lower()] = attrs[k]
             self.tpword_body.append(TWdImg(**d))
