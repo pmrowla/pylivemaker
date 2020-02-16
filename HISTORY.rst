@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.0 (2020-02-16)
+------------------
+
+* Added support for reading LM Pro scrambled (encrypted) archives
+* ``HAlignEnum`` and ``VAlignEnum`` in ``livemaker/lsb/novel.py`` have been removed and replaced with ``AlignEnum``
+
 0.1.2 (2020-02-05)
 ------------------
 
