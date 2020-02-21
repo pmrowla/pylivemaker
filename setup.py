@@ -42,7 +42,7 @@ setup(
         'console_scripts': [
             'lmar=livemaker.cli:lmar',
             'lmlsb=livemaker.cli:lmlsb',
-            'lmpatch=livemaker.patch:lmpatch',
+            'lmpatch=livemaker.cli:lmpatch',
             'galconvert=livemaker.cli:galconvert',
         ],
     },

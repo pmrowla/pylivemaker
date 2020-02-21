@@ -31,6 +31,8 @@ import click
 from livemaker import LMArchive, LMCompressType
 from livemaker.exceptions import LiveMakerException
 
+from .cli import __version__, _version
+
 
 log = logging.getLogger(__name__)
 fh = logging.FileHandler('patch.log')
@@ -39,6 +41,7 @@ log.addHandler(fh)
 
 
 @click.command()
+@click.version_option(version=__version__, message=_version)
 # @lmlsb.option('-r', '--recursive', is_flag=True, default=False)
 @click.argument('archive_file', required=True, type=click.Path(exists=True, dir_okay=False))
 @click.argument('patched_lsb', required=True, type=click.Path(exists=True, dir_okay=False))
