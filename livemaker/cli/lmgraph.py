@@ -34,6 +34,12 @@ from livemaker.lsb.command import CommandType
 from .cli import _version, __version__
 
 
+IGNORED_SCRIPTS = [
+    'メッセージボックス作成.lsb',
+    'メッセージボックス座標.lsb',
+]
+
+
 visited = set()
 lsbs_to_visit = deque()
 graph = pydot.Dot(graph_type='digraph')
@@ -88,6 +94,25 @@ def parse_lsb(lsb_file, root_dir=None):
                     edge = pydot.Edge(lsb_file, ref.Page)
                 graph.add_edge(edge)
                 lsbs_to_visit.append(ref.Page)
+        elif cmd.type == CommandType.Call:
+            ref = cmd.get('Page')
+            calc = str(cmd.get('Calc'))
+
+            if (ref.Page != lsb_file and not ref.Page.startswith('ノベルシステム') and
+                    ref.Page not in IGNORED_SCRIPTS):
+                # ignore calls to self (used for cleanup sometimes) and
+                # novel system calls
+                if last_calc:
+                    edge = pydot.Edge(lsb_file, ref.Page, label=last_calc)
+                else:
+                    edge = pydot.Edge(lsb_file, ref.Page)
+                graph.add_edge(edge)
+                lsbs_to_visit.append(ref.Page)
+
+            next_pc = pc + 1
+            if next_pc in remaining_cmds:
+                remaining_cmds.remove(next_pc)
+                cmds_to_visit.append((next_pc, last_calc))
         elif cmd.type not in (CommandType.Exit, CommandType.Terminate, CommandType.PCReset):
             next_pc = pc + 1
             if next_pc in remaining_cmds:
