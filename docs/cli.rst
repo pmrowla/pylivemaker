@@ -97,6 +97,40 @@ both
       -v, --verbose
       --help                 Show this message and exit.
 
+lmgraph
+-------
+
+Generate a graphviz DOT syntax graph of branches between LiveNovel script files.
+
+The output .dot file can be used with graphviz (or online tools like http://viz-js.com/)
+to create a visual (PNG/PDF/etc) approximation of the original LiveMaker/LiveNovel
+scenario flowchart. The output graph will include menu choice/route branch conditions
+(as edge labels) if possible.
+
+.. note:: The script currently uses a very naive implementation for following branch
+    conditions, so the output labels may not always be 100% accurate. Conditions based
+    on route flag variables may not be labeled properly, depending on the complexity
+    of the original script logic.
+
+::
+
+    $ lmgraph --help
+    Usage: lmgraph [OPTIONS] LSB_FILE [OUT_FILE]
+
+      Generate a DOT syntax graph for a LiveNovel game.
+
+      lsb_file should be a path to the root script node - this should always be
+      ゲームメイン.lsb (game_main.lsb) for LiveMaker games. If output file is not
+      specified, it defaults to <lsb_file>.dot
+
+      The output graph will start with game_main as the root node and follow
+      branches to all scenario scripts, which should give a general
+      approximation of the original LiveMaker scenario chart.
+
+    Options:
+      --version  Show the version and exit.
+      --help     Show this message and exit.
+
 lmlsb
 -----
 

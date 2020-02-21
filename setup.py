@@ -17,6 +17,7 @@ requirements = [
     'lxml>=4.3',
     'numpy>=1.16',
     'Pillow>=6.2.1',
+    'pydot>=1.4.1',
 ]
 
 setup_requirements = ['pytest-runner', ]
@@ -40,6 +41,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lmar=livemaker.cli:lmar',
+            'lmgraph=livemaker.cli:lmgraph',
             'lmlsb=livemaker.cli:lmlsb',
             'lmpatch=livemaker.cli:lmpatch',
             'galconvert=livemaker.cli:galconvert',
