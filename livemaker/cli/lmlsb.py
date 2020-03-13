@@ -227,7 +227,7 @@ def extract(encoding, output_dir, input_file):
     """
     if output_dir:
         output_dir = Path(output_dir)
-        if not output_dir.exists:
+        if not output_dir.exists():
             output_dir.mkdir(parents=True)
     else:
         output_dir = Path.cwd()
@@ -295,7 +295,7 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup):
 
     """
     script_dir = Path(script_dir)
-    if not script_dir.exists:
+    if not script_dir.exists():
         print('Input directory does not exist')
         return
     if not no_backup:
