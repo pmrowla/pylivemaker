@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.1 (2020-03-13)
+------------------
+
+* Added `lmgraph` command for generating LSB script call graphs
+* Refactored CLI tools (each tool moved to its own source file)
+
 0.2.0 (2020-02-16)
 ------------------
 
