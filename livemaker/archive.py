@@ -797,7 +797,7 @@ class LMArchive(object):
         if self.mode != 'w':
             raise ValueError('Cannot write to archive opened for reading.')
         if arcname is None:
-            arcpath = PureWindowsPath(filename)
+            arcpath = PureWindowsPath(packname)
         else:
             arcpath = PureWindowsPath(arcname)
         # strip drive and leading pathsep
