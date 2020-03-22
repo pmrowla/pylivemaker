@@ -768,6 +768,30 @@ class LMArchive(object):
             UnsupportedLiveMakerCompression: If the `compress_type` is unsupported.
 
         """
+        write_as(self, filename, filename, arcname, compress_type, unk1)
+
+    def write_as(self, filename, packname, arcname=None, compress_type=None, unk1=None):
+        """Write the file `filename`named as `packname` into the archive.
+
+        Args:
+            filename: File to write into archive.
+            packname: Filename to be written into archive.
+            arcname: If given, the archive file entry will be named `arcname`.
+                By default, `arcname` will be the same as `filename`,
+                but with any drive letter and leading path separators removed.
+                Posix paths will be replaced with equivalent Windows paths.
+            compress_type (`LMCompressType`): If given, the file will be compressed
+                with the specified method (defaults to uncompressed for files < 5MB
+                in size, and zlib compressed for files >= 5MB).
+
+        Returns:
+            The number of (compressed) bytes written.
+
+        Raises:
+            FileExistsError: If an entry matching `arcname` already exists in this archive.
+            UnsupportedLiveMakerCompression: If the `compress_type` is unsupported.
+
+        """
         if self.closed:
             raise ValueError('Archive is already closed.')
         if self.mode != 'w':
@@ -783,7 +807,7 @@ class LMArchive(object):
         if compress_type is not None and compress_type not in SUPPORTED_COMPRESSIONS:
             raise UnsupportedLiveMakerCompression('{} is not supported.'.format(compress_type))
         info = LMArchiveInfo(name)
-        with open(name, 'rb') as f:
+        with open(filename, 'rb') as f:
             data = f.read()
         if compress_type is None:
             if len(data) >= 0x500000:
