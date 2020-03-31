@@ -361,7 +361,7 @@ class GalImageDecoder(ImageFile.PyDecoder):
                     alpha_data = self._decode_alpha(frame, info)
                     layer['alpha_data'] = alpha_data
                     size = self.state.xsize, self.state.ysize
-                    mask = Image.frombuffer('L', size, alpha_data, 'raw', ('L', frame['alpha_stride']))
+                    mask = Image.frombytes('L', size, alpha_data, 'raw', 'L', frame['alpha_stride'])
                 else:
                     mask = None
                 im = JpegImageFile(BytesIO(jpeg_data))
