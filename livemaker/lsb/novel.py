@@ -249,6 +249,10 @@ class TWdChar(BaseTWdReal):
 
     def __init__(self, ch='', decorator=0, **kwargs):
         super().__init__(**kwargs)
+        try:
+            ch.encode('cp932')
+        except UnicodeEncodeError:
+            raise BadLnsError("'{}' is not a valid CP932 character".format(ch))
         self._keys.update(('ch', 'decorator'))
         self.ch = ch
         self.decorator = decorator
