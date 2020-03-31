@@ -42,7 +42,6 @@ log.addHandler(fh)
 
 @click.command()
 @click.version_option(version=__version__, message=_version)
-# @lmlsb.option('-r', '--recursive', is_flag=True, default=False)
 @click.argument('archive_file', required=True, type=click.Path(exists=True, dir_okay=False))
 @click.argument('patched_lsb', required=True, type=click.Path(exists=True, dir_okay=True))
 @click.option('--split', is_flag=True, default=False,
@@ -51,7 +50,9 @@ log.addHandler(fh)
               help='Do not generate backup of original archive file(s).')
 @click.option('-f', '--force', is_flag=True, default=False,
               help='Overwrite any existing files instead of erroring out.')
-def lmpatch(archive_file, patched_lsb, split, no_backup, force):
+@click.option('-r', '--recursive', is_flag=True, default=False,
+              help='Patch multiple files into the archive.')
+def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     """Patch a LiveMaker game.
 
     If patched_lsb is a file, any existing version of patched_lsb will be replaced in the specified
@@ -60,6 +61,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force):
 
     If patched_lsb is a directory, every file existing in this directory and in the old archive will
     be replaced in the specified LiveMaker archive.
+    The -r/--recursive option is required for directory mode.
 
     If file extension for archive_file is ".ext", or if archive_file is not
     an excutable and the --split option is specified,
@@ -103,7 +105,12 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force):
 
     lsb_path = PureWindowsPath(patched_lsb)
 
-    path_mode = os.path.isdir(patched_lsb)
+    if Path(patched_lsb).is_dir():
+        if not recursive:
+            sys.exit('Cannot patch directory ({}) without -r/--recursive mode'.format(patched_lsb))
+    else:
+        if recursive:
+            sys.exit('Cannot patch file ({}) within -r/--recursive mode'.format(patched_lsb))
 
     try:
         tmpdir = tempfile.mkdtemp()
@@ -134,29 +141,25 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force):
                     else:
                         compress_type = info.compress_type
 
-                    if path_mode:
-                        thisfile = Path(patched_lsb).joinpath(info.path)
-                        if os.path.exists(thisfile):
-                            new_lm.write_as(thisfile, info.path, compress_type=compress_type, unk1=info.unk1)
-                            log.info('patched {}'.format(info.path))
-                            # print('patched'.format(info.path))
-                        else:
-                            # copy original version
-                            data = orig_lm.read(info, decompress=False)
-                            new_lm.writebytes(info, data)
-                            log.info('copied {}'.format(info.path))
-                            # print('copied {}'.format(info.path))
+                    if recursive:
+                        lsb_path = Path(patched_lsb).joinpath(info.path)
+                        if not lsb_path.exists():
+                            lsb_path = None
                     else:
-                        if info.path == lsb_path:
-                            new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1)
-                            log.info('patched {}'.format(lsb_path))
-                            # print('patched')
-                        else:
-                            # copy original version
-                            data = orig_lm.read(info, decompress=False)
-                            new_lm.writebytes(info, data)
-                            log.info('copied {}'.format(lsb_path))
-                            # print(info.name)
+                        lsb_path = PureWindowsPath(patched_lsb)
+                        if info.path != lsb_path:
+                            lsb_path = None
+
+                    if lsb_path:
+                        new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1, arcname=info.path)
+                        log.info('patched {}'.format(info.path))
+                    else:
+                        # copy original version
+                        data = orig_lm.read(info, decompress=False)
+                        new_lm.writebytes(info, data)
+                        log.info('copied {}'.format(info.path))
+                        # print(info.name)
+
         orig_lm.close()
 
         # copy temp dir contents to output path then remove the temp dir
