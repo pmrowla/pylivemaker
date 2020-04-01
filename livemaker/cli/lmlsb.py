@@ -282,7 +282,9 @@ def insert(encoding, lsb_file, script_file, line_number, no_backup):
 @click.argument('script_dir', type=click.Path(file_okay=False))
 @click.option('--no-backup', is_flag=True, default=False,
               help='Do not generate backup of original archive file(s).')
-def batchinsert(encoding, lsb_file, script_dir, no_backup):
+@click.option('--ignore-missing', is_flag=True, default=False,
+              help='Continue insert in case of missing script file(s).')
+def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
     """Compile specified LNS script directory and insert it into the specified LSB file according to
     the Reference file.
 
@@ -293,6 +295,8 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup):
     The original LSB file will be backed up to <lsb_file>.bak unless the
     --no-backup option is specified.
 
+    If a file from .lsbref is missing, insertation is stopped, unless the
+    --ignore-missing option is specified
     """
     script_dir = Path(script_dir)
     if not script_dir.exists():
@@ -301,6 +305,13 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup):
     if not no_backup:
         print('Backing up original LSB.')
         shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
+
+    with open(lsb_file, 'rb') as f:
+        try:
+            lsb = LMScript.from_file(f)
+        except LiveMakerException as e:
+            sys.exit('Could not open LSB file: {}'.format(e))
+
     lsb_path = Path(lsb_file)
     lsb_ref_filename = '{}.lsbref'.format(lsb_path.stem)
     with open(script_dir.joinpath(lsb_ref_filename), 'r', encoding=encoding) as lsb_ref_file:
@@ -311,7 +322,35 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup):
             lnsplt = ln.split(':')
             script_file = script_dir.joinpath(lnsplt[0])
             line_number = int(lnsplt[1])
-            insert_lns(encoding, lsb_file, script_file, line_number, True)
+
+            if not Path(script_file).exists():
+                if ignore_missing:
+                    print('Warning: script file {} is missing, skipped.'.format(script_file))
+                    continue
+                else:
+                    sys.exit('Script file is missing: {}'.format(script_file))
+
+            with open(script_file, 'rb') as f:
+                script = f.read().decode(encoding)
+            try:
+                cc = LNSCompiler()
+                new_body = cc.compile(script)
+            except LiveMakerException as e:
+                sys.exit('Could not compile script file: {}'.format(e))
+
+            for index, name, scenario in lsb.text_scenarios():
+                if index == line_number:
+                    print('Scenario {} at line {} will be replaced.'.format(name, index))
+                    scenario.replace_body(new_body)
+                    break
+
+    try:
+        new_lsb_data = lsb.to_lsb()
+        with open(lsb_file, 'wb') as f:
+            f.write(new_lsb_data)
+        print('Wrote new LSB.')
+    except LiveMakerException as e:
+        sys.exit('Could not generate new LSB file: {}'.format(e))
 
 
 # Known property data types

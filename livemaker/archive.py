@@ -783,7 +783,7 @@ class LMArchive(object):
         if compress_type is not None and compress_type not in SUPPORTED_COMPRESSIONS:
             raise UnsupportedLiveMakerCompression('{} is not supported.'.format(compress_type))
         info = LMArchiveInfo(name)
-        with open(name, 'rb') as f:
+        with open(filename, 'rb') as f:
             data = f.read()
         if compress_type is None:
             if len(data) >= 0x500000:
