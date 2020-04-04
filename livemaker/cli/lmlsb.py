@@ -22,6 +22,7 @@
 import hashlib
 import shutil
 import sys
+import csv
 from pathlib import Path
 
 import click
@@ -868,3 +869,228 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
         print('Wrote new LSB.')
     except LiveMakerException as e:
         sys.exit('Could not generate new LSB file: {}'.format(e))
+
+
+@lmlsb.command()
+@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay='False'))
+@click.argument('csv_file', required=True, type=click.Path(exists=False, dir_okay='False'))
+@click.option('--overwrite', is_flag=True, default=False,
+              help='Overwrite existing csv file.')
+@click.option('--append', is_flag=True, default=False,
+              help='Append menu data to existing csv file.')
+def extractmenu(lsb_file, csv_file, overwrite, append):
+    """Extract menu texts from the given lsb file to a csv file. You can open this csv file for translation in most table calc programs (Execl, open/libe office calc, ...). Just remember to chose comma as delimiter and " as quotechar.
+    You can use the --append option to add the menu data from this lsb file to a existing csv.
+    With the --overwrite option an existing csv will be overwritten without warning.
+    """
+    print("Extracting {} ...".format(lsb_file))
+
+    with open(lsb_file, 'rb') as f:
+        data = f.read()
+    try:
+        lsb = LMScript.from_lsb(data)
+    except BadLsbError as e:
+        sys.exit("Failed to parse file: {}".format(e))
+
+    csv_data = []
+    scan_menus(lsb, csv_data, lsb_file, extract=True)
+
+    if len(csv_data) == 0:
+        sys.exit("No menu data found.")
+
+    if Path(csv_file).exists():
+        if not overwrite and not append:
+            sys.exit("File {} already exists. Please use --overwrite or --append option.".format(csv_file))
+    elif append:
+        print("File {} does not exist, but --append specified. A new file will be created.".format(csv_file))
+        append = False
+
+    with open(csv_file, ('a' if append else 'w'), newline='\n') as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        if not append:
+            csv_writer.writerow(["Filename","AddArray line","Jump line","Original entry","Translated entry"])
+        for row in csv_data:
+            csv_writer.writerow(row)
+
+    print("{} Menu entries extracted.".format(len(csv_data)))
+
+
+@lmlsb.command()
+@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay='False'))
+@click.argument('csv_file', required=True, type=click.Path(exists=False, dir_okay='False'))
+@click.option('--no-backup', is_flag=True, default=False,
+              help='Do not generate backup of original lsb file.')
+def insertmenu(lsb_file, csv_file, no_backup):
+    """Apply translated menu texts from the given csv file on a given lsb file. The csv file have to be created by the extractmenu function and translations have to be added.
+
+    The original LSB file will be backed up to <lsb_file>.bak unless the
+    --no-backup option is specified.
+    """
+    print("Patching {} ...".format(lsb_file))
+
+    with open(lsb_file, 'rb') as f:
+        data = f.read()
+    try:
+        lsb = LMScript.from_lsb(data)
+    except BadLsbError as e:
+        sys.exit("Failed to parse file: {}".format(e))
+
+    csv_data = []
+
+    with open(csv_file, newline='\n') as csvfile:
+        csv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for row in csv_reader:
+            csv_data.append(row)
+
+    patched = scan_menus(lsb, csv_data, lsb_file, patch=True)
+
+    if not patched:
+        sys.exit("No menu patched, so not need to change LSB file.")
+
+    if not no_backup:
+        print('Backing up original LSB.')
+        shutil.copyfile(str(lsb_file), '{}.bak'.format(str(lsb_file)))
+    try:
+        new_lsb_data = lsb.to_lsb()
+        with open(lsb_file, 'wb') as f:
+            f.write(new_lsb_data)
+        print('Wrote new LSB.')
+    except LiveMakerException as e:
+        sys.exit('Could not generate new LSB file: {}'.format(e))
+
+
+
+def scan_menus(lsb, csv_data, file_name, extract=False, patch=False):
+    """Scan given lsb object for menu code, extract or patch menu enties
+    lsb: the lsb object loaded by LMScript.from_lsb
+    csv_data: translation data from the csv file
+    file_name: name of the lsb file
+    extract: true if you want to extract menu items
+    patch: true if you want to patch translated menu items
+    """
+    patched = False
+    cmdi = iter(lsb.commands)
+    try:
+        while True:
+
+            menuitems = []
+
+            # scan for start
+            # check for "VarNew _tmp ParamType.Str  2"
+            c = next(cmdi)
+            if c.type != CommandType.VarNew or c.args['Name']!='_tmp' or c.args['Type']!=ParamType.Str: continue
+            # check for "VarNew _tmpno ParamType.Int  2"
+            c = next(cmdi)
+            if c.type != CommandType.VarNew or c.args['Name']!='_tmpno' or c.args['Type']!=ParamType.Int: continue
+            # check for "VarNew _tmpid ParamType.Str  2"
+            c = next(cmdi)
+            if c.type != CommandType.VarNew or c.args['Name']!='_tmpid' or c.args['Type']!=ParamType.Str: continue
+
+            # scan max 100 lines for menu text entries
+            for i in range(100):
+
+                # check for "Calc AddArray(_tmp, ......)"
+                c = next(cmdi)
+                if c.type == CommandType.Calc:
+                    if len(c.args['Calc'].entries) !=3: continue
+                    a = c.args['Calc'].entries[1]
+                    if a.type != OpeDataType.Func or a.name!='____1' or a.func!=OpeFuncType.AddArray or len(a.operands)!=2: continue
+                    b = a.operands[0]
+                    if b.type!=ParamType.Var or b.value!='_tmp': continue
+                    b = a.operands[1]
+                    if b.type!=ParamType.Var or b.value!='____0': continue
+                    a = c.args['Calc'].entries[2]
+                    if a.type != OpeDataType.To or a.name!='____arg' or a.func!=None or len(a.operands)!=1: continue
+                    b = a.operands[0]
+                    if b.type!=ParamType.Var or b.value!='____1': continue
+                    a = c.args['Calc'].entries[0]
+                    if a.type != OpeDataType.To or a.name!='____0' or a.func!=None or len(a.operands)!=1: continue
+                    b = a.operands[0]
+                    if b.type!=ParamType.Str: continue
+
+                    # here we are sure we found a "Calc AddArray(_tmp, ......)"!
+                    menuitems.append([c, b, None, None])
+
+                # stop scanning on first "VarDel" command
+                if c.type == CommandType.VarDel:
+                    break
+
+            # check for "VarDel _tmp"
+            if c.type != CommandType.VarDel or c.args['Name']!='_tmp': continue
+            # check for "VarDel _tmpno"
+            c = next(cmdi)
+            if c.type != CommandType.VarDel or c.args['Name']!='_tmpno': continue
+            # check for "VarDel _tmpid"
+            c = next(cmdi)
+            if c.type!=CommandType.VarDel or c.args['Name']!='_tmpid': continue
+
+            # scan for conditional jump operations
+            count = 1  # we start at 1 because one menu entry always have no conditional jump
+            while True:
+                c = next(cmdi)
+                # stop scanning on everything else than jump operations
+                if c.type!=CommandType.Jump or c.args['Calc']==None:
+                    break
+
+                # simple jump indicates end of jump table
+                if len(c.args['Calc'].entries)==1:
+                    a = c.args['Calc'].entries[0]
+                    if len(a.operands)==1 and a.operands[0].type==ParamType.Flag and a.operands[0].value==1:
+                        break
+
+                # verify "Jump xxxxxxxxx.lsb:yyy 選択値 == ......"
+                if len(c.args['Calc'].entries) !=3: continue
+                a = c.args['Calc'].entries[1]
+                if len(a.operands)!=2: continue
+                b = a.operands[0]
+                if b.type!=ParamType.Var or b.value!='選択値': continue
+                b = a.operands[1]
+                if b.type!=ParamType.Var or b.value!='____0': continue
+                a = c.args['Calc'].entries[2]
+                if len(a.operands)!=1: continue
+                b = a.operands[0]
+                if b.type!=ParamType.Var or b.value!='____2': continue
+                a = c.args['Calc'].entries[0]
+                if len(a.operands)!=1: continue
+                b = a.operands[0]
+                if b.type!=ParamType.Str: continue
+
+                # now we are sure this is the right jump operation.
+                # lets check if the argument match one menu text entry
+                for item in menuitems:
+                    if b.value == item[1].value:
+                        # match! store the argument object
+                        item[2] = c
+                        item[3] = b
+                        count = count + 1
+
+            # we have now filled menuitems with all entries of the current menu
+            # if count does not match the menu text count, we have missed one jump.
+            if count != len(menuitems):  continue
+
+            # lets add this menu to the csv dataset
+            if extract:
+                for a in menuitems:
+                    csv_data.append([file_name, a[0].LineNo, None if a[2]==None else a[2].LineNo, a[1].value, None])
+
+            # lets patch this menu item
+            if patch:
+                for a in menuitems:
+                    for b in csv_data:
+                        if b[0] == file_name and b[1] == str(a[0].LineNo):
+                            if b[4] == "":
+                                print("Untranslated menu item \"{}\" at line {}! Not patched!".format(a[1].value, a[0].LineNo))
+                                continue
+                            print("Patched \"{}\" to \"{}\" at line {}".format(a[1].value, b[4], a[0].LineNo))
+                            a[1].value = b[4]
+                            if a[2] != None and a[3] != None:
+                                print("Patched \"{}\" to \"{}\" at line {}".format(a[3].value, b[4], a[2].LineNo))
+                                a[3].value = b[4]
+                            patched = True
+                            break
+
+    except StopIteration:
+        c = None
+
+    return patched
+
