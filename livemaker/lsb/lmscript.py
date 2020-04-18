@@ -55,7 +55,7 @@ class _LsbVersionValidator(construct.Validator):
 
     def _decode(self, obj, ctx, path):
         if not self._validate(obj, ctx, path):
-            raise construct.ValidationError('Unsupported LSB version: {}'.format(obj))
+            raise construct.ValidationError("Unsupported LSB version: {}".format(obj))
         return obj
 
 
@@ -72,14 +72,14 @@ class _ParamStreamAdapter(construct.Adapter):
     def _encode(self, obj, ctx, path):
         stream = []
         for i in range(0, len(obj), 8):
-            flags = obj[i:i + 8]
+            flags = obj[i : i + 8]
             if len(flags) < 8:
                 flags.extend([False] * (8 - len(flags)))
             byte = 0
             for j, flag in enumerate(flags):
-                byte |= (flag << j)
-            stream.append(byte.to_bytes(1, byteorder='little'))
-        return b''.join(stream)
+                byte |= flag << j
+            stream.append(byte.to_bytes(1, byteorder="little"))
+        return b"".join(stream)
 
 
 class LMScript(BaseSerializable):
@@ -111,23 +111,33 @@ class LMScript(BaseSerializable):
     # internal use field to specify where this LMScript came from
     _parsed_from = None
 
-    def __init__(self, version=DEFAULT_LSB_VERSION, param_type=1, flags=0,
-                 call_name='', novel_params=[], command_params=[[]], commands=[], **kwargs):
+    def __init__(
+        self,
+        version=DEFAULT_LSB_VERSION,
+        param_type=1,
+        flags=0,
+        call_name="",
+        novel_params=[],
+        command_params=[[]],
+        commands=[],
+        **kwargs
+    ):
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
-            log.warn('LSB compilation unsupported for LMScript version {}'.format(version))
+            log.warn("LSB compilation unsupported for LMScript version {}".format(version))
         self.version = version
         self.param_type = param_type
         self.flags = flags
         self.call_name = call_name
         self.novel_params = novel_params
         if len(command_params) > (max(CommandType) + 1):
-            log.warn('len(command_params) exceeds max command type value')
+            log.warn("len(command_params) exceeds max command type value")
         self.command_params = command_params
         if isinstance(commands, construct.ListContainer):
             self.commands = []
             for c in commands:
                 cmd = _command_classes[CommandType(int(c.type))].from_struct(
-                    c, command_params=command_params[int(c.type)])
+                    c, command_params=command_params[int(c.type)]
+                )
                 self.commands.append(cmd)
         else:
             self.commands = commands
@@ -136,7 +146,7 @@ class LMScript(BaseSerializable):
         return len(self.commands)
 
     def __repr__(self):
-        return '<LMScript version={} commands={}>'.format(self.version, repr(self.commands))
+        return "<LMScript version={} commands={}>".format(self.version, repr(self.commands))
 
     def __iter__(self):
         return iter(self.items())
@@ -147,8 +157,7 @@ class LMScript(BaseSerializable):
         raise KeyError
 
     def keys(self):
-        return ['version', 'flags', 'command_count', 'param_stream_size',
-                'command_params', 'commands']
+        return ["version", "flags", "command_count", "param_stream_size", "command_params", "commands"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -167,7 +176,7 @@ class LMScript(BaseSerializable):
     def lm_version(self):
         """Return LiveMaker app version based on an LSB version."""
         if self.version < MIN_LSB_VERSION:
-            raise BadLsbError('Unknown LSB version: {}'.format(self.version))
+            raise BadLsbError("Unknown LSB version: {}".format(self.version))
         elif self.version < 117:
             return 2
         return 3
@@ -175,16 +184,16 @@ class LMScript(BaseSerializable):
     def to_lsc(self):
         """Return this script in the tex .lsc format."""
         lines = [
-            'LiveMaker{:03}'.format(self.version),
+            "LiveMaker{:03}".format(self.version),
             str(self.param_type),
         ]
         if self.version >= 104:
-            lines.append('')    # unk, call name?
+            lines.append("")  # unk, call name?
         lines.append(str(len(self.command_params)))
         for params in self.command_params:
-            lines.append('\t'.join([str(i) for i, flag in enumerate(params) if flag]))
+            lines.append("\t".join([str(i) for i, flag in enumerate(params) if flag]))
 
-        return '\r\n'.join(lines)
+        return "\r\n".join(lines)
 
     @classmethod
     def from_lsc(cls, s):
@@ -200,11 +209,11 @@ class LMScript(BaseSerializable):
             Currently only supports reading version information.
 
         """
-        if not s.startswith('LiveMaker'):
-            raise BadLsbError('String does not contain LiveMaker script data.')
+        if not s.startswith("LiveMaker"):
+            raise BadLsbError("String does not contain LiveMaker script data.")
         lines = s.splitlines()
         try:
-            if lines[0].startswith('LiveMakerB'):
+            if lines[0].startswith("LiveMakerB"):
                 version = int(lines[0][10:])
             else:
                 version = int(lines[0][9:])
@@ -227,39 +236,33 @@ class LMScript(BaseSerializable):
             # for command in lines[command_params_start + command_params_count:]:
             #     pass
         except (IndexError, ValueError):
-            raise BadLsbError('String does not contain LiveMaker script data.')
+            raise BadLsbError("String does not contain LiveMaker script data.")
         # lm = cls(version=version, param_type=param_type, flags=flags,
         #          command_params=command_params, commands=commands)
         lm = cls(version=version)
-        lm._parsed_from = 'lsc'
+        lm._parsed_from = "lsc"
 
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            'version' / _LsbVersionValidator(construct.Int32ul),
-            'flags' / construct.Byte,
-            'command_count' / construct.Int32ul,
-            'param_stream_size' / construct.Int32ul,
-            'command_params' / construct.Array(
-                construct.this.command_count,
-                _ParamStreamAdapter(construct.Bytes(construct.this.param_stream_size)),
+            "version" / _LsbVersionValidator(construct.Int32ul),
+            "flags" / construct.Byte,
+            "command_count" / construct.Int32ul,
+            "param_stream_size" / construct.Int32ul,
+            "command_params"
+            / construct.Array(
+                construct.this.command_count, _ParamStreamAdapter(construct.Bytes(construct.this.param_stream_size)),
             ),
-            'commands' / construct.PrefixedArray(
-                construct.Int32ul,
-                construct.Select(*_command_structs)
-            ),
+            "commands" / construct.PrefixedArray(construct.Int32ul, construct.Select(*_command_structs)),
         )
 
     @classmethod
     def from_struct(cls, struct):
         """Create an LMScript from the specified struct."""
         lm = LMScript(
-            version=struct.version,
-            flags=struct.flags,
-            command_params=struct.command_params,
-            commands=struct.commands,
+            version=struct.version, flags=struct.flags, command_params=struct.command_params, commands=struct.commands,
         )
-        lm._parsed_from = 'lsb'
+        lm._parsed_from = "lsb"
         return lm
 
     def to_lsb(self):
@@ -272,23 +275,23 @@ class LMScript(BaseSerializable):
 
     def to_xml(self):
         """Return this script as an .lsc format XML etree.Element."""
-        root = etree.Element('Page')
-        version = etree.SubElement(root, 'Version')
+        root = etree.Element("Page")
+        version = etree.SubElement(root, "Version")
         version.text = str(self.version)
-        call_name = etree.SubElement(root, 'CallName')
+        call_name = etree.SubElement(root, "CallName")
         call_name.text = self.call_name
-        novel_param = etree.SubElement(root, 'NovelParam')
+        novel_param = etree.SubElement(root, "NovelParam")
         for x in self.novel_params:
-            item = etree.SubElement(novel_param, 'Item')
-            item .text = x
-        param = etree.SubElement(root, 'Param')
+            item = etree.SubElement(novel_param, "Item")
+            item.text = x
+        param = etree.SubElement(root, "Param")
         for i, params in enumerate(self.command_params):
             cmd = etree.SubElement(param, CommandType(i).name)
             for j, flag in enumerate(params):
                 if flag:
                     item = etree.SubElement(cmd, PropertyType(j).name)
                     item.text = "1"
-        command = etree.SubElement(root, 'Command')
+        command = etree.SubElement(root, "Command")
         for c in self.commands:
             command.append(c.to_xml())
         return root
@@ -316,10 +319,10 @@ class LMScript(BaseSerializable):
         # for i in range(max(CommandType) + 1):
         #     command_params.append([False] * (max(PropertyType) + 1))
         # commands = []
-        if root.tag != 'Page':
-            raise BadLsbError('Expected an LMScript XML tree')
+        if root.tag != "Page":
+            raise BadLsbError("Expected an LMScript XML tree")
         for child in root:
-            if child.tag == 'Version':
+            if child.tag == "Version":
                 version = int(child.text)
             # elif child.tag == 'PropertyType':
             #     param_type = int(child.text)
@@ -340,7 +343,7 @@ class LMScript(BaseSerializable):
         # lm = cls(version=version, param_type=param_type, flags=flags, call_name=call_name,
         #          novel_params=novel_params, command_params=command_params, commands=commands)
         lm = cls(version=version)
-        lm._parsed_from = 'lsc-xml'
+        lm._parsed_from = "lsc-xml"
         return lm
 
     @classmethod
@@ -355,12 +358,12 @@ class LMScript(BaseSerializable):
 
         """
         if not isinstance(infile, IOBase):
-            infile = open(infile, 'rb')
+            infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
-        if data.startswith(b'LiveMaker'):
-            return cls.from_lsc(infile.read().decode('cp932'))
-        elif data.startswith(b'<?xml'):
+        if data.startswith(b"LiveMaker"):
+            return cls.from_lsc(infile.read().decode("cp932"))
+        elif data.startswith(b"<?xml"):
             return cls.from_xml(etree.parse(infile))
         try:
             return cls.from_struct(cls._struct().parse_stream(infile))
@@ -397,7 +400,7 @@ class LMScript(BaseSerializable):
                 #   Label <scenario_name>
                 #   Calc <set system message flag to non-empty>
                 #   TextIns <scenario>
-                name = self.commands[i - 2].get('Name', '')
-                scenario = cmd.get('Text')
+                name = self.commands[i - 2].get("Name", "")
+                scenario = cmd.get("Text")
                 scenarios.append((cmd.LineNo, name, scenario))
         return scenarios

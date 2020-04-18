@@ -35,14 +35,14 @@ from .cli import _version, __version__
 
 
 IGNORED_SCRIPTS = [
-    'メッセージボックス作成.lsb',
-    'メッセージボックス座標.lsb',
+    "メッセージボックス作成.lsb",
+    "メッセージボックス座標.lsb",
 ]
 
 
 visited = set()
 lsbs_to_visit = deque()
-graph = pydot.Dot(graph_type='digraph')
+graph = pydot.Dot(graph_type="digraph")
 
 
 def parse_lsb(lsb_file, root_dir=None):
@@ -54,12 +54,12 @@ def parse_lsb(lsb_file, root_dir=None):
     if path in visited:
         return
     visited.add(path)
-    print('processing {}...'.format(path))
-    with open(path, 'rb') as f:
+    print("processing {}...".format(path))
+    with open(path, "rb") as f:
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
-            sys.exit('Could not open LSB file: {}'.format(e))
+            sys.exit("Could not open LSB file: {}".format(e))
     graph.add_node(pydot.Node(str(lsb_file), label=str(lsb_file)))
     remaining_cmds = set(range(1, len(lsb.commands)))
 
@@ -69,25 +69,25 @@ def parse_lsb(lsb_file, root_dir=None):
         pc, last_calc = cmds_to_visit.popleft()
         cmd = lsb.commands[pc]
         if cmd.type == CommandType.Jump:
-            ref = cmd.get('Page')
-            calc = str(cmd.get('Calc'))
+            ref = cmd.get("Page")
+            calc = str(cmd.get("Calc"))
 
             if ref.Page == lsb_file:
-                if calc != '1':
+                if calc != "1":
                     # branch not taken
                     next_pc = pc + 1
                     if next_pc in remaining_cmds:
                         remaining_cmds.remove(next_pc)
                         cmds_to_visit.append((next_pc, last_calc))
-                if calc != '0':
+                if calc != "0":
                     # branch taken
-                    if calc == '1':
+                    if calc == "1":
                         calc = last_calc
                     next_pc = ref.Label
                     if next_pc in remaining_cmds:
                         remaining_cmds.remove(next_pc)
                         cmds_to_visit.append((next_pc, calc))
-            elif not ref.Page.startswith('ノベルシステム'):
+            elif not ref.Page.startswith("ノベルシステム"):
                 if last_calc:
                     edge = pydot.Edge(lsb_file, ref.Page, label=last_calc)
                 else:
@@ -95,11 +95,10 @@ def parse_lsb(lsb_file, root_dir=None):
                 graph.add_edge(edge)
                 lsbs_to_visit.append(ref.Page)
         elif cmd.type == CommandType.Call:
-            ref = cmd.get('Page')
-            calc = str(cmd.get('Calc'))
+            ref = cmd.get("Page")
+            calc = str(cmd.get("Calc"))
 
-            if (ref.Page != lsb_file and not ref.Page.startswith('ノベルシステム') and
-                    ref.Page not in IGNORED_SCRIPTS):
+            if ref.Page != lsb_file and not ref.Page.startswith("ノベルシステム") and ref.Page not in IGNORED_SCRIPTS:
                 # ignore calls to self (used for cleanup sometimes) and
                 # novel system calls
                 if last_calc:
@@ -122,8 +121,8 @@ def parse_lsb(lsb_file, root_dir=None):
 
 @click.command()
 @click.version_option(version=__version__, message=_version)
-@click.argument('lsb_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('out_file', required=False)
+@click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("out_file", required=False)
 def lmgraph(lsb_file, out_file):
     """Generate a DOT syntax graph for a LiveNovel game.
 
@@ -135,15 +134,15 @@ def lmgraph(lsb_file, out_file):
     scripts, which should give a general approximation of the original LiveMaker scenario chart.
     """
     path = Path(lsb_file)
-    print('Generating graph for {}'.format(path))
-    if path.name != 'ゲームメイン.lsb':
-        print('Warning: input filename is not ゲームメイン.lsb')
+    print("Generating graph for {}".format(path))
+    if path.name != "ゲームメイン.lsb":
+        print("Warning: input filename is not ゲームメイン.lsb")
     root_dir = path.parent
     lsbs_to_visit.append(path.name)
     while lsbs_to_visit:
         parse_lsb(lsbs_to_visit.popleft(), root_dir=root_dir)
     if not out_file:
-        out_file = '{}.dot'.format(lsb_file)
-    with open(out_file, 'w') as f:
+        out_file = "{}.dot".format(lsb_file)
+    with open(out_file, "w") as f:
         f.write(graph.to_string())
-    print('Wrote {}'.format(out_file))
+    print("Wrote {}".format(out_file))

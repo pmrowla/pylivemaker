@@ -54,12 +54,12 @@ class CommandType(enum.IntEnum):
     Wait = 0x07
     BoxNew = 0x08
     ImgNew = 0x09
-    MesNew = 0x0a
-    Timer = 0x0b
-    Movie = 0x0c
-    Flip = 0x0d
-    Calc = 0x0e
-    VarNew = 0x0f
+    MesNew = 0x0A
+    Timer = 0x0B
+    Movie = 0x0C
+    Flip = 0x0D
+    Calc = 0x0E
+    VarNew = 0x0F
     VarDel = 0x10
     GetProp = 0x11
     SetProp = 0x12
@@ -70,12 +70,12 @@ class CommandType(enum.IntEnum):
     Cinema = 0x17
     Caption = 0x18
     Menu = 0x19
-    MenuClose = 0x1a
-    Comment = 0x1b
-    TextClr = 0x1c
-    CallHist = 0x1d
-    Button = 0x1e
-    While = 0x1f
+    MenuClose = 0x1A
+    Comment = 0x1B
+    TextClr = 0x1C
+    CallHist = 0x1D
+    Button = 0x1E
+    While = 0x1F
     WhileInit = 0x20
     WhileLoop = 0x21
     Break = 0x22
@@ -86,12 +86,12 @@ class CommandType(enum.IntEnum):
     GameLoad = 0x27
     PCReset = 0x28
     Reset = 0x29
-    Sound = 0x2a
-    EditNew = 0x2b
-    MemoNew = 0x2c
-    Terminate = 0x2d
-    DoEvent = 0x2e
-    ClrRead = 0x2f
+    Sound = 0x2A
+    EditNew = 0x2B
+    MemoNew = 0x2C
+    Terminate = 0x2D
+    DoEvent = 0x2E
+    ClrRead = 0x2F
     MapImgNew = 0x30
     WaveNew = 0x31
     TileNew = 0x32
@@ -102,12 +102,12 @@ class CommandType(enum.IntEnum):
     MediaPlay = 0x37
     PrevMenuNew = 0x38
     PropMotion = 0x39
-    FormatHist = 0x3a       # TComEntryHist
-    SaveCabinet = 0x3b      # TComCabinetSave
-    LoadCabinet = 0x3c      # TComCabinetLoad
-    IFDEF = 0x3d            # TComIfdef
-    IFNDEF = 0x3e           # TComIfndef
-    ENDIF = 0x3f            # TComEndif
+    FormatHist = 0x3A  # TComEntryHist
+    SaveCabinet = 0x3B  # TComCabinetSave
+    LoadCabinet = 0x3C  # TComCabinetLoad
+    IFDEF = 0x3D  # TComIfdef
+    IFNDEF = 0x3E  # TComIfndef
+    ENDIF = 0x3F  # TComEndif
 
 
 class LabelReference(BaseSerializable):
@@ -125,7 +125,7 @@ class LabelReference(BaseSerializable):
 
     """
 
-    def __init__(self, Page='', Label=0):
+    def __init__(self, Page="", Label=0):
         """Initialize a LabelReference.
 
         Params:
@@ -139,20 +139,20 @@ class LabelReference(BaseSerializable):
         self.Label = Label
 
     def __str__(self):
-        return '{}:{}'.format(self.Page, self.Label)
+        return "{}:{}".format(self.Page, self.Label)
 
     def __iter__(self):
         return iter(self.items())
 
     def __getitem__(self, key):
-        if key == 'Page':
+        if key == "Page":
             return self.Page
-        elif key == 'Label':
+        elif key == "Label":
             return self.lookup_index()
         raise KeyError(key)
 
     def keys(self):
-        return ['Page', 'Label']
+        return ["Page", "Label"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -162,9 +162,9 @@ class LabelReference(BaseSerializable):
         if isinstance(self.Label, int):
             if Label == 0:
                 # Reference to start of page
-                return ''
+                return ""
             # TODO lookup label
-            log.warn('Label lookup not yet implemented.')
+            log.warn("Label lookup not yet implemented.")
             return str(self.Label)
         else:
             return str(self.Label)
@@ -178,12 +178,12 @@ class LabelReference(BaseSerializable):
                 # Reference to start of page
                 return 0
             # TODO lookup label
-            log.warn('Label lookup not yet implemented.')
+            log.warn("Label lookup not yet implemented.")
             return 0
 
     def to_lsc(self):
         """Return this label reference in text .lsc format."""
-        return '\t'.join([self.Page, self.lookup_name()])
+        return "\t".join([self.Page, self.lookup_name()])
 
     # @classmethod
     # def from_lsc(cls, Page, Label):
@@ -191,7 +191,7 @@ class LabelReference(BaseSerializable):
 
     def to_xml(self):
         """Return an XML representation of this label reference."""
-        return ':'.join([self.Page, self.lookup_name()])
+        return ":".join([self.Page, self.lookup_name()])
 
     # @classmethod
     # def from_xml(cls, root):
@@ -217,8 +217,7 @@ class LabelReference(BaseSerializable):
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            'Page' / construct.PascalString(construct.Int32ul, 'cp932'),
-            'Label' / construct.Int32ul,
+            "Page" / construct.PascalString(construct.Int32ul, "cp932"), "Label" / construct.Int32ul,
         )
 
     @classmethod
@@ -265,21 +264,21 @@ class BaseCommand(BaseSerializable):
         self.args = OrderedDict()
 
     def __str__(self):
-        return ' '.join(str(x) for x in [self.type.name] + list(self.args.values()))
+        return " ".join(str(x) for x in [self.type.name] + list(self.args.values()))
 
     def __repr__(self):
         params = []
         for k in self.keys():
             v = self.get(k)
             if v is not None:
-                params.append('{}={}'.format(k, repr(v)))
-        return '{}({})'.format(type(self).__name__, ', '.join(params))
+                params.append("{}={}".format(k, repr(v)))
+        return "{}({})".format(type(self).__name__, ", ".join(params))
 
     def __iter__(self):
         return iter(self.items())
 
     def __getitem__(self, key):
-        if key in ('type', 'LineNo', 'Indent', 'Mute', 'NotUpdate'):
+        if key in ("type", "LineNo", "Indent", "Mute", "NotUpdate"):
             v = getattr(self, key)
         else:
             v = self.args[key]
@@ -289,7 +288,7 @@ class BaseCommand(BaseSerializable):
 
     def keys(self):
         """Return a list of dictionary keys for this command."""
-        return ['type', 'LineNo', 'Indent', 'Mute', 'NotUpdate'] + list(self.args.keys())
+        return ["type", "LineNo", "Indent", "Mute", "NotUpdate"] + list(self.args.keys())
 
     def items(self):
         """Return a list of (key, value) pairs for this command."""
@@ -299,13 +298,13 @@ class BaseCommand(BaseSerializable):
         """Return this command in text .lsc format."""
         out = [self.type.name, str(self.Indent), str(int(self.Mute)), str(self.NotUpdate), str(self.Color)]
         for arg in self.args:
-            if hasattr(arg, 'to_lsc'):
+            if hasattr(arg, "to_lsc"):
                 out.append(arg.to_lsc())
             elif isinstance(arg, enum.Enum):
                 out.append(str(arg.value))
             elif arg is not None:
                 out.append(str(arg))
-        return '\t'.join(out)
+        return "\t".join(out)
 
     # def _parse_lsc_args(self, *args, **kwargs):
     #     raise NotImplementedError
@@ -335,13 +334,18 @@ class BaseCommand(BaseSerializable):
 
     def to_xml(self):
         """Return an XML representation of this command."""
-        root = etree.Element('Item', Command=self.type.name,
-                             LineNo=str(self.LineNo), Indent=str(self.Indent),
-                             Mute=str(int(self.Mute)), NotUpdate=str(int(self.NotUpdate)),
-                             Color=str(self.Color))
+        root = etree.Element(
+            "Item",
+            Command=self.type.name,
+            LineNo=str(self.LineNo),
+            Indent=str(self.Indent),
+            Mute=str(int(self.Mute)),
+            NotUpdate=str(int(self.NotUpdate)),
+            Color=str(self.Color),
+        )
         for k, v in self.args.items():
             item = etree.SubElement(root, k)
-            if hasattr(v, 'to_xml'):
+            if hasattr(v, "to_xml"):
                 x = v.to_xml()
                 if isinstance(x, (str, etree.CDATA)):
                     item.text = x
@@ -349,7 +353,7 @@ class BaseCommand(BaseSerializable):
                     for child in x:
                         item.append(child)
                 else:
-                    log.warn('Ignoring unexpected child type returned by to_xml()')
+                    log.warn("Ignoring unexpected child type returned by to_xml()")
             elif isinstance(v, enum.Enum):
                 item.text = str(v.name)
             else:
@@ -381,11 +385,11 @@ class BaseCommand(BaseSerializable):
     def _struct(cls):
         """Return a construct Struct for this command type."""
         return construct.Struct(
-            'type' / construct.Const(cls.type.name, construct.Enum(construct.Byte, CommandType)),
-            'Indent' / construct.Int32ul,
-            'Mute' / construct.Flag,
-            'NotUpdate' / construct.Flag,
-            'LineNo' / construct.Int32ul,
+            "type" / construct.Const(cls.type.name, construct.Enum(construct.Byte, CommandType)),
+            "Indent" / construct.Int32ul,
+            "Mute" / construct.Flag,
+            "NotUpdate" / construct.Flag,
+            "LineNo" / construct.Int32ul,
             # construct.Probe(),
             construct.Embedded(cls._struct_fields),
             # construct.Probe(),
@@ -403,15 +407,13 @@ class If(BaseCommand):
     """
 
     type = CommandType.If
-    _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
 
     # def _parse_lsc_args(self, Calc, *args, **kwargs):
     #     self.args['Calc'] = LiveParser.from_lsc(Calc)
@@ -452,13 +454,11 @@ class Label(BaseCommand):
     """
 
     type = CommandType.Label
-    _struct_fields = construct.Struct(
-        'Name' / construct.PascalString(construct.Int32ul, 'cp932'),
-    )
+    _struct_fields = construct.Struct("Name" / construct.PascalString(construct.Int32ul, "cp932"),)
 
-    def __init__(self, Name='', **kwargs):
+    def __init__(self, Name="", **kwargs):
         super().__init__(**kwargs)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
 
     # def _parse_lsc_args(self, Name, *args, **kwargs):
     #     self.args['Name'] = Name
@@ -479,19 +479,16 @@ class Jump(BaseCommand):
     """
 
     type = CommandType.Jump
-    _struct_fields = construct.Struct(
-        'Page' / LabelReference._struct(),
-        'Calc' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Page" / LabelReference._struct(), "Calc" / LiveParser._struct(),)
 
     def __init__(self, Page=LabelReference(), Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             Page = LabelReference.from_struct(Page)
-        self.args['Page'] = Page
+        self.args["Page"] = Page
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
 
     # def _parse_lsc_args(self, Page, Label, Calc, *args, **kwargs):
     #     self.args['Page'] = LabelReference(Page, Label)
@@ -519,24 +516,24 @@ class Call(BaseCommand):
 
     type = CommandType.Call
     _struct_fields = construct.Struct(
-        'Page' / LabelReference._struct(),
-        'Result' / construct.PascalString(construct.Int32ul, 'cp932'),
-        'Calc' / LiveParser._struct(),
-        'Params' / LiveParserArray._struct(construct.Int32ul),
+        "Page" / LabelReference._struct(),
+        "Result" / construct.PascalString(construct.Int32ul, "cp932"),
+        "Calc" / LiveParser._struct(),
+        "Params" / LiveParserArray._struct(construct.Int32ul),
     )
 
-    def __init__(self, Page=LabelReference(), Result='', Calc=LiveParser(), Params=LiveParserArray(), **kwargs):
+    def __init__(self, Page=LabelReference(), Result="", Calc=LiveParser(), Params=LiveParserArray(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             Page = LabelReference.from_struct(Page)
-        self.args['Page'] = Page
-        self.args['Result'] = Result
+        self.args["Page"] = Page
+        self.args["Result"] = Result
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
         if isinstance(Params, construct.ListContainer):
             Params = LiveParserArray.from_struct(Params)
-        self.args['Params'] = Params
+        self.args["Params"] = Params
 
     # def _parse_lsc_args(self, Page, Label, Result, Calc, *args, **kwargs):
     #     raise NotImplementedError('Parsing Call from text LSC not supported')
@@ -567,15 +564,13 @@ class Exit(BaseCommand):
     """
 
     type = CommandType.Exit
-    _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
 
     # def _parse_lsc_args(self, Calc, *args, **kwargs):
     #     self.args['Calc'] = LiveParser.from_lsc(Calc)
@@ -599,9 +594,9 @@ class Wait(BaseCommand):
 
     type = CommandType.Wait
     _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-        'Time' / LiveParser._struct(),
-        'StopEvent' / construct.If(construct.this._._.version > 0x6a, LiveParser._struct()),
+        "Calc" / LiveParser._struct(),
+        "Time" / LiveParser._struct(),
+        "StopEvent" / construct.If(construct.this._._.version > 0x6A, LiveParser._struct()),
     )
 
     def __init__(self, Calc=LiveParser(), Time=LiveParser(), StopEvent=None, **kwargs):
@@ -611,13 +606,13 @@ class Wait(BaseCommand):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
         if isinstance(Time, construct.Container):
             Time = LiveParser.from_struct(Time)
-        self.args['Time'] = Time
+        self.args["Time"] = Time
         if isinstance(StopEvent, construct.Container):
             StopEvent = LiveParser.from_struct(StopEvent)
-        self.args['StopEvent'] = StopEvent
+        self.args["StopEvent"] = StopEvent
 
     # def _parse_lsc_args(self, Calc, Time, StopEvent, *args, **kwargs):
     #     self.args['Calc'] = LiveParser.from_lsc(Calc)
@@ -659,18 +654,15 @@ class BaseComponentCommand(BaseCommand):
     # NOTE: We don't use LiveParserArray here because we would still need to do
     # the special handling for parameter names/types anyways
     type = None
-    _struct_fields = construct.Struct(
-        'components' / construct.Array(
-            _count_params,
-            LiveParser._struct()
-        ),
-    )
+    _struct_fields = construct.Struct("components" / construct.Array(_count_params, LiveParser._struct()),)
 
     def __init__(self, components=[], command_params=[], **kwargs):
         super().__init__(**kwargs)
         if len(components) > sum(command_params):
-            raise BadLsbError('Got more param components than expected for this LM version,'
-                              ' got {} expected {}.'.format(len(components), sum(command_params)))
+            raise BadLsbError(
+                "Got more param components than expected for this LM version,"
+                " got {} expected {}.".format(len(components), sum(command_params))
+            )
         self._component_keys = []
         if components:
             i = 0
@@ -685,20 +677,20 @@ class BaseComponentCommand(BaseCommand):
                     param_type = PropertyType(type_index + 1)
                     if param_type == PropertyType.PR_NAME:
                         # PR_NAME is a special case
-                        self.args['Name'] = c
-                        self._component_keys.append('Name')
+                        self.args["Name"] = c
+                        self._component_keys.append("Name")
                     else:
                         self.args[param_type.name] = c
                         self._component_keys.append(param_type.name)
                     i += 1
 
     def __getitem__(self, key):
-        if key == 'components':
+        if key == "components":
             return [self.args[x] for x in self._component_keys]
         return super().__getitem__(key)
 
     def keys(self):
-        return super().keys() + ['components']
+        return super().keys() + ["components"]
 
     # def _parse_lsc_args(self, *args, **kwargs):
     #     if 'command_params' not in kwargs:
@@ -752,7 +744,7 @@ class Timer(BaseComponentCommand):
 
 
 class Movie(BaseComponentCommand):
-    "Play a movie clip in the specified screen region."""
+    "Play a movie clip in the specified screen region." ""
 
     type = CommandType.Movie
 
@@ -784,22 +776,32 @@ class Flip(BaseCommand):
 
     type = CommandType.Flip
     _struct_fields = construct.Struct(
-        'Wipe' / LiveParser._struct(),
-        'Time' / LiveParser._struct(),
-        'Reverse' / LiveParser._struct(),
-        'Act' / LiveParser._struct(),
-        'Targets' / LiveParserArray._struct(construct.Int32ul),
-        'Delete' / LiveParser._struct(),
-        'Param' / LiveParserArray._struct(2, False),
-        'Source' / construct.If(construct.this._._.version > 0x64, LiveParser._struct()),
-        'StopEvent' / construct.If(construct.this._._.version > 0x6a, LiveParser._struct()),
-        'DifferenceOnly' / construct.If(construct.this._._.version > 0x74, LiveParser._struct()),
+        "Wipe" / LiveParser._struct(),
+        "Time" / LiveParser._struct(),
+        "Reverse" / LiveParser._struct(),
+        "Act" / LiveParser._struct(),
+        "Targets" / LiveParserArray._struct(construct.Int32ul),
+        "Delete" / LiveParser._struct(),
+        "Param" / LiveParserArray._struct(2, False),
+        "Source" / construct.If(construct.this._._.version > 0x64, LiveParser._struct()),
+        "StopEvent" / construct.If(construct.this._._.version > 0x6A, LiveParser._struct()),
+        "DifferenceOnly" / construct.If(construct.this._._.version > 0x74, LiveParser._struct()),
     )
 
-    def __init__(self, Wipe=LiveParser(), Time=LiveParser(), Reverse=LiveParser(),
-                 Act=LiveParser(), Targets=LiveParserArray(), Delete=LiveParser(),
-                 Source=None, DifferenceOnly=None, StopEvent=None,
-                 Param=LiveParserArray(prefixed=False), **kwargs):
+    def __init__(
+        self,
+        Wipe=LiveParser(),
+        Time=LiveParser(),
+        Reverse=LiveParser(),
+        Act=LiveParser(),
+        Targets=LiveParserArray(),
+        Delete=LiveParser(),
+        Source=None,
+        DifferenceOnly=None,
+        StopEvent=None,
+        Param=LiveParserArray(prefixed=False),
+        **kwargs
+    ):
         # TODO: lsb and lsc XML serialization order are different (lsb is by
         # version, and XML always puts Param last), for now we assume text lsc
         # version uses the same order as XML lsc, and NOT the same order as
@@ -807,34 +809,34 @@ class Flip(BaseCommand):
         super().__init__(**kwargs)
         if isinstance(Wipe, construct.Container):
             Wipe = LiveParser.from_struct(Wipe)
-        self.args['Wipe'] = Wipe
+        self.args["Wipe"] = Wipe
         if isinstance(Time, construct.Container):
             Time = LiveParser.from_struct(Time)
-        self.args['Time'] = Time
+        self.args["Time"] = Time
         if isinstance(Reverse, construct.Container):
             Reverse = LiveParser.from_struct(Reverse)
-        self.args['Reverse'] = Reverse
+        self.args["Reverse"] = Reverse
         if isinstance(Act, construct.Container):
             Act = LiveParser.from_struct(Act)
-        self.args['Act'] = Act
+        self.args["Act"] = Act
         if isinstance(Targets, construct.ListContainer):
             Targets = LiveParserArray.from_struct(Targets)
-        self.args['Targets'] = Targets
+        self.args["Targets"] = Targets
         if isinstance(Delete, construct.Container):
             Delete = LiveParser.from_struct(Delete)
-        self.args['Delete'] = Delete
+        self.args["Delete"] = Delete
         if isinstance(Source, construct.Container):
             Source = LiveParser.from_struct(Source)
-        self.args['Source'] = Source
+        self.args["Source"] = Source
         if isinstance(DifferenceOnly, construct.Container):
             DifferenceOnly = LiveParser.from_struct(DifferenceOnly)
-        self.args['DifferenceOnly'] = DifferenceOnly
+        self.args["DifferenceOnly"] = DifferenceOnly
         if isinstance(StopEvent, construct.Container):
             StopEvent = LiveParser.from_struct(StopEvent)
-        self.args['StopEvent'] = StopEvent
+        self.args["StopEvent"] = StopEvent
         if isinstance(Param, construct.ListContainer):
             Param = LiveParserArray.from_struct(Param, prefixed=False)
-        self.args['Param'] = Param
+        self.args["Param"] = Param
 
     # def _parse_lsc_args(self, Wipe, Time, Reverse, Act, Targets, Delete, Source, DifferenceOnly,
     #                     StopEvent, Param, *args, **kwargs):
@@ -862,15 +864,13 @@ class Calc(BaseCommand):
     """
 
     type = CommandType.Calc
-    _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
 
     # def _parse_lsc_args(self, Calc, *args, **kwargs):
     #     self.args['Calc'] = LiveParser.from_lsc(Calc)
@@ -894,25 +894,25 @@ class VarNew(BaseCommand):
 
     type = CommandType.VarNew
     _struct_fields = construct.Struct(
-        'Name' / construct.PascalString(construct.Int32ul, 'cp932'),
-        'Type' / construct.Enum(construct.Byte, ParamType),
-        'InitVal' / LiveParser._struct(),
-        'Scope' / construct.Byte,
+        "Name" / construct.PascalString(construct.Int32ul, "cp932"),
+        "Type" / construct.Enum(construct.Byte, ParamType),
+        "InitVal" / LiveParser._struct(),
+        "Scope" / construct.Byte,
     )
 
-    def __init__(self, Name='', Type=0, InitVal=LiveParser(), Scope=0, **kwargs):
+    def __init__(self, Name="", Type=0, InitVal=LiveParser(), Scope=0, **kwargs):
         """
 
         """
         super().__init__(**kwargs)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
         if not isinstance(Type, ParamType):
             Type = ParamType(int(Type))
-        self.args['Type'] = Type
+        self.args["Type"] = Type
         if isinstance(InitVal, construct.Container):
             InitVal = LiveParser.from_struct(InitVal)
-        self.args['InitVal'] = InitVal
-        self.args['Scope'] = int(Scope)
+        self.args["InitVal"] = InitVal
+        self.args["Scope"] = int(Scope)
 
     # def _parse_lsc_args(self, Name, Type, InitVal, Scope, *args, **kwargs):
     #     self.args['Name'] = Name
@@ -941,13 +941,11 @@ class VarDel(BaseCommand):
     """
 
     type = CommandType.VarDel
-    _struct_fields = construct.Struct(
-        'Name' / construct.PascalString(construct.Int32ul, 'cp932'),
-    )
+    _struct_fields = construct.Struct("Name" / construct.PascalString(construct.Int32ul, "cp932"),)
 
-    def __init__(self, Name='', **kwargs):
+    def __init__(self, Name="", **kwargs):
         super().__init__(**kwargs)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
 
     # def _parse_lsc_args(self, Name, *args, **kwargs):
     #     self.args['Name'] = Name
@@ -970,23 +968,23 @@ class GetProp(BaseCommand):
 
     type = CommandType.GetProp
     _struct_fields = construct.Struct(
-        'ObjName' / LiveParser._struct(),
-        'ObjProp' / LiveParser._struct(),
-        'VarName' / construct.PascalString(construct.Int32ul, 'cp932'),
+        "ObjName" / LiveParser._struct(),
+        "ObjProp" / LiveParser._struct(),
+        "VarName" / construct.PascalString(construct.Int32ul, "cp932"),
     )
 
-    def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), VarName='', **kwargs):
+    def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), VarName="", **kwargs):
         """
 
         """
         super().__init__(**kwargs)
         if isinstance(ObjName, construct.Container):
             ObjName = LiveParser.from_struct(ObjName)
-        self.args['ObjName'] = ObjName
+        self.args["ObjName"] = ObjName
         if isinstance(ObjProp, construct.Container):
             ObjProp = LiveParser.from_struct(ObjProp)
-        self.args['ObjProp'] = ObjProp
-        self.args['VarName'] = VarName
+        self.args["ObjProp"] = ObjProp
+        self.args["VarName"] = VarName
 
     # def _parse_lsc_args(self, ObjName, ObjProp, VarName, *args, **kwargs):
     #     self.args['ObjName'] = LiveParser.from_lsc(ObjName)
@@ -1013,22 +1011,20 @@ class SetProp(BaseCommand):
 
     type = CommandType.SetProp
     _struct_fields = construct.Struct(
-        'ObjName' / LiveParser._struct(),
-        'ObjProp' / LiveParser._struct(),
-        'Value' / LiveParser._struct(),
+        "ObjName" / LiveParser._struct(), "ObjProp" / LiveParser._struct(), "Value" / LiveParser._struct(),
     )
 
     def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), Value=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(ObjName, construct.Container):
             ObjName = LiveParser.from_struct(ObjName)
-        self.args['ObjName'] = ObjName
+        self.args["ObjName"] = ObjName
         if isinstance(ObjProp, construct.Container):
             ObjProp = LiveParser.from_struct(ObjProp)
-        self.args['ObjProp'] = ObjProp
+        self.args["ObjProp"] = ObjProp
         if isinstance(Value, construct.Container):
             Value = LiveParser.from_struct(Value)
-        self.args['Value'] = Value
+        self.args["Value"] = Value
 
     # def _parse_lsc_args(self, ObjName, ObjProp, Value, *args, **kwargs):
     #     self.args['ObjName'] = LiveParser.from_lsc(ObjName)
@@ -1049,15 +1045,13 @@ class ObjDel(BaseCommand):
     """
 
     type = CommandType.ObjDel
-    _struct_fields = construct.Struct(
-        'Name' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Name" / LiveParser._struct(),)
 
     def __init__(self, Name=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
             Name = LiveParser.from_struct(Name)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
 
 
 class TextIns(BaseCommand):
@@ -1080,32 +1074,33 @@ class TextIns(BaseCommand):
 
     type = CommandType.TextIns
     _struct_fields = construct.Struct(
-        'Text' / construct.Prefixed(construct.Int32ul, TpWord._struct()),
+        "Text" / construct.Prefixed(construct.Int32ul, TpWord._struct()),
         # 'text' / construct.Prefixed(construct.Int32ul, construct.GreedyBytes),
-        'Target' / LiveParser._struct(),
-        'Hist' / LiveParser._struct(),
-        'Wait' / LiveParser._struct(),
-        'StopEvent' / construct.If(construct.this._._.version > 0x6a, LiveParser._struct()),
+        "Target" / LiveParser._struct(),
+        "Hist" / LiveParser._struct(),
+        "Wait" / LiveParser._struct(),
+        "StopEvent" / construct.If(construct.this._._.version > 0x6A, LiveParser._struct()),
     )
 
-    def __init__(self, Text=TpWord(), Target=LiveParser(), Hist=LiveParser(),
-                 Wait=LiveParser(), StopEvent=None, **kwargs):
+    def __init__(
+        self, Text=TpWord(), Target=LiveParser(), Hist=LiveParser(), Wait=LiveParser(), StopEvent=None, **kwargs
+    ):
         super().__init__(**kwargs)
         if isinstance(Text, construct.Container):
             Text = TpWord.from_struct(Text)
-        self.args['Text'] = Text
+        self.args["Text"] = Text
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
         if isinstance(Hist, construct.Container):
             Hist = LiveParser.from_struct(Hist)
-        self.args['Hist'] = Hist
+        self.args["Hist"] = Hist
         if isinstance(Wait, construct.Container):
             Wait = LiveParser.from_struct(Wait)
-        self.args['Wait'] = Wait
+        self.args["Wait"] = Wait
         if isinstance(StopEvent, construct.Container):
             StopEvent = LiveParser.from_struct(StopEvent)
-        self.args['StopEvent'] = StopEvent
+        self.args["StopEvent"] = StopEvent
 
     # def _parse_lsc_args(self, Text, ObjName, Hist, Wait, StopEvent, *args, **kwargs):
     #     self.args['Text'] = LiveParser.from_lsc(Text)
@@ -1142,26 +1137,26 @@ class MovieStop(BaseCommand):
 
     type = CommandType.MovieStop
     _struct_fields = construct.Struct(
-        'Target' / LiveParser._struct(),
-        'Time' / LiveParser._struct(),
-        'Wait' / LiveParser._struct(),
-        'StopEvent' / construct.If(construct.this._._.version > 0x6a, LiveParser._struct()),
+        "Target" / LiveParser._struct(),
+        "Time" / LiveParser._struct(),
+        "Wait" / LiveParser._struct(),
+        "StopEvent" / construct.If(construct.this._._.version > 0x6A, LiveParser._struct()),
     )
 
     def __init__(self, Target=LiveParser(), Time=LiveParser(), Wait=LiveParser(), StopEvent=None, **kwargs):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
         if isinstance(Time, construct.Container):
             Time = LiveParser.from_struct(Time)
-        self.args['Time'] = Time
+        self.args["Time"] = Time
         if isinstance(Wait, construct.Container):
             Wait = LiveParser.from_struct(Wait)
-        self.args['Wait'] = Wait
+        self.args["Wait"] = Wait
         if isinstance(StopEvent, construct.Container):
             StopEvent = LiveParser.from_struct(StopEvent)
-        self.args['StopEvent'] = StopEvent
+        self.args["StopEvent"] = StopEvent
 
     # def _parse_lsc_args(self, Target, Time, Wait, StopEvent, *args, **kwargs):
     #     self.args['Target'] = LiveParser.from_lsc(Target)
@@ -1211,15 +1206,13 @@ class MenuClose(BaseCommand):
     """
 
     type = CommandType.MenuClose
-    _struct_fields = construct.Struct(
-        'Target' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
 
     def __init__(self, Target=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
 
     # def _parse_lsc_args(self, Target, *args, **kwargs):
     #     self.args['Target'] = LiveParser.from_lsc(Target)
@@ -1245,9 +1238,7 @@ class TextClr(BaseCommand):
     """
 
     type = CommandType.TextClr
-    _struct_fields = construct.Struct(
-        'Target' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
 
     def __init__(self, Target=LiveParser(), **kwargs):
         """
@@ -1255,7 +1246,7 @@ class TextClr(BaseCommand):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
 
     # def _parse_lsc_args(self, Target, *args, **kwargs):
     #     self.args['Target'] = LiveParser.from_lsc(Target)
@@ -1283,31 +1274,38 @@ class CallHist(BaseCommand):
 
     type = CommandType.CallHist
     _struct_fields = construct.Struct(
-        'Target' / LiveParser._struct(),
-        'Index' / LiveParser._struct(),
-        'Count' / LiveParser._struct(),
-        'CutBreak' / LiveParser._struct(),
-        'FormatName' / construct.If(construct.this._._.version > 0x6e, LiveParser._struct()),
+        "Target" / LiveParser._struct(),
+        "Index" / LiveParser._struct(),
+        "Count" / LiveParser._struct(),
+        "CutBreak" / LiveParser._struct(),
+        "FormatName" / construct.If(construct.this._._.version > 0x6E, LiveParser._struct()),
     )
 
-    def __init__(self, Target=LiveParser(), Index=LiveParser(), Count=LiveParser(),
-                 CutBreak=LiveParser(), FormatName=None, **kwargs):
+    def __init__(
+        self,
+        Target=LiveParser(),
+        Index=LiveParser(),
+        Count=LiveParser(),
+        CutBreak=LiveParser(),
+        FormatName=None,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
         if isinstance(Index, construct.Container):
             Index = LiveParser.from_struct(Index)
-        self.args['Index'] = Index
+        self.args["Index"] = Index
         if isinstance(Count, construct.Container):
             Count = LiveParser.from_struct(Count)
-        self.args['Count'] = Count
+        self.args["Count"] = Count
         if isinstance(CutBreak, construct.Container):
             CutBreak = LiveParser.from_struct(CutBreak)
-        self.args['CutBreak'] = CutBreak
+        self.args["CutBreak"] = CutBreak
         if isinstance(FormatName, construct.Container):
             FormatName = LiveParser.from_struct(FormatName)
-        self.args['FormatName'] = FormatName
+        self.args["FormatName"] = FormatName
 
     # def _parse_lsc_args(self, Target, Index, Count, CutBreak, FormatName, *args, **kwargs):
     #     self.args['Target'] = LiveParser.from_lsc(Target)
@@ -1365,17 +1363,14 @@ class While(BaseCommand):
     """
 
     type = CommandType.While
-    _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-        'End' / construct.Int32ul,
-    )
+    _struct_fields = construct.Struct("Calc" / LiveParser._struct(), "End" / construct.Int32ul,)
 
     def __init__(self, Calc=LiveParser(), End=0, **kwargs):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
-        self.args['End'] = int(End)
+        self.args["Calc"] = Calc
+        self.args["End"] = int(End)
 
 
 class WhileInit(BaseCommand):
@@ -1387,23 +1382,21 @@ class WhileInit(BaseCommand):
     """
 
     type = CommandType.WhileInit
-    _struct_fields = construct.Struct(
-        'Calc' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
 
     def __init__(self, Calc=LiveParser, **kwargs):
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
-        self.args['Calc'] = Calc
+        self.args["Calc"] = Calc
 
     def _parse_lsc_args(self, Calc, *args, **kwargs):
-        self.args['Calc'] = LiveParser.from_lsc(Calc)
+        self.args["Calc"] = LiveParser.from_lsc(Calc)
 
     def _parse_xml_args(self, root, **kwargs):
         for child in root:
-            if child.tag == 'Calc':
-                self.args['Calc'] = LiveParser.from_xml(child)
+            if child.tag == "Calc":
+                self.args["Calc"] = LiveParser.from_xml(child)
 
 
 class WhileLoop(WhileInit):
@@ -1422,14 +1415,11 @@ class WhileLoop(WhileInit):
     """
 
     type = CommandType.WhileLoop
-    _struct_fields = construct.Struct(
-        construct.Embedded(WhileInit._struct_fields),
-        'Start' / construct.Int32ul,
-    )
+    _struct_fields = construct.Struct(construct.Embedded(WhileInit._struct_fields), "Start" / construct.Int32ul,)
 
     def __init__(self, Start=0, **kwargs):
         super().__init__(**kwargs)
-        self.args['Start'] = int(Start)
+        self.args["Start"] = int(Start)
 
 
 class Break(Exit):
@@ -1445,14 +1435,11 @@ class Break(Exit):
     """
 
     type = CommandType.Break
-    _struct_fields = construct.Struct(
-        construct.Embedded(Exit._struct_fields),
-        'End' / construct.Int32ul,
-    )
+    _struct_fields = construct.Struct(construct.Embedded(Exit._struct_fields), "End" / construct.Int32ul,)
 
     def __init__(self, End=0, **kwargs):
         super().__init__(**kwargs)
-        self.args['End'] = int(End)
+        self.args["End"] = int(End)
 
 
 class Continue(Exit):
@@ -1468,14 +1455,11 @@ class Continue(Exit):
     """
 
     type = CommandType.Continue
-    _struct_fields = construct.Struct(
-        construct.Embedded(Exit._struct_fields),
-        'Start' / construct.Int32ul,
-    )
+    _struct_fields = construct.Struct(construct.Embedded(Exit._struct_fields), "Start" / construct.Int32ul,)
 
     def __init__(self, Start=0, **kwargs):
         super().__init__(**kwargs)
-        self.args['Start'] = int(Start)
+        self.args["Start"] = int(Start)
 
 
 class ParticleNew(BaseComponentCommand):
@@ -1506,25 +1490,25 @@ class GameSave(BaseCommand):
     # NOTE: LabelReference is not used since the label field is versioned for
     # GameSave
     _struct_fields = construct.Struct(
-        'No' / LiveParser._struct(),
-        'Page' / construct.PascalString(construct.Int32ul, 'cp932'),
-        'Label' / construct.If(construct.this._._.version > 0x68, construct.Int32ul),
-        'Caption' / LiveParser._struct(),
+        "No" / LiveParser._struct(),
+        "Page" / construct.PascalString(construct.Int32ul, "cp932"),
+        "Label" / construct.If(construct.this._._.version > 0x68, construct.Int32ul),
+        "Caption" / LiveParser._struct(),
     )
 
-    def __init__(self, No=LiveParser(), Page='', Label=None, Caption=LiveParser(), **kwargs):
+    def __init__(self, No=LiveParser(), Page="", Label=None, Caption=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(No, construct.Container):
             No = LiveParser.from_struct(No)
-        self.args['No'] = No
-        self.args['Page'] = Page
+        self.args["No"] = No
+        self.args["Page"] = Page
         if Label is not None:
-            self.args['Label'] = int(Label)
+            self.args["Label"] = int(Label)
         else:
-            self.args['Label'] = None
+            self.args["Label"] = None
         if isinstance(Caption, construct.Container):
             No = LiveParser.from_struct(Caption)
-        self.args['Caption'] = Caption
+        self.args["Caption"] = Caption
 
 
 class GameLoad(BaseCommand):
@@ -1536,15 +1520,13 @@ class GameLoad(BaseCommand):
     """
 
     type = CommandType.GameLoad
-    _struct_fields = construct.Struct(
-        'No' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("No" / LiveParser._struct(),)
 
     def __init__(self, No=LiveParser(), **kwargs):
         super().__init__(**kwargs)
         if isinstance(No, construct.Container):
             No = LiveParser.from_struct(No)
-        self.args['No'] = No
+        self.args["No"] = No
 
 
 class PCReset(BaseCommand):
@@ -1560,17 +1542,14 @@ class PCReset(BaseCommand):
     """
 
     type = CommandType.PCReset
-    _struct_fields = construct.Struct(
-        'Page' / LabelReference._struct(),
-        'AllClear' / construct.Byte,
-    )
+    _struct_fields = construct.Struct("Page" / LabelReference._struct(), "AllClear" / construct.Byte,)
 
     def __init__(self, Page=LabelReference(), AllClear=0, **kwargs):
         super().__init__(**kwargs)
         if isinstance(Page, construct.Container):
             LabelReference.from_struct(Page)
-        self.args['Page'] = Page
-        self.args['AllClear'] = int(AllClear)
+        self.args["Page"] = Page
+        self.args["AllClear"] = int(AllClear)
 
 
 class Reset(PCReset):
@@ -1665,9 +1644,7 @@ class MediaPlay(BaseCommand):
     """
 
     type = CommandType.MediaPlay
-    _struct_fields = construct.Struct(
-        'Target' / LiveParser._struct(),
-    )
+    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
 
     def __init__(self, Target=LiveParser(), **kwargs):
         """
@@ -1675,7 +1652,7 @@ class MediaPlay(BaseCommand):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
 
 
 class PrevMenuNew(BaseComponentCommand):
@@ -1700,40 +1677,48 @@ class PropMotion(BaseCommand):
 
     type = CommandType.PropMotion
     _struct_fields = construct.Struct(
-        'Name' / LiveParser._struct(),
-        'ObjName' / LiveParser._struct(),
-        'ObjProp' / LiveParser._struct(),
-        'Value' / LiveParser._struct(),
-        'Time' / LiveParser._struct(),
-        'MoveType' / LiveParser._struct(),
-        'Paused' / construct.If(construct.this._._.version > 0x6b, LiveParser._struct()),
+        "Name" / LiveParser._struct(),
+        "ObjName" / LiveParser._struct(),
+        "ObjProp" / LiveParser._struct(),
+        "Value" / LiveParser._struct(),
+        "Time" / LiveParser._struct(),
+        "MoveType" / LiveParser._struct(),
+        "Paused" / construct.If(construct.this._._.version > 0x6B, LiveParser._struct()),
     )
 
-    def __init__(self, Name=LiveParser(), ObjName=LiveParser(), ObjProp=LiveParser(),
-                 Value=LiveParser(), Time=LiveParser(), MoveType=LiveParser(),
-                 Paused=None, **kwargs):
+    def __init__(
+        self,
+        Name=LiveParser(),
+        ObjName=LiveParser(),
+        ObjProp=LiveParser(),
+        Value=LiveParser(),
+        Time=LiveParser(),
+        MoveType=LiveParser(),
+        Paused=None,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
             Name = LiveParser.from_struct(Name)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
         if isinstance(ObjName, construct.Container):
             ObjName = LiveParser.from_struct(ObjName)
-        self.args['ObjName'] = ObjName
+        self.args["ObjName"] = ObjName
         if isinstance(ObjProp, construct.Container):
             ObjProp = LiveParser.from_struct(ObjProp)
-        self.args['ObjProp'] = ObjProp
+        self.args["ObjProp"] = ObjProp
         if isinstance(Value, construct.Container):
             Value = LiveParser.from_struct(Value)
-        self.args['Value'] = Value
+        self.args["Value"] = Value
         if isinstance(Time, construct.Container):
             Time = LiveParser.from_struct(Time)
-        self.args['Time'] = Time
+        self.args["Time"] = Time
         if isinstance(MoveType, construct.Container):
             MoveType = LiveParser.from_struct(MoveType)
-        self.args['MoveType'] = MoveType
+        self.args["MoveType"] = MoveType
         if isinstance(Paused, construct.Container):
             Paused = LiveParser.from_struct(Paused)
-        self.args['Paused'] = Paused
+        self.args["Paused"] = Paused
 
 
 class FormatHist(BaseCommand):
@@ -1747,8 +1732,8 @@ class FormatHist(BaseCommand):
 
     type = CommandType.FormatHist
     _struct_fields = construct.Struct(
-        'Name' / LiveParser._struct(),
-        'Target' / construct.If(construct.this._._.version > 0x6e, LiveParser._struct()),
+        "Name" / LiveParser._struct(),
+        "Target" / construct.If(construct.this._._.version > 0x6E, LiveParser._struct()),
     )
 
     def __init__(self, Name=LiveParser(), Target=LiveParser(), **kwargs):
@@ -1757,10 +1742,10 @@ class FormatHist(BaseCommand):
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
             Name = LiveParser.from_struct(Name)
-        self.args['Name'] = Name
+        self.args["Name"] = Name
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
-        self.args['Target'] = Target
+        self.args["Target"] = Target
 
 
 class SaveCabinet(BaseComponentCommand):
@@ -1778,8 +1763,8 @@ class SaveCabinet(BaseComponentCommand):
     type = CommandType.SaveCabinet
     _struct_fields = construct.Struct(
         construct.Embedded(BaseComponentCommand._struct_fields),
-        'Act' / LiveParser._struct(),
-        'Targets' / LiveParserArray._struct(construct.Int32ul),
+        "Act" / LiveParser._struct(),
+        "Targets" / LiveParserArray._struct(construct.Int32ul),
     )
 
     def __init__(self, Act=LiveParser(), Targets=LiveParserArray(), **kwargs):
@@ -1788,10 +1773,10 @@ class SaveCabinet(BaseComponentCommand):
         super().__init__(**kwargs)
         if isinstance(Act, construct.Container):
             Act = LiveParser.from_struct(Act)
-        self.args['Act'] = Act
+        self.args["Act"] = Act
         if isinstance(Targets, construct.ListContainer):
             Targets = LiveParserArray.from_struct(Targets)
-        self.args['Targets'] = Targets
+        self.args["Targets"] = Targets
 
 
 class LoadCabinet(SaveCabinet):

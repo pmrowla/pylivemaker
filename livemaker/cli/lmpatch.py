@@ -35,23 +35,21 @@ from .cli import __version__, _version
 
 
 log = logging.getLogger(__name__)
-fh = logging.FileHandler('patch.log')
+fh = logging.FileHandler("patch.log")
 fh.setLevel(logging.INFO)
 log.addHandler(fh)
 
 
 @click.command()
 @click.version_option(version=__version__, message=_version)
-@click.argument('archive_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('patched_lsb', required=True, type=click.Path(exists=True, dir_okay=True))
-@click.option('--split', is_flag=True, default=False,
-              help='Generate a split data archive.')
-@click.option('--no-backup', is_flag=True, default=False,
-              help='Do not generate backup of original archive file(s).')
-@click.option('-f', '--force', is_flag=True, default=False,
-              help='Overwrite any existing files instead of erroring out.')
-@click.option('-r', '--recursive', is_flag=True, default=False,
-              help='Patch multiple files into the archive.')
+@click.argument("archive_file", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("patched_lsb", required=True, type=click.Path(exists=True, dir_okay=True))
+@click.option("--split", is_flag=True, default=False, help="Generate a split data archive.")
+@click.option("--no-backup", is_flag=True, default=False, help="Do not generate backup of original archive file(s).")
+@click.option(
+    "-f", "--force", is_flag=True, default=False, help="Overwrite any existing files instead of erroring out."
+)
+@click.option("-r", "--recursive", is_flag=True, default=False, help="Patch multiple files into the archive.")
 def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     """Patch a LiveMaker game.
 
@@ -83,7 +81,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
 
     if orig_lm.is_exe:
         fd, tmp_exe = tempfile.mkstemp()
-        fp = os.fdopen(fd, 'wb')
+        fp = os.fdopen(fd, "wb")
         fp.write(orig_lm.read_exe())
         fp.close()
     else:
@@ -92,40 +90,41 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
         tmp_exe = None
 
     if not no_backup:
-        backup_paths = {archive_path: Path('{}.bak'.format(archive_path))}
+        backup_paths = {archive_path: Path("{}.bak".format(archive_path))}
         if orig_lm.is_split:
             for p in orig_lm._split_files:
-                backup_paths[Path(p)] = Path('{}.bak'.format(p))
+                backup_paths[Path(p)] = Path("{}.bak".format(p))
         for p in backup_paths.values():
             if p.exists():
                 if force:
-                    print('{} will be overwritten'.format(p))
+                    print("{} will be overwritten".format(p))
                 else:
-                    sys.exit('{} already exists'.format(p))
+                    sys.exit("{} already exists".format(p))
 
     lsb_path = PureWindowsPath(patched_lsb)
 
     if Path(patched_lsb).is_dir():
         if not recursive:
-            sys.exit('Cannot patch directory ({}) without -r/--recursive mode'.format(patched_lsb))
+            sys.exit("Cannot patch directory ({}) without -r/--recursive mode".format(patched_lsb))
     else:
         if recursive:
-            sys.exit('Cannot patch file ({}) within -r/--recursive mode'.format(patched_lsb))
+            sys.exit("Cannot patch file ({}) within -r/--recursive mode".format(patched_lsb))
 
     try:
         tmpdir = tempfile.mkdtemp()
         tmpdir_path = Path(tmpdir)
-        log.info('Using temp directory {}'.format(tmpdir_path))
-        print('Generating new archive contents...')
-        with LMArchive(name=tmpdir_path.joinpath(archive_name), mode='w', version=orig_lm.version, exe=tmp_exe,
-                       split=split) as new_lm:
+        log.info("Using temp directory {}".format(tmpdir_path))
+        print("Generating new archive contents...")
+        with LMArchive(
+            name=tmpdir_path.joinpath(archive_name), mode="w", version=orig_lm.version, exe=tmp_exe, split=split
+        ) as new_lm:
 
             def bar_show(item):
                 width, _ = click.get_terminal_size()
                 width //= 4
-                name = item.name if item is not None else ''
+                name = item.name if item is not None else ""
                 if len(name) > width:
-                    name = ''.join(['...', name[-width:]])
+                    name = "".join(["...", name[-width:]])
                 return name
 
             # patch
@@ -152,12 +151,12 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
 
                     if lsb_path:
                         new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1, arcname=info.path)
-                        log.info('patched {}'.format(info.path))
+                        log.info("patched {}".format(info.path))
                     else:
                         # copy original version
                         data = orig_lm.read(info, decompress=False)
                         new_lm.writebytes(info, data)
-                        log.info('copied {}'.format(info.path))
+                        log.info("copied {}".format(info.path))
                         # print(info.name)
 
         orig_lm.close()
@@ -166,7 +165,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
         # this operation needs to be a copy instead of rename (move)
         # in case windows system temp directory is on a different
         # logical drive than the output path
-        print('Writing new archive files...')
+        print("Writing new archive files...")
         for root, dirs, files in os.walk(tmpdir_path):
             for name in files:
                 tmp_p = Path(root).joinpath(name)
@@ -182,7 +181,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
         if tmp_exe is not None:
             Path(tmp_exe).unlink()
 
-        print('Cleaning up temporary files...')
+        print("Cleaning up temporary files...")
         if tmpdir_path:
             for root, dirs, files in os.walk(tmpdir_path):
                 for name in files:
@@ -191,5 +190,5 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
             tmpdir_path.rmdir()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     lmpatch()

@@ -21,4 +21,4 @@
 from .lmscript import LMScript
 from .novel import LNSCompiler, LNSDecompiler
 
-__all__ = ['LMScript', 'LNSCompiler', 'LNSDecompiler']
+__all__ = ["LMScript", "LNSCompiler", "LNSDecompiler"]

@@ -25,7 +25,7 @@ import numpy as np
 
 
 # constant XOR key for LM3
-LIVEMAKER3_SCRAMBLE_KEY = 0xf8ea
+LIVEMAKER3_SCRAMBLE_KEY = 0xF8EA
 
 
 class LMScramble(object):
@@ -36,40 +36,43 @@ class LMScramble(object):
 
     # constants for LM3
     FACTORS = (
-        0x7dd4ffc7,
-        0x000005d4,
-        0x000006f0,
-        0x000013fb,
+        0x7DD4FFC7,
+        0x000005D4,
+        0x000006F0,
+        0x000013FB,
     )
 
     def __init__(self, seed=0):
         if seed == 0:
-            seed = 0xffffffff
-        seed = np.uint32(seed & 0xffffffff)
+            seed = 0xFFFFFFFF
+        seed = np.uint32(seed & 0xFFFFFFFF)
         self.seed = seed
         self.state = []
         for i in range(5):
-            seed ^= seed << np.uint32(13) & 0xffffffff
-            seed ^= seed >> np.uint32(17) & 0xffffffff
-            seed ^= seed << np.uint32(5) & 0xffffffff
+            seed ^= seed << np.uint32(13) & 0xFFFFFFFF
+            seed ^= seed >> np.uint32(17) & 0xFFFFFFFF
+            seed ^= seed << np.uint32(5) & 0xFFFFFFFF
             self.state.append(np.uint32(seed))
         for i in range(19):
             self.rand()
 
     def rand(self):
         """Return a random integer in the range [0, uint32_max)."""
-        x = np.sum([
-            np.multiply(np.uint64(self.state[3]), self.FACTORS[0], dtype=np.uint64),
-            np.multiply(self.state[2], self.FACTORS[1], dtype=np.uint64),
-            np.multiply(self.state[1], self.FACTORS[2], dtype=np.uint64),
-            np.multiply(self.state[0], self.FACTORS[3], dtype=np.uint64),
-            self.state[4],
-        ], dtype=np.uint64)
-        self.state[4] = np.uint32((x >> np.uint64(32)) & np.uint64(0xffffffff))
+        x = np.sum(
+            [
+                np.multiply(np.uint64(self.state[3]), self.FACTORS[0], dtype=np.uint64),
+                np.multiply(self.state[2], self.FACTORS[1], dtype=np.uint64),
+                np.multiply(self.state[1], self.FACTORS[2], dtype=np.uint64),
+                np.multiply(self.state[0], self.FACTORS[3], dtype=np.uint64),
+                self.state[4],
+            ],
+            dtype=np.uint64,
+        )
+        self.state[4] = np.uint32((x >> np.uint64(32)) & np.uint64(0xFFFFFFFF))
         self.state[3] = self.state[2]
         self.state[2] = self.state[1]
         self.state[1] = self.state[0]
-        self.state[0] = np.uint32(x & np.uint64(0xffffffff))
+        self.state[0] = np.uint32(x & np.uint64(0xFFFFFFFF))
         return self.state[0]
 
     def random(self):
@@ -79,7 +82,7 @@ class LMScramble(object):
     def randint(self, low, high):
         """Return a random integer in the range [low, high]."""
         if low > high:
-            raise ValueError('invalid range')
+            raise ValueError("invalid range")
         return low + int(self.random() * (high - low + 1))
 
     @classmethod
@@ -103,14 +106,14 @@ def decrypt(data):
     """Unscramble the specified data stream and return the result."""
     if len(data) < 8:
         return data
-    chunk_size, seed = struct.unpack('<iI', data[:8])
+    chunk_size, seed = struct.unpack("<iI", data[:8])
     total_chunks = math.ceil((len(data) - 8) / chunk_size)
     chunks = []
     for i in LMScramble.randseq(total_chunks, seed ^ LIVEMAKER3_SCRAMBLE_KEY):
         offset = 8 + i * chunk_size
-        chunk = data[offset : offset+chunk_size]
+        chunk = data[offset : offset + chunk_size]
         chunks.append(chunk)
-    out = b''.join(chunks)
+    out = b"".join(chunks)
     if len(out) != len(data) - 8:
-        raise ValueError('data mismatch')
+        raise ValueError("data mismatch")
     return out

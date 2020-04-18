@@ -32,21 +32,21 @@ from PIL._binary import i32le, si32le
 
 _GAL_MODE = {
     # TODO: support palette modes
-    4: ('P', 'P;4'),
-    8: ('P', 'P'),
-    16: ('RGB', 'BGR;15'),
-    24: ('RGB', 'BGR'),
-    32: ('RGBA', 'BGRA'),
+    4: ("P", "P;4"),
+    8: ("P", "P"),
+    16: ("RGB", "BGR;15"),
+    24: ("RGB", "BGR"),
+    32: ("RGBA", "BGRA"),
 }
 
 _GAL_COMPRESSION = {
-    0: 'zip',
-    2: 'jpeg',
+    0: "zip",
+    2: "jpeg",
 }
 
 
 def _accept(prefix):
-    return prefix[:4] == b'Gale'
+    return prefix[:4] == b"Gale"
 
 
 class GalImageFile(ImageFile.ImageFile):
@@ -60,104 +60,105 @@ class GalImageFile(ImageFile.ImageFile):
         read = self.fp.read
         header += read(3)
         info = {}
-        info['version'] = header[4:]
-        if info['version'] == b'X200':
+        info["version"] = header[4:]
+        if info["version"] == b"X200":
             header_size = i32le(read(4))
             xml = zlib.decompress(read(header_size))
             try:
                 # Note: LiveMaker's code for generating GAL/X images sometimes
                 # creates invalid XML, but setting recover=False should let
                 # lxml deal with most of these cases.
-                root = etree.fromstring(xml, parser=etree.XMLParser(encoding='shift-jis', recover=True))
+                root = etree.fromstring(xml, parser=etree.XMLParser(encoding="shift-jis", recover=True))
             except etree.LxmlError as e:
-                raise IOError('Could not parse GAL/X image XML metadata: {}'.format(e))
-            info['width'] = int(root.get('Width', 0))
-            info['height'] = int(root.get('Height', 0))
-            info['bpp'] = int(root.get('Bpp', 0))
-            info['frame_count'] = int(root.get('Count', 0))
-            info['compression'] = int(root.get('CompType', 0))
-            info['compression_level'] = int(root.get('CompLevel', 0))
-            info['randomized'] = root.get('Randomized') != '0'
-            info['bg_color'] = int(root.get('BGColor', 0))
-            info['block_width'] = int(root.get('BlockWidth', 0))
-            info['block_height'] = int(root.get('BlockHeight', 0))
-            info['offset'] = header_size + 12
-            info['root'] = root
+                raise IOError("Could not parse GAL/X image XML metadata: {}".format(e))
+            info["width"] = int(root.get("Width", 0))
+            info["height"] = int(root.get("Height", 0))
+            info["bpp"] = int(root.get("Bpp", 0))
+            info["frame_count"] = int(root.get("Count", 0))
+            info["compression"] = int(root.get("CompType", 0))
+            info["compression_level"] = int(root.get("CompLevel", 0))
+            info["randomized"] = root.get("Randomized") != "0"
+            info["bg_color"] = int(root.get("BGColor", 0))
+            info["block_width"] = int(root.get("BlockWidth", 0))
+            info["block_height"] = int(root.get("BlockHeight", 0))
+            info["offset"] = header_size + 12
+            info["root"] = root
         else:
-            raise IOError('Unsupported GAL/X version {}'.format(header))
-        if info['frame_count'] != len(root):
-            print('Warning: frame count mismatch')
-        info['frames'] = []
+            raise IOError("Unsupported GAL/X version {}".format(header))
+        if info["frame_count"] != len(root):
+            print("Warning: frame count mismatch")
+        info["frames"] = []
         for frame in root:
             frame_info = {}
             if len(frame) > 1:
-                print('Warning: Frame contained multiple Layers tags')
-            frame_info['name'] = frame.get('Name', '')
+                print("Warning: Frame contained multiple Layers tags")
+            frame_info["name"] = frame.get("Name", "")
             # TODO: figure out what this bounding box is actually for
             # left = int(frame.get('L0', 0))
             # top = int(frame.get('T0', 0))
             # right = int(frame.get('R0', info['width']))
             # bottom = int(frame.get('B0', info['height']))
             # frame_info['box'] = (left, top, right, bottom)
-            frame_info['box'] = (0, 0, info['width'], info['height'])
+            frame_info["box"] = (0, 0, info["width"], info["height"])
             for layers in frame:
-                frame_info['width'] = int(layers.get('Width', info['width']))
-                frame_info['height'] = int(layers.get('Height', info['height']))
-                frame_info['bpp'] = int(layers.get('bpp', info['bpp']))
-                stride = (frame_info['width'] * frame_info['bpp'] + 7) // 8
-                if frame_info['bpp'] >= 8:
+                frame_info["width"] = int(layers.get("Width", info["width"]))
+                frame_info["height"] = int(layers.get("Height", info["height"]))
+                frame_info["bpp"] = int(layers.get("bpp", info["bpp"]))
+                stride = (frame_info["width"] * frame_info["bpp"] + 7) // 8
+                if frame_info["bpp"] >= 8:
                     # align to 4 byte boundary
                     stride = (stride + 3) & ~3
-                if frame_info['bpp'] <= 8:
-                    for rgb in layers.iter('RGB'):
+                if frame_info["bpp"] <= 8:
+                    for rgb in layers.iter("RGB"):
                         palette = unhexlify(rgb.text)
-                        frame_info['palette'] = ImagePalette.raw('BGR', palette)
+                        frame_info["palette"] = ImagePalette.raw("BGR", palette)
                 else:
-                    frame_info['palette'] = None
-                frame_info['stride'] = stride
-                frame_info['alpha_stride'] = (frame_info['width'] + 3) & ~3
-                frame_info['layers'] = []
-                for layer in layers.iter('Layer'):
+                    frame_info["palette"] = None
+                frame_info["stride"] = stride
+                frame_info["alpha_stride"] = (frame_info["width"] + 3) & ~3
+                frame_info["layers"] = []
+                for layer in layers.iter("Layer"):
                     layer_info = {}
-                    left = int(layer.get('Left', 0))
-                    top = int(layer.get('Top', 0))
-                    layer_info['origin'] = (left, top)
-                    layer_info['trans_color'] = int(layer.get('TransColor', -1))
-                    layer_info['visible'] = int(layer.get('Visible', 1))
-                    layer_info['alpha'] = int(layer.get('Alpha', 255))
-                    layer_info['alpha_on'] = int(layer.get('AlphaOn', 0))
-                    frame_info['layers'].append(layer_info)
-            info['frames'].append(frame_info)
+                    left = int(layer.get("Left", 0))
+                    top = int(layer.get("Top", 0))
+                    layer_info["origin"] = (left, top)
+                    layer_info["trans_color"] = int(layer.get("TransColor", -1))
+                    layer_info["visible"] = int(layer.get("Visible", 1))
+                    layer_info["alpha"] = int(layer.get("Alpha", 255))
+                    layer_info["alpha_on"] = int(layer.get("AlphaOn", 0))
+                    frame_info["layers"].append(layer_info)
+            info["frames"].append(frame_info)
         return info
 
     def _galx_frames(self, info):
         frames = []
         offsets = []
-        self.fp.seek(info['offset'])
-        for frame in info['frames']:
-            if info['bpp'] not in _GAL_MODE:
-                raise IOError('Unsupported GAL pixel format')
-            mode, rawmode = _GAL_MODE[frame['bpp']]
+        self.fp.seek(info["offset"])
+        for frame in info["frames"]:
+            if info["bpp"] not in _GAL_MODE:
+                raise IOError("Unsupported GAL pixel format")
+            mode, rawmode = _GAL_MODE[frame["bpp"]]
             layermode = mode
-            if len(frame['layers']) > 1:
-                print('Warning multi-layer GAL/X image')
-            for layer in frame['layers']:
+            if len(frame["layers"]) > 1:
+                print("Warning multi-layer GAL/X image")
+            for layer in frame["layers"]:
                 offsets.append(self.fp.tell())
                 layer_size = si32le(self.fp.read(4))
                 self.fp.seek(layer_size, 1)
-                if layer['alpha_on']:
+                if layer["alpha_on"]:
                     alpha_size = si32le(self.fp.read(4))
                     self.fp.seek(alpha_size, 1)
-                    if mode == 'RGB':
-                        mode = 'RGBA'
-                    elif mode == 'P':
-                        mode = 'PA'
+                    if mode == "RGB":
+                        mode = "RGBA"
+                    elif mode == "P":
+                        mode = "PA"
                     else:
-                        raise NotImplementedError('unsupported alpha mode')
+                        raise NotImplementedError("unsupported alpha mode")
                     break
                 break
-            frames.append((frame['name'], len(frame['layers']), mode, layermode, rawmode, frame['box'],
-                           frame['palette']))
+            frames.append(
+                (frame["name"], len(frame["layers"]), mode, layermode, rawmode, frame["box"], frame["palette"])
+            )
         return frames, offsets
 
     def _gal_info(self, header):
@@ -165,42 +166,42 @@ class GalImageFile(ImageFile.ImageFile):
         read, seek = self.fp.read, self.fp.seek
         header += read(2)
         info = {}
-        info['version'] = (header[4:])
+        info["version"] = header[4:]
         try:
-            version = int(info['version'])
+            version = int(info["version"])
         except ValueError:
-            raise IOError('Unsupported GAL version {}'.format(header))
+            raise IOError("Unsupported GAL version {}".format(header))
         if version > 102:
             header_size = si32le(read(4))
             header = read(header_size)
-            info['width'] = i32le(header, 4)
-            info['height'] = i32le(header, 8)
-            info['bpp'] = si32le(header, 0xC)
-            info['frame_count'] = si32le(header, 0x10)
-            if info['frame_count'] > 1:
-                print('Warning: multi-frame GAL images are not fully supported')
-            info['randomized'] = header[0x15]
-            info['compression'] = header[0x16]
-            info['bg_color'] = i32le(header, 0x18)
-            info['block_width'] = si32le(header, 0x1C)
-            info['block_height'] = si32le(header, 0x20)
-            info['offset'] = header_size + 11
+            info["width"] = i32le(header, 4)
+            info["height"] = i32le(header, 8)
+            info["bpp"] = si32le(header, 0xC)
+            info["frame_count"] = si32le(header, 0x10)
+            if info["frame_count"] > 1:
+                print("Warning: multi-frame GAL images are not fully supported")
+            info["randomized"] = header[0x15]
+            info["compression"] = header[0x16]
+            info["bg_color"] = i32le(header, 0x18)
+            info["block_width"] = si32le(header, 0x1C)
+            info["block_height"] = si32le(header, 0x20)
+            info["offset"] = header_size + 11
         elif version >= 100:
             # fixed header size
             header = read(0x10)
             name_length = i32le(header)
             seek(name_length + 17, 1)
-            info['width'] = i32le(header, 4)
-            info['height'] = i32le(header, 8)
-            info['bpp'] = si32le(header, 0xC)
-            info['offset'] = name_length + 45
-            info['block_width'] = 0
-            info['block_height'] = 0
-            info['randomized'] = 0
-            info['compression'] = None
-            info['frame_count'] = 1
+            info["width"] = i32le(header, 4)
+            info["height"] = i32le(header, 8)
+            info["bpp"] = si32le(header, 0xC)
+            info["offset"] = name_length + 45
+            info["block_width"] = 0
+            info["block_height"] = 0
+            info["randomized"] = 0
+            info["compression"] = None
+            info["frame_count"] = 1
         else:
-            raise IOError('Unsupported GAL version {}'.format(header))
+            raise IOError("Unsupported GAL version {}".format(header))
         return info
 
     def _gal_frames(self, info):
@@ -208,88 +209,88 @@ class GalImageFile(ImageFile.ImageFile):
         seek = self.fp.seek
         frames = []
         offsets = []
-        seek(info['offset'])
-        info['frames'] = []
-        for i in range(info['frame_count']):
+        seek(info["offset"])
+        info["frames"] = []
+        for i in range(info["frame_count"]):
             frame_info = {}
             name_len = i32le(read(4))
-            frame_info['name'] = read(name_len).decode('cp932')
+            frame_info["name"] = read(name_len).decode("cp932")
             mask = i32le(read(4))
             seek(9, 1)
             layer_count = i32le(read(4))
             if layer_count < 1:
-                raise IOError('Invalid GAL frame')
-            frame_info['width'] = si32le(read(4))
-            frame_info['height'] = si32le(read(4))
+                raise IOError("Invalid GAL frame")
+            frame_info["width"] = si32le(read(4))
+            frame_info["height"] = si32le(read(4))
             bpp = i32le(read(4))
             if bpp not in _GAL_MODE or bpp > 32:
                 print(layer_count)
                 print(frame_info, mask)
                 print(bpp)
-                raise IOError('Unsupported GAL pixel format')
-            frame_info['bpp'] = bpp
+                raise IOError("Unsupported GAL pixel format")
+            frame_info["bpp"] = bpp
             if bpp <= 8:
                 palette_size = 1 << bpp
-                frame_info['palette'] = ImagePalette.raw('BGRX', read(palette_size * 4))
+                frame_info["palette"] = ImagePalette.raw("BGRX", read(palette_size * 4))
             else:
-                frame_info['palette'] = None
+                frame_info["palette"] = None
             mode, rawmode = _GAL_MODE[bpp]
             layermode = mode
-            stride = (frame_info['width'] * bpp + 7) // 8
+            stride = (frame_info["width"] * bpp + 7) // 8
             if bpp >= 8:
                 # align to 4 byte boundary
                 stride = (stride + 3) & ~3
-            frame_info['stride'] = stride
-            frame_info['alpha_stride'] = (frame_info['width'] + 3) & ~3
-            frame_info['layers'] = []
+            frame_info["stride"] = stride
+            frame_info["alpha_stride"] = (frame_info["width"] + 3) & ~3
+            frame_info["layers"] = []
             for j in range(layer_count):
                 layer_info = {}
                 left = si32le(read(4))
                 top = si32le(read(4))
-                layer_info['origin'] = (left, top)
-                layer_info['visible'] = read(1)[0]
-                layer_info['trans_color'] = si32le(read(4))
-                layer_info['alpha'] = si32le(read(4))
-                layer_info['alpha_on'] = read(1)[0]
+                layer_info["origin"] = (left, top)
+                layer_info["visible"] = read(1)[0]
+                layer_info["trans_color"] = si32le(read(4))
+                layer_info["alpha"] = si32le(read(4))
+                layer_info["alpha_on"] = read(1)[0]
                 name_len = i32le(read(4))
                 seek(name_len, 1)
-                if int(info['version']) >= 107:
-                    layer_info['lock'] = read(1)[0]
+                if int(info["version"]) >= 107:
+                    layer_info["lock"] = read(1)[0]
                 if j == 0:
                     offsets.append(self.fp.tell())
                 else:
-                    print('Warning: multilayer Gale images not fully supported')
+                    print("Warning: multilayer Gale images not fully supported")
                 layer_size = si32le(read(4))
                 seek(layer_size, 1)
                 alpha_size = si32le(read(4))
-                if layer_info['alpha_on'] and alpha_size > 0:
-                    if mode == 'RGB':
-                        mode = 'RGBA'
-                    elif mode == 'P':
-                        mode = 'PA'
+                if layer_info["alpha_on"] and alpha_size > 0:
+                    if mode == "RGB":
+                        mode = "RGBA"
+                    elif mode == "P":
+                        mode = "PA"
                     else:
-                        raise NotImplementedError('unsupported alpha mode')
+                        raise NotImplementedError("unsupported alpha mode")
                 seek(alpha_size, 1)
-                frame_info['layers'].append(layer_info)
-            info['frames'].append(frame_info)
-            box = (0, 0, frame_info['width'], frame_info['height'])
-            frames.append((frame_info['name'], layer_count, mode, layermode, rawmode, box, frame_info['palette']))
+                frame_info["layers"].append(layer_info)
+            info["frames"].append(frame_info)
+            box = (0, 0, frame_info["width"], frame_info["height"])
+            frames.append((frame_info["name"], layer_count, mode, layermode, rawmode, box, frame_info["palette"]))
             # TODO: handle multi-frame images
             break
         return frames, offsets
 
     def _open(self):
         header = self.fp.read(5)
-        if header == b'GaleX':
+        if header == b"GaleX":
             info = self._galx_info(header)
             frames, offsets = self._galx_frames(info)
         else:
             info = self._gal_info(header)
             frames, offsets = self._gal_frames(info)
-        self._size = info['width'], info['height']
-        self.decoder = 'GAL'
-        if info['randomized']:
-            raise IOError('LiveMaker Pro encrypted images are currently unsupported')
+        self._size = info["width"], info["height"]
+        self.decoder = "GAL"
+        if info["randomized"]:
+            raise IOError("LiveMaker Pro encrypted images are currently unsupported")
 
         i = 0
         for name, layer_count, mode, layermode, rawmode, box, palette in frames:
@@ -297,7 +298,7 @@ class GalImageFile(ImageFile.ImageFile):
             offset = offsets[i]
             tile = [(self.decoder, box, offset, (info, layermode, rawmode, i))]
             frames[i] = name, mode, box, palette, tile
-        self.fp.seek(info['offset'])
+        self.fp.seek(info["offset"])
         self.frames = frames
         self._frame = None
         self.seek(0)
@@ -321,7 +322,7 @@ class GalImageFile(ImageFile.ImageFile):
             self.palette = palette
             self._frame = frame
         except IndexError:
-            raise EOFError('Invalid frame')
+            raise EOFError("Invalid frame")
 
     def tell(self):
         return self._frame
@@ -333,35 +334,41 @@ class GalImageDecoder(ImageFile.PyDecoder):
 
     def decode(self, buffer):
         info, layermode, rawmode, frame_index = self.args
-        compression = _GAL_COMPRESSION.get(info['compression'])
-        frame = info['frames'][frame_index]
-        for layer in frame['layers']:
+        compression = _GAL_COMPRESSION.get(info["compression"])
+        frame = info["frames"][frame_index]
+        for layer in frame["layers"]:
             layer_size = si32le(self.fd.read(4))
-            if compression == 'zip':
+            if compression == "zip":
                 packed_data = zlib.decompress(self.fd.read(layer_size))
-                layer['data'] = self._unpack_layer(BytesIO(packed_data), frame, info['block_width'],
-                                                   info['block_height'], info['randomized'], info['frames'])
+                layer["data"] = self._unpack_layer(
+                    BytesIO(packed_data),
+                    frame,
+                    info["block_width"],
+                    info["block_height"],
+                    info["randomized"],
+                    info["frames"],
+                )
                 mode = self.mode
                 self.mode = layermode
-                self.set_as_raw(layer['data'], rawmode, frame['stride'])
+                self.set_as_raw(layer["data"], rawmode, frame["stride"])
                 self.mode = mode
-                if layer['alpha_on']:
+                if layer["alpha_on"]:
                     alpha_data = self._decode_alpha(frame, info)
-                    layer['alpha_data'] = alpha_data
+                    layer["alpha_data"] = alpha_data
                     size = self.state.xsize, self.state.ysize
-                    mask = Image.frombytes('L', size, alpha_data, 'raw', 'L', frame['alpha_stride'])
-                    if Image.getmodebase(mode) == 'RGB':
+                    mask = Image.frombytes("L", size, alpha_data, "raw", "L", frame["alpha_stride"])
+                    if Image.getmodebase(mode) == "RGB":
                         band = 3
                     else:
                         band = 1
                     self.im.putband(mask.im, band)
-            elif compression == 'jpeg':
+            elif compression == "jpeg":
                 jpeg_data = self.fd.read(layer_size)
-                if layer['alpha_on']:
+                if layer["alpha_on"]:
                     alpha_data = self._decode_alpha(frame, info)
-                    layer['alpha_data'] = alpha_data
+                    layer["alpha_data"] = alpha_data
                     size = self.state.xsize, self.state.ysize
-                    mask = Image.frombytes('L', size, alpha_data, 'raw', 'L', frame['alpha_stride'])
+                    mask = Image.frombytes("L", size, alpha_data, "raw", "L", frame["alpha_stride"])
                 else:
                     mask = None
                 im = JpegImageFile(BytesIO(jpeg_data))
@@ -372,11 +379,17 @@ class GalImageDecoder(ImageFile.PyDecoder):
                 self.fd = im.fp
             else:
                 packed_data = self.fd.read(layer_size)
-                layer['data'] = self._unpack_layer(BytesIO(packed_data), frame, info['block_width'],
-                                                   info['block_height'], info['randomized'], info['frames'])
+                layer["data"] = self._unpack_layer(
+                    BytesIO(packed_data),
+                    frame,
+                    info["block_width"],
+                    info["block_height"],
+                    info["randomized"],
+                    info["frames"],
+                )
                 mode = self.mode
                 self.mode = layermode
-                self.set_as_raw(layer['data'], rawmode, frame['stride'])
+                self.set_as_raw(layer["data"], rawmode, frame["stride"])
                 self.mode = mode
             # TODO: handle multi-layer frames
             break
@@ -385,22 +398,29 @@ class GalImageDecoder(ImageFile.PyDecoder):
     def _decode_alpha(self, frame, info):
         alpha_size = si32le(self.fd.read(4))
         packed_data = zlib.decompress(self.fd.read(alpha_size))
-        unpacked = self._unpack_layer(BytesIO(packed_data), frame, info['block_width'],
-                                      info['block_height'], info['randomized'], info['frames'], True)
+        unpacked = self._unpack_layer(
+            BytesIO(packed_data),
+            frame,
+            info["block_width"],
+            info["block_height"],
+            info["randomized"],
+            info["frames"],
+            True,
+        )
         return bytes(unpacked)
 
     def _unpack_layer(self, packed, frame_info, block_width, block_height, randomized, frames, is_alpha=False):
         # Based on GARbro ImageGAL.cs:ReadBlocks() implementation
         if block_width <= 0 or block_height <= 0:
             return packed.read()
-        width = frame_info['width']
-        height = frame_info['height']
+        width = frame_info["width"]
+        height = frame_info["height"]
         if is_alpha:
             bpp = 8
-            stride = frame_info['alpha_stride']
+            stride = frame_info["alpha_stride"]
         else:
-            bpp = frame_info['bpp']
-            stride = frame_info['stride']
+            bpp = frame_info["bpp"]
+            stride = frame_info["stride"]
         blocks_w = (width + block_width - 1) // block_width
         blocks_h = (height + block_height - 1) // block_height
         blocks_count = blocks_w * blocks_h
@@ -441,12 +461,12 @@ class GalImageDecoder(ImageFile.PyDecoder):
                         dst += stride
                 else:
                     # copy block from another frame/layer
-                    if frame_ref >= len(frames) or layer_ref >= len(frames[frame_ref]['layers']):
-                        raise IOError('Invalid GaleFrame reference')
+                    if frame_ref >= len(frames) or layer_ref >= len(frames[frame_ref]["layers"]):
+                        raise IOError("Invalid GaleFrame reference")
                     if is_alpha:
-                        ref_data = frames[frame_ref]['layers'][layer_ref]['alpha_data']
+                        ref_data = frames[frame_ref]["layers"][layer_ref]["alpha_data"]
                     else:
-                        ref_data = frames[frame_ref]['layers'][layer_ref]['data']
+                        ref_data = frames[frame_ref]["layers"][layer_ref]["data"]
                     for j in range(run_height):
                         for k in range(chunk_size):
                             data[dst + k] = ref_data[dst + k]
@@ -467,7 +487,7 @@ class GalImageDecoder(ImageFile.PyDecoder):
             raise ValueError("cannot decode image data")
 
 
-Image.register_decoder('GAL', GalImageDecoder)
+Image.register_decoder("GAL", GalImageDecoder)
 
 Image.register_open(GalImageFile.format, GalImageFile, _accept)
-Image.register_extensions(GalImageFile.format, ['.gal'])
+Image.register_extensions(GalImageFile.format, [".gal"])

@@ -25,7 +25,7 @@ from pathlib import Path
 import click
 
 from PIL import Image
-from livemaker import __version__, GalImagePlugin
+from livemaker import __version__, GalImagePlugin  # noqa: F401
 
 _version = """%(prog)s, version %(version)s
 
@@ -48,10 +48,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 @click.command()
 @click.version_option(version=__version__, message=_version)
-@click.option('-f', '--force', is_flag=True, default=False,
-              help='Overwrite output file if it exists.')
-@click.argument('input_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('output_file', required=True, type=click.Path(dir_okay=False))
+@click.option("-f", "--force", is_flag=True, default=False, help="Overwrite output file if it exists.")
+@click.argument("input_file", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("output_file", required=True, type=click.Path(dir_okay=False))
 def galconvert(force, input_file, output_file):
     """Convert the image to another format.
 
@@ -66,7 +65,7 @@ def galconvert(force, input_file, output_file):
         raise e
         # sys.exit('Error opening {}: {}'.format(input_file, e))
     if Path(output_file).exists() and not force:
-        sys.exit('{} already exists'.format(output_file))
-    print('Converting {} to {}'.format(input_file, output_file))
+        sys.exit("{} already exists".format(output_file))
+    print("Converting {} to {}".format(input_file, output_file))
     im.load()
     im.save(output_file)

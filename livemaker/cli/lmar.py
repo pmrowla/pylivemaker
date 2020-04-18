@@ -26,7 +26,7 @@ import click
 
 from PIL import Image
 
-from livemaker import GalImagePlugin
+from livemaker import GalImagePlugin  # noqa: F401
 from livemaker.archive import LMArchive
 from livemaker.exceptions import UnsupportedLiveMakerCompression
 
@@ -41,15 +41,21 @@ def lmar():
 
 
 @lmar.command()
-@click.option('-n', '--dry-run', is_flag=True, default=False,
-              help='Show what would be done without extracting any files.')
-@click.option('-i', '--image-format', type=click.Choice(['gal', 'png', 'both']), default='gal',
-              help='Format for extracted images, defaults to GAL (original) format. If set to png, images will be'
-                   ' converted before extraction. If set to both, both the original GAL and converted PNG images will'
-                   ' be extracted')
-@click.option('-o', '--output-dir', nargs=1, help='Output directory, defaults to current working directory.')
-@click.option('-v', '--verbose', is_flag=True, default=False)
-@click.argument('input_file', metavar='file', required=True, type=click.Path(exists=True, dir_okay=False))
+@click.option(
+    "-n", "--dry-run", is_flag=True, default=False, help="Show what would be done without extracting any files."
+)
+@click.option(
+    "-i",
+    "--image-format",
+    type=click.Choice(["gal", "png", "both"]),
+    default="gal",
+    help="Format for extracted images, defaults to GAL (original) format. If set to png, images will be"
+    " converted before extraction. If set to both, both the original GAL and converted PNG images will"
+    " be extracted",
+)
+@click.option("-o", "--output-dir", nargs=1, help="Output directory, defaults to current working directory.")
+@click.option("-v", "--verbose", is_flag=True, default=False)
+@click.argument("input_file", metavar="file", required=True, type=click.Path(exists=True, dir_okay=False))
 def x(dry_run, image_format, output_dir, verbose, input_file):
     """Extract the specified archive."""
     if output_dir:
@@ -58,24 +64,24 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
         output_dir = Path.cwd()
     with LMArchive(input_file) as lm:
         for info in lm.infolist():
-            if str(info.path).lower().endswith('.gal'):
+            if str(info.path).lower().endswith(".gal"):
                 if not dry_run:
                     try:
                         data = lm.read(info)
                     except UnsupportedLiveMakerCompression as e:
-                        print('  Error extracting {}: {}'.format(info.path, e))
+                        print("  Error extracting {}: {}".format(info.path, e))
                         continue
-                if image_format in ('gal', 'both'):
+                if image_format in ("gal", "both"):
                     if not dry_run:
                         path = Path.joinpath(output_dir, info.path).expanduser().resolve()
                         path.parent.mkdir(parents=True, exist_ok=True)
-                        with path.open('wb') as f:
+                        with path.open("wb") as f:
                             f.write(data)
                     if verbose or dry_run:
                         print(info.path)
-                if image_format in ('png', 'both'):
+                if image_format in ("png", "both"):
                     try:
-                        png_path = info.path.parent.joinpath('{}.png'.format(info.path.stem))
+                        png_path = info.path.parent.joinpath("{}.png".format(info.path.stem))
                         if not dry_run:
                             path = output_dir.joinpath(png_path).expanduser().resolve()
                             im = Image.open(BytesIO(data))
@@ -84,9 +90,9 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                         if verbose or dry_run:
                             print(png_path)
                     except IOError as e:
-                        print('Error: Failed to convert image to PNG: {}'.format(e))
-                        if image_format == 'png':
-                            print('  Original GAL image will be used as fallback.')
+                        print("Error: Failed to convert image to PNG: {}".format(e))
+                        if image_format == "png":
+                            print("  Original GAL image will be used as fallback.")
                             if not dry_run:
                                 lm.extract(info, output_dir)
                             if verbose or dry_run:
@@ -96,13 +102,13 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                     try:
                         lm.extract(info, output_dir)
                     except UnsupportedLiveMakerCompression as e:
-                        print('  Error extracting {}: {}'.format(info.path, e))
+                        print("  Error extracting {}: {}".format(info.path, e))
                 if verbose or dry_run:
                     print(info.path)
 
 
 @lmar.command()
-@click.argument('input_file', required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("input_file", required=True, type=click.Path(exists=True, dir_okay=False))
 def l(input_file):
     """List the contents of the specified archive."""
     with LMArchive(input_file) as lm:
@@ -110,8 +116,8 @@ def l(input_file):
 
 
 @lmar.command()
-@click.argument('input_file', required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument('output_file', required=True, type=click.Path(dir_okay=False, writable=True))
+@click.argument("input_file", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("output_file", required=True, type=click.Path(dir_okay=False, writable=True))
 def strip(input_file, output_file):
     """Copy the specified LiveMaker EXE but remove the LiveMaker archive.
 
@@ -122,8 +128,8 @@ def strip(input_file, output_file):
         if lm.is_exe:
             path = Path(output_file)
             if path.exists():
-                print('{} already exists and will be overwritten.'.format(path))
-            with open('output_file', 'wb') as f:
+                print("{} already exists and will be overwritten.".format(path))
+            with open("output_file", "wb") as f:
                 f.write(lm.read_exe())
         else:
-            print('The specified file is not a LiveMaker executable.')
+            print("The specified file is not a LiveMaker executable.")

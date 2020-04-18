@@ -191,26 +191,26 @@ class OpeDataType(enum.IntEnum):
     Xor = 0x09
     """Operator ``^`` (bitwise XOR)."""
 
-    DimTo = 0x0a
+    DimTo = 0x0A
     """Operator ``[]`` (array access)."""
 
-    Func = 0x0b
+    Func = 0x0B
     """Operator ``()`` (function call).
 
     Available functions are listed in :class:`OpeFuncType`.
 
     """
 
-    Equal = 0x0c
+    Equal = 0x0C
     """Operator ``==`` (equals)."""
 
-    Big = 0x0d
+    Big = 0x0D
     """Operator ``>`` (greater than)."""
 
-    Small = 0x0e
+    Small = 0x0E
     """Operator ``<`` (less than)."""
 
-    EBig = 0x0f
+    EBig = 0x0F
     """Operator ``>=`` (greater than or equals)."""
 
     ESmall = 0x10
@@ -246,12 +246,12 @@ class OpeFuncType(enum.IntEnum):
     Copy = 0x07
     JCopy = 0x08
     Delete = 0x09
-    JDelete = 0x0a
-    Insert = 0x0b
-    JInsert = 0x0c
-    CompareStr = 0x0d
-    CompareText = 0x0e
-    Pos = 0x0f
+    JDelete = 0x0A
+    Insert = 0x0B
+    JInsert = 0x0C
+    CompareStr = 0x0D
+    CompareText = 0x0E
+    Pos = 0x0F
     JPos = 0x10
     Trim = 0x11
     JTrim = 0x12
@@ -262,12 +262,12 @@ class OpeFuncType(enum.IntEnum):
     CopyMem = 0x17
     GetCheck = 0x18
     SetCheck = 0x19
-    Random = 0x1a
-    GetSaveCaption = 0x1b
-    ArrayToString = 0x1c
-    StringToArray = 0x1d
-    IndexOfStr = 0x1e
-    SortStr = 0x1f
+    Random = 0x1A
+    GetSaveCaption = 0x1B
+    ArrayToString = 0x1C
+    StringToArray = 0x1D
+    IndexOfStr = 0x1E
+    SortStr = 0x1F
     ListCompo = 0x20
     ToClientX = 0x21
     ToClientY = 0x22
@@ -278,12 +278,12 @@ class OpeFuncType(enum.IntEnum):
     Sin = 0x27
     Cos = 0x28
     Tan = 0x29
-    ArcSin = 0x2a
-    ArcCos = 0x2b
-    ArcTan = 0x2c
-    ArcTan2 = 0x2d
-    Hypot = 0x2e
-    IndexOfMenu = 0x2f
+    ArcSin = 0x2A
+    ArcCos = 0x2B
+    ArcTan = 0x2C
+    ArcTan2 = 0x2D
+    Hypot = 0x2E
+    IndexOfMenu = 0x2F
     Abs = 0x30
     Fabs = 0x31
     VarExists = 0x32
@@ -294,12 +294,12 @@ class OpeFuncType(enum.IntEnum):
     GetYear = 0x37
     GetMonth = 0x38
     GetDay = 0x39
-    GetHour = 0x3a
-    GetMin = 0x3b
-    GetSec = 0x3c
-    GetWeek = 0x3d
-    GetWeekStr = 0x3e
-    GetWeekJStr = 0x3f
+    GetHour = 0x3A
+    GetMin = 0x3B
+    GetSec = 0x3C
+    GetWeek = 0x3D
+    GetWeekStr = 0x3E
+    GetWeekJStr = 0x3F
     FixStr = 0x40
     GetDisplayMode = 0x41
     AddArray = 0x42
@@ -310,12 +310,12 @@ class OpeFuncType(enum.IntEnum):
     FileExists = 0x47
     LoadTextFile = 0x48
     LowerCase = 0x49
-    UpperCase = 0x4a
-    ExtractFilePath = 0x4b
-    ExtractFileName = 0x4c
-    ExtractFileExt = 0x4d
-    IsPathDelimiter = 0x4e
-    AddBackSlash = 0x4f
+    UpperCase = 0x4A
+    ExtractFilePath = 0x4B
+    ExtractFileName = 0x4C
+    ExtractFileExt = 0x4D
+    IsPathDelimiter = 0x4E
+    AddBackSlash = 0x4F
     ChangeFileExt = 0x50
     IsDelimiter = 0x51
     StringOfChar = 0x52
@@ -326,12 +326,12 @@ class OpeFuncType(enum.IntEnum):
     DBCreateTable = 0x57
     DBSetActive = 0x58
     DBAddField = 0x59
-    DBSetRecNo = 0x5a
-    DBInsert = 0x5b
-    DBDelete = 0x5c
-    DBGetInt = 0x5d
-    DBSetInt = 0x5e
-    DBGetFloat = 0x5f
+    DBSetRecNo = 0x5A
+    DBInsert = 0x5B
+    DBDelete = 0x5C
+    DBGetInt = 0x5D
+    DBSetInt = 0x5E
+    DBGetFloat = 0x5F
     DBSetFloat = 0x60
     DBGetBool = 0x61
     DBSetBool = 0x62
@@ -342,12 +342,12 @@ class OpeFuncType(enum.IntEnum):
     DBFindLast = 0x67
     DBFindNext = 0x68
     DBFindPrior = 0x69
-    DBLocate = 0x6a
-    DBLoadTsvFile = 0x6b
-    DBDirectGetInt = 0x6c
-    DBDirectSetInt = 0x6d
-    DBDirectGetFloat = 0x6e
-    DBDirectSetFloat = 0x6f
+    DBLocate = 0x6A
+    DBLoadTsvFile = 0x6B
+    DBDirectGetInt = 0x6C
+    DBDirectSetInt = 0x6D
+    DBDirectGetFloat = 0x6E
+    DBDirectSetFloat = 0x6F
     DBDirectGetBool = 0x70
     DBDirectSetBool = 0x71
     DBDirectGetStr = 0x72
@@ -358,12 +358,12 @@ class OpeFuncType(enum.IntEnum):
     DBCopy = 0x77
     DBClearTable = 0x78
     DBSort = 0x79
-    DBGetActive = 0x7a
-    DBGetRecNo = 0x7b
-    DBClearRecord = 0x7c
-    SetWallPaper = 0x7d
-    Min = 0x7e
-    Max = 0x7f
+    DBGetActive = 0x7A
+    DBGetRecNo = 0x7B
+    DBClearRecord = 0x7C
+    SetWallPaper = 0x7D
+    Min = 0x7E
+    Max = 0x7F
     Fmin = 0x80
     Fmax = 0x81
     GetVarType = 0x82
@@ -374,12 +374,12 @@ class OpeFuncType(enum.IntEnum):
     OpenUrl = 0x87
     Calc = 0x88
     SaveScreen = 0x89
-    StrToIntDef = 0x8a
-    StrToFloatDef = 0x8b
-    GetVisible = 0x8c
-    SetVisible = 0x8d
-    GetHistoryCount = 0x8e
-    GetHistoryMaxCount = 0x8f
+    StrToIntDef = 0x8A
+    StrToFloatDef = 0x8B
+    GetVisible = 0x8C
+    SetVisible = 0x8D
+    GetHistoryCount = 0x8E
+    GetHistoryMaxCount = 0x8F
     SetHistoryMaxCount = 0x90
     GetGroupIndex = 0x91
     GetSelected = 0x92
@@ -390,23 +390,23 @@ class OpeFuncType(enum.IntEnum):
     ExtractFile = 0x97
     Chr = 0x98
     Ord = 0x99
-    InCabinet = 0x9a
-    PushVar = 0x9b
-    PopVar = 0x9c
-    DeleteStack = 0x9d
-    CopyFile = 0x9e
-    DBGetTableCount = 0x9f
-    DBGetTable = 0xa0
-    CreateObject = 0xa1
-    DeleteObject = 0xa2
-    GetItem = 0xa3
-    UniqueArray = 0xa4
-    TrimArray = 0xa5
-    GetImeOpened = 0xa6
-    SetImeOpened = 0xa7
-    Alert = 0xa8
-    GetCinemaProp = 0xa9
-    SetCinemaProp = 0xaa
+    InCabinet = 0x9A
+    PushVar = 0x9B
+    PopVar = 0x9C
+    DeleteStack = 0x9D
+    CopyFile = 0x9E
+    DBGetTableCount = 0x9F
+    DBGetTable = 0xA0
+    CreateObject = 0xA1
+    DeleteObject = 0xA2
+    GetItem = 0xA3
+    UniqueArray = 0xA4
+    TrimArray = 0xA5
+    GetImeOpened = 0xA6
+    SetImeOpened = 0xA7
+    Alert = 0xA8
+    GetCinemaProp = 0xA9
+    SetCinemaProp = 0xAA
 
 
 class Param(BaseSerializable):
@@ -442,7 +442,7 @@ class Param(BaseSerializable):
             elif isinstance(value, str):
                 self.type = ParamType.Str
             else:
-                raise ValueError('Could not guess datatype for {}'.format(value))
+                raise ValueError("Could not guess datatype for {}".format(value))
         else:
             self.type = ParamType(int(type))
 
@@ -453,14 +453,14 @@ class Param(BaseSerializable):
         return iter(self.items())
 
     def __getitem__(self, key):
-        if key == 'type':
+        if key == "type":
             return self.type.name
-        elif key == 'value':
+        elif key == "value":
             return self.value
         raise KeyError
 
     def keys(self):
-        return ['type', 'value']
+        return ["type", "value"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -472,32 +472,30 @@ class Param(BaseSerializable):
 
     def to_xml(self):
         xml = self.to_lsc()
-        if self.type == ParamType.Var and '\x01' in xml:
+        if self.type == ParamType.Var and "\x01" in xml:
             log.warn('Replacing invalid xml char "\\x01" in varname {}'.format(self.value))
-            xml = xml.replace('\x01', '*')
+            xml = xml.replace("\x01", "*")
         return xml
 
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            'type' / construct.Enum(construct.Byte, ParamType),
-            'value' / construct.Switch(
+            "type" / construct.Enum(construct.Byte, ParamType),
+            "value"
+            / construct.Switch(
                 construct.this.type,
                 {
-                    'Int': construct.Int32ul,
-                    'Float': construct.ExprAdapter(
+                    "Int": construct.Int32ul,
+                    "Float": construct.ExprAdapter(
                         construct.Bytes(10),
-                        lambda obj, ctx: numpy.frombuffer(obj.rjust(16, b'\x00'),
-                                                          dtype=numpy.longdouble),
-                        lambda obj, ctx: numpy.longdouble(obj).tobytes()[-10:]
+                        lambda obj, ctx: numpy.frombuffer(obj.rjust(16, b"\x00"), dtype=numpy.longdouble),
+                        lambda obj, ctx: numpy.longdouble(obj).tobytes()[-10:],
                     ),
-                    'Flag': construct.Byte,
-                    'Str': construct.PascalString(construct.Int32ul, 'cp932'),
+                    "Flag": construct.Byte,
+                    "Str": construct.PascalString(construct.Int32ul, "cp932"),
                 },
                 # else 'Var' variable name type
-                construct.Select(
-                    construct.PascalString(construct.Int32ul, 'cp932'),
-                ),
+                construct.Select(construct.PascalString(construct.Int32ul, "cp932"),),
             ),
         )
 
@@ -516,7 +514,7 @@ class OpeData(BaseSerializable):
 
     """
 
-    def __init__(self, type=OpeDataType.None_, name='', func=None, operands=[], **kwargs):
+    def __init__(self, type=OpeDataType.None_, name="", func=None, operands=[], **kwargs):
         self.type = OpeDataType(int(type))
         self.name = name
         if self.type == OpeDataType.Func:
@@ -534,7 +532,7 @@ class OpeData(BaseSerializable):
                 out.append(token.to_lsc())
             else:
                 out.append(str(token))
-        return ''.join(out)
+        return "".join(out)
 
     def __iter__(self):
         return iter(self.items())
@@ -551,7 +549,7 @@ class OpeData(BaseSerializable):
         raise KeyError
 
     def keys(self):
-        return ['type', 'name', 'count', 'func', 'operands']
+        return ["type", "name", "count", "func", "operands"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -571,21 +569,16 @@ class OpeData(BaseSerializable):
                 out.append(token.to_xml())
             else:
                 out.append(str(token))
-        return ''.join(out)
+        return "".join(out)
 
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            'type' / construct.Enum(construct.Byte, OpeDataType),
-            'name' / construct.PascalString(construct.Int32ul, 'cp932'),
-            'count' / construct.Int32ul,
-            'func' / construct.Switch(
-                construct.this.type,
-                {
-                    'Func': construct.Enum(construct.Byte, OpeFuncType),
-                }
-            ),
-            'operands' / construct.Array(construct.this.count, Param._struct()),
+            "type" / construct.Enum(construct.Byte, OpeDataType),
+            "name" / construct.PascalString(construct.Int32ul, "cp932"),
+            "count" / construct.Int32ul,
+            "func" / construct.Switch(construct.this.type, {"Func": construct.Enum(construct.Byte, OpeFuncType)}),
+            "operands" / construct.Array(construct.this.count, Param._struct()),
         )
 
     def _to(self):
@@ -601,50 +594,50 @@ class OpeData(BaseSerializable):
     def _plus(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' + ', p2]
+            return [p1, " + ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Plus() expected numeric type')
+            raise NotImplementedError("Plus() expected numeric type")
         return [Param(value=p1.value + p2.value)]
 
     def _minus(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' - ', p2]
+            return [p1, " - ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Minus() expected numeric type')
+            raise NotImplementedError("Minus() expected numeric type")
         return [Param(value=p1.value - p2.value)]
 
     def _mul(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' * ', p2]
+            return [p1, " * ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Mul() expected numeric type')
+            raise NotImplementedError("Mul() expected numeric type")
         return [Param(value=p1.value * p2.value)]
 
     def _div(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' / ', p2]
+            return [p1, " / ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Div() expected numeric type')
+            raise NotImplementedError("Div() expected numeric type")
         return [Param(value=p1.value / p2.value)]
 
     def _mod(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' % ', p2]
+            return [p1, " % ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Mod() expected numeric type')
+            raise NotImplementedError("Mod() expected numeric type")
         return [Param(value=p1.value % p2.value)]
 
     def _or(self):
         # LiveMaker uses | to specify both bitwise and boolean OR
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return ['(', p1, ' | ', p2, ')']
+            return ["(", p1, " | ", p2, ")"]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Or() expected numeric type')
+            raise NotImplementedError("Or() expected numeric type")
         if p1.type == ParamType.Flag and p2.type == ParamType.Flag:
             return [Param(value=p1.value or p2.value)]
         return [Param(value=p1.value | p2.value)]
@@ -653,9 +646,9 @@ class OpeData(BaseSerializable):
         # LiveMaker uses | to specify both bitwise and boolean AND
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return ['(', p1, ' & ', p2, ')']
+            return ["(", p1, " & ", p2, ")"]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('And() expected numeric type')
+            raise NotImplementedError("And() expected numeric type")
         if p1.type == ParamType.Flag and p2.type == ParamType.Flag:
             return [Param(value=p1.value and p2.value)]
         return [p1.value & p2.value]
@@ -663,86 +656,86 @@ class OpeData(BaseSerializable):
     def _xor(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' ^ ', p2]
+            return [p1, " ^ ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('Xor() expected numeric type')
+            raise NotImplementedError("Xor() expected numeric type")
         return [Param(p1.value ^ p2.value)]
 
     def _dimto(self):
         # Array access
         x = [self.operands[0]]
         for p in self.operands[1:]:
-            x.extend(['[', p, ']'])
+            x.extend(["[", p, "]"])
         return x
 
     def _func(self):
-        x = ['{}('.format(self.func.name)]
+        x = ["{}(".format(self.func.name)]
         for i, p in enumerate(self.operands):
             x.append(p)
             if i != len(self.operands) - 1:
-                x.append(', ')
-        x.append(')')
+                x.append(", ")
+        x.append(")")
         return x
 
     def _equal(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' == ', p2]
+            return [p1, " == ", p2]
         return [Param(value=p1.value == p2.value)]
 
     def _big(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' > ', p2]
+            return [p1, " > ", p2]
         return [Param(value=p1.value > p2.value)]
 
     def _small(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' < ', p2]
+            return [p1, " < ", p2]
         return [Param(value=p1.value < p2.value)]
 
     def _ebig(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' >= ', p2]
+            return [p1, " >= ", p2]
         return [Param(value=p1.value >= p2.value)]
 
     def _esmall(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' <= ', p2]
+            return [p1, " <= ", p2]
         return [Param(value=p1.value <= p2.value)]
 
     def _shiftl(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' << ', p2]
+            return [p1, " << ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('ShiftL() expected numeric type')
+            raise NotImplementedError("ShiftL() expected numeric type")
         return [Param(p1.value << p2.value)]
 
     def _shiftr(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' >> ', p2]
+            return [p1, " >> ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
-            raise NotImplementedError('ShiftR() expected numeric type')
+            raise NotImplementedError("ShiftR() expected numeric type")
         return [Param(p1.value >> p2.value)]
 
     def _combostr(self):
         # String join
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' ++ ', p2]
+            return [p1, " ++ ", p2]
         elif p1.type != ParamType.Str or p2.type != ParamType.Str:
-            raise NotImplementedError('ComboStr() expected string type')
-        return [Param(value=''.join([p1.value, p2.value]))]
+            raise NotImplementedError("ComboStr() expected string type")
+        return [Param(value="".join([p1.value, p2.value]))]
 
     def _nequal(self):
         (p1, p2) = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
-            return [p1, ' != ', p2]
+            return [p1, " != ", p2]
         return [Param(value=p1.value != p2.value)]
 
     def tokenize(self):
@@ -781,7 +774,7 @@ class OpeData(BaseSerializable):
             }[self.type]()
             return tokens
         except KeyError:
-            raise NotImplementedError('Cannot compute value for {} types.'.format(self.type))
+            raise NotImplementedError("Cannot compute value for {} types.".format(self.type))
 
 
 class LiveParser(BaseSerializable):
@@ -807,12 +800,12 @@ class LiveParser(BaseSerializable):
         return len(self.entries)
 
     def __getitem__(self, key):
-        if key == 'entries':
+        if key == "entries":
             return self.entries
         raise KeyError
 
     def keys(self):
-        return ['entries']
+        return ["entries"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -822,43 +815,42 @@ class LiveParser(BaseSerializable):
 
     def to_xml(self):
         xml = self.to_lsc()
-        if '\x01' in xml:
+        if "\x01" in xml:
             log.warn('Replacing invalid xml char "\\x01"')
-            xml = xml.replace('\x01', '*')
+            xml = xml.replace("\x01", "*")
         return xml
 
     @classmethod
     def _struct(cls):
-        return construct.Struct(
-            'entries' / construct.PrefixedArray(construct.Int32ul, OpeData._struct()),
-        )
+        return construct.Struct("entries" / construct.PrefixedArray(construct.Int32ul, OpeData._struct()),)
 
-#     @classmethod
-#     def from_struct(cls, struct):
-#         """Return a LiveParser for the specified struct."""
-#         return cls(entries=[OpeData.from_struct(x) for x in struct.entries])
+    #     @classmethod
+    #     def from_struct(cls, struct):
+    #         """Return a LiveParser for the specified struct."""
+    #         return cls(entries=[OpeData.from_struct(x) for x in struct.entries])
 
     def _simplify(self):
         """Return a simplified expression for all expressions in this parser."""
+
         def _resolve(var, exprs):
             if var in exprs:
                 operands = exprs[var]
                 for i, op in enumerate(operands):
                     if isinstance(op, Param):
                         if op.type == ParamType.Var:
-                            if op.value.startswith('____'):
+                            if op.value.startswith("____"):
                                 # LiveParser parameter name
                                 operands[i] = _resolve(op.value, exprs)
                             else:
                                 operands[i] = op.value
                         elif op.type == ParamType.Str:
-                            operands[i] = '"{}"'.format(op.value).replace('\n', '\\n').replace('\r', '\\r')
+                            operands[i] = '"{}"'.format(op.value).replace("\n", "\\n").replace("\r", "\\r")
                         else:
                             operands[i] = op.value
 
             else:
                 operands = [var]
-            return ''.join([str(x) for x in operands])
+            return "".join([str(x) for x in operands])
 
         exprs = {}
         for e in self.entries:
@@ -866,12 +858,12 @@ class LiveParser(BaseSerializable):
         if self.entries:
             e = self.entries[-1]
             if e.type == OpeDataType.To:
-                if e.name == '____arg':
-                    return _resolve('____arg', exprs)
-                return '{} = {}'.format(e.name, _resolve(e.name, exprs))
+                if e.name == "____arg":
+                    return _resolve("____arg", exprs)
+                return "{} = {}".format(e.name, _resolve(e.name, exprs))
             else:
-                log.warn('Last entry in LiveParser was not a To statement: {}'.format(self.entries[-1]))
-        return ''
+                log.warn("Last entry in LiveParser was not a To statement: {}".format(self.entries[-1]))
+        return ""
 
 
 class LiveParserArray(BaseSerializable):
@@ -890,7 +882,7 @@ class LiveParserArray(BaseSerializable):
         self.prefixed = prefixed
 
     def __str__(self):
-        return ' '.join([str(x) for x in self.parsers])
+        return " ".join([str(x) for x in self.parsers])
 
     def __iter__(self):
         return iter(self.parsers)
@@ -905,8 +897,8 @@ class LiveParserArray(BaseSerializable):
             if parser:
                 out.append(parser.to_lsc())
             else:
-                out.append('')
-        return '\t'.join(out)
+                out.append("")
+        return "\t".join(out)
 
     # @classmethod
     # def from_lsc(cls, *args, **kwargs):
@@ -928,14 +920,14 @@ class LiveParserArray(BaseSerializable):
         out = []
         if self.prefixed:
             for parser in self.parsers:
-                if hasattr(parser, 'to_xml'):
+                if hasattr(parser, "to_xml"):
                     out.append(parser.to_xml())
                 else:
                     out.append(str(parser))
-            return '\t'.join(out)
+            return "\t".join(out)
         for parser in self.parsers:
-            item = etree.Element('Item')
-            if hasattr(parser, 'to_xml'):
+            item = etree.Element("Item")
+            if hasattr(parser, "to_xml"):
                 item.text = parser.to_xml()
             else:
                 item.text = str(parser)
@@ -991,12 +983,12 @@ class PropertyType(enum.IntEnum):
     PR_HEIGHT = 0x07
     PR_ZOOMX = 0x08
     PR_COLOR = 0x09
-    PR_BORDERWIDTH = 0x0a
-    PR_BORDERCOLOR = 0x0b
-    PR_ALPHA = 0x0c
-    PR_PRIORITY = 0x0d
-    PR_OFFSETX = 0x0e
-    PR_OFFSETY = 0x0f
+    PR_BORDERWIDTH = 0x0A
+    PR_BORDERCOLOR = 0x0B
+    PR_ALPHA = 0x0C
+    PR_PRIORITY = 0x0D
+    PR_OFFSETX = 0x0E
+    PR_OFFSETY = 0x0F
     PR_FONTNAME = 0x10
     PR_FONTHEIGHT = 0x11
     PR_FONTSTYLE = 0x12
@@ -1007,12 +999,12 @@ class PropertyType(enum.IntEnum):
     PR_FONTHOVERCOLOR = 0x17
     PR_FONTHOVERSTYLE = 0x18
     PR_HOVERCOLOR = 0x19
-    PR_ANTIALIAS = 0x1a
-    PR_DELAY = 0x1b
-    PR_PAUSED = 0x1c
-    PR_VOLUME = 0x1d
-    PR_REPEAT = 0x1e
-    PR_BALANCE = 0x1f
+    PR_ANTIALIAS = 0x1A
+    PR_DELAY = 0x1B
+    PR_PAUSED = 0x1C
+    PR_VOLUME = 0x1D
+    PR_REPEAT = 0x1E
+    PR_BALANCE = 0x1F
     PR_ANGLE = 0x20
     PR_ONPLAYING = 0x21
     PR_ONNOTIFY = 0x22
@@ -1023,12 +1015,12 @@ class PropertyType(enum.IntEnum):
     PR_ONRBTNDOWN = 0x27
     PR_ONRBTNUP = 0x28
     PR_ONWHEELDOWN = 0x29
-    PR_ONWHEELUP = 0x2a
-    PR_BRIGHTNESS = 0x2b
-    PR_ONPLAYEND = 0x2c
-    PR_INDEX = 0x2d
-    PR_COUNT = 0x2e
-    PR_ONLINK = 0x2f
+    PR_ONWHEELUP = 0x2A
+    PR_BRIGHTNESS = 0x2B
+    PR_ONPLAYEND = 0x2C
+    PR_INDEX = 0x2D
+    PR_COUNT = 0x2E
+    PR_ONLINK = 0x2F
     PR_VISIBLE = 0x30
     PR_COLCOUNT = 0x31
     PR_ROWCOUNT = 0x32
@@ -1039,12 +1031,12 @@ class PropertyType(enum.IntEnum):
     PR_BORDERSOURCETL = 0x37
     PR_BORDERSOURCETC = 0x38
     PR_BORDERSOURCETR = 0x39
-    PR_BORDERSOURCECL = 0x3a
-    PR_BORDERSOURCECC = 0x3b
-    PR_BORDERSOURCECR = 0x3c
-    PR_BORDERSOURCEBL = 0x3d
-    PR_BORDERSOURCEBC = 0x3e
-    PR_BORDERSOURCEBR = 0x3f
+    PR_BORDERSOURCECL = 0x3A
+    PR_BORDERSOURCECC = 0x3B
+    PR_BORDERSOURCECR = 0x3C
+    PR_BORDERSOURCEBL = 0x3D
+    PR_BORDERSOURCEBC = 0x3E
+    PR_BORDERSOURCEBR = 0x3F
     PR_BORDERHALIGNT = 0x40
     PR_BORDERHALIGNC = 0x41
     PR_BORDERHALIGNB = 0x42
@@ -1055,12 +1047,12 @@ class PropertyType(enum.IntEnum):
     PR_CHECKSOURCE = 0x47
     PR_AUTOSCRAP = 0x48
     PR_ONSELECT = 0x49
-    PR_RCLICKSCRAP = 0x4a
-    PR_ONOPENING = 0x4b
-    PR_ONOPENED = 0x4c
-    PR_ONCLOSING = 0x4d
-    PR_ONCLOSED = 0x4e
-    PR_CARETX = 0x4f
+    PR_RCLICKSCRAP = 0x4A
+    PR_ONOPENING = 0x4B
+    PR_ONOPENED = 0x4C
+    PR_ONCLOSING = 0x4D
+    PR_ONCLOSED = 0x4E
+    PR_CARETX = 0x4F
     PR_CARETY = 0x50
     PR_IGNOREMOUSE = 0x51
     PR_TEXTPAUSED = 0x52
@@ -1071,12 +1063,12 @@ class PropertyType(enum.IntEnum):
     PR_ALLOWALLUP = 0x57
     PR_SELECTED = 0x58
     PR_CAPTUREMASK = 0x59
-    PR_POWER = 0x5a
-    PR_ORIGWIDTH = 0x5b
-    PR_ORIGHEIGHT = 0x5c
-    PR_APPEARX = 0x5d
-    PR_APPEARY = 0x5e
-    PR_PARTMOTION = 0x5f
+    PR_POWER = 0x5A
+    PR_ORIGWIDTH = 0x5B
+    PR_ORIGHEIGHT = 0x5C
+    PR_APPEARX = 0x5D
+    PR_APPEARY = 0x5E
+    PR_PARTMOTION = 0x5F
     PR_PARAM = 0x60
     PR_PARAM2 = 0x61
     PR_TOPINDEX = 0x62
@@ -1087,12 +1079,12 @@ class PropertyType(enum.IntEnum):
     PR_PARAM3 = 0x67
     PR_ONMOUSEIN = 0x68
     PR_ONMAPIN = 0x69
-    PR_ONMAPOUT = 0x6a
-    PR_MAPSOURCE = 0x6b
-    PR_AMP = 0x6c
-    PR_WAVELEN = 0x6d
-    PR_SCROLLX = 0x6e
-    PR_SCROLLY = 0x6f
+    PR_ONMAPOUT = 0x6A
+    PR_MAPSOURCE = 0x6B
+    PR_AMP = 0x6C
+    PR_WAVELEN = 0x6D
+    PR_SCROLLX = 0x6E
+    PR_SCROLLY = 0x6F
     PR_FLIPH = 0x70
     PR_FLIPV = 0x71
     PR_ONIDLE = 0x72
@@ -1103,12 +1095,12 @@ class PropertyType(enum.IntEnum):
     PR_CLIPWIDTH = 0x77
     PR_CLIPHEIGHT = 0x78
     PR_DURATION = 0x79
-    PR_THUMBSOURCE = 0x7a
-    PR_BUTTONSOURCE = 0x7b
-    PR_MIN = 0x7c
-    PR_MAX = 0x7d
-    PR_VALUE = 0x7e
-    PR_ORIENTATION = 0x7f
+    PR_THUMBSOURCE = 0x7A
+    PR_BUTTONSOURCE = 0x7B
+    PR_MIN = 0x7C
+    PR_MAX = 0x7D
+    PR_VALUE = 0x7E
+    PR_ORIENTATION = 0x7F
     PR_SMALLCHANGE = 0x80
     PR_LARGECHANGE = 0x81
     PR_MAPTEXT = 0x82
@@ -1119,12 +1111,12 @@ class PropertyType(enum.IntEnum):
     PR_ANIPAUSED = 0x87
     PR_ONHOLD = 0x88
     PR_ONRELEASE = 0x89
-    PR_REVERSE = 0x8a
-    PR_PLAYING = 0x8b
-    PR_REWINDONLOAD = 0x8c
-    PR_COMPOTYPE = 0x8d
-    PR_FONTSHADOWCOLOR = 0x8e
-    PR_FONTBORDER = 0x8f
+    PR_REVERSE = 0x8A
+    PR_PLAYING = 0x8B
+    PR_REWINDONLOAD = 0x8C
+    PR_COMPOTYPE = 0x8D
+    PR_FONTSHADOWCOLOR = 0x8E
+    PR_FONTBORDER = 0x8F
     PR_FONTSHADOW = 0x90
     PR_ONKEYDOWN = 0x91
     PR_ONKEYUP = 0x92
@@ -1135,23 +1127,23 @@ class PropertyType(enum.IntEnum):
     PR_OVERLAY = 0x97
     PR_TAG = 0x98
     PR_CAPTURELINK = 0x99
-    PR_FONTHOVERBORDER = 0x9a
-    PR_FONTHOVERBORDERCOLOR = 0x9b
-    PR_FONTHOVERSHADOW = 0x9c
-    PR_FONTHOVERSHADOWCOLOR = 0x9d
-    PR_BARSIZE = 0x9e
-    PR_MUTEONLOAD = 0x9f
-    PR_PLUSX = 0xa0
-    PR_PLUSY = 0xa1
-    PR_CARETHEIGHT = 0xa2
-    PR_REPEATPOS = 0xa3
-    PR_BLURSPAN = 0xa4
-    PR_BLURDELAY = 0xa5
-    PR_FONTCHANGEABLED = 0xa6
-    PR_IMEMODE = 0xa7
-    PR_FLOATANGLE = 0xa8
-    PR_FLOATZOOMX = 0xa9
-    PR_FLOATZOOMY = 0xaa
-    PR_CAPMASKLEVEL = 0xab
-    PR_PADDINGLEFT = 0xac
-    PR_PADDING_RIGHT = 0xad
+    PR_FONTHOVERBORDER = 0x9A
+    PR_FONTHOVERBORDERCOLOR = 0x9B
+    PR_FONTHOVERSHADOW = 0x9C
+    PR_FONTHOVERSHADOWCOLOR = 0x9D
+    PR_BARSIZE = 0x9E
+    PR_MUTEONLOAD = 0x9F
+    PR_PLUSX = 0xA0
+    PR_PLUSY = 0xA1
+    PR_CARETHEIGHT = 0xA2
+    PR_REPEATPOS = 0xA3
+    PR_BLURSPAN = 0xA4
+    PR_BLURDELAY = 0xA5
+    PR_FONTCHANGEABLED = 0xA6
+    PR_IMEMODE = 0xA7
+    PR_FLOATANGLE = 0xA8
+    PR_FLOATZOOMX = 0xA9
+    PR_FLOATZOOMY = 0xAA
+    PR_CAPMASKLEVEL = 0xAB
+    PR_PADDINGLEFT = 0xAC
+    PR_PADDING_RIGHT = 0xAD
