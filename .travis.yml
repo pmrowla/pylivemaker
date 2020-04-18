@@ -1,12 +1,36 @@
 dist: xenial
 language: python
-python:
-- 3.8
-- 3.7
-- 3.6
-- 3.5
+cache:
+  pip: true
+  directories:
+    - $HOME/.cache/pre-commit
+
+matrix:
+  fast_finish: true
+  include:
+    - python: "3.6"
+      name: "Lint"
+      env: LINT="true"
+
+    - python: "3.5"
+      name: "3.5 Xenial"
+    - python: "3.6"
+      name: "3.6 Xenial"
+    - python: "3.7"
+      name: "3.7 Xenial"
+    - python: "3.8"
+      name: "3.8 Xenial"
+
 install: pip install -U tox-travis
-script: tox
+
+script:
+- |
+  if [ "$LINT" == "true" ]; then
+    tox -e lint
+  else
+    tox
+  fi
+
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
