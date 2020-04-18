@@ -26,8 +26,9 @@ from io import BytesIO
 from lxml import etree
 
 from PIL import Image, ImageFile, ImagePalette
-from PIL.JpegImagePlugin import JpegImageFile
 from PIL._binary import i32le, si32le
+
+from .exceptions import LiveMakerException
 
 
 _GAL_MODE = {
@@ -43,6 +44,10 @@ _GAL_COMPRESSION = {
     0: "zip",
     2: "jpeg",
 }
+
+
+class GalImageError(IOError, LiveMakerException):
+    pass
 
 
 def _accept(prefix):
@@ -70,7 +75,7 @@ class GalImageFile(ImageFile.ImageFile):
                 # lxml deal with most of these cases.
                 root = etree.fromstring(xml, parser=etree.XMLParser(encoding="shift-jis", recover=True))
             except etree.LxmlError as e:
-                raise IOError("Could not parse GAL/X image XML metadata: {}".format(e))
+                raise GalImageError("Could not parse GAL/X image XML metadata: {}".format(e))
             info["width"] = int(root.get("Width", 0))
             info["height"] = int(root.get("Height", 0))
             info["bpp"] = int(root.get("Bpp", 0))
@@ -84,7 +89,7 @@ class GalImageFile(ImageFile.ImageFile):
             info["offset"] = header_size + 12
             info["root"] = root
         else:
-            raise IOError("Unsupported GAL/X version {}".format(header))
+            raise GalImageError("Unsupported GAL/X version {}".format(header))
         if info["frame_count"] != len(root):
             print("Warning: frame count mismatch")
         info["frames"] = []
@@ -136,7 +141,7 @@ class GalImageFile(ImageFile.ImageFile):
         self.fp.seek(info["offset"])
         for frame in info["frames"]:
             if info["bpp"] not in _GAL_MODE:
-                raise IOError("Unsupported GAL pixel format")
+                raise GalImageError("Unsupported GAL pixel format")
             mode, rawmode = _GAL_MODE[frame["bpp"]]
             layermode = mode
             if len(frame["layers"]) > 1:
@@ -153,7 +158,7 @@ class GalImageFile(ImageFile.ImageFile):
                     elif mode == "P":
                         mode = "PA"
                     else:
-                        raise NotImplementedError("unsupported alpha mode")
+                        raise GalImageError("unsupported GAL alpha mode")
                     break
                 break
             frames.append(
@@ -170,7 +175,7 @@ class GalImageFile(ImageFile.ImageFile):
         try:
             version = int(info["version"])
         except ValueError:
-            raise IOError("Unsupported GAL version {}".format(header))
+            raise GalImageError("Unsupported GAL version {}".format(header))
         if version > 102:
             header_size = si32le(read(4))
             header = read(header_size)
@@ -201,7 +206,7 @@ class GalImageFile(ImageFile.ImageFile):
             info["compression"] = None
             info["frame_count"] = 1
         else:
-            raise IOError("Unsupported GAL version {}".format(header))
+            raise GalImageError("Unsupported GAL version {}".format(header))
         return info
 
     def _gal_frames(self, info):
@@ -219,7 +224,7 @@ class GalImageFile(ImageFile.ImageFile):
             seek(9, 1)
             layer_count = i32le(read(4))
             if layer_count < 1:
-                raise IOError("Invalid GAL frame")
+                raise GalImageError("Invalid GAL frame")
             frame_info["width"] = si32le(read(4))
             frame_info["height"] = si32le(read(4))
             bpp = i32le(read(4))
@@ -227,7 +232,7 @@ class GalImageFile(ImageFile.ImageFile):
                 print(layer_count)
                 print(frame_info, mask)
                 print(bpp)
-                raise IOError("Unsupported GAL pixel format")
+                raise GalImageError("Unsupported GAL pixel format")
             frame_info["bpp"] = bpp
             if bpp <= 8:
                 palette_size = 1 << bpp
@@ -269,7 +274,7 @@ class GalImageFile(ImageFile.ImageFile):
                     elif mode == "P":
                         mode = "PA"
                     else:
-                        raise NotImplementedError("unsupported alpha mode")
+                        raise GalImageError("unsupported GAL alpha mode")
                 seek(alpha_size, 1)
                 frame_info["layers"].append(layer_info)
             info["frames"].append(frame_info)
@@ -290,7 +295,7 @@ class GalImageFile(ImageFile.ImageFile):
         self._size = info["width"], info["height"]
         self.decoder = "GAL"
         if info["randomized"]:
-            raise IOError("LiveMaker Pro encrypted images are currently unsupported")
+            raise GalImageError("LiveMaker Pro encrypted images are currently unsupported")
 
         i = 0
         for name, layer_count, mode, layermode, rawmode, box, palette in frames:
@@ -322,7 +327,7 @@ class GalImageFile(ImageFile.ImageFile):
             self.palette = palette
             self._frame = frame
         except IndexError:
-            raise EOFError("Invalid frame")
+            raise EOFError("Invalid GAL frame")
 
     def tell(self):
         return self._frame
@@ -348,35 +353,14 @@ class GalImageDecoder(ImageFile.PyDecoder):
                     info["randomized"],
                     info["frames"],
                 )
-                mode = self.mode
-                self.mode = layermode
-                self.set_as_raw(layer["data"], rawmode, frame["stride"])
-                self.mode = mode
+                self._set_as_raw(layer["data"], layermode, rawmode, frame["stride"])
                 if layer["alpha_on"]:
-                    alpha_data = self._decode_alpha(frame, info)
-                    layer["alpha_data"] = alpha_data
-                    size = self.state.xsize, self.state.ysize
-                    mask = Image.frombytes("L", size, alpha_data, "raw", "L", frame["alpha_stride"])
-                    if Image.getmodebase(mode) == "RGB":
-                        band = 3
-                    else:
-                        band = 1
-                    self.im.putband(mask.im, band)
+                    self._decode_alpha(frame, info)
             elif compression == "jpeg":
                 jpeg_data = self.fd.read(layer_size)
+                self._set_as_jpeg(jpeg_data, layermode)
                 if layer["alpha_on"]:
-                    alpha_data = self._decode_alpha(frame, info)
-                    layer["alpha_data"] = alpha_data
-                    size = self.state.xsize, self.state.ysize
-                    mask = Image.frombytes("L", size, alpha_data, "raw", "L", frame["alpha_stride"])
-                else:
-                    mask = None
-                im = JpegImageFile(BytesIO(jpeg_data))
-                if mask:
-                    im.putalpha(mask)
-                self.tile = im.tile
-                self.mode = im.mode
-                self.fd = im.fp
+                    self._decode_alpha(frame, info)
             else:
                 packed_data = self.fd.read(layer_size)
                 layer["data"] = self._unpack_layer(
@@ -387,10 +371,7 @@ class GalImageDecoder(ImageFile.PyDecoder):
                     info["randomized"],
                     info["frames"],
                 )
-                mode = self.mode
-                self.mode = layermode
-                self.set_as_raw(layer["data"], rawmode, frame["stride"])
-                self.mode = mode
+                self._set_as_raw(layer["data"], layermode, rawmode, frame["stride"])
             # TODO: handle multi-layer frames
             break
         return 0, 0
@@ -407,7 +388,13 @@ class GalImageDecoder(ImageFile.PyDecoder):
             info["frames"],
             True,
         )
-        return bytes(unpacked)
+        size = self.state.xsize, self.state.ysize
+        mask = Image.frombytes("L", size, unpacked, "raw", "L", frame["alpha_stride"])
+        if Image.getmodebase(self.mode) == "RGB":
+            band = 3
+        else:
+            band = 1
+        self.im.putband(mask.im, band)
 
     def _unpack_layer(self, packed, frame_info, block_width, block_height, randomized, frames, is_alpha=False):
         # Based on GARbro ImageGAL.cs:ReadBlocks() implementation
@@ -430,7 +417,7 @@ class GalImageDecoder(ImageFile.PyDecoder):
             layer_ref = si32le(packed.read(4))
             block_refs.append((frame_ref, layer_ref))
         if randomized:
-            raise NotImplementedError
+            raise GalImageError("LivemakerPro encrypted images are unsupported")
         i = 0
         data = bytearray(stride * height)
         for y in range(0, height, block_height):
@@ -462,7 +449,7 @@ class GalImageDecoder(ImageFile.PyDecoder):
                 else:
                     # copy block from another frame/layer
                     if frame_ref >= len(frames) or layer_ref >= len(frames[frame_ref]["layers"]):
-                        raise IOError("Invalid GaleFrame reference")
+                        raise GalImageError("Invalid GaleFrame reference")
                     if is_alpha:
                         ref_data = frames[frame_ref]["layers"][layer_ref]["alpha_data"]
                     else:
@@ -473,18 +460,30 @@ class GalImageDecoder(ImageFile.PyDecoder):
                 i += 1
         return bytes(data)
 
-    def set_as_raw(self, data, rawmode=None, stride=0):
+    def _set_as_raw(self, data, mode, rawmode=None, stride=0):
         # override PIL set_as_raw() so we can set stride
         if not rawmode:
-            rawmode = self.mode
-        d = Image._getdecoder(self.mode, "raw", (rawmode, stride, 1))
+            rawmode = mode
+        d = Image._getdecoder(mode, "raw", (rawmode, stride, 1))
         d.setimage(self.im, self.state.extents())
         s = d.decode(data)
 
         if s[0] >= 0:
-            raise ValueError("not enough image data")
+            raise GalImageError("not enough image data")
         if s[1] != 0:
-            raise ValueError("cannot decode image data")
+            raise GalImageError("cannot decode image data")
+
+    def _set_as_jpeg(self, data, mode):
+        from PIL.JpegImagePlugin import RAWMODE
+
+        d = Image._getdecoder(mode, "jpeg", (RAWMODE[mode], ""))
+        d.setimage(self.im, self.state.extents())
+        s = d.decode(data)
+
+        if s[0] >= 0:
+            raise GalImageError("not enough image data")
+        if s[1] != 0:
+            raise GalImageError("cannot decode image data")
 
 
 Image.register_decoder("GAL", GalImageDecoder)
