@@ -69,6 +69,8 @@ Ready to contribute? Here's how to set up `pylivemaker` for local development.
     $ mkvirtualenv pylivemaker
     $ cd pylivemaker/
     $ python setup.py develop
+    $ pip install -r requirements_dev.txt
+    $ pre-commit install
 
 4. Create a branch for local development::
 

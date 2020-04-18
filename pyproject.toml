@@ -1,0 +1,16 @@
+[tool.black]
+target-version = ['py35']
+line-length = 119
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.github
+  | _build
+  | build
+  | dist
+  | docs
+)/
