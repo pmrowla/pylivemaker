@@ -35,9 +35,6 @@ from .cli import __version__, _version
 
 
 log = logging.getLogger(__name__)
-fh = logging.FileHandler("patch.log")
-fh.setLevel(logging.INFO)
-log.addHandler(fh)
 
 
 @click.command()
