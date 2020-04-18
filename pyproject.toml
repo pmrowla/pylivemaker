@@ -5,6 +5,7 @@ include = '\.pyi?$'
 exclude = '''
 /(
     \.git
+  | \.eggs
   | \.mypy_cache
   | \.tox
   | \.venv
@@ -12,5 +13,5 @@ exclude = '''
   | _build
   | build
   | dist
-  | docs
 )/
+'''
