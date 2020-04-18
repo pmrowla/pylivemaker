@@ -28,7 +28,7 @@ from PIL import Image
 
 from livemaker import GalImagePlugin  # noqa: F401
 from livemaker.archive import LMArchive
-from livemaker.exceptions import UnsupportedLiveMakerCompression
+from livemaker.exceptions import LiveMakerException, UnsupportedLiveMakerCompression
 
 from .cli import __version__, _version
 
@@ -89,8 +89,8 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                             im.save(path)
                         if verbose or dry_run:
                             print(png_path)
-                    except IOError as e:
-                        print("Error: Failed to convert image to PNG: {}".format(e))
+                    except LiveMakerException as e:
+                        print("Error: Failed to convert {} to PNG: {}".format(info.path, e))
                         if image_format == "png":
                             print("  Original GAL image will be used as fallback.")
                             if not dry_run:
