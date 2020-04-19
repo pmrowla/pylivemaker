@@ -778,7 +778,10 @@ class LMArchive(object):
     def _parse_directory(self):
         """Parse the file index for this archive."""
         self.fp.seek(self.archive_offset)
-        directory = LMArchiveDirectory.struct().parse_stream(self.fp)
+        try:
+            directory = LMArchiveDirectory.struct().parse_stream(self.fp)
+        except construct.ConstructError as e:
+            raise BadLiveMakerArchive("Failed to parse VF directory: {}".format(e))
         self.version = directory.version
         filenames = directory.filenames
         offsets = directory.offsets
