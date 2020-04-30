@@ -6,8 +6,8 @@ pylivemaker
 .. image:: https://img.shields.io/pypi/v/pylivemaker.svg
         :target: https://pypi.python.org/pypi/pylivemaker
 
-.. image:: https://img.shields.io/travis/pmrowla/pylivemaker.svg
-        :target: https://travis-ci.org/pmrowla/pylivemaker
+.. image:: https://img.shields.io/travis/com/pmrowla/pylivemaker.svg
+        :target: https://travis-ci.com/github/pmrowla/pylivemaker
 
 .. image:: https://readthedocs.org/projects/pylivemaker/badge/?version=latest
         :target: https://pylivemaker.readthedocs.io/en/latest/?badge=latest
