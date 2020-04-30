@@ -3,23 +3,22 @@ language: python
 cache:
   pip: true
   directories:
-    - $HOME/.cache/pre-commit
+  - "$HOME/.cache/pre-commit"
 
 matrix:
   fast_finish: true
   include:
-    - python: "3.6"
-      name: "Lint"
-      env: LINT="true"
-
-    - python: "3.5"
-      name: "3.5 Xenial"
-    - python: "3.6"
-      name: "3.6 Xenial"
-    - python: "3.7"
-      name: "3.7 Xenial"
-    - python: "3.8"
-      name: "3.8 Xenial"
+  - python: '3.6'
+    name: Lint
+    env: LINT="true"
+  - python: '3.5'
+    name: 3.5 Xenial
+  - python: '3.6'
+    name: 3.6 Xenial
+  - python: '3.7'
+    name: 3.7 Xenial
+  - python: '3.8'
+    name: 3.8 Xenial
 
 install: pip install -U tox-travis
 
@@ -34,9 +33,9 @@ script:
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: pmrowla
+  user: __token__
   password:
-    secure: "SYji4EYgd8xy9kTuLd8LDWdN2hH4bF7wspJGYQGbmYT/Ly1SdETH9zfFg8OXFLtCxYReZLn2hd+pp321zkrnguZXAqB1mR908mVeUeFwlnAwZiHWN1zWdoC83IGWImNci6U5CX0To7pyMLOvXEb0DZgJn1/keS2aI+IIXRCxYwX2h4WCOeeD6C45VVYg0oE15Xmv8epuFDuJOViPDlkU9HEx6GVlrPJCo2gL9HVpAQYSVJSZ7ClHGSRPquQwLgeE0iyf6KpFJOdvoOcwtbTwk+T8a+6GsRfAVp2lgGodcnq3nmNAm0MZ8dLKQcyz1GUa33ljipcCPI9KQv9ddZX+uVXqEM0GSIMKLzFX3x1IxzjXgSke3CgFFk00vNwFnwnrmoW9QQanRilmIQwS4jxmsZaYvTv5NuCyD4TG1ewb2+a36E4rKp49dUYAoaHBMCHUun2D7AUolOUphWVyCM9KWQ0nX/I/ZGRLwMfz3+rHGsVaiIr9EAz8KblLC3KhEuKMocxozYSiUPrGYl5Jq4eU1c8xLHzqftSmOq/sg9eOqjUyInkCELx1Pwi2HMrpU6wbhN4GbhR90B/Fk/Q2p9I+zxhMxyp3FHXeaYNgiz8unMW4GzqEttu8NBheEiY/ycIMcD1MrokwMEDRirRypmx3e+x/0uCD66PPK+5D1B1vydU="
+    secure: Mu0qitljjKJV6YorTOTnf1fIxDr5EQWejEvaT9/a5pGZnYsW3L9P8IuCEp/TobvtbN2XSBHG32+TLlrlvpmJHpJb4Q5JhjjVqQHYXfPgpGEAmVajCX1sQEkhEkvZJ+xwl9pjOAbhNiGD1CiTDaS5VDSYZfxsEzUMLcxRvsNUndvqp3XYcNHsW56bs+/xSu8hT5CfdGdpzcjEGFNdp1icBj+vZd8nrpNE8cSDh8r6Vhxhqr91ye0TbBV0epENtTq85NwM+fXukQpgpJd17WNxI6RJJsZzilsAc0lcQALGKYNZpHwgGXmOU0ZcrAQuemv+NbkAObuT1Szv/r8/V5GA9pZVc7DJ+RCEkqSV9zR5KfL+J3qauK1NJr0L5/RG7MM/vLkj3d8eXYw4oWP6lVgews858nLYo0BXfDTieY+g+C62hxSfrj0OZnbJdLkdHO4EMfQXPPZjTSCNbnEEIv60I/W/BB9SBL5DWmEXAURpNym7fQzVCiWihheprzk1pSnwzViIDW7Vd8uZ3WoRSQK9iyxkp+UIXPnVwKdGWelHk24oQnS7AvwSgw0zfnVRuyUgNSzg6K9FX+vLQuwGz5Lt/8ZG7B3/J804Vqc6uuHQIb2LgHDhx9qSjG8tc4XlZAsVR10Y1/3PkxGSQjROK1Cu/eKUyJe25TH35Ncar1Bgo0w=
   on:
     tags: true
     repo: pmrowla/pylivemaker
