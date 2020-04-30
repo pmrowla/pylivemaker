@@ -72,8 +72,7 @@ def lmgoogle(csv_file, from_lang, to_lang, from_column, to_column, delay, no_aut
 
         # parameters got by network analyzing. I have no clue what the most of them are for.
         params = {"client":"t", "sl":from_lang, "tl":to_lang,
-                "hl":"en", "dt":"at", "dt":"bd","dt":"ex","dt":"ld","dt":"md","dt":"qca","dt":"rw","dt":"rm",
-                "dt":"ss","dt":"t","ie":"UTF-8","oe":"UTF-8","otf":"1","ssel":"0","tsel":"0","kc":"1","tk":"",
+                "hl":"en","dt":"t","ie":"UTF-8","oe":"UTF-8","otf":"1","ssel":"0","tsel":"0","kc":"1","tk":"",
                 "q":from_text}
 
         # Seems some google translating apps use this api, but it's not official documented.
@@ -106,20 +105,21 @@ def lmgoogle(csv_file, from_lang, to_lang, from_column, to_column, delay, no_aut
             # Test cp932 encoding, replace all troublesome characters
             try:
                 to_text.encode("cp932")
-            except UnicodeEncodeError as e:
+            except UnicodeEncodeError:
                 a = to_text
                 to_text = ""
                 for b in a:
                     try:
                         b.encode("cp932")
                         to_text = to_text + b
-                    except UnicodeEncodeError as e:
+                    except UnicodeEncodeError:
                         to_text = to_text + "."
                 print("Encoding problem: \"{}\" contains non-cp932 characters. Changed to \"{}\"".format(a, to_text))
 
         print("Translated \"{}\" to \"{}\"".format(from_text,to_text))
 
-        # store the translation result in csv_data. Some text lines may occour multiple times, so we store all matching.
+        # store the translation result in csv_data.
+        # Some text lines may occour multiple times, so we store all matching.
         for row2 in csv_data:
             if len(row2) <= from_column or len(row2) <= to_column:
                 continue
