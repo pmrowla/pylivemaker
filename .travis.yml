@@ -40,3 +40,5 @@ deploy:
     tags: true
     repo: pmrowla/pylivemaker
     python: 3.6
+    condition: $LINT != true
+  skip_existing: true
