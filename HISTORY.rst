@@ -2,6 +2,13 @@
 History
 =======
 
+0.3.0 (2020-04-30)
+------------------
+
+* Added `extractmenu` command for extracting in-game menus to a CSV file
+* Added `insertmenu` command for replacing in-game menus from a CSV file
+* `lmpatch` now supports batch/recursive patching
+
 0.2.1 (2020-03-13)
 ------------------
 
