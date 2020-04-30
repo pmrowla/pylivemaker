@@ -21,7 +21,7 @@
 __author__ = """Peter Rowlands"""
 __email__ = "peter@pmrowla.com"
 __license__ = "GPLv3"
-__version__ = "__version__ = '0.3.0'"
+__version__ = "__version__ = '0.3.1-dev'"
 
 
 from .archive import LMArchive, LMArchiveInfo, LMCompressType
