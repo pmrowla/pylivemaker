@@ -32,7 +32,7 @@ from lxml import etree
 
 from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
-from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
+from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn, TWdType
 from livemaker.exceptions import LiveMakerException, BadLsbError
 from livemaker.lsb import LMScript
 
