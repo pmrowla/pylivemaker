@@ -1308,5 +1308,5 @@ def scan_texts(lsb, csv_data, file_name, extract=False, patch=False):
 
             if patch and cmd_patched:
                 patched = True
-                scenario.body = new_body
+                scenario.replace_body(new_body)
     return patched
