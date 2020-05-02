@@ -8,9 +8,11 @@ cache:
 matrix:
   fast_finish: true
   include:
+
   - python: '3.6'
     name: Lint
     env: LINT="true"
+
   - python: '3.5'
     name: 3.5 Xenial
   - python: '3.6'
@@ -19,6 +21,14 @@ matrix:
     name: 3.7 Xenial
   - python: '3.8'
     name: 3.8 Xenial
+
+  - name: 3.8 Windows
+    os: windows
+    language: shell
+    before_install:
+      - choco install python --version 3.8.2
+      - python -m pip install --upgrade pip
+    env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
 install: pip install -U tox-travis
 
