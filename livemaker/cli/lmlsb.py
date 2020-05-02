@@ -32,7 +32,7 @@ from lxml import etree
 
 from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
-from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn, TWdType
+from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
 from livemaker.exceptions import LiveMakerException, BadLsbError
 from livemaker.lsb import LMScript
 
@@ -1165,13 +1165,20 @@ def scan_menus(lsb, csv_data, file_name, extract=False, patch=False):
 @click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
 @click.option("--overwrite", is_flag=True, default=False, help="Overwrite existing csv file.")
 @click.option("--append", is_flag=True, default=False, help="Append text data to existing csv file.")
-def extracttext(lsb_file, csv_file, overwrite, append):
-    """Extract texts from the given lsb file to a csv file.
-    You can open this csv file for translation in most table calc programs (Execl, open/libe office calc, ...).
-    Just remember to chose comma as delimiter and " as quotechar.
+def extractcsv(lsb_file, csv_file, overwrite, append):
+    """Extract text lines from the given LSB file to a CSV file.
+
+    You can open this csv file for translation in most table calc programs (Excel, open/libre office calc, ...).
+    Just remember to choose comma as delimiter and " as quotechar.
+
     You can use the --append option to add the text data from this lsb file to a existing csv.
     With the --overwrite option an existing csv will be overwritten without warning.
+
+    NOTE: Formatting tags will be lost when using this command in conjunction with insertcsv.
+    For translating games which use formatting tags, you may need to work directly with LNS scripts
+    using the extract and insert/batchinsert commands.
     """
+    lsb_file = Path(lsb_file)
     print("Extracting {} ...".format(lsb_file))
 
     with open(lsb_file, "rb") as f:
@@ -1182,7 +1189,13 @@ def extracttext(lsb_file, csv_file, overwrite, append):
         sys.exit("Failed to parse file: {}".format(e))
 
     csv_data = []
-    scan_texts(lsb, csv_data, lsb_file, extract=True)
+    for lsb_line, name, scenario in lsb.text_scenarios():
+        if name:
+            name = "{}-{}".format(lsb_file.stem, name)
+        if not name:
+            name = "{}-line{}".format(lsb_file.stem, lsb_line)
+        for line in scenario.get_lines():
+            csv_data.append([str(lsb_file), name, line.text, None])
 
     if len(csv_data) == 0:
         sys.exit("No text data found.")
@@ -1197,23 +1210,56 @@ def extracttext(lsb_file, csv_file, overwrite, append):
     with open(csv_file, ("a" if append else "w"), newline="\n") as csvfile:
         csv_writer = csv.writer(csvfile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
         if not append:
-            csv_writer.writerow(["Filename", "Command line", "Command subindex", "Original entry", "Translated entry"])
+            csv_writer.writerow(["Filename", "Scenario name", "Original entry", "Translated entry"])
         for row in csv_data:
             csv_writer.writerow(row)
 
     print("{} Text lines extracted.".format(len(csv_data)))
 
 
+def _patch_csv_lines(lsb, lsb_file, csv_data):
+    """Patch text lines in the given lsb file using csv_data."""
+    patched = False
+    for lsb_line, name, scenario in lsb.text_scenarios():
+        if name:
+            name = "{}-{}".format(lsb_file.stem, name)
+        if not name:
+            name = "{}-line{}".format(lsb_file.stem, lsb_line)
+
+        new_lines = []
+        for csv_lsb_file, csv_name, orig_text, translated_text in csv_data:
+            if csv_lsb_file == str(lsb_file) and csv_name == name:
+                if not translated_text:
+                    print('Untranslated text "{}" for {}! Not patched!'.format(orig_text, csv_name))
+                    new_lines.append(orig_text)
+                else:
+                    print('Patched "{}" to "{}" for {}'.format(orig_text, translated_text, csv_name))
+                    new_lines.append(translated_text)
+                    patched = True
+
+        if patched:
+            lines = scenario.get_lines()
+            if len(lines) != len(new_lines):
+                raise LiveMakerException(
+                    "CSV line count does not match original scenario line count for {}".format(name)
+                )
+            for i, line in enumerate(lines):
+                line.text = new_lines[i]
+            scenario.replace_lines(lines)
+    return patched
+
+
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay="False"))
 @click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
 @click.option("--no-backup", is_flag=True, default=False, help="Do not generate backup of original lsb file.")
-def inserttext(lsb_file, csv_file, no_backup):
-    """Apply translated texts from the given csv file on a given lsb file.
-    The csv file have to be created by the extracttext function and translations have to be added.
-    The original LSB file will be backed up to <lsb_file>.bak unless the
-    --no-backup option is specified.
+def insertcsv(lsb_file, csv_file, no_backup):
+    """Apply translated text lines from the given CSV file to given LSB file.
+
+    CSV_FILE should be a file previously created by the extractcsv command, with added translations.
+    The original LSB file will be backed up to <lsb_file>.bak unless the --no-backup option is specified.
     """
+    lsb_file = Path(lsb_file)
     print("Patching {} ...".format(lsb_file))
 
     with open(lsb_file, "rb") as f:
@@ -1230,7 +1276,7 @@ def inserttext(lsb_file, csv_file, no_backup):
         for row in csv_reader:
             csv_data.append(row)
 
-    patched = scan_texts(lsb, csv_data, lsb_file, patch=True)
+    patched = _patch_csv_lines(lsb, lsb_file, csv_data)
 
     if not patched:
         sys.exit("No text lines patched, so not need to change LSB file.")
@@ -1244,68 +1290,4 @@ def inserttext(lsb_file, csv_file, no_backup):
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit('Could not generate new LSB file: {}'.format(e))
-
-
-def scan_texts(lsb, csv_data, file_name, extract=False, patch=False):
-    """Scan given lsb object for TextIns, extract or patch TWdChar blocks
-    lsb: the lsb object loaded by LMScript.from_lsb
-    csv_data: translation data from the csv file
-    file_name: name of the lsb file
-    extract: true if you want to extract text
-    patch: true if you want to patch translated text
-    """
-    patched = False
-    for cmd_nr, cmd in enumerate(lsb.commands):
-        if cmd.type == CommandType.TextIns:
-            scenario = cmd.get('Text')
-            text_line = None
-            block_nr = 0
-            new_body = []
-            last_ch = None
-            cmd_patched = False
-            for w in scenario.body:
-                if w.type == TWdType.TWdChar:
-                    if text_line:
-                        text_line = text_line + str(w.ch)
-                    else:
-                        text_line = str(w.ch)
-                        block_nr += 1
-                    last_ch = w
-                else:
-                    if text_line:
-                        if extract:
-                            csv_data.append([file_name, cmd_nr, block_nr, text_line, None])
-
-                        if patch:
-                            for csv_line in csv_data:
-                                if csv_line[0] == file_name and csv_line[1] == str(cmd_nr) and csv_line[2] == str(block_nr):
-                                    if csv_line[4] == "":
-                                        print("Untranslated text \"{}\" at Command {}.{}! Not patched!".format(text_line, cmd_nr, block_nr))
-                                        new_line = text_line
-                                    else:
-                                        print("Patched \"{}\" to \"{}\" at Command {}.{}".format(text_line, csv_line[4], cmd_nr, block_nr))
-                                        new_line = csv_line[4]
-                                        cmd_patched = True
-                                    for ch in new_line:
-                                        new_ch = TWdChar(
-                                            ch = ch,
-                                            decorator = last_ch.decorator,
-                                            text_speed = last_ch.text_speed,
-                                            link_name = last_ch.link_name,
-                                            link = last_ch.link,
-                                            condition = last_ch.condition,
-                                        )
-                                        new_body.append(new_ch)
-
-                        text_line = ""
-
-                    if patch:
-                        new_body.append(w)
-
-                    block_nr += 1
-
-            if patch and cmd_patched:
-                patched = True
-                scenario.replace_body(new_body)
-    return patched
+        sys.exit("Could not generate new LSB file: {}".format(e))
