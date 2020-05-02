@@ -725,14 +725,14 @@ class TpWord(BaseSerializable):
             links = [TWdLink.from_struct(x) for x in links]
         self.links = links
         if isinstance(body, construct.ListContainer):
-            self.body = []
+            self._body = []
             for x in body:
                 if isinstance(x, int):
-                    self.body.append(x)
+                    self._body.append(x)
                 else:
-                    self.body.append(_twd_classes[TWdType(int(x.type))].from_struct(x))
+                    self._body.append(_twd_classes[TWdType(int(x.type))].from_struct(x))
         else:
-            self.body = body
+            self._body = body
 
     def __iter__(self):
         return iter(self.items())
@@ -799,6 +799,10 @@ class TpWord(BaseSerializable):
         d["body"] = body
         return cls(**d)
 
+    @property
+    def body(self):
+        return self._body
+
     def replace_body(self, body):
         """Replace the current text block body with a new one.
 
@@ -843,7 +847,7 @@ class TpWord(BaseSerializable):
                     "Inserting scripts from LM versions which use link_name is not supported,"
                     " please file a bug report."
                 )
-        self.body = body
+        self._body = body
         for i, dec in enumerate(self.decorators):
             dec.count = decorator_counts[i]
         if self.conditions is not None:
@@ -866,19 +870,21 @@ class TpWord(BaseSerializable):
             strict (bool): If True, `BadLnsError` will be raised if ``lines`` contains lines
                 with blake2 digests which do not match the current TpWord block.
         """
+        new_body = self.body[:]
         if strict and lines != self.get_lines():
             raise BadLnsError("Replacement lines do not match this TpWord block.")
         # iterate in reverse so we can use slice assignment
         for line in reversed(lines):
             start = line.start
             # use style/cond/link/etc values for initial char
-            start_ch = self.body[start]
+            start_ch = new_body[start]
             new_line = []
             for ch in line.text:
                 new_ch = copy(start_ch)
                 new_ch.ch = ch
                 new_line.append(new_ch)
-            self.body[line.start : line.end] = new_line
+            new_body[line.start : line.end] = new_line
+        self.replace_body(new_body)
 
 
 class LNSDecompiler(object):
