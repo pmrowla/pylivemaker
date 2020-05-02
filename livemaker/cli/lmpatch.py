@@ -98,8 +98,6 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
                 else:
                     sys.exit("{} already exists".format(p))
 
-    lsb_path = PureWindowsPath(patched_lsb)
-
     if Path(patched_lsb).is_dir():
         if not recursive:
             sys.exit("Cannot patch directory ({}) without -r/--recursive mode".format(patched_lsb))
@@ -142,8 +140,8 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
                         if not lsb_path.exists():
                             lsb_path = None
                     else:
-                        lsb_path = PureWindowsPath(patched_lsb)
-                        if info.path != lsb_path:
+                        lsb_path = Path(patched_lsb)
+                        if info.path != PureWindowsPath(lsb_path):
                             lsb_path = None
 
                     if lsb_path:
