@@ -204,9 +204,8 @@ def dump(mode, encoding, output_file, input_file):
                     name = "{}-line{}.lns".format(lsb_path.stem, line)
                 print(name, file=outf)
                 print("------", file=outf)
-                dec = LNSDecompiler(text_only=True)
-                print(dec.decompile(scenario), file=outf)
-                print(file=outf)
+                for line in scenario.get_lines():
+                    print(line, file=outf)
         else:
             for c in lsb.commands:
                 if c.Mute:
