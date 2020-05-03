@@ -24,7 +24,6 @@ import os
 import re
 import _markupbase
 from bisect import bisect
-from copy import copy
 from hashlib import blake2b
 
 import construct
@@ -92,6 +91,15 @@ class AlignEnum(enum.IntEnum):
     CENTER = 3
     TOP = 4
     BOTTOM = 5
+
+
+class BreakType(enum.IntEnum):
+    """Break type."""
+
+    LINE = 0
+    PAGE = 1
+    PAUSE = 2
+    CLEAR = 3
 
 
 class TWdType(enum.IntEnum):
@@ -320,16 +328,17 @@ class TWdOpeReturn(BaseTWdGlyph):
     def __init__(self, break_type=0, **kwargs):
         super().__init__(**kwargs)
         self._keys.add("break_type")
-        self.break_type = break_type
+        self.break_type = int(break_type)
 
     def __str__(self):
-        if self.break_type == 0:
+        break_type = BreakType(self.break_type)
+        if break_type == BreakType.LINE:
             # new line
             tag = LNSTag.br
-        elif self.break_type == 1:
+        elif break_type == BreakType.PAGE:
             # new page
             tag = LNSTag.pg
-        elif self.break_type == 2:
+        elif break_type == BreakType.PAUSE:
             # TODO: verify this
             # pause for mouse click
             tag = LNSTag.ps
@@ -857,33 +866,38 @@ class TpWord(BaseSerializable):
             for i, link in enumerate(self.links):
                 link.count = link_counts[i]
 
-    def get_lines(self):
-        """Return :class:`LNSLines` for this TpWord block."""
-        return LNSLines.from_tpword(self)
+    def get_text_blocks(self):
+        """Return :class:`LNSText` blocks for this TpWord."""
+        return LNSText.from_tpword(self)
 
-    def replace_lines(self, lines, strict=True):
-        """Replace text lines for this block with the contents of ``lines``.
+    def replace_text_blocks(self, blocks, strict=True):
+        """Replace text blocks for this TpWord with the contents of ``blocks``.
 
         Args:
-            lines (:class:`LNSLines`): Replacement lines. ``lines`` should be an object
-                previously returned by `get_lines()` (but with modified text).
-            strict (bool): If True, `BadLnsError` will be raised if ``lines`` contains lines
-                with blake2 digests which do not match the current TpWord block.
+            blocks (:class:`LNSText`): Replacement blocks. ``blocks`` should be an object
+                previously returned by `get_text_blocks()` (but with modified text).
+            strict (bool): If True, `BadLnsError` will be raised if ``blocks`` contains blocks
+                with blake2 digests which do not match the current TpWord.
         """
         new_body = self.body[:]
-        if strict and lines != self.get_lines():
-            raise BadLnsError("Replacement lines do not match this TpWord block.")
+        if strict and blocks != self.get_text_blocks():
+            raise BadLnsError("Replacement blocks do not match this TpWord.")
         # iterate in reverse so we can use slice assignment
-        for line in reversed(lines):
-            start = line.start
+        for block in reversed(blocks):
+            start = block.start
             # use style/cond/link/etc values for initial char
             start_ch = new_body[start]
-            new_line = []
-            for ch in line.text:
-                new_ch = copy(start_ch)
-                new_ch.ch = ch
-                new_line.append(new_ch)
-            new_body[line.start : line.end] = new_line
+            d = {}
+            for attr in ("decorator", "text_speed", "link_name", "link", "condition"):
+                d[attr] = getattr(start_ch, attr, None)
+            new_block = []
+            for ch in block.text:
+                if ch == "\n":
+                    new_ch = TWdOpeReturn(**d)
+                else:
+                    new_ch = TWdChar(ch=ch, **d)
+                new_block.append(new_ch)
+            new_body[block.start : block.end] = new_block
         self.replace_body(new_body)
 
 
@@ -1537,8 +1551,8 @@ class LNSCompiler(_markupbase.ParserBase):
         return s
 
 
-class LNSTextLine:
-    """Contiguous text line in a TpWord block.
+class LNSTextBlock:
+    """Contiguous text block in a TpWord body.
 
     Args:
         text (str): line text string.
@@ -1546,14 +1560,18 @@ class LNSTextLine:
         end (int): TpWord body index of the first TWdGlyph following this line.
             If `end` is None, it will be set to ``start + len(text)``.
 
+    Text blocks are defined as continuous runs of `TWdChar` and `<BR>` line-breaks
+    (`TWdOpeReturn` with `break_type == BreakType.LINE`).
+
     When working with `LNSTextLine` objects, the ``text`` attribute can be manipulated freely.
     The read-only ``digest``, ``start`` and ``end`` attributes will always remain tied to the original
     TpWord body, to ensure that modified (i.e. translated) lines are inserted in the correct position,
-    even if the translated line differs in length from the original.
+    even if the translated line differs in length from the original. Newlines in ``text`` will
+    be converted to `<BR>` line-breaks when inserting a text block into a `TpWord` body.
 
     Note:
         Line equality (``__eq__``) is tested based on matching ``start``, ``end``, ``digest`` attributes.
-        To test string equality between lines, compare the ``text`` attributes.
+        To test string equality between, compare the ``text`` attributes.
     """
 
     def __init__(self, text, start, end=None):
@@ -1567,7 +1585,7 @@ class LNSTextLine:
             self._end = end
         if self._end <= start:
             raise ValueError("LNSTextLine end must be > start")
-        self._digest = self.blake2(text)
+        self._digest = self.blake2(self.text)
 
     @property
     def start(self):
@@ -1580,6 +1598,18 @@ class LNSTextLine:
     @property
     def digest(self):
         return self._digest
+
+    @property
+    def text(self):
+        return "\n".join(self._text)
+
+    @text.setter
+    def text(self, text):
+        self._text = text.splitlines()
+
+    @property
+    def lines(self):
+        return self._text
 
     def __hash__(self):
         return hash((self.start, self.end, self.digest))
@@ -1605,63 +1635,74 @@ class LNSTextLine:
         return hash_.hexdigest()
 
 
-class LNSLines:
-    """Convenience container for accessing text lines in a TpWord block."""
+class LNSText:
+    """Convenience container for accessing text blocks in a TpWord body."""
 
     def __init__(self, strict=True):
-        self._lines = []
+        self._blocks = []
         self.strict = strict
 
     def __len__(self):
-        return len(self._lines)
+        return len(self._blocks)
 
     def __iter__(self):
-        return iter(self._lines)
+        return iter(self._blocks)
 
     def __reversed__(self):
-        return reversed(self._lines)
+        return reversed(self._blocks)
 
     def __getitem__(self, key):
-        if not self._lines:
+        if not self._blocks:
             raise IndexError
         if key < 0:
-            key %= len(self._lines)
-        return self._lines[key]
+            key %= len(self._blocks)
+        return self._blocks[key]
 
     def __eq__(self, other):
         if len(self) != len(other):
             return False
-        for i, line in enumerate(self._lines):
+        for i, line in enumerate(self._blocks):
             if line != other[i]:
                 return False
         return True
 
     def add(self, line):
         """Add the specified line to this container."""
-        index = bisect(self._lines, line)
+        index = bisect(self._blocks, line)
         if self.strict:
             for i in (index, index + 1):
-                if i < len(self) and self._lines[i].overlaps(line):
+                if i < len(self) and self._blocks[i].overlaps(line):
                     raise BadLnsError("Invalid overlapping LNS lines")
-        self._lines.insert(index, line)
+        self._blocks.insert(index, line)
 
     @classmethod
     def from_tpword(cls, tpword):
-        """Return lines object for the specified TpWord block.
+        """Return blocks object for the specified TpWord block.
 
         Args:
             tpword (:class:`TpWord`): TpWord block to parse
         """
-        lines = LNSLines()
-        cur_line = []
+        blocks = LNSText()
+        cur_block = []
         start = 0
         for i, w in enumerate(tpword.body):
+            block_break = True
             if w.type == TWdType.TWdChar:
-                if not cur_line:
+                if not cur_block:
                     start = i
-                cur_line.append(str(w.ch))
-            elif cur_line:
-                text = "".join(cur_line)
-                cur_line.clear()
-                lines.add(LNSTextLine(text, start))
-        return lines
+                cur_block.append(str(w.ch))
+                block_break = False
+            elif w.type == TWdType.TWdOpeReturn:
+                if cur_block and w.break_type == BreakType.LINE:
+                    cur_block.append("\n")
+                    block_break = False
+
+            if block_break:
+                if cur_block:
+                    # certain games (AGLS) use repeated blank lines to manually
+                    # create blank message box screens, we can strip them here
+                    # (they will still be preserved in-game)
+                    text = "".join(cur_block).rstrip("\n")
+                    blocks.add(LNSTextBlock(text, start))
+                cur_block.clear()
+        return blocks
