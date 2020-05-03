@@ -44,6 +44,7 @@ setup(
         "console_scripts": [
             "lmar=livemaker.cli:lmar",
             "lmgraph=livemaker.cli:lmgraph",
+            "lmlpb=livemaker.cli:lmlpb",
             "lmlsb=livemaker.cli:lmlsb",
             "lmpatch=livemaker.cli:lmpatch",
             "galconvert=livemaker.cli:galconvert",

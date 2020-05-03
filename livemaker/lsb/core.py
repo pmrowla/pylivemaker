@@ -485,7 +485,7 @@ class Param(BaseSerializable):
             / construct.Switch(
                 construct.this.type,
                 {
-                    "Int": construct.Int32ul,
+                    "Int": construct.Int32sl,
                     "Float": construct.ExprAdapter(
                         construct.Bytes(10),
                         lambda obj, ctx: numpy.frombuffer(obj.rjust(16, b"\x00"), dtype=numpy.longdouble),

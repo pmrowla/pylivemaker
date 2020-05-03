@@ -22,7 +22,8 @@
 from .cli import galconvert
 from .lmar import lmar
 from .lmgraph import lmgraph
+from .lmlpb import lmlpb
 from .lmlsb import lmlsb
 from .lmpatch import lmpatch
 
-__all__ = ["galconvert", "lmar", "lmgraph", "lmlsb", "lmpatch"]
+__all__ = ["galconvert", "lmar", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
