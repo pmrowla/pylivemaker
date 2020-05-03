@@ -42,9 +42,7 @@ def lmlpb():
 @lmlpb.command()
 @click.argument("input_file", metavar="file", required=True, type=click.Path(exists=True, dir_okay=False))
 def probe(input_file):
-    """Output information about the specified LPB file in human-readable form.
-
-    """
+    """Output information about the specified LPB file in human-readable form."""
     print(input_file)
     with open(input_file, "rb") as f:
         try:
@@ -65,8 +63,8 @@ def probe(input_file):
 EDITABLE_STRINGS = {
     "project_name": "Project Name",
     "project_dir": "Project Directory",
-    "init_lsb": "Initial LSB",
-    "exit_lsb": "Exit LSB",
+    "init_lsb": "Initial LSB (run at startup)",
+    "exit_lsb": "Exit LSB (run at exit)",
 }
 
 
@@ -77,7 +75,7 @@ def edit(lpb_file):
 
     Only specific settings can be edited.
 
-    The original LSB file will be backed up to <lpb_file>.bak
+    The original LPB file will be backed up to <lpb_file>.bak
 
     Note: Setting empty fields to improper data types may cause
     undefined behavior in the LiveMaker engine. When editing a field,

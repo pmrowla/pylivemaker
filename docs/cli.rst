@@ -131,6 +131,67 @@ scenario flowchart. The output graph will include menu choice/route branch condi
       --version  Show the version and exit.
       --help     Show this message and exit.
 
+lmlpb
+-----
+
+Use ``lmlpb`` to work with LPB (LiveMaker project settings) files. ::
+
+    $ lmlpb --help
+    Usage: lmlpb [OPTIONS] COMMAND [ARGS]...
+
+      Command-line tool for manipulating LPB project settings.
+
+    Options:
+      --version  Show the version and exit.
+      --help     Show this message and exit.
+
+    Commands:
+      edit   Edit the specified LPB file.
+      probe  Output information about the specified LPB file in human-readable...
+
+probe
+^^^^^
+
+Output general information about an LPB file. ::
+
+    Usage: lmlpb probe [OPTIONS] file
+
+      Output information about the specified LPB file in human-readable form.
+
+    Options:
+      --help  Show this message and exit.
+
+edit
+^^^^
+
+Edit project settings within an LPB file.
+
+``lmlpb edit`` provides an interactive prompt that can be used to modify project settings in an LPB file.
+
+For users generating translation patches, this command may be useful for modifying the application name, certain message prompts, and the default text display and audio settings.
+
+.. warning:: This command should only be used by advanced users.
+    Do not edit an LPB setting unless you are absolutely sure of what that setting does.
+    Improper use of this command may cause undefined behavior (or a complete crash) in the LiveMaker engine during runtime.
+
+::
+
+    $ lmlpb edit --help
+    Usage: lmlpb edit [OPTIONS] LPB_FILE
+
+      Edit the specified LPB file.
+
+      Only specific settings can be edited.
+
+      The original LPB file will be backed up to <lpb_file>.bak
+
+      Note: Setting empty fields to improper data types may cause undefined
+      behavior in the LiveMaker engine. When editing a field, the data type of
+      the new value is assumed to be the same as the original data type.
+
+    Options:
+      --help  Show this message and exit.
+
 lmlsb
 -----
 
