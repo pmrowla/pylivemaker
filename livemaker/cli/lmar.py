@@ -132,7 +132,7 @@ def strip(input_file, output_file):
                 path = Path(output_file)
                 if path.exists():
                     print("{} already exists and will be overwritten.".format(path))
-                with open("output_file", "wb") as f:
+                with open(output_file, "wb") as f:
                     f.write(lm.read_exe())
             else:
                 print("The specified file is not a LiveMaker executable.")
