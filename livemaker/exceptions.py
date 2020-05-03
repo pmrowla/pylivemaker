@@ -22,13 +22,9 @@
 class LiveMakerException(Exception):
     """Base pylivemaker exception."""
 
-    pass
-
 
 class BadLiveMakerArchive(LiveMakerException):
     """Error raised for bad/invalid archive files."""
-
-    pass
 
 
 class UnsupportedLiveMakerVersion(LiveMakerException):
@@ -42,10 +38,10 @@ class UnsupportedLiveMakerCompression(LiveMakerException):
 class BadLsbError(LiveMakerException):
     """Error raised for bad/invalid LSB script files."""
 
-    pass
+
+class BadLpbError(LiveMakerException):
+    """Error raised for bad/invalid LPB project settings files."""
 
 
 class BadLnsError(LiveMakerException):
     """Error raised for bad/invalid LNS novel scripts."""
-
-    pass

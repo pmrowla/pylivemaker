@@ -47,7 +47,7 @@ DEFAULT_LSB_VERSION = 117
 MAX_LSB_VERSION = 117
 
 
-class _LsbVersionValidator(construct.Validator):
+class LsbVersionValidator(construct.Validator):
     """Construct validator for supported compiled LSB versions."""
 
     def _validate(self, obj, ctx, path):
@@ -57,6 +57,14 @@ class _LsbVersionValidator(construct.Validator):
         if not self._validate(obj, ctx, path):
             raise construct.ValidationError("Unsupported LSB version: {}".format(obj))
         return obj
+
+
+def lsb_to_lm_ver(version):
+    if version < MIN_LSB_VERSION:
+        raise BadLsbError("Unknown LSB version: {}".format(version))
+    elif version < 117:
+        return 2
+    return 3
 
 
 class _ParamStreamAdapter(construct.Adapter):
@@ -175,11 +183,7 @@ class LMScript(BaseSerializable):
     @property
     def lm_version(self):
         """Return LiveMaker app version based on an LSB version."""
-        if self.version < MIN_LSB_VERSION:
-            raise BadLsbError("Unknown LSB version: {}".format(self.version))
-        elif self.version < 117:
-            return 2
-        return 3
+        return lsb_to_lm_ver(self.version)
 
     def to_lsc(self):
         """Return this script in the tex .lsc format."""
@@ -245,7 +249,7 @@ class LMScript(BaseSerializable):
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            "version" / _LsbVersionValidator(construct.Int32ul),
+            "version" / LsbVersionValidator(construct.Int32ul),
             "flags" / construct.Byte,
             "command_count" / construct.Int32ul,
             "param_stream_size" / construct.Int32ul,
