@@ -2,6 +2,26 @@
 History
 =======
 
+0.3.2 (2020-05-04)
+------------------
+
+This will be the final release before v1.0.0 (which will break backwards compatibility with this release).
+
+* Added `extractcsv` command for extracting scenario text to a CSV file
+* Added `insertcsv` command for replacing scenario text from a CSV file
+* Added `lmlpb` CLI tool for manipulating LPB project settings files.
+
+Known issues:
+
+* `extractmenu` and `insertmenu` commands only support using system locale/encoding when reading and writing CSV files.
+
+Deprecated:
+
+* Python 3.5 support.
+  Future releases of pylivemaker will require Python 3.6 and later.
+* Existing CSV CLI tool is deprecated.
+  Future releases of pylivemaker will use a different CSV format which will not be compatible with CSV files generated in this release.
+
 0.3.0 (2020-04-30)
 ------------------
 
