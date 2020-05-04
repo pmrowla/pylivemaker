@@ -35,6 +35,8 @@ To try and patch something:
     $ cp orig_scripts/*.lns translated_scripts
     <run your favorite text editor on whatever script you want to translate>
 
+.. note:: If you do not need access LiveNovel script tags for your game, you can also work with script text lines using the ``lmlsb extractcsv`` and ``lmlsb insertcsv`` commands (instead of ``lmlsb extract`` and ``lmlsb insert`` in steps 3 and 4).
+
 5. Patch the new script back into the lsb. ::
 
     $ lmlsb insert 00000001.lsb scripts_dir/<translated_script>.lns 1234

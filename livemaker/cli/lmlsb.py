@@ -23,6 +23,7 @@ import hashlib
 import shutil
 import sys
 import csv
+from collections import defaultdict
 from pathlib import Path
 
 import click
@@ -204,9 +205,9 @@ def dump(mode, encoding, output_file, input_file):
                     name = "{}-line{}.lns".format(lsb_path.stem, line)
                 print(name, file=outf)
                 print("------", file=outf)
-                dec = LNSDecompiler(text_only=True)
-                print(dec.decompile(scenario), file=outf)
-                print(file=outf)
+                for block in scenario.get_text_blocks():
+                    for line in block.lines:
+                        print(line, file=outf)
         else:
             for c in lsb.commands:
                 if c.Mute:
@@ -1159,3 +1160,190 @@ def scan_menus(lsb, csv_data, file_name, extract=False, patch=False):
         c = None
 
     return patched
+
+
+@lmlsb.command()
+@click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay="False"))
+@click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
+@click.option(
+    "-m", "--mode", type=click.Choice(["blocks", "lines"]), default="blocks", help="Output mode (defaults to blocks)"
+)
+@click.option(
+    "-e",
+    "--encoding",
+    type=click.Choice(["cp932", "utf-8", "utf-8-sig"]),
+    default="utf-8",
+    help="Output text encoding (defaults to utf-8).",
+)
+@click.option("--overwrite", is_flag=True, default=False, help="Overwrite existing csv file.")
+@click.option("--append", is_flag=True, default=False, help="Append text data to existing csv file.")
+def extractcsv(lsb_file, csv_file, mode, encoding, overwrite, append):
+    """Extract text from the given LSB file to a CSV file.
+
+    If --mode is set to "blocks", CSV will contain one row per text block, and newlines in text block will
+    be treated as <BR> line breaks.
+    If --mode is set to "lines", CSV will contain one row per text line, and line breaks cannot be added or removed.
+    (Defaults to "blocks" mode)
+
+    You can open this CSV file for translation in most spreadsheet programs (Excel, Open/Libre Office Calc, etc).
+    Just remember to choose comma as delimiter and " as quotechar.
+
+    NOTE: If you are using Excel and UTF-8 text, you must also specify --encoding=utf-8-sig, since Excel requires
+    UTF-8 with BOM to handle UTF-8 properly.
+
+    You can use the --append option to add the text data from this lsb file to a existing csv.
+    With the --overwrite option an existing csv will be overwritten without warning.
+
+    NOTE: Formatting tags will be lost when using this command in conjunction with insertcsv.
+    For translating games which use formatting tags, you may need to work directly with LNS scripts
+    using the extract and insert/batchinsert commands.
+    """
+    lsb_file = Path(lsb_file)
+    print("Extracting {} ...".format(lsb_file))
+
+    with open(lsb_file, "rb") as f:
+        data = f.read()
+    try:
+        lsb = LMScript.from_lsb(data)
+    except BadLsbError as e:
+        sys.exit("Failed to parse file: {}".format(e))
+
+    csv_data = []
+    for lsb_line, name, scenario in lsb.text_scenarios():
+        if name:
+            name = "{}-{}".format(lsb_file.stem, name)
+        if not name:
+            name = "{}-line{}".format(lsb_file.stem, lsb_line)
+        for i, block in enumerate(scenario.get_text_blocks()):
+            if mode == "blocks":
+                csv_data.append([str(lsb_file), name, i, block.text, None])
+            else:
+                for line in block.lines:
+                    csv_data.append([str(lsb_file), name, i, line, None])
+
+    if len(csv_data) == 0:
+        sys.exit("No text data found.")
+
+    if Path(csv_file).exists():
+        if not overwrite and not append:
+            sys.exit("File {} already exists. Please use --overwrite or --append option.".format(csv_file))
+    elif append:
+        print("File {} does not exist, but --append specified. A new file will be created.".format(csv_file))
+        append = False
+
+    with open(csv_file, ("a" if append else "w"), newline="\n", encoding=encoding) as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        if not append:
+            csv_writer.writerow(["Filename", "Scenario name", "Block index", "Original entry", "Translated entry"])
+        for row in csv_data:
+            csv_writer.writerow(row)
+
+    print("{} Text {} extracted.".format(len(csv_data), mode))
+
+
+def _patch_csv_text(lsb, lsb_file, csv_data, mode="blocks"):
+    """Patch text lines in the given lsb file using csv_data."""
+    lsb_scenarios = {}
+    for lsb_line, name, scenario in lsb.text_scenarios():
+        if name:
+            name = "{}-{}".format(lsb_file.stem, name)
+        if not name:
+            name = "{}-line{}".format(lsb_file.stem, lsb_line)
+        lsb_scenarios[name] = scenario
+
+    translated = {}
+    # parse csv for blocks we care about
+    csv_blocks = defaultdict(list)
+    for csv_lsb_file, csv_name, block_index, orig_text, translated_text in csv_data:
+        if csv_lsb_file == str(lsb_file) and csv_name in lsb_scenarios:
+            if translated_text:
+                print('Will translate "{}" to "{}" for {}'.format(orig_text, translated_text, csv_name))
+                text = translated_text
+                translated[csv_name] = True
+            else:
+                print('Untranslated text "{}" for {}, using original text!'.format(orig_text, csv_name))
+                text = orig_text
+            csv_blocks[(csv_name, int(block_index))].append(text)
+
+    # update translated scenarios
+    for name, scenario in lsb_scenarios.items():
+        if name not in translated:
+            continue
+
+        blocks = scenario.get_text_blocks()
+        for i, block in enumerate(blocks):
+            new_blocks = csv_blocks[(name, i)]
+            if not new_blocks:
+                # ignore missing scenario blocks
+                continue
+            if mode == "blocks":
+                if len(new_blocks) > 1:
+                    raise LiveMakerException(
+                        "Invalid blocks mode CSV: multiple entries for scenario '{}' block {}".format(name, i)
+                    )
+                block.text = new_blocks[0]
+            else:
+                if len(block.lines) != len(new_blocks):
+                    raise LiveMakerException(
+                        "Invalid lines mode CSV: line count does not match original line count for "
+                        "scenario '{}' block {}".format(name, i)
+                    )
+                block.text = "\n".join(new_blocks)
+        scenario.replace_text_blocks(blocks)
+    return bool(translated)
+
+
+@lmlsb.command()
+@click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay="False"))
+@click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
+@click.option(
+    "-m", "--mode", type=click.Choice(["blocks", "lines"]), default="blocks", help="Output mode (defaults to blocks)"
+)
+@click.option(
+    "-e",
+    "--encoding",
+    type=click.Choice(["cp932", "utf-8", "utf-8-sig"]),
+    default="utf-8",
+    help="Output text encoding (defaults to utf-8).",
+)
+@click.option("--no-backup", is_flag=True, default=False, help="Do not generate backup of original lsb file.")
+def insertcsv(lsb_file, csv_file, mode, encoding, no_backup):
+    """Apply translated text lines from the given CSV file to given LSB file.
+
+    CSV_FILE should be a file previously created by the extractcsv command, with added translations.
+    --encoding and --mode options must match the values were used for extractcsv.
+
+    The original LSB file will be backed up to <lsb_file>.bak unless the --no-backup option is specified.
+    """
+    lsb_file = Path(lsb_file)
+    print("Patching {} ...".format(lsb_file))
+
+    with open(lsb_file, "rb") as f:
+        data = f.read()
+    try:
+        lsb = LMScript.from_lsb(data)
+    except BadLsbError as e:
+        sys.exit("Failed to parse file: {}".format(e))
+
+    csv_data = []
+
+    with open(csv_file, newline="\n", encoding=encoding) as csvfile:
+        csv_reader = csv.reader(csvfile, delimiter=",", quotechar='"')
+        for row in csv_reader:
+            csv_data.append(row)
+
+    patched = _patch_csv_text(lsb, lsb_file, csv_data, mode=mode)
+
+    if not patched:
+        sys.exit("No text lines patched, so not need to change LSB file.")
+
+    if not no_backup:
+        print("Backing up original LSB.")
+        shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+    try:
+        new_lsb_data = lsb.to_lsb()
+        with open(lsb_file, "wb") as f:
+            f.write(new_lsb_data)
+        print("Wrote new LSB.")
+    except LiveMakerException as e:
+        sys.exit("Could not generate new LSB file: {}".format(e))

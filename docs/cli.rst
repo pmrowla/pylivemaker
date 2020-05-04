@@ -380,6 +380,59 @@ Users generating translation patches may be more interested in ``batchinsert``. 
                                     file(s).
       --help                        Show this message and exit.
 
+extractcsv
+^^^^^^^^^^
+
+Extract LiveNovel scenario text lines from an LSB file to a CSV file.
+
+.. note:: Only text lines are extracted, so some formatting information may be lost.
+   For translating games which make heavy use of formatting tags, you may need to consider using
+   ``lmlsb extract`` and ``lmlsb insert`` to translate fully decompiled scripts instead of using
+   the CSV commands.
+
+::
+
+    lmlsb extractcsv --help
+    Usage: lmlsb extractcsv [OPTIONS] LSB_FILE CSV_FILE
+
+      Extract text lines from the given LSB file to a CSV file.
+
+      You can open this csv file for translation in most table calc programs
+      (Excel, open/libre office calc, ...). Just remember to choose comma as
+      delimiter and " as quotechar.
+
+      You can use the --append option to add the text data from this lsb file to
+      a existing csv. With the --overwrite option an existing csv will be
+      overwritten without warning.
+
+      NOTE: Formatting tags will be lost when using this command in conjunction
+      with insertcsv. For translating games which use formatting tags, you may
+      need to work directly with LNS scripts using the extract and
+      insert/batchinsert commands.
+
+    Options:
+      --overwrite  Overwrite existing csv file.
+      --append     Append text data to existing csv file.
+      --help       Show this message and exit.
+
+insertcsv
+^^^^^^^^^
+
+Insert (translated) LiveNovel scenario text lines from a CSV file into an LSB file. ::
+
+    lmlsb insertcsv --help
+    Usage: lmlsb insertcsv [OPTIONS] LSB_FILE CSV_FILE
+
+      Apply translated text lines from the given CSV file to given LSB file.
+
+      CSV_FILE should be a file previously created by the extractcsv command,
+      with added translations. The original LSB file will be backed up to
+      <lsb_file>.bak unless the --no-backup option is specified.
+
+    Options:
+      --no-backup  Do not generate backup of original lsb file.
+      --help       Show this message and exit.
+
 probe
 ^^^^^
 
