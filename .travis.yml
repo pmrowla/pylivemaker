@@ -13,14 +13,15 @@ matrix:
     name: Lint
     env: LINT="true"
 
-  - python: '3.5'
-    name: 3.5 Xenial
   - python: '3.6'
     name: 3.6 Xenial
   - python: '3.7'
     name: 3.7 Xenial
   - python: '3.8'
     name: 3.8 Xenial
+
+  - python: 'pypy3'
+    name: 3.x PyPy
 
   - name: 3.8 Windows
     os: windows

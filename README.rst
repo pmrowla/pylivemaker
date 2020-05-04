@@ -22,7 +22,7 @@ should also work for other LiveMaker games.
 
 Based on tinfoil's irl_.
 
-Requires Python 3 (3.5 and later).
+Requires Python 3 (3.6 and later).
 
 
 * Free software: GNU General Public License v3

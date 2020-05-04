@@ -35,9 +35,9 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     description="Python package for manipulating LiveMaker game resources.",
     entry_points={
@@ -61,6 +61,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/pmrowla/pylivemaker",
-    version="0.3.2",
+    version="1.0.0-dev",
     zip_safe=False,
 )
