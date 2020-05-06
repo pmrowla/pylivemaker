@@ -398,6 +398,25 @@ class TWdOpeEvent(BaseTWdGlyph):
             return "{{{0}{1}}}".format(e, args)
         return LNSTag.open(LNSTag.event, {"VALUE": "\\r\\n".join([e] + args)})
 
+    @property
+    def _parts(self):
+        return self.event.split("\r\n")
+
+    @property
+    def name(self):
+        name = self._parts[0]
+        if self.is_system(name):
+            return name[1:]
+        return name
+
+    @property
+    def args(self):
+        return self.parts[1:]
+
+    @staticmethod
+    def is_system(name):
+        return name.startswith("\x01")
+
 
 class TWdOpeVar(BaseTWdGlyph):
     """Insert the value of the specified variable.
@@ -1559,6 +1578,7 @@ class LNSTextBlock:
         start (int): TpWord body index of the first TWdChar in this line
         end (int): TpWord body index of the first TWdGlyph following this line.
             If `end` is None, it will be set to ``start + len(text)``.
+        name_label (str): associated namelabel event (speaker name).
 
     Text blocks are defined as continuous runs of `TWdChar` and `<BR>` line-breaks
     (`TWdOpeReturn` with `break_type == BreakType.LINE`).
@@ -1574,7 +1594,7 @@ class LNSTextBlock:
         To test string equality between, compare the ``text`` attributes.
     """
 
-    def __init__(self, text, start, end=None):
+    def __init__(self, text, start, end=None, name_label=None):
         self.text = text
         self._start = start
         if self._start < 0:
@@ -1586,6 +1606,7 @@ class LNSTextBlock:
         if self._end <= start:
             raise ValueError("LNSTextLine end must be > start")
         self._digest = self.text_digest(self.text)
+        self.name_label = name_label
 
     @property
     def start(self):
@@ -1684,6 +1705,7 @@ class LNSText:
         """
         blocks = LNSText()
         cur_block = []
+        cur_name = None
         start = 0
         for i, w in enumerate(tpword.body):
             block_break = True
@@ -1696,6 +1718,12 @@ class LNSText:
                 if cur_block and w.break_type == BreakType.LINE:
                     cur_block.append("\n")
                     block_break = False
+            elif w.type == TWdType.TWdOpeEvent:
+                if w.event.name == "NAMELABEL":
+                    if w.event.is_system:
+                        cur_name = None
+                    else:
+                        cur_name = w.event.args[0]
 
             if block_break:
                 if cur_block:
@@ -1703,6 +1731,6 @@ class LNSText:
                     # create blank message box screens, we can strip them here
                     # (they will still be preserved in-game)
                     text = "".join(cur_block).rstrip("\n")
-                    blocks.add(LNSTextBlock(text, start))
+                    blocks.add(LNSTextBlock(text, start, name_label=cur_name))
                 cur_block.clear()
         return blocks
