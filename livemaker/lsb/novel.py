@@ -24,7 +24,7 @@ import os
 import re
 import _markupbase
 from bisect import bisect
-from hashlib import sha256
+from hashlib import blake2b
 
 import construct
 
@@ -877,7 +877,7 @@ class TpWord(BaseSerializable):
             blocks (:class:`LNSText`): Replacement blocks. ``blocks`` should be an object
                 previously returned by `get_text_blocks()` (but with modified text).
             strict (bool): If True, `BadLnsError` will be raised if ``blocks`` contains blocks
-                with SHA256 digests which do not match the current TpWord.
+                with Blake2 digests which do not match the current TpWord.
         """
         new_body = self.body[:]
         if strict and blocks != self.get_text_blocks():
@@ -1630,9 +1630,9 @@ class LNSTextBlock:
 
     @staticmethod
     def text_digest(text):
-        hash_ = sha256()
+        hash_ = blake2b(digest_size=8)
         hash_.update(text.encode("utf-8"))
-        return hash_.hexdigest()[16]
+        return hash_.hexdigest()
 
 
 class LNSText:
