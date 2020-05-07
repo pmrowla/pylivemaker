@@ -24,7 +24,6 @@ import os
 import re
 import _markupbase
 from bisect import bisect
-from hashlib import sha256
 
 import construct
 
@@ -32,6 +31,7 @@ from lxml import etree
 
 from .core import BaseSerializable, LiveParser
 from ..exceptions import BadLnsError
+from .translate import BaseTranslatable
 
 
 log = logging.getLogger(__name__)
@@ -397,6 +397,25 @@ class TWdOpeEvent(BaseTWdGlyph):
                 args = ""
             return "{{{0}{1}}}".format(e, args)
         return LNSTag.open(LNSTag.event, {"VALUE": "\\r\\n".join([e] + args)})
+
+    @property
+    def _parts(self):
+        return self.event.split("\r\n")
+
+    @property
+    def name(self):
+        name = self._parts[0]
+        if self.is_system(name):
+            return name[1:]
+        return name
+
+    @property
+    def args(self):
+        return self.parts[1:]
+
+    @staticmethod
+    def is_system(name):
+        return name.startswith("\x01")
 
 
 class TWdOpeVar(BaseTWdGlyph):
@@ -877,7 +896,7 @@ class TpWord(BaseSerializable):
             blocks (:class:`LNSText`): Replacement blocks. ``blocks`` should be an object
                 previously returned by `get_text_blocks()` (but with modified text).
             strict (bool): If True, `BadLnsError` will be raised if ``blocks`` contains blocks
-                with SHA256 digests which do not match the current TpWord.
+                with Blake2 digests which do not match the current TpWord.
         """
         new_body = self.body[:]
         if strict and blocks != self.get_text_blocks():
@@ -1551,7 +1570,7 @@ class LNSCompiler(_markupbase.ParserBase):
         return s
 
 
-class LNSTextBlock:
+class LNSTextBlock(BaseTranslatable):
     """Contiguous text block in a TpWord body.
 
     Args:
@@ -1559,6 +1578,7 @@ class LNSTextBlock:
         start (int): TpWord body index of the first TWdChar in this line
         end (int): TpWord body index of the first TWdGlyph following this line.
             If `end` is None, it will be set to ``start + len(text)``.
+        name_label (str): associated namelabel event (speaker name).
 
     Text blocks are defined as continuous runs of `TWdChar` and `<BR>` line-breaks
     (`TWdOpeReturn` with `break_type == BreakType.LINE`).
@@ -1574,8 +1594,9 @@ class LNSTextBlock:
         To test string equality between, compare the ``text`` attributes.
     """
 
-    def __init__(self, text, start, end=None):
-        self.text = text
+    def __init__(self, text, start, end=None, name_label=None):
+        super().__init__(text)
+        self.name_label = name_label
         self._start = start
         if self._start < 0:
             raise ValueError("LNSTextLine start must be >= 0")
@@ -1585,7 +1606,6 @@ class LNSTextBlock:
             self._end = end
         if self._end <= start:
             raise ValueError("LNSTextLine end must be > start")
-        self._digest = self.text_digest(self.text)
 
     @property
     def start(self):
@@ -1595,27 +1615,8 @@ class LNSTextBlock:
     def end(self):
         return self._end
 
-    @property
-    def digest(self):
-        return self._digest
-
-    @property
-    def text(self):
-        return "\n".join(self._text)
-
-    @text.setter
-    def text(self, text):
-        self._text = text.splitlines()
-
-    @property
-    def lines(self):
-        return self._text
-
     def __hash__(self):
         return hash((self.start, self.end, self.digest))
-
-    def __eq__(self, other):
-        return hash(self) == hash(other)
 
     def __lt__(self, other):
         return self.start < other.start and self.end < other.end
@@ -1624,15 +1625,6 @@ class LNSTextBlock:
         return (self.start >= other.start and self.start < other.end) or (
             self.end > other.start and self.end <= other.end
         )
-
-    def __str__(self):
-        return str(self.text)
-
-    @staticmethod
-    def text_digest(text):
-        hash_ = sha256()
-        hash_.update(text.encode("utf-8"))
-        return hash_.hexdigest()[16]
 
 
 class LNSText:
@@ -1684,6 +1676,7 @@ class LNSText:
         """
         blocks = LNSText()
         cur_block = []
+        cur_name = None
         start = 0
         for i, w in enumerate(tpword.body):
             block_break = True
@@ -1696,6 +1689,12 @@ class LNSText:
                 if cur_block and w.break_type == BreakType.LINE:
                     cur_block.append("\n")
                     block_break = False
+            elif w.type == TWdType.TWdOpeEvent:
+                if w.name == "NAMELABEL":
+                    if w.is_system:
+                        cur_name = None
+                    else:
+                        cur_name = w.args[0]
 
             if block_break:
                 if cur_block:
@@ -1703,6 +1702,6 @@ class LNSText:
                     # create blank message box screens, we can strip them here
                     # (they will still be preserved in-game)
                     text = "".join(cur_block).rstrip("\n")
-                    blocks.add(LNSTextBlock(text, start))
+                    blocks.add(LNSTextBlock(text, start, name_label=cur_name))
                 cur_block.clear()
         return blocks

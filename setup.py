@@ -14,6 +14,7 @@ with open("HISTORY.rst") as history_file:
 requirements = [
     "Click>=6.0",
     "construct>=2.9,<2.10",
+    "funcy>=1.4",
     "lxml>=4.3",
     "numpy>=1.16",
     "Pillow>=6.2.1",
@@ -21,10 +22,10 @@ requirements = [
 ]
 
 setup_requirements = [
-    "pytest-runner",
+    "pytest-runner>=5.2",
 ]
 
-test_requirements = ["pytest", "pytest-datadir"]
+test_requirements = ["pytest>=5.4.1", "pytest-datadir>=1.3.1"]
 
 setup(
     author="Peter Rowlands",

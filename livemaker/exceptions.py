@@ -45,3 +45,7 @@ class BadLpbError(LiveMakerException):
 
 class BadLnsError(LiveMakerException):
     """Error raised for bad/invalid LNS novel scripts."""
+
+
+class BadTextIdentifierError(LiveMakerException):
+    """Error raised for bad/invalid translatable text IDs."""

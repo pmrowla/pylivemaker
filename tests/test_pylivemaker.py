@@ -57,3 +57,46 @@ def test_validate(shared_datadir):
     # LM3 00000001.lsb (from LiveNovel tutorial game)
     result = runner.invoke(cli.lmlsb, ["validate", str(shared_datadir / "00000001.lsb")])
     assert result.exit_code == 0
+
+
+def test_extractcsv(shared_datadir, tmp_path):
+    """Test lmlsb extractcsv."""
+    runner = CliRunner()
+    csv_file = tmp_path / "test.csv"
+
+    expected = """
+ID,Label,Context,Original text,Translated text
+pylm:text:00000001.lsb:8:0,00000003,,"Hello world!
+Page break",
+pylm:text:00000001.lsb:8:1,00000003,,Wait for click,
+pylm:text:00000001.lsb:8:2,00000003,,After wait,
+pylm:text:00000001.lsb:8:3,00000003,,Text speed fast,
+pylm:text:00000001.lsb:8:4,00000003,,Text speed slow,
+pylm:text:00000001.lsb:8:5,00000003,,Text speed normal,
+""".strip()
+
+    result = runner.invoke(cli.lmlsb, ["extractcsv", str(shared_datadir / "00000001.lsb"), str(csv_file)])
+    assert result.exit_code == 0
+
+    with open(csv_file, encoding="utf-8") as f:
+        assert f.read().splitlines() == expected.splitlines()
+
+
+def test_insertcsv(shared_datadir, tmp_path):
+    """Test lmlsb extractcsv."""
+    runner = CliRunner()
+    csv_file = tmp_path / "test.csv"
+
+    lines = """
+ID,Label,Context,Original text,Translated text
+pylm:text:00000001.lsb:8:0,00000003,,"Hello world!","Goodbye world!"
+pylm:text:00000001.lsb:8:1,00000003,,Wait for click,
+""".strip()
+
+    with open(csv_file, "w", encoding="utf-8") as f:
+        f.write(lines)
+
+    result = runner.invoke(cli.lmlsb, ["insertcsv", str(shared_datadir / "00000001.lsb"), str(csv_file)])
+    assert result.exit_code == 0
+    assert "Translated 1 lines" in result.output
+    assert "Ignored 1 untranslated lines" in result.output

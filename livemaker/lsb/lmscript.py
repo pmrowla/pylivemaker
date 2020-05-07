@@ -27,6 +27,8 @@ Attributes:
 
 import logging
 import math
+import os
+from collections import defaultdict, deque
 from io import IOBase
 
 import construct
@@ -35,7 +37,8 @@ from lxml import etree
 
 from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
-from ..exceptions import BadLsbError
+from .translate import TextBlockIdentifier
+from ..exceptions import BadLsbError, BadTextIdentifierError
 
 
 log = logging.getLogger(__name__)
@@ -261,10 +264,14 @@ class LMScript(BaseSerializable):
         )
 
     @classmethod
-    def from_struct(cls, struct):
+    def from_struct(cls, struct, **kwargs):
         """Create an LMScript from the specified struct."""
         lm = LMScript(
-            version=struct.version, flags=struct.flags, command_params=struct.command_params, commands=struct.commands,
+            version=struct.version,
+            flags=struct.flags,
+            command_params=struct.command_params,
+            commands=struct.commands,
+            **kwargs,
         )
         lm._parsed_from = "lsb"
         return lm
@@ -301,7 +308,7 @@ class LMScript(BaseSerializable):
         return root
 
     @classmethod
-    def from_xml(cls, root):
+    def from_xml(cls, root, **kwargs):
         """Create an LMScript from the specified XML element.
 
         Args:
@@ -346,7 +353,7 @@ class LMScript(BaseSerializable):
             #     pass
         # lm = cls(version=version, param_type=param_type, flags=flags, call_name=call_name,
         #          novel_params=novel_params, command_params=command_params, commands=commands)
-        lm = cls(version=version)
+        lm = cls(version=version, **kwargs)
         lm._parsed_from = "lsc-xml"
         return lm
 
@@ -365,17 +372,18 @@ class LMScript(BaseSerializable):
             infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
+        name = os.path.basename(infile.name)
         if data.startswith(b"LiveMaker"):
-            return cls.from_lsc(infile.read().decode("cp932"))
+            return cls.from_lsc(infile.read().decode("cp932"), call_name=name)
         elif data.startswith(b"<?xml"):
-            return cls.from_xml(etree.parse(infile))
+            return cls.from_xml(etree.parse(infile), call_name=name)
         try:
-            return cls.from_struct(cls._struct().parse_stream(infile))
+            return cls.from_struct(cls._struct().parse_stream(infile), call_name=name)
         except construct.ConstructError as e:
             raise BadLsbError(e)
 
     @classmethod
-    def from_lsb(cls, data):
+    def from_lsb(cls, data, **kwargs):
         """Parse the specified compiled .lsb data into an LMScript.
 
         Args:
@@ -386,19 +394,92 @@ class LMScript(BaseSerializable):
 
         """
         try:
-            return cls.from_struct(cls._struct().parse(data))
+            return cls.from_struct(cls._struct().parse(data), **kwargs)
         except construct.ConstructError as e:
             raise BadLsbError(e)
 
-    def text_scenarios(self):
+    def walk(self, unreachable=False):
+        """Iterate over LSB commands in approximate execution order.
+
+        All conditional branches will be followed (positive condition
+        will be evaluated first), but external jumps and calls will not be
+        followed.
+
+        Args:
+            unused (bool): If True, unreachable commands will be included.
+
+        Yields:
+            3-tuple in the form ``(index, command, last_calc)``
+        """
+        if not self.call_name:
+            raise NotImplementedError("lsb walk requires call_name be set")
+
+        cmds_to_visit = deque([(0, None)])
+        remaining_cmds = set(range(1, len(self.commands)))
+
+        while cmds_to_visit:
+            pc, last_calc = cmds_to_visit.popleft()
+            cmd = self.commands[pc]
+
+            yield pc, cmd, last_calc
+
+            if cmd.type == CommandType.Jump:
+                ref = cmd.get("Page")
+                calc = str(cmd.get("Calc"))
+
+                if ref.Page == self.call_name:
+                    if calc != "0":
+                        # branch taken
+                        if calc == "1":
+                            calc = last_calc
+                        next_pc = ref.Label
+                        if next_pc in remaining_cmds:
+                            remaining_cmds.remove(next_pc)
+                            cmds_to_visit.append((next_pc, calc))
+                    else:
+                        # branch not taken
+                        next_pc = pc + 1
+                        if next_pc in remaining_cmds:
+                            remaining_cmds.remove(next_pc)
+                            cmds_to_visit.append((next_pc, last_calc))
+            elif cmd.type not in (CommandType.Exit, CommandType.Terminate, CommandType.PCReset):
+                next_pc = pc + 1
+                if next_pc in remaining_cmds:
+                    remaining_cmds.remove(next_pc)
+                    cmds_to_visit.append((next_pc, last_calc))
+
+        if unreachable and remaining_cmds:
+            log.info(f"file contains {len(remaining_cmds)} unreachable commands")
+            for pc in remaining_cmds:
+                yield pc, self.commands[pc], None
+
+    def text_scenarios(self, run_order=True):
         """Return a list of LiveNovel text scenarios contained in this script.
+
+        Args:
+            run_order (bool): If True, scenarios will be returned in
+                approximately the order they would be run in-game (via
+                `walk()`. If False, text blocks will be returned in the
+                order they occur in the LSB file.
 
         Returns:
             tuple(int, str, :class:`TpWord`): (line_num, name, scenario)
 
         """
+        if run_order:
+            gen = self.walk(unreachable=True)
+        else:
+            gen = enumerate(self.commands)
+
         scenarios = []
-        for i, cmd in enumerate(self.commands):
+        while True:
+            try:
+                if run_order:
+                    i, cmd, _ = next(gen)
+                else:
+                    i, cmd = next(gen)
+            except StopIteration:
+                return scenarios
             if cmd.type == CommandType.TextIns:
                 # TextIns command should always occur in sequence:
                 #   Label <scenario_name>
@@ -408,3 +489,67 @@ class LMScript(BaseSerializable):
                 scenario = cmd.get("Text")
                 scenarios.append((cmd.LineNo, name, scenario))
         return scenarios
+
+    def get_text_blocks(self, run_order=False):
+        """Return LiveNovel scenario text blocks contained in this script.
+
+        Args:
+            run_order (bool): If True, text blocks will be returned in
+                approximately the order they would be run in-game (via
+                `walk()`. If False, text blocks will be returned in the
+                order they occur in the LSB file.
+
+        Returns:
+            list of (identifier, block) tuples
+
+        """
+        blocks = []
+        for line_no, name, scenario in self.text_scenarios(run_order=run_order):
+            for i, block in enumerate(scenario.get_text_blocks()):
+                id_ = TextBlockIdentifier(self.call_name, line_no, name=name, block_index=i)
+                blocks.append((id_, block))
+        return blocks
+
+    def replace_text(self, text_objects):
+        """Replace the specified translatable text objects in this LSB.
+
+        Args:
+            text_objects: Iterable containing (identifier, text) tuples
+
+        """
+        new_objs = {
+            "text": [],
+        }
+
+        for id_, text in text_objects:
+            if id_.type in new_objs:
+                new_objs[id_.type].append((id_, text))
+            else:
+                raise BadTextIdentifierError(f"Unsupported text type '{id_}'")
+
+        if new_objs["text"]:
+            self.replace_text_blocks(new_objs["text"])
+
+    def replace_text_blocks(self, text_objects):
+        """Replace the specified LiveNovel scenario text blocks in this LSB.
+
+        Args:
+            text_objects: Iterable containing (identifier, text) tuples
+
+        """
+        replacement_blocks = defaultdict(list)
+        for id_, text in text_objects:
+            if id_.type == "text" and id_.filename == self.call_name:
+                replacement_blocks[id_.line_no].append((id_, text))
+
+        for line_no in replacement_blocks:
+            cmd = self.commands[line_no]
+            if cmd.type != CommandType.TextIns:
+                raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not TextIns")
+            scenario = cmd.get("Text")
+            tmp_blocks = scenario.get_text_blocks()
+            for id_, text in replacement_blocks[line_no]:
+                block = tmp_blocks[id_.block_index]
+                block.text = text
+                log.info(f"Translated '{block.orig_text}' -> '{block.text}'")
+            scenario.replace_text_blocks(tmp_blocks)
