@@ -27,6 +27,7 @@ Attributes:
 
 import logging
 import math
+import os
 from collections import defaultdict, deque
 from io import IOBase
 
@@ -371,7 +372,7 @@ class LMScript(BaseSerializable):
             infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
-        name = infile.name
+        name = os.path.basename(infile.name)
         if data.startswith(b"LiveMaker"):
             return cls.from_lsc(infile.read().decode("cp932"), call_name=name)
         elif data.startswith(b"<?xml"):

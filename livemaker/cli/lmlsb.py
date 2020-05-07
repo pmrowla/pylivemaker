@@ -1217,7 +1217,7 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
         for row in csv_data:
             csv_writer.writerow(row)
 
-    print("{} Text {} extracted.".format(len(csv_data)))
+    print(f"Extracted {len(csv_data)} text blocks.")
 
 
 def _patch_csv_text(lsb, lsb_file, csv_data, verbose=False):
@@ -1234,7 +1234,7 @@ def _patch_csv_text(lsb, lsb_file, csv_data, verbose=False):
                 print(f"Ignoring invalid text ID: {e}")
             continue
 
-        if id_.filename == str(lsb_file):
+        if id_.filename == lsb_file.name:
             if translated_text:
                 if verbose:
                     print(f"{id_}: '{orig_text}' -> '{translated_text}'")
