@@ -36,7 +36,8 @@ from lxml import etree
 
 from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
-from ..exceptions import BadLsbError
+from .translate import TextBlockIdentifier
+from ..exceptions import BadLsbError, BadTextIdentifierError
 
 
 log = logging.getLogger(__name__)
@@ -487,3 +488,67 @@ class LMScript(BaseSerializable):
                 scenario = cmd.get("Text")
                 scenarios.append((cmd.LineNo, name, scenario))
         return scenarios
+
+    def get_text_blocks(self, run_order=False):
+        """Return LiveNovel scenario text blocks contained in this script.
+
+        Args:
+            run_order (bool): If True, text blocks will be returned in
+                approximately the order they would be run in-game (via
+                `walk()`. If False, text blocks will be returned in the
+                order they occur in the LSB file.
+
+        Returns:
+            list of (identifier, block) tuples
+
+        """
+        blocks = []
+        for line_no, name, scenario in self.text_scenarios(run_order=run_order):
+            for i, block in enumerate(scenario.get_text_blocks()):
+                id_ = TextBlockIdentifier(self.call_name, line_no, name=name, block_index=i)
+                blocks.append((id_, block))
+        return blocks
+
+    def replace_text(self, text_objects):
+        """Replace the specified translatable text objects in this LSB.
+
+        Args:
+            text_objects: Iterable containing (identifier, text) tuples
+
+        """
+        new_objs = {
+            "text": [],
+        }
+
+        for id_, text in text_objects:
+            if id_.type in new_objs:
+                new_objs[id_.type].append((id_, text))
+            else:
+                raise BadTextIdentifierError(f"Unsupported text type '{id_}'")
+
+        if new_objs["text"]:
+            self.replace_text_blocks(new_objs["text"])
+
+    def replace_text_blocks(self, text_objects):
+        """Replace the specified LiveNovel scenario text blocks in this LSB.
+
+        Args:
+            text_objects: Iterable containing (identifier, text) tuples
+
+        """
+        replacement_blocks = defaultdict(list)
+        for id_, text in text_objects:
+            if id_.type == "text" and id_.filename == self.call_name:
+                replacement_blocks[id_.line_no].append((id_, text))
+
+        for line_no in replacement_blocks:
+            cmd = self.commands[line_no]
+            if cmd.type != CommandType.TextIns:
+                raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not TextIns")
+            scenario = cmd.get("Text")
+            tmp_blocks = scenario.get_text_blocks()
+            for id_, text in replacement_blocks[line_no]:
+                block = tmp_blocks[id_.block_index]
+                block.text = text
+                log.info(f"Translated '{block.orig_text}' -> '{block.text}'")
+            scenario.replace_text_blocks(tmp_blocks)

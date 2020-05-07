@@ -24,7 +24,6 @@ import os
 import re
 import _markupbase
 from bisect import bisect
-from hashlib import blake2b
 
 import construct
 
@@ -32,6 +31,7 @@ from lxml import etree
 
 from .core import BaseSerializable, LiveParser
 from ..exceptions import BadLnsError
+from .translate import BaseTranslatable
 
 
 log = logging.getLogger(__name__)
@@ -1570,7 +1570,7 @@ class LNSCompiler(_markupbase.ParserBase):
         return s
 
 
-class LNSTextBlock:
+class LNSTextBlock(BaseTranslatable):
     """Contiguous text block in a TpWord body.
 
     Args:
@@ -1595,7 +1595,8 @@ class LNSTextBlock:
     """
 
     def __init__(self, text, start, end=None, name_label=None):
-        self.text = text
+        super().__init__(text)
+        self.name_label = name_label
         self._start = start
         if self._start < 0:
             raise ValueError("LNSTextLine start must be >= 0")
@@ -1605,8 +1606,6 @@ class LNSTextBlock:
             self._end = end
         if self._end <= start:
             raise ValueError("LNSTextLine end must be > start")
-        self._digest = self.text_digest(self.text)
-        self.name_label = name_label
 
     @property
     def start(self):
@@ -1616,27 +1615,8 @@ class LNSTextBlock:
     def end(self):
         return self._end
 
-    @property
-    def digest(self):
-        return self._digest
-
-    @property
-    def text(self):
-        return "\n".join(self._text)
-
-    @text.setter
-    def text(self, text):
-        self._text = text.splitlines()
-
-    @property
-    def lines(self):
-        return self._text
-
     def __hash__(self):
         return hash((self.start, self.end, self.digest))
-
-    def __eq__(self, other):
-        return hash(self) == hash(other)
 
     def __lt__(self, other):
         return self.start < other.start and self.end < other.end
@@ -1645,15 +1625,6 @@ class LNSTextBlock:
         return (self.start >= other.start and self.start < other.end) or (
             self.end > other.start and self.end <= other.end
         )
-
-    def __str__(self):
-        return str(self.text)
-
-    @staticmethod
-    def text_digest(text):
-        hash_ = blake2b(digest_size=8)
-        hash_.update(text.encode("utf-8"))
-        return hash_.hexdigest()
 
 
 class LNSText:
@@ -1719,11 +1690,11 @@ class LNSText:
                     cur_block.append("\n")
                     block_break = False
             elif w.type == TWdType.TWdOpeEvent:
-                if w.event.name == "NAMELABEL":
-                    if w.event.is_system:
+                if w.name == "NAMELABEL":
+                    if w.is_system:
                         cur_name = None
                     else:
-                        cur_name = w.event.args[0]
+                        cur_name = w.args[0]
 
             if block_break:
                 if cur_block:
