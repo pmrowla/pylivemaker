@@ -135,7 +135,7 @@ def validate(input_file):
             print("  SHA256 digest validation passed")
         if orig != reassembled:
             print("  SHA256 digest validation failed")
-        for line, name, scenario in lsb.text_scenarios():
+        for line, name, scenario in lsb.text_scenarios(run_order=False):
             print("  {}".format(name))
             orig_bytes = scenario._struct().build(scenario)
             dec = LNSDecompiler()
