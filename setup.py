@@ -22,10 +22,10 @@ requirements = [
 ]
 
 setup_requirements = [
-    "pytest-runner",
+    "pytest-runner>=5.2",
 ]
 
-test_requirements = ["pytest", "pytest-datadir"]
+test_requirements = ["pytest>=5.4.1", "pytest-datadir>=1.3.1"]
 
 setup(
     author="Peter Rowlands",
