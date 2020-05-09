@@ -1,4 +1,4 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -16,7 +16,6 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
-# -*- coding: utf-8 -*-
 """LiveMaker LSB script CLI tool."""
 
 import hashlib
@@ -33,8 +32,9 @@ from lxml import etree
 from livemaker.lsb import LMScript
 from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
+from livemaker.lsb.menu import LPMSelectionChoice
 from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
-from livemaker.lsb.translate import make_identifier
+from livemaker.lsb.translate import make_identifier, TextBlockIdentifier, TextMenuIdentifier
 from livemaker.exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
 from .cli import _version, __version__
@@ -906,17 +906,34 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
         sys.exit("Could not generate new LSB file: {}".format(e))
 
 
+CSV_HEADER = ["ID", "Label", "Context", "Original text", "Translated text"]
+
+
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay="False"))
 @click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
+@click.option(
+    "-e",
+    "--encoding",
+    type=click.Choice(["cp932", "utf-8", "utf-8-sig"]),
+    default="utf-8",
+    help="Output text encoding (defaults to utf-8).",
+)
+@click.option("--lpm", is_flag=True, default=False, help="Include LPM (image) based menus in the extracted output.")
 @click.option("--overwrite", is_flag=True, default=False, help="Overwrite existing csv file.")
 @click.option("--append", is_flag=True, default=False, help="Append menu data to existing csv file.")
-def extractmenu(lsb_file, csv_file, overwrite, append):
-    """Extract menu texts from the given lsb file to a csv file.
-    You can open this csv file for translation in most table calc programs (Execl, open/libe office calc, ...).
-    Just remember to chose comma as delimiter and " as quotechar.
-    You can use the --append option to add the menu data from this lsb file to a existing csv.
+def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
+    """Extract menu choices from the given LSB file to a CSV file.
+
+    You can open this CSV file for translation in most spreadsheet programs (Excel, Open/Libre Office Calc, etc).
+    Just remember to choose comma as delimiter and " as quotechar.
+
+    NOTE: If you are using Excel and UTF-8 text, you must also specify --encoding=utf-8-sig, since Excel requires
+    UTF-8 with BOM to handle UTF-8 properly.
+
+    You can use the --append option to add the text data from this lsb file to a existing csv.
     With the --overwrite option an existing csv will be overwritten without warning.
+
     """
     print("Extracting {} ...".format(lsb_file))
 
@@ -927,7 +944,21 @@ def extractmenu(lsb_file, csv_file, overwrite, append):
         sys.exit("Failed to parse file: {}".format(e))
 
     csv_data = []
-    scan_menus(lsb, csv_data, lsb_file, extract=True)
+    names = set()
+    for id_, choice in lsb.get_menu_choices():
+        if isinstance(choice, LPMSelectionChoice):
+            if not lpm:
+                continue
+            text = f"{choice.name} (Image: {choice.src_file})"
+        else:
+            text = choice.text
+        name = id_.name
+        if name in names:
+            name = ""
+        else:
+            names.add(name)
+        context = [f"Target: {choice.target}"]
+        csv_data.append([str(id_), name, "\n".join(context), text, None])
 
     if len(csv_data) == 0:
         sys.exit("No menu data found.")
@@ -939,10 +970,10 @@ def extractmenu(lsb_file, csv_file, overwrite, append):
         print("File {} does not exist, but --append specified. A new file will be created.".format(csv_file))
         append = False
 
-    with open(csv_file, ("a" if append else "w"), newline="\n") as csvfile:
+    with open(csv_file, ("a" if append else "w"), encoding=encoding, newline="\n") as csvfile:
         csv_writer = csv.writer(csvfile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
         if not append:
-            csv_writer.writerow(["Filename", "AddArray line", "Jump line", "Original entry", "Translated entry"])
+            csv_writer.writerow(CSV_HEADER)
         for row in csv_data:
             csv_writer.writerow(row)
 
@@ -952,14 +983,26 @@ def extractmenu(lsb_file, csv_file, overwrite, append):
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay="False"))
 @click.argument("csv_file", required=True, type=click.Path(exists=False, dir_okay="False"))
+@click.option(
+    "-e",
+    "--encoding",
+    type=click.Choice(["cp932", "utf-8", "utf-8-sig"]),
+    default="utf-8",
+    help="Output text encoding (defaults to utf-8).",
+)
 @click.option("--no-backup", is_flag=True, default=False, help="Do not generate backup of original lsb file.")
-def insertmenu(lsb_file, csv_file, no_backup):
-    """Apply translated menu texts from the given csv file on a given lsb file.
-    The csv file have to be created by the extractmenu function and translations have to be added.
+@click.option("-v", "--verbose", is_flag=True, default=False)
+def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
+    """Apply translated menu choices from the given CSV file to given LSB file.
 
-    The original LSB file will be backed up to <lsb_file>.bak unless the
-    --no-backup option is specified.
+    CSV_FILE should be a file previously created by the extractmenu command, with added translations.
+    --encoding option must match the values were used for extractmenu.
+
+    LPM image menus cannot be edited, to translate LPM menus, replace the relevant GAL image files.
+
+    The original LSB file will be backed up to <lsb_file>.bak unless the --no-backup option is specified.
     """
+    lsb_file = Path(lsb_file)
     print("Patching {} ...".format(lsb_file))
 
     try:
@@ -970,15 +1013,17 @@ def insertmenu(lsb_file, csv_file, no_backup):
 
     csv_data = []
 
-    with open(csv_file, newline="\n") as csvfile:
+    with open(csv_file, newline="\n", encoding=encoding) as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=",", quotechar='"')
         for row in csv_reader:
             csv_data.append(row)
 
-    patched = scan_menus(lsb, csv_data, lsb_file, patch=True)
+    translated, untranslated = _patch_csv_menus(lsb, lsb_file, csv_data, verbose)
 
-    if not patched:
-        sys.exit("No menu patched, so not need to change LSB file.")
+    print(f"  Translated {translated} choices")
+    print(f"  Ignored {untranslated} untranslated choices")
+    if not translated:
+        return
 
     if not no_backup:
         print("Backing up original LSB.")
@@ -992,171 +1037,36 @@ def insertmenu(lsb_file, csv_file, no_backup):
         sys.exit("Could not generate new LSB file: {}".format(e))
 
 
-def scan_menus(lsb, csv_data, file_name, extract=False, patch=False):
-    """Scan given lsb object for menu code, extract or patch menu enties
-    lsb: the lsb object loaded by LMScript.from_lsb
-    csv_data: translation data from the csv file
-    file_name: name of the lsb file
-    extract: true if you want to extract menu items
-    patch: true if you want to patch translated menu items
-    """
-    patched = False
-    cmdi = iter(lsb.commands)
-    try:
-        while True:
+def _patch_csv_menus(lsb, lsb_file, csv_data, verbose=False):
+    """Patch text menus in lsb using csv_data."""
+    text_objects = []
+    untranslated = 0
 
-            menuitems = []
+    for row, (id_str, name, context, orig_text, translated_text) in enumerate(csv_data):
+        try:
+            id_ = make_identifier(id_str)
+        except BadTextIdentifierError as e:
+            if row > 0:
+                # ignore possible header row
+                print(f"Ignoring invalid text ID: {e}")
+            continue
 
-            # scan for start
-            # check for "VarNew _tmp ParamType.Str  2"
-            c = next(cmdi)
-            if c.type != CommandType.VarNew or c.args["Name"] != "_tmp" or c.args["Type"] != ParamType.Str:
-                continue
-            # check for "VarNew _tmpno ParamType.Int  2"
-            c = next(cmdi)
-            if c.type != CommandType.VarNew or c.args["Name"] != "_tmpno" or c.args["Type"] != ParamType.Int:
-                continue
-            # check for "VarNew _tmpid ParamType.Str  2"
-            c = next(cmdi)
-            if c.type != CommandType.VarNew or c.args["Name"] != "_tmpid" or c.args["Type"] != ParamType.Str:
-                continue
+        if not isinstance(id_, TextMenuIdentifier):
+            continue
 
-            # scan max 100 lines for menu text entries
-            for i in range(100):
+        if id_.filename == lsb_file.name:
+            if translated_text:
+                if verbose:
+                    print(f"{id_}: '{orig_text}' -> '{translated_text}'")
+                text_objects.append((id_, translated_text))
+            else:
+                if verbose:
+                    print(f"{id_} Ignoring untranslated text '{orig_text}'")
+                untranslated += 1
 
-                # check for "Calc AddArray(_tmp, ......)"
-                c = next(cmdi)
-                if c.type == CommandType.Calc:
-                    if len(c.args["Calc"].entries) != 3:
-                        continue
-                    a = c.args["Calc"].entries[1]
-                    if (
-                        a.type != OpeDataType.Func
-                        or a.name != "____1"
-                        or a.func != OpeFuncType.AddArray
-                        or len(a.operands) != 2
-                    ):
-                        continue
-                    b = a.operands[0]
-                    if b.type != ParamType.Var or b.value != "_tmp":
-                        continue
-                    b = a.operands[1]
-                    if b.type != ParamType.Var or b.value != "____0":
-                        continue
-                    a = c.args["Calc"].entries[2]
-                    if a.type != OpeDataType.To or a.name != "____arg" or a.func is not None or len(a.operands) != 1:
-                        continue
-                    b = a.operands[0]
-                    if b.type != ParamType.Var or b.value != "____1":
-                        continue
-                    a = c.args["Calc"].entries[0]
-                    if a.type != OpeDataType.To or a.name != "____0" or a.func is not None or len(a.operands) != 1:
-                        continue
-                    b = a.operands[0]
-                    if b.type != ParamType.Str:
-                        continue
+    lsb.replace_text(text_objects)
 
-                    # here we are sure we found a "Calc AddArray(_tmp, ......)"!
-                    menuitems.append([c, b, None, None])
-
-                # stop scanning on first "VarDel" command
-                if c.type == CommandType.VarDel:
-                    break
-
-            # check for "VarDel _tmp"
-            if c.type != CommandType.VarDel or c.args["Name"] != "_tmp":
-                continue
-            # check for "VarDel _tmpno"
-            c = next(cmdi)
-            if c.type != CommandType.VarDel or c.args["Name"] != "_tmpno":
-                continue
-            # check for "VarDel _tmpid"
-            c = next(cmdi)
-            if c.type != CommandType.VarDel or c.args["Name"] != "_tmpid":
-                continue
-
-            # scan for conditional jump operations
-            count = 1  # we start at 1 because one menu entry always have no conditional jump
-            while True:
-                c = next(cmdi)
-                # stop scanning on everything else than jump operations
-                if c.type != CommandType.Jump or c.args["Calc"] is None:
-                    break
-
-                # simple jump indicates end of jump table
-                if len(c.args["Calc"].entries) == 1:
-                    a = c.args["Calc"].entries[0]
-                    if len(a.operands) == 1 and a.operands[0].type == ParamType.Flag and a.operands[0].value == 1:
-                        break
-
-                # verify "Jump xxxxxxxxx.lsb:yyy 選択値 == ......"
-                if len(c.args["Calc"].entries) != 3:
-                    continue
-                a = c.args["Calc"].entries[1]
-                if len(a.operands) != 2:
-                    continue
-                b = a.operands[0]
-                if b.type != ParamType.Var or b.value != "選択値":
-                    continue
-                b = a.operands[1]
-                if b.type != ParamType.Var or b.value != "____0":
-                    continue
-                a = c.args["Calc"].entries[2]
-                if len(a.operands) != 1:
-                    continue
-                b = a.operands[0]
-                if b.type != ParamType.Var or b.value != "____2":
-                    continue
-                a = c.args["Calc"].entries[0]
-                if len(a.operands) != 1:
-                    continue
-                b = a.operands[0]
-                if b.type != ParamType.Str:
-                    continue
-
-                # now we are sure this is the right jump operation.
-                # lets check if the argument match one menu text entry
-                for item in menuitems:
-                    if b.value == item[1].value:
-                        # match! store the argument object
-                        item[2] = c
-                        item[3] = b
-                        count = count + 1
-
-            # we have now filled menuitems with all entries of the current menu
-            # if count does not match the menu text count, we have missed one jump.
-            if count != len(menuitems):
-                continue
-
-            # lets add this menu to the csv dataset
-            if extract:
-                for a in menuitems:
-                    csv_data.append([file_name, a[0].LineNo, None if a[2] is None else a[2].LineNo, a[1].value, None])
-
-            # lets patch this menu item
-            if patch:
-                for a in menuitems:
-                    for b in csv_data:
-                        if b[0] == file_name and b[1] == str(a[0].LineNo):
-                            if b[4] == "":
-                                print(
-                                    'Untranslated menu item "{}" at line {}! Not patched!'.format(
-                                        a[1].value, a[0].LineNo
-                                    )
-                                )
-                                continue
-                            print('Patched "{}" to "{}" at line {}'.format(a[1].value, b[4], a[0].LineNo))
-                            a[1].value = b[4]
-                            if a[2] is not None and a[3] is not None:
-                                print('Patched "{}" to "{}" at line {}'.format(a[3].value, b[4], a[2].LineNo))
-                                a[3].value = b[4]
-                            patched = True
-                            break
-
-    except StopIteration:
-        c = None
-
-    return patched
+    return len(text_objects), untranslated
 
 
 @lmlsb.command()
@@ -1213,7 +1123,7 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
     with open(csv_file, ("a" if append else "w"), newline="\n", encoding=encoding) as csvfile:
         csv_writer = csv.writer(csvfile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
         if not append:
-            csv_writer.writerow(["ID", "Label", "Context", "Original text", "Translated text"])
+            csv_writer.writerow(CSV_HEADER)
         for row in csv_data:
             csv_writer.writerow(row)
 
@@ -1234,6 +1144,9 @@ def _patch_csv_text(lsb, lsb_file, csv_data, verbose=False):
                 print(f"Ignoring invalid text ID: {e}")
             continue
 
+        if not isinstance(id_, TextBlockIdentifier):
+            continue
+
         if id_.filename == lsb_file.name:
             if translated_text:
                 if verbose:
@@ -1244,7 +1157,7 @@ def _patch_csv_text(lsb, lsb_file, csv_data, verbose=False):
                     print(f"{id_} Ignoring untranslated text '{orig_text}'")
                 untranslated += 1
 
-        lsb.replace_text(text_objects)
+    lsb.replace_text(text_objects)
 
     return len(text_objects), untranslated
 
