@@ -41,7 +41,7 @@ from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
 from .menu import BaseSelectionMenu, make_menu, MENU_IDENTIFIERS
 from .translate import TextBlockIdentifier
-from ..exceptions import BadLsbError, BadTextIdentifierError, InvalidCharError, LiveMakerException
+from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
 
 # Known LSB format versions
@@ -587,8 +587,8 @@ class LMScript(BaseSerializable):
                     block.text = text
                     logger.info(f"Translated block {id_}: '{block.orig_text}' -> '{block.text}'")
                     translated += 1
-                except InvalidCharError as e:
-                    logger.warning(f"Could not translate block {id_}: {e}")
+                except LiveMakerException as e:
+                    logger.warning(f"Failed to translate text block <{id_}> {e}")
                     failed += 1
             scenario.replace_text_blocks(tmp_blocks)
         return translated, failed
@@ -677,7 +677,7 @@ class LMScript(BaseSerializable):
                     logger.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
                     translated += 1
                 except LiveMakerException as e:
-                    logger.warning(f"Failed to translate menu choice {id_}: {e}")
+                    logger.warning(f"Failed to translate menu choice <{id_}> {e}")
                     failed += 1
             menu.save_choices()
         return translated, failed
