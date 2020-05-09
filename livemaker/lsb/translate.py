@@ -23,7 +23,7 @@ from hashlib import blake2b
 
 from funcy import cached_property
 
-from ..exceptions import BadTextIdentifierError
+from ..exceptions import BadTextIdentifierError, InvalidCharError
 
 
 class BaseTranslatable(ABC):
@@ -43,6 +43,11 @@ class BaseTranslatable(ABC):
 
     @text.setter
     def text(self, text):
+        for ch in text:
+            try:
+                ch.encode("cp932")
+            except UnicodeEncodeError:
+                raise InvalidCharError(ch)
         self._text = text.splitlines()
 
     @cached_property

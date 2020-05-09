@@ -47,5 +47,12 @@ class BadLnsError(LiveMakerException):
     """Error raised for bad/invalid LNS novel scripts."""
 
 
+class InvalidCharError(BadLnsError):
+    def __init__(self, ch, encoding="cp932"):
+        self.ch = ch
+        self.encoding = encoding
+        super().__init__(f"'{ch}' is not a valid {encoding.upper()} character.")
+
+
 class BadTextIdentifierError(LiveMakerException):
     """Error raised for bad/invalid translatable text IDs."""

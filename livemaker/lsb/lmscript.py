@@ -41,7 +41,7 @@ from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
 from .menu import BaseSelectionMenu, make_menu, MENU_IDENTIFIERS
 from .translate import TextBlockIdentifier
-from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
+from ..exceptions import BadLsbError, BadTextIdentifierError, InvalidCharError, LiveMakerException
 
 
 # Known LSB format versions
@@ -575,8 +575,11 @@ class LMScript(BaseSerializable):
             tmp_blocks = scenario.get_text_blocks()
             for id_, text in replacement_blocks[line_no]:
                 block = tmp_blocks[id_.block_index]
-                block.text = text
-                logger.info(f"Translated '{block.orig_text}' -> '{block.text}'")
+                try:
+                    block.text = text
+                    logger.info(f"Translated block {id_}: '{block.orig_text}' -> '{block.text}'")
+                except InvalidCharError as e:
+                    logger.warn(f"Could not translate block {id_}: {e}")
             scenario.replace_text_blocks(tmp_blocks)
 
     def get_menus(self, run_order=True):

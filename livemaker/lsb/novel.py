@@ -31,7 +31,7 @@ from loguru import logger
 from lxml import etree
 
 from .core import BaseSerializable, LiveParser
-from ..exceptions import BadLnsError
+from ..exceptions import BadLnsError, InvalidCharError
 from .translate import BaseTranslatable
 
 
@@ -253,7 +253,7 @@ class TWdChar(BaseTWdReal):
         try:
             ch.encode("cp932")
         except UnicodeEncodeError:
-            raise BadLnsError("'{}' is not a valid CP932 character".format(ch))
+            raise InvalidCharError(ch)
         self._keys.update(("ch", "decorator"))
         self.ch = ch
         self.decorator = decorator
