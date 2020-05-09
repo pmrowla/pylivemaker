@@ -205,7 +205,7 @@ def dump(mode, encoding, output_file, input_file):
                 print(name, file=outf)
                 print("------", file=outf)
                 for block in scenario.get_text_blocks():
-                    for line in block.lines:
+                    for line in block.text.splitlines():
                         print(line, file=outf)
         else:
             for c in lsb.commands:
