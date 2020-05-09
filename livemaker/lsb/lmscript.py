@@ -540,6 +540,7 @@ class LMScript(BaseSerializable):
             "text": [],
             "menu-text": [],
         }
+        translated, failed = 0, 0
 
         for id_, text in text_objects:
             if id_.type in new_objs:
@@ -548,9 +549,15 @@ class LMScript(BaseSerializable):
                 raise BadTextIdentifierError(f"Unsupported text type '{id_}'")
 
         if new_objs["text"]:
-            self.replace_text_blocks(new_objs["text"])
+            t, f = self.replace_text_blocks(new_objs["text"])
+            translated += t
+            failed += f
         elif new_objs["menu-text"]:
-            self.replace_menu_choices(new_objs["menu-text"])
+            t, f = self.replace_menu_choices(new_objs["menu-text"])
+            translated += t
+            failed += f
+
+        return translated, failed
 
     def replace_text_blocks(self, text_objects):
         """Replace the specified LiveNovel scenario text blocks in this LSB.
@@ -559,6 +566,7 @@ class LMScript(BaseSerializable):
             text_objects: Iterable containing (identifier, text) tuples
 
         """
+        translated, failed = 0, 0
         replacement_blocks = defaultdict(list)
         for id_, text in text_objects:
             if id_.type == "text" and id_.filename == self.call_name:
@@ -578,9 +586,12 @@ class LMScript(BaseSerializable):
                 try:
                     block.text = text
                     logger.info(f"Translated block {id_}: '{block.orig_text}' -> '{block.text}'")
+                    translated += 1
                 except InvalidCharError as e:
-                    logger.warn(f"Could not translate block {id_}: {e}")
+                    logger.warning(f"Could not translate block {id_}: {e}")
+                    failed += 1
             scenario.replace_text_blocks(tmp_blocks)
+        return translated, failed
 
     def get_menus(self, run_order=True):
         """Return a list of LiveNovel text selection menus contained in this script.
@@ -645,6 +656,7 @@ class LMScript(BaseSerializable):
             text_objects: Iterable containing (identifier, text) tuples
 
         """
+        translated, failed = 0, 0
         replacement_choices = defaultdict(list)
         for id_, text in text_objects:
             if id_.type == "menu-text" and id_.filename == self.call_name:
@@ -660,6 +672,12 @@ class LMScript(BaseSerializable):
                 orig_choice = menu.choices[id_.choice_index]
                 choice = copy(orig_choice)
                 choice.text = text
-                menu.replace_choice(choice, id_.choice_index)
-                logger.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
+                try:
+                    menu.replace_choice(choice, id_.choice_index)
+                    logger.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
+                    translated += 1
+                except LiveMakerException as e:
+                    logger.warning(f"Failed to translate menu choice {id_}: {e}")
+                    failed += 1
             menu.save_choices()
+        return translated, failed
