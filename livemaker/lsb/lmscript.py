@@ -29,6 +29,7 @@ import logging
 import math
 import os
 from collections import defaultdict, deque
+from copy import copy
 from io import IOBase
 
 import construct
@@ -37,7 +38,7 @@ from lxml import etree
 
 from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
-from .menu import BaseSelectionMenu, make_menu
+from .menu import BaseSelectionMenu, make_menu, MENU_IDENTIFIERS
 from .translate import TextBlockIdentifier
 from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
@@ -539,6 +540,7 @@ class LMScript(BaseSerializable):
         """
         new_objs = {
             "text": [],
+            "menu-text": [],
         }
 
         for id_, text in text_objects:
@@ -549,6 +551,8 @@ class LMScript(BaseSerializable):
 
         if new_objs["text"]:
             self.replace_text_blocks(new_objs["text"])
+        elif new_objs["menu-text"]:
+            self.replace_menu_choices(new_objs["menu-text"])
 
     def replace_text_blocks(self, text_objects):
         """Replace the specified LiveNovel scenario text blocks in this LSB.
@@ -587,7 +591,7 @@ class LMScript(BaseSerializable):
                 order they occur in the LSB file.
 
         Returns:
-            tuple(int, str, :class:`TpWord`): (line_num, name, menu)
+            tuple(int, :class:`BaseSelectionMenu`): (line_num, menu)
 
         """
         if run_order:
@@ -607,6 +611,54 @@ class LMScript(BaseSerializable):
             if BaseSelectionMenu.is_menu_start(cmd):
                 try:
                     menu = make_menu(self, i)
-                    menus.append(menu)
+                    menus.append((cmd.LineNo, menu))
                 except LiveMakerException:
                     pass
+
+    def get_menu_choices(self, run_order=True):
+        """Return selection menu choices contained in this script.
+
+        Args:
+            run_order (bool): If True, menus will be returned in
+                approximately the order they would be run in-game (via
+                `walk()`. If False, menus will be returned in the
+                order they occur in the LSB file.
+
+        Returns:
+            list of (identifier, choice) tuples
+
+        """
+        choices = []
+        for line_no, menu in self.get_menus(run_order):
+            name = menu.label.get("Name", "")
+            for i, choice in enumerate(menu.choices):
+                id_cls = MENU_IDENTIFIERS[type(menu)]
+                id_ = id_cls(self.call_name, line_no, name=name, choice_index=i)
+                choices.append((id_, choice))
+        return choices
+
+    def replace_menu_choices(self, text_objects):
+        """Replace the specified text selection menu choices in this LSB.
+
+        Args:
+            text_objects: Iterable containing (identifier, text) tuples
+
+        """
+        replacement_choices = defaultdict(list)
+        for id_, text in text_objects:
+            if id_.type == "menu-text" and id_.filename == self.call_name:
+                replacement_choices[id_.line_no].append((id_, text))
+
+        for line_no in replacement_choices:
+            try:
+                menu = make_menu(self, line_no)
+            except LiveMakerException:
+                raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not start of a menu")
+
+            for id_, text in replacement_choices[line_no]:
+                orig_choice = menu.choices[id_.choice_index]
+                choice = copy(orig_choice)
+                choice.text = text
+                menu.replace_choice(choice, id_.choice_index)
+                log.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
+            menu.save_choices()

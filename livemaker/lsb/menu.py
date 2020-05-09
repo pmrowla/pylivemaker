@@ -22,6 +22,8 @@ import re
 from pathlib import PurePath, PureWindowsPath
 
 from .command import CommandType
+from .core import OpeDataType, ParamType
+from .translate import BaseTranslatable, LPMMenuIdentifier, TextMenuIdentifier
 from ..exceptions import LiveMakerException
 from ..lpm import LMLivePrevMenu
 
@@ -34,11 +36,12 @@ class BaseSelectionMenu:
     """Base selection menu class."""
 
     CHOICE_RE = re.compile(r"^AddArray\(_tmp, \"(?P<text>.*)\"\)$")
-    SELECT_RE = re.compile(r"選択値 == \"(?P<text>.*)\"")
+    INT_JUMP_RE = re.compile(r"選択値 == \"(?P<text>.*)\"")
     END_SELECTION_CALCS = ["選択実行中 = 0"]
     EXECUTE_LSB = None
 
-    def __init__(self, label=None, choices=[]):
+    def __init__(self, lsb, choices=[], label=None):
+        self.lsb = lsb
         self.label = label
         self._choices = []
         for choice in choices:
@@ -97,6 +100,33 @@ class BaseSelectionMenu:
         return None, index + 1
 
     @classmethod
+    def _patch_cmd(cls, cmd, re, text):
+        calc = cmd["Calc"]
+        if not re.match(str(calc)):
+            raise LiveMakerException
+        text_entry = calc.entries[0]
+        if text_entry.type != OpeDataType.To:
+            raise LiveMakerException
+        op = text_entry.operands[0]
+        if op.type != ParamType.Str:
+            raise LiveMakerException
+        if op.value != text:
+            op.value = text
+        return text
+
+    @classmethod
+    def _patch_choice_cmd(cls, cmd, text):
+        if cmd.type != CommandType.Calc:
+            raise LiveMakerException
+        return cls._patch_cmd(cmd, cls.CHOICE_RE, text)
+
+    @classmethod
+    def _patch_int_jump_cmd(cls, cmd, text):
+        if cmd.type != CommandType.Jump:
+            raise LiveMakerException
+        return cls._patch_cmd(cmd, cls.INT_JUMP_RE, text)
+
+    @classmethod
     def _choice_from_cmd(cls, cmd):
         # menu array populated with
         #   Calc AddArray(_tmp, "foo")
@@ -145,7 +175,7 @@ class BaseSelectionMenu:
             return None, None
         page = cmd["Page"]
         calc = cmd["Calc"]
-        m = cls.SELECT_RE.match(str(calc))
+        m = cls.INT_JUMP_RE.match(str(calc))
         if m:
             return m.group("text"), page
         return None, None
@@ -186,15 +216,15 @@ class BaseSelectionMenu:
                         break
                 else:
                     break
-        return resolved, index
+        return resolved
 
 
-class TextSelectionChoice:
-    def __init__(self, text, text_index, target, index):
-        self.text = text
+class TextSelectionChoice(BaseTranslatable):
+    def __init__(self, text, text_index, target, target_index):
+        super().__init__(text)
         self.text_index = text_index
         self.target = target
-        self.index = index
+        self.target_index = target_index
 
     def __str__(self):
         return f'"{self.text}" -> {self.target}'
@@ -203,9 +233,9 @@ class TextSelectionChoice:
 class TextSelectionMenu(BaseSelectionMenu):
     """Text selection menu."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, lsb, **kwargs):
         self._texts = set()
-        super().__init__(**kwargs)
+        super().__init__(lsb, **kwargs)
 
     def __str__(self):
         return f"<TextSelectionMenu at {self.label}>"
@@ -215,6 +245,26 @@ class TextSelectionMenu(BaseSelectionMenu):
             raise ValueError("Cannot add duplicate choices")
         self._choices.append(choice)
         self._texts.add(choice.text)
+
+    def replace_choice(self, choice, index, strict=True):
+        """Replace the specified choice in menu.
+
+        Args:
+            choice (:class:`TextSelectionChoice`): Replacement choice.
+            strict (bool): If True, `LiveMakerException` will be raised if ``choice`` has
+                Blake2 digest which does not match the current menu choice.
+        """
+        orig_choice = self.choices[index]
+        if strict and choice != orig_choice:
+            raise LiveMakerException("Replacement choice does not match existing menu choice")
+        orig_choice.text = choice.text
+
+    def save_choices(self):
+        for choice in self.choices:
+            cmd = self.lsb.commands[choice.text_index]
+            self._patch_choice_cmd(cmd, choice.text)
+            cmd = self.lsb.commands[choice.target_index]
+            self._patch_int_jump_cmd(cmd, choice.text)
 
     @classmethod
     def from_lsb_command(cls, lsb, start):
@@ -239,9 +289,9 @@ class TextSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         for text in jumps:
             target, index = jumps[text]
-            jumps[text] = cls._resolve_int_jump(target, index, lsb)
+            jumps[text] = cls._resolve_int_jump(target, index, lsb), index
 
-        menu = cls(label=label)
+        menu = cls(lsb, label=label)
         for text, text_index in choices:
             try:
                 target, target_index = jumps[text]
@@ -259,6 +309,14 @@ class LPMSelectionChoice:
         self.target = target
         self.index = index
 
+    @property
+    def text(self):
+        return self.src_file
+
+    @property
+    def orig_text(self):
+        return self.src_file
+
     def __str__(self):
         return f'"{self.src_file}" -> {self.target}'
 
@@ -269,10 +327,10 @@ class LPMSelectionMenu(BaseSelectionMenu):
     # NovelSystem/PreviewMenu/*SelectExecute.lsb
     EXECUTE_LSB = r"ノベルシステム\プレビューメニュー\■選択実行.lsb"
 
-    def __init__(self, lpm_file, **kwargs):
+    def __init__(self, lsb, lpm_file, **kwargs):
         self.lpm_file = lpm_file
         self._names = set()
-        super().__init__(**kwargs)
+        super().__init__(lsb, **kwargs)
 
     def __str__(self):
         return f"<LPMSelectionMenu({self.lpm_file}) at {self.label}>"
@@ -340,7 +398,7 @@ class LPMSelectionMenu(BaseSelectionMenu):
             target, index = jumps[text]
             jumps[text] = cls._resolve_int_jump(target, index, lsb)
 
-        menu = cls(lpm_file, label=label)
+        menu = cls(lsb, lpm_file, label=label)
         for src_file, name in choices:
             try:
                 target, target_index = jumps[name]
@@ -351,8 +409,14 @@ class LPMSelectionMenu(BaseSelectionMenu):
         return menu
 
 
+MENU_IDENTIFIERS = {
+    TextSelectionMenu: TextMenuIdentifier,
+    LPMSelectionMenu: LPMMenuIdentifier,
+}
+
+
 def make_menu(lsb, index):
-    for cls in [TextSelectionMenu, LPMSelectionMenu]:
+    for cls in MENU_IDENTIFIERS:
         try:
             return cls.from_lsb_command(lsb, index)
         except NotSelectionMenuError:

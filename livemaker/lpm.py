@@ -28,11 +28,11 @@ from .exceptions import LiveMakerException
 DEFAULT_LPM_VERSION = 106
 
 
-class BadLpmError(LiveMakerException):
+class BadLPMError(LiveMakerException):
     pass
 
 
-class _LpmVersionAdapter(construct.Adapter):
+class _LPMVersionAdapter(construct.Adapter):
     def _decode(self, obj, ctx, path):
         return int(obj)
 
@@ -40,7 +40,7 @@ class _LpmVersionAdapter(construct.Adapter):
         return f"{obj:03}".encode("ascii")
 
 
-class LpmVersionValidator(construct.Validator):
+class LPMVersionValidator(construct.Validator):
     def _validate(self, obj, ctx, path):
         return obj >= 100
 
@@ -85,7 +85,7 @@ class LMLivePrevMenu:
     def _struct(cls):
         return construct.Struct(
             "signature" / construct.Const(b"LivePrevMenu"),
-            "version" / LpmVersionValidator(_LpmVersionAdapter(construct.Bytes(3))),
+            "version" / LPMVersionValidator(_LPMVersionAdapter(construct.Bytes(3))),
             "unk1" / construct.Bytes(8),
             "buttons"
             / construct.PrefixedArray(
@@ -171,11 +171,11 @@ class LMLivePrevMenu:
         try:
             return cls.from_struct(cls._struct().parse_stream(infile))
         except construct.ConstructError as e:
-            raise BadLpmError(e)
+            raise BadLPMError(e)
 
     def to_lpm(self):
         """Compile settings into binary .lpm format."""
         try:
             return self._struct().build(self)
         except construct.ConstructError as e:
-            raise BadLpmError(e)
+            raise BadLPMError(e)
