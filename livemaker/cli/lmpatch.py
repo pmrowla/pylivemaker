@@ -1,6 +1,6 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 #
-# Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
+# Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
 #
 # This file is a part of pylivemaker.
@@ -18,7 +18,6 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 """pylivemaker patcher."""
 
-import logging
 import os
 import os.path
 import sys
@@ -28,13 +27,12 @@ from pathlib import Path, PureWindowsPath
 
 import click
 
+from loguru import logger
+
 from livemaker import LMArchive, LMCompressType
 from livemaker.exceptions import LiveMakerException
 
 from .cli import __version__, _version
-
-
-log = logging.getLogger(__name__)
 
 
 @click.command()
@@ -66,6 +64,8 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     --no-backup option is specified.
 
     """
+    logger.add("patch.log", level="INFO")
+
     archive_path = Path(archive_file).resolve()
     archive_dir = archive_path.parent
     archive_name = archive_path.name
@@ -73,7 +73,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     try:
         orig_lm = LMArchive(archive_path)
     except LiveMakerException as e:
-        log.error(e)
+        logger.error(e)
         return
 
     if orig_lm.is_exe:
@@ -108,7 +108,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     try:
         tmpdir = tempfile.mkdtemp()
         tmpdir_path = Path(tmpdir)
-        log.info("Using temp directory {}".format(tmpdir_path))
+        logger.info("Using temp directory {}".format(tmpdir_path))
         print("Generating new archive contents...")
         with LMArchive(
             name=tmpdir_path.joinpath(archive_name), mode="w", version=orig_lm.version, exe=tmp_exe, split=split
@@ -146,13 +146,12 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
 
                     if lsb_path:
                         new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1, arcname=info.path)
-                        log.info("patched {}".format(info.path))
+                        logger.info("patched {}".format(info.path))
                     else:
                         # copy original version
                         data = orig_lm.read(info, decompress=False)
                         new_lm.writebytes(info, data)
-                        log.info("copied {}".format(info.path))
-                        # print(info.name)
+                        logger.info("copied {}".format(info.path))
 
         orig_lm.close()
 
@@ -169,7 +168,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
                     orig_p.rename(backup_paths[orig_p])
                 shutil.copy(tmp_p, archive_dir)
     except Exception as e:
-        log.error(e)
+        logger.error(e)
 
         raise e
     finally:

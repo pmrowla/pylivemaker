@@ -15,6 +15,7 @@ requirements = [
     "Click>=6.0",
     "construct>=2.9,<2.10",
     "funcy>=1.4",
+    "loguru>=0.4.1",
     "lxml>=4.3",
     "numpy>=1.16",
     "Pillow>=6.2.1",

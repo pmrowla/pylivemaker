@@ -1,6 +1,6 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 #
-# Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
+# Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
 #
 # This file is a part of pylivemaker.
@@ -19,19 +19,17 @@
 """LiveMaker LSB/LSC script command classes."""
 
 import enum
-import logging
 from collections import OrderedDict
 
 import construct
+
+from loguru import logger
 
 from lxml import etree
 
 from .core import BaseSerializable, LiveParser, LiveParserArray, ParamType, PropertyType
 from .novel import TpWord
 from ..exceptions import BadLsbError
-
-
-log = logging.getLogger(__name__)
 
 
 class CommandType(enum.IntEnum):
@@ -164,7 +162,7 @@ class LabelReference(BaseSerializable):
                 # Reference to start of page
                 return ""
             # TODO lookup label
-            log.warn("Label lookup not yet implemented.")
+            logger.warn("Label lookup not yet implemented.")
             return str(self.Label)
         else:
             return str(self.Label)
@@ -178,7 +176,7 @@ class LabelReference(BaseSerializable):
                 # Reference to start of page
                 return 0
             # TODO lookup label
-            log.warn("Label lookup not yet implemented.")
+            logger.warn("Label lookup not yet implemented.")
             return 0
 
     def to_lsc(self):
@@ -353,7 +351,7 @@ class BaseCommand(BaseSerializable):
                     for child in x:
                         item.append(child)
                 else:
-                    log.warn("Ignoring unexpected child type returned by to_xml()")
+                    logger.warn("Ignoring unexpected child type returned by to_xml()")
             elif isinstance(v, enum.Enum):
                 item.text = str(v.name)
             else:
@@ -694,7 +692,7 @@ class BaseComponentCommand(BaseCommand):
 
     # def _parse_lsc_args(self, *args, **kwargs):
     #     if 'command_params' not in kwargs:
-    #         log.warn('Attempting to parse component command without specifying param flags.')
+    #         logger.warn('Attempting to parse component command without specifying param flags.')
     #     command_params = kwargs.get('command_params', [])
     #     components = [LiveParser.from_lsc(x) for x in args]
     #     if len(components) > sum(command_params):
@@ -1113,7 +1111,7 @@ class TextIns(BaseCommand):
     #         self.args['StopEvent'] = None
 
     # def _parse_xml_args(self, root, **kwargs):
-    #     log.warn('Parsing XML for TextIns not fully supported.')
+    #     logger.warn('Parsing XML for TextIns not fully supported.')
     #     for child in root:
     #         if child.tag == 'Text':
     #             self.args['Text'] = TpWord.from_xml(child)

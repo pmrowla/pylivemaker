@@ -25,7 +25,6 @@ Attributes:
 
 """
 
-import logging
 import math
 import os
 from collections import defaultdict, deque
@@ -34,6 +33,8 @@ from io import IOBase
 
 import construct
 
+from loguru import logger
+
 from lxml import etree
 
 from .core import BaseSerializable
@@ -41,9 +42,6 @@ from .command import CommandType, PropertyType, _command_classes, _command_struc
 from .menu import BaseSelectionMenu, make_menu, MENU_IDENTIFIERS
 from .translate import TextBlockIdentifier
 from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
-
-
-log = logging.getLogger(__name__)
 
 
 # Known LSB format versions
@@ -136,14 +134,14 @@ class LMScript(BaseSerializable):
         **kwargs
     ):
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
-            log.warn("LSB compilation unsupported for LMScript version {}".format(version))
+            logger.warn("LSB compilation unsupported for LMScript version {}".format(version))
         self.version = version
         self.param_type = param_type
         self.flags = flags
         self.call_name = call_name
         self.novel_params = novel_params
         if len(command_params) > (max(CommandType) + 1):
-            log.warn("len(command_params) exceeds max command type value")
+            logger.warn("len(command_params) exceeds max command type value")
         self.command_params = command_params
         self.commands = commands
 
@@ -470,7 +468,7 @@ class LMScript(BaseSerializable):
                     cmds_to_visit.append((next_pc, last_calc))
 
         if unreachable and remaining_cmds:
-            log.info(f"file contains {len(remaining_cmds)} unreachable commands")
+            logger.info(f"file contains {len(remaining_cmds)} unreachable commands")
             for pc in remaining_cmds:
                 yield pc, self.commands[pc], None
 
@@ -578,7 +576,7 @@ class LMScript(BaseSerializable):
             for id_, text in replacement_blocks[line_no]:
                 block = tmp_blocks[id_.block_index]
                 block.text = text
-                log.info(f"Translated '{block.orig_text}' -> '{block.text}'")
+                logger.info(f"Translated '{block.orig_text}' -> '{block.text}'")
             scenario.replace_text_blocks(tmp_blocks)
 
     def get_menus(self, run_order=True):
@@ -660,5 +658,5 @@ class LMScript(BaseSerializable):
                 choice = copy(orig_choice)
                 choice.text = text
                 menu.replace_choice(choice, id_.choice_index)
-                log.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
+                logger.info(f"Translated '{choice.orig_text}' -> '{choice.text}'")
             menu.save_choices()

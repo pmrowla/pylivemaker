@@ -19,6 +19,10 @@
 # -*- coding: utf-8 -*-
 """pylivemaker cli."""
 
+import sys
+
+from loguru import logger
+
 from .cli import galconvert
 from .lmar import lmar
 from .lmgraph import lmgraph
@@ -27,3 +31,8 @@ from .lmlsb import lmlsb
 from .lmpatch import lmpatch
 
 __all__ = ["galconvert", "lmar", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
+
+
+logger.remove()
+logger.add(sys.stderr, level="WARNING")
+logger.enable("livemaker")
