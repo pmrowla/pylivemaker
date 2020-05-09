@@ -119,8 +119,36 @@ class TextBlockIdentifier(BaseTextIdentifier):
         return (self.block_index,)
 
 
+class BaseMenuIdentifier(BaseTextIdentifier):
+    """Base identifier for selection menus."""
+
+    type = "menu"
+
+    def __init__(self, filename, line_no, choice_index, **kwargs):
+        super().__init__(filename, line_no, **kwargs)
+        self.choice_index = int(choice_index)
+
+    @property
+    def _parts(self):
+        return (self.choice_index,)
+
+
+class TextMenuIdentifier(BaseMenuIdentifier):
+    """Identifier for text selection menu."""
+
+    type = "menu-text"
+
+
+class LPMMenuIdentifier(BaseMenuIdentifier):
+    """Identifier for text selection menu."""
+
+    type = "menu-lpm"
+
+
 supported_identifiers = [
     TextBlockIdentifier,
+    TextMenuIdentifier,
+    LPMMenuIdentifier,
 ]
 
 
