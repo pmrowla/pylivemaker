@@ -1,4 +1,4 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -37,8 +37,9 @@ from lxml import etree
 
 from .core import BaseSerializable
 from .command import CommandType, PropertyType, _command_classes, _command_structs
+from .menu import BaseSelectionMenu, make_menu
 from .translate import TextBlockIdentifier
-from ..exceptions import BadLsbError, BadTextIdentifierError
+from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
 
 log = logging.getLogger(__name__)
@@ -415,7 +416,7 @@ class LMScript(BaseSerializable):
         """
         return self.commands[self._cmd_index[line_no]]
 
-    def walk(self, unreachable=False):
+    def walk(self, start=0, unreachable=False):
         """Iterate over LSB commands in approximate execution order.
 
         All conditional branches will be followed (positive condition
@@ -423,7 +424,8 @@ class LMScript(BaseSerializable):
         followed.
 
         Args:
-            unused (bool): If True, unreachable commands will be included.
+            start (int): Command index to start from.
+            unreachable (bool): If True, unreachable commands will be included.
 
         Yields:
             3-tuple in the form ``(index, command, last_calc)``
@@ -431,8 +433,9 @@ class LMScript(BaseSerializable):
         if not self.call_name:
             raise NotImplementedError("lsb walk requires call_name be set")
 
-        cmds_to_visit = deque([(0, None)])
-        remaining_cmds = set(range(1, len(self.commands)))
+        cmds_to_visit = deque([(start, None)])
+        remaining_cmds = set(range(len(self.commands)))
+        remaining_cmds.remove(start)
 
         while cmds_to_visit:
             pc, last_calc = cmds_to_visit.popleft()
@@ -573,3 +576,37 @@ class LMScript(BaseSerializable):
                 block.text = text
                 log.info(f"Translated '{block.orig_text}' -> '{block.text}'")
             scenario.replace_text_blocks(tmp_blocks)
+
+    def get_menus(self, run_order=True):
+        """Return a list of LiveNovel text selection menus contained in this script.
+
+        Args:
+            run_order (bool): If True, menus will be returned in
+                approximately the order they would be run in-game (via
+                `walk()`. If False, text blocks will be returned in the
+                order they occur in the LSB file.
+
+        Returns:
+            tuple(int, str, :class:`TpWord`): (line_num, name, menu)
+
+        """
+        if run_order:
+            gen = self.walk(unreachable=True)
+        else:
+            gen = enumerate(self.commands)
+
+        menus = []
+        while True:
+            try:
+                if run_order:
+                    i, cmd, _ = next(gen)
+                else:
+                    i, cmd = next(gen)
+            except StopIteration:
+                return menus
+            if BaseSelectionMenu.is_menu_start(cmd):
+                try:
+                    menu = make_menu(self, i)
+                    menus.append(menu)
+                except LiveMakerException:
+                    pass
