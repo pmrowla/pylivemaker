@@ -143,15 +143,7 @@ class LMScript(BaseSerializable):
         if len(command_params) > (max(CommandType) + 1):
             log.warn("len(command_params) exceeds max command type value")
         self.command_params = command_params
-        if isinstance(commands, construct.ListContainer):
-            self.commands = []
-            for c in commands:
-                cmd = _command_classes[CommandType(int(c.type))].from_struct(
-                    c, command_params=command_params[int(c.type)]
-                )
-                self.commands.append(cmd)
-        else:
-            self.commands = commands
+        self.commands = commands
 
     def __len__(self):
         return len(self.commands)
@@ -166,6 +158,23 @@ class LMScript(BaseSerializable):
         if key in self.keys():
             return getattr(self, key)
         raise KeyError
+
+    @property
+    def commands(self):
+        return self._commands
+
+    @commands.setter
+    def commands(self, commands):
+        if isinstance(commands, construct.ListContainer):
+            self._commands = []
+            for c in commands:
+                cmd = _command_classes[CommandType(int(c.type))].from_struct(
+                    c, command_params=self.command_params[int(c.type)]
+                )
+                self._commands.append(cmd)
+        else:
+            self._commands = commands
+        self._cmd_index = {cmd.LineNo: i for i, cmd in enumerate(self._commands)}
 
     def keys(self):
         return ["version", "flags", "command_count", "param_stream_size", "command_params", "commands"]
@@ -398,6 +407,14 @@ class LMScript(BaseSerializable):
         except construct.ConstructError as e:
             raise BadLsbError(e)
 
+    def get_command(self, line_no):
+        """Get specified command by line number.
+
+        Raises:
+            KeyError: the specified line_no does not exist in this LSB.
+        """
+        return self.commands[self._cmd_index[line_no]]
+
     def walk(self, unreachable=False):
         """Iterate over LSB commands in approximate execution order.
 
@@ -543,9 +560,12 @@ class LMScript(BaseSerializable):
                 replacement_blocks[id_.line_no].append((id_, text))
 
         for line_no in replacement_blocks:
-            cmd = self.commands[line_no]
-            if cmd.type != CommandType.TextIns:
-                raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not TextIns")
+            try:
+                cmd = self.get_command(line_no)
+                if cmd.type != CommandType.TextIns:
+                    raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not TextIns")
+            except KeyError:
+                raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' does not exist")
             scenario = cmd.get("Text")
             tmp_blocks = scenario.get_text_blocks()
             for id_, text in replacement_blocks[line_no]:
