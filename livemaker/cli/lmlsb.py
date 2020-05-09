@@ -1018,9 +1018,10 @@ def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
         for row in csv_reader:
             csv_data.append(row)
 
-    translated, untranslated = _patch_csv_menus(lsb, lsb_file, csv_data, verbose)
+    translated, failed, untranslated = _patch_csv_menus(lsb, lsb_file, csv_data, verbose)
 
     print(f"  Translated {translated} choices")
+    print(f"  Failed to translate {failed} choices")
     print(f"  Ignored {untranslated} untranslated choices")
     if not translated:
         return
@@ -1064,9 +1065,9 @@ def _patch_csv_menus(lsb, lsb_file, csv_data, verbose=False):
                     print(f"{id_} Ignoring untranslated text '{orig_text}'")
                 untranslated += 1
 
-    lsb.replace_text(text_objects)
+    translated, failed = lsb.replace_text(text_objects)
 
-    return len(text_objects), untranslated
+    return translated, failed, untranslated
 
 
 @lmlsb.command()
@@ -1157,9 +1158,9 @@ def _patch_csv_text(lsb, lsb_file, csv_data, verbose=False):
                     print(f"{id_} Ignoring untranslated text '{orig_text}'")
                 untranslated += 1
 
-    lsb.replace_text(text_objects)
+    translated, failed = lsb.replace_text(text_objects)
 
-    return len(text_objects), untranslated
+    return translated, failed, untranslated
 
 
 @lmlsb.command()
@@ -1198,8 +1199,9 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
         for row in csv_reader:
             csv_data.append(row)
 
-    translated, untranslated = _patch_csv_text(lsb, lsb_file, csv_data, verbose)
+    translated, failed, untranslated = _patch_csv_text(lsb, lsb_file, csv_data, verbose)
     print(f"  Translated {translated} lines")
+    print(f"  Failed to translate {failed} lines")
     print(f"  Ignored {untranslated} untranslated lines")
     if not translated:
         return
