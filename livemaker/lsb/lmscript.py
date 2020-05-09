@@ -134,14 +134,14 @@ class LMScript(BaseSerializable):
         **kwargs
     ):
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
-            logger.warn("LSB compilation unsupported for LMScript version {}".format(version))
+            logger.warning("LSB compilation unsupported for LMScript version {}".format(version))
         self.version = version
         self.param_type = param_type
         self.flags = flags
         self.call_name = call_name
         self.novel_params = novel_params
         if len(command_params) > (max(CommandType) + 1):
-            logger.warn("len(command_params) exceeds max command type value")
+            logger.warning("len(command_params) exceeds max command type value")
         self.command_params = command_params
         self.commands = commands
 

@@ -624,7 +624,7 @@ class LMArchive(object):
                         self._split_base = root
                         self._split_files = set([self.name])
                         if ext.lower() not in [".dat", ".ext"]:
-                            logger.warn("Writing split archive index without .dat or .ext file extension.")
+                            logger.warning("Writing split archive index without .dat or .ext file extension.")
                         elif ext.lower() == ".ext":
                             self.has_ext = True
                         else:
@@ -859,7 +859,7 @@ class LMArchive(object):
             except UnsupportedLiveMakerCompression as e:
                 if not allow_unsupported:
                     raise e
-                logger.warn("Skipping encrypted file {}".format(e))
+                logger.warning("Skipping encrypted file {}".format(e))
 
     def read(self, name, decompress=True, skip_checksum=True):
         """Return the bytes of the specified file in the archive.
@@ -908,7 +908,7 @@ class LMArchive(object):
             data = self.fp.read(info.compressed_size)
         if not skip_checksum and info.checksum is not None:
             if info.checksum != LMArchiveDirectory.checksum(data):
-                logger.warn("Bad checksum for file {}.".format(info.name))
+                logger.warning("Bad checksum for file {}.".format(info.name))
         if decompress:
             if info.compress_type in (LMCompressType.ENCRYPTED, LMCompressType.ENCRYPTED_ZLIB):
                 data = decrypt(data)

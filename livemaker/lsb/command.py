@@ -162,7 +162,7 @@ class LabelReference(BaseSerializable):
                 # Reference to start of page
                 return ""
             # TODO lookup label
-            logger.warn("Label lookup not yet implemented.")
+            logger.warning("Label lookup not yet implemented.")
             return str(self.Label)
         else:
             return str(self.Label)
@@ -176,7 +176,7 @@ class LabelReference(BaseSerializable):
                 # Reference to start of page
                 return 0
             # TODO lookup label
-            logger.warn("Label lookup not yet implemented.")
+            logger.warning("Label lookup not yet implemented.")
             return 0
 
     def to_lsc(self):
@@ -351,7 +351,7 @@ class BaseCommand(BaseSerializable):
                     for child in x:
                         item.append(child)
                 else:
-                    logger.warn("Ignoring unexpected child type returned by to_xml()")
+                    logger.warning("Ignoring unexpected child type returned by to_xml()")
             elif isinstance(v, enum.Enum):
                 item.text = str(v.name)
             else:
@@ -692,7 +692,7 @@ class BaseComponentCommand(BaseCommand):
 
     # def _parse_lsc_args(self, *args, **kwargs):
     #     if 'command_params' not in kwargs:
-    #         logger.warn('Attempting to parse component command without specifying param flags.')
+    #         logger.warning('Attempting to parse component command without specifying param flags.')
     #     command_params = kwargs.get('command_params', [])
     #     components = [LiveParser.from_lsc(x) for x in args]
     #     if len(components) > sum(command_params):
@@ -1111,7 +1111,7 @@ class TextIns(BaseCommand):
     #         self.args['StopEvent'] = None
 
     # def _parse_xml_args(self, root, **kwargs):
-    #     logger.warn('Parsing XML for TextIns not fully supported.')
+    #     logger.warning('Parsing XML for TextIns not fully supported.')
     #     for child in root:
     #         if child.tag == 'Text':
     #             self.args['Text'] = TpWord.from_xml(child)

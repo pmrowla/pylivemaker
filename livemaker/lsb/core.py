@@ -470,7 +470,7 @@ class Param(BaseSerializable):
     def to_xml(self):
         xml = self.to_lsc()
         if self.type == ParamType.Var and "\x01" in xml:
-            logger.warn('Replacing invalid xml char "\\x01" in varname {}'.format(self.value))
+            logger.warning('Replacing invalid xml char "\\x01" in varname {}'.format(self.value))
             xml = xml.replace("\x01", "*")
         return xml
 
@@ -813,7 +813,7 @@ class LiveParser(BaseSerializable):
     def to_xml(self):
         xml = self.to_lsc()
         if "\x01" in xml:
-            logger.warn('Replacing invalid xml char "\\x01"')
+            logger.warning('Replacing invalid xml char "\\x01"')
             xml = xml.replace("\x01", "*")
         return xml
 
@@ -859,7 +859,7 @@ class LiveParser(BaseSerializable):
                     return _resolve("____arg", exprs)
                 return "{} = {}".format(e.name, _resolve(e.name, exprs))
             else:
-                logger.warn("Last entry in LiveParser was not a To statement: {}".format(self.entries[-1]))
+                logger.warning("Last entry in LiveParser was not a To statement: {}".format(self.entries[-1]))
         return ""
 
 
