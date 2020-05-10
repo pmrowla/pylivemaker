@@ -26,7 +26,6 @@ Attributes:
 """
 
 import math
-import os
 from collections import defaultdict, deque
 from copy import copy
 from io import IOBase
@@ -367,7 +366,7 @@ class LMScript(BaseSerializable):
         return lm
 
     @classmethod
-    def from_file(cls, infile):
+    def from_file(cls, infile, **kwargs):
         """Parse the specified file into an LMScript.
 
         Args:
@@ -381,13 +380,12 @@ class LMScript(BaseSerializable):
             infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
-        name = os.path.basename(infile.name)
         if data.startswith(b"LiveMaker"):
-            return cls.from_lsc(infile.read().decode("cp932"), call_name=name)
+            return cls.from_lsc(infile.read().decode("cp932"), **kwargs)
         elif data.startswith(b"<?xml"):
-            return cls.from_xml(etree.parse(infile), call_name=name)
+            return cls.from_xml(etree.parse(infile), **kwargs)
         try:
-            return cls.from_struct(cls._struct().parse_stream(infile), call_name=name)
+            return cls.from_struct(cls._struct().parse_stream(infile), **kwargs)
         except construct.ConstructError as e:
             raise BadLsbError(e)
 

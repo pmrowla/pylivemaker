@@ -396,7 +396,7 @@ class LPMSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         for text in jumps:
             target, index = jumps[text]
-            jumps[text] = cls._resolve_int_jump(target, index, lsb)
+            jumps[text] = cls._resolve_int_jump(target, index, lsb), index
 
         menu = cls(lsb, lpm_file, label=label)
         for src_file, name in choices:
