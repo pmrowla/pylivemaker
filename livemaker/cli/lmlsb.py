@@ -34,6 +34,7 @@ from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
 from livemaker.lsb.menu import LPMSelectionChoice
 from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
+from livemaker.project import PylmProject
 from livemaker.lsb.translate import make_identifier, TextBlockIdentifier, TextMenuIdentifier
 from livemaker.exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
@@ -182,13 +183,20 @@ def dump(mode, encoding, output_file, input_file):
     else:
         outf = sys.stdout
 
+    pylm = None
+
     for path in input_file:
         try:
+            if not pylm:
+                pylm = PylmProject(path)
+            call_name = pylm.call_name(path)
             with open(path, "rb") as f:
-                lsb = LMScript.from_file(f)
+                lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
+            pylm.update_labels(lsb)
         except BadLsbError as e:
             sys.stderr.write("  Failed to parse file: {}".format(e))
             continue
+
         if mode == "xml":
             root = lsb.to_xml()
             print(
@@ -215,6 +223,12 @@ def dump(mode, encoding, output_file, input_file):
                     mute = ""
                 s = ["{}{:4}: {}".format(mute, c.LineNo, "    " * c.Indent)]
                 s.append(str(c).replace("\r", "\\r").replace("\n", "\\n"))
+                ref = c.get("Page")
+                if ref and ref.Page.endswith("lsb"):
+                    # resolve lsb refs
+                    line_no, name = pylm.resolve_label(ref)
+                    if line_no is not None:
+                        s.append(f" (Label {line_no}: {name})")
                 print("".join(s), file=outf)
                 if c.type == CommandType.TextIns:
                     dec = LNSDecompiler()
@@ -938,10 +952,14 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
     print("Extracting {} ...".format(lsb_file))
 
     try:
+        pylm = PylmProject(lsb_file)
+        call_name = pylm.call_name(lsb_file)
         with open(lsb_file, "rb") as f:
-            lsb = LMScript.from_file(f)
+            lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
     except BadLsbError as e:
         sys.exit("Failed to parse file: {}".format(e))
+
+    pylm.update_labels(lsb)
 
     csv_data = []
     names = set()
@@ -957,7 +975,9 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
             name = ""
         else:
             names.add(name)
-        context = [f"Target: {choice.target}"]
+        _, target_name = pylm.resolve_label(choice.target)
+        target_name = f" ({target_name})" if target_name else ""
+        context = [f"Target: {choice.target}{target_name}"]
         csv_data.append([str(id_), name, "\n".join(context), text, None])
 
     if len(csv_data) == 0:
