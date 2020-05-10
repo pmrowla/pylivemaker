@@ -64,7 +64,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
     --no-backup option is specified.
 
     """
-    logger.add("patch.log", level="INFO")
+    logger.add("patch.log", level="INFO", encoding="utf-8")
 
     archive_path = Path(archive_file).resolve()
     archive_dir = archive_path.parent
