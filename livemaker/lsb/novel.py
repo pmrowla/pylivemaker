@@ -26,12 +26,16 @@ from bisect import bisect
 
 import construct
 
+from funcy import chunks
+
 from loguru import logger
 
 from lxml import etree
 
 from .core import BaseSerializable, LiveParser
-from ..exceptions import BadLnsError, InvalidCharError
+
+# from ..exceptions import BadLnsError, InvalidCharError
+from ..exceptions import BadLnsError
 from .translate import BaseTranslatable
 
 
@@ -220,13 +224,16 @@ class _TWdCharAdapter(construct.Adapter):
     # construct PaddedString only supports ascii and utf encodings
 
     def _decode(self, obj, ctx, path):
-        ch = obj.to_bytes(2, byteorder="big").decode("cp932")
-        if ch.startswith("\x00"):
+        # ch = obj.to_bytes(2, byteorder="big").decode("cp932")
+        ch = obj.to_bytes(2, byteorder="big")
+        # if ch.startswith("\x00"):
+        if ch[0] == b"\x00":
             ch = ch[1]
         return ch
 
     def _encode(self, obj, ctx, path):
-        return int.from_bytes(obj.encode("cp932"), byteorder="big")
+        # return int.from_bytes(obj.encode("cp932"), byteorder="big")
+        return int.from_bytes(obj, byteorder="big")
 
 
 class TWdChar(BaseTWdReal):
@@ -244,16 +251,18 @@ class TWdChar(BaseTWdReal):
     type = TWdType.TWdChar
     _struct_fields = construct.Struct(
         construct.Embedded(BaseTWdReal._struct_fields),
-        "ch" / _TWdCharAdapter(construct.Int16ul),
+        # "ch" / construct.Bytes(2),
+        # "ch" / _TWdCharAdapter(construct.Int16ul),
+        "ch" / construct.Int16ul,
         "decorator" / construct.Int32sl,
     )
 
-    def __init__(self, ch="", decorator=0, **kwargs):
+    def __init__(self, ch=0, decorator=0, **kwargs):
         super().__init__(**kwargs)
-        try:
-            ch.encode("cp932")
-        except UnicodeEncodeError:
-            raise InvalidCharError(ch)
+        # try:
+        #     ch.encode("cp932")
+        # except UnicodeEncodeError:
+        #     raise InvalidCharError(ch)
         self._keys.update(("ch", "decorator"))
         self.ch = ch
         self.decorator = decorator
@@ -908,12 +917,47 @@ class TpWord(BaseSerializable):
             for attr in ("decorator", "text_speed", "link_name", "link", "condition"):
                 d[attr] = getattr(start_ch, attr, None)
             new_block = []
-            for ch in block.text:
-                if ch == "\n":
-                    new_ch = TWdOpeReturn(**d)
+            for line in block.text.splitlines(True):
+                data = line.encode("utf-8")
+                if line.endswith("\n"):
+                    has_break = True
+                    line = line[:-1]
                 else:
-                    new_ch = TWdChar(ch=ch, **d)
-                new_block.append(new_ch)
+                    has_break = False
+                for chunk in chunks(2, data):
+                    ch = int.from_bytes(chunk, byteorder="big")
+                    new_block.append(TWdChar(ch=ch, **d))
+                if has_break:
+                    new_block.append(TWdOpeReturn(**d))
+            # for ch in block.text:
+            #     if ch == "\n":
+            #         new_block.append(TWdOpeReturn(**d))
+            #     else:
+            #         # new_ch = TWdChar(ch=0, **d)
+            #         raw = ch.encode("utf-8")
+            #         logger.info(f"packing {raw}")
+            #         if len(raw) <= 2:
+            #             logger.info(f"packing {raw} into one ch")
+            #             new_ch = int.from_bytes(raw, byteorder="big")
+            #             new_block.append(TWdChar(ch=new_ch, **d))
+            #         else:
+            #             logger.info(f"packing {raw} into double ch")
+            #             new_ch = int.from_bytes(raw[0:2], byteorder="big")
+            #             new_block.append(TWdChar(ch=new_ch, **d))
+            #             new_ch = int.from_bytes(raw[2:4], byteorder="big")
+            #             new_block.append(TWdChar(ch=new_ch, **d))
+            #         # if len(raw) == 1:
+            #         #     raw = int.from_bytes(b"\x00{raw}", byteorder="big")
+            #         #     new_block.append(TWdChar(ch=raw, **d))
+            #         # elif len(raw) == 2:
+            #         #     new_block.append(TWdChar(ch=raw, **d))
+            #         # elif len(raw) == 3:
+            #         #     new_block.append(TWdChar(ch=raw[0:2], **d))
+            #         #     raw = b"\x00{raw[2]}"
+            #         #     new_block.append(TWdChar(ch=raw, **d))
+            #         # else:
+            #         #     new_block.append(TWdChar(ch=raw[0:2], **d))
+            #         #     new_block.append(TWdChar(ch=raw[2:4], **d))
             new_body[block.start : block.end] = new_block
         self.replace_body(new_body)
 

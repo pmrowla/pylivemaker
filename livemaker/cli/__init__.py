@@ -34,5 +34,6 @@ __all__ = ["galconvert", "lmar", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
 
 
 logger.remove()
-logger.add(sys.stderr, level="WARNING")
+# logger.add(sys.stderr, level="WARNING")
+logger.add(sys.stderr, level="INFO")
 logger.enable("livemaker")

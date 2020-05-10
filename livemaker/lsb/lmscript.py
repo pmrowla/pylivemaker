@@ -288,8 +288,8 @@ class LMScript(BaseSerializable):
     def to_lsb(self):
         """Compile this script into binary .lsb format."""
         try:
-            return self._struct().build(self)
-            # return construct.Debugger(self._struct()).build(self)
+            # return self._struct().build(self)
+            return construct.Debugger(self._struct()).build(self)
         except construct.ConstructError as e:
             raise BadLsbError(e)
 

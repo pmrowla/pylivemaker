@@ -1215,4 +1215,5 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
+        # raise
         sys.exit("Could not generate new LSB file: {}".format(e))
