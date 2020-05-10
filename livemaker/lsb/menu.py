@@ -19,7 +19,7 @@
 """LiveMaker LiveNovel selection menu classes."""
 
 import re
-from pathlib import PurePath, PureWindowsPath
+from pathlib import Path, PureWindowsPath
 
 from .command import CommandType
 from .core import OpeDataType, ParamType
@@ -40,7 +40,7 @@ class BaseSelectionMenu:
     END_SELECTION_CALCS = ["選択実行中 = 0"]
     EXECUTE_LSB = None
 
-    def __init__(self, lsb, choices=[], label=None):
+    def __init__(self, lsb, choices=[], label=None, **kwargs):
         self.lsb = lsb
         self.label = label
         self._choices = []
@@ -76,7 +76,7 @@ class BaseSelectionMenu:
             return True
 
     @classmethod
-    def from_lsb_command(cls, lsb, start):
+    def from_lsb_command(cls, lsb, start, **kwargs):
         """Return a selection menu constructed from the LSB commands
         starting at index.
 
@@ -267,7 +267,7 @@ class TextSelectionMenu(BaseSelectionMenu):
             self._patch_int_jump_cmd(cmd, choice.text)
 
     @classmethod
-    def from_lsb_command(cls, lsb, start):
+    def from_lsb_command(cls, lsb, start, **kwargs):
         try:
             cmd = lsb.commands[start]
             if not cls.is_menu_start(cmd):
@@ -359,19 +359,28 @@ class LPMSelectionMenu(BaseSelectionMenu):
         }
 
     @classmethod
-    def _choices_from_lpm(cls, filename):
+    def _choices_from_lpm(cls, filename, pylm=None):
         try:
-            path = PurePath(PureWindowsPath(filename.strip('"')))
+            path = PureWindowsPath(filename.strip('"'))
+            if pylm:
+                path = pylm.root / path
+            else:
+                # convert windows purepath to system path
+                path = Path(path)
             lpm = LMLivePrevMenu.from_file(path)
             choices = []
             for button in lpm["buttons"]:
-                choices.append((button.get("src"), button.get("name")))
+                src_file = button.get("src")
+                if src_file and pylm:
+                    src_file = path / PureWindowsPath(src_file)
+                    src_file = src_file.resolve().relative_to(pylm.root)
+                choices.append((src_file, button.get("name")))
             return choices
         except LiveMakerException:
             return []
 
     @classmethod
-    def from_lsb_command(cls, lsb, start):
+    def from_lsb_command(cls, lsb, start, pylm=None):
         try:
             cmd = lsb.commands[start]
             if not cls.is_menu_start(cmd):
@@ -387,7 +396,7 @@ class LPMSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         params = cls._parse_params(params)
         lpm_file = params["menu_file"].strip('"')
-        choices = cls._choices_from_lpm(lpm_file)
+        choices = cls._choices_from_lpm(lpm_file, pylm=pylm)
         if not choices:
             raise NotSelectionMenuError
 
@@ -396,7 +405,7 @@ class LPMSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         for text in jumps:
             target, index = jumps[text]
-            jumps[text] = cls._resolve_int_jump(target, index, lsb)
+            jumps[text] = cls._resolve_int_jump(target, index, lsb), index
 
         menu = cls(lsb, lpm_file, label=label)
         for src_file, name in choices:
@@ -415,10 +424,10 @@ MENU_IDENTIFIERS = {
 }
 
 
-def make_menu(lsb, index):
+def make_menu(lsb, index, **kwargs):
     for cls in MENU_IDENTIFIERS:
         try:
-            return cls.from_lsb_command(lsb, index)
+            return cls.from_lsb_command(lsb, index, **kwargs)
         except NotSelectionMenuError:
             pass
     raise NotSelectionMenuError

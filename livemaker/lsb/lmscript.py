@@ -26,10 +26,10 @@ Attributes:
 """
 
 import math
-import os
 from collections import defaultdict, deque
 from copy import copy
 from io import IOBase
+from pathlib import Path
 
 import construct
 
@@ -144,6 +144,7 @@ class LMScript(BaseSerializable):
             logger.warning("len(command_params) exceeds max command type value")
         self.command_params = command_params
         self.commands = commands
+        self.pylm = kwargs.get("pylm")
 
     def __len__(self):
         return len(self.commands)
@@ -367,7 +368,7 @@ class LMScript(BaseSerializable):
         return lm
 
     @classmethod
-    def from_file(cls, infile):
+    def from_file(cls, infile, **kwargs):
         """Parse the specified file into an LMScript.
 
         Args:
@@ -381,13 +382,14 @@ class LMScript(BaseSerializable):
             infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
-        name = os.path.basename(infile.name)
+        if "call_name" not in kwargs:
+            kwargs["call_name"] = Path(infile.name).name
         if data.startswith(b"LiveMaker"):
-            return cls.from_lsc(infile.read().decode("cp932"), call_name=name)
+            return cls.from_lsc(infile.read().decode("cp932"), **kwargs)
         elif data.startswith(b"<?xml"):
-            return cls.from_xml(etree.parse(infile), call_name=name)
+            return cls.from_xml(etree.parse(infile), **kwargs)
         try:
-            return cls.from_struct(cls._struct().parse_stream(infile), call_name=name)
+            return cls.from_struct(cls._struct().parse_stream(infile), **kwargs)
         except construct.ConstructError as e:
             raise BadLsbError(e)
 
@@ -622,7 +624,7 @@ class LMScript(BaseSerializable):
                 return menus
             if BaseSelectionMenu.is_menu_start(cmd):
                 try:
-                    menu = make_menu(self, i)
+                    menu = make_menu(self, i, pylm=self.pylm)
                     menus.append((cmd.LineNo, menu))
                 except LiveMakerException:
                     pass
