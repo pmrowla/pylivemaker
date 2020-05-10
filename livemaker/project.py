@@ -20,7 +20,7 @@
 
 import os
 from collections import defaultdict
-from pathlib import Path, PurePath, PureWindowsPath
+from pathlib import Path, PureWindowsPath
 
 from .exceptions import LiveMakerException
 from .lsb.command import CommandType
@@ -87,7 +87,7 @@ class PylmProject:
             # start of script is not labeled
             return None, None
 
-        path = PurePath(PureWindowsPath(ref.Page))
+        path = Path(PureWindowsPath(ref.Page))
         call_name = self.call_name(path)
         if call_name not in self._label_cache:
             path = self.root / call_name

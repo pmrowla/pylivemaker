@@ -143,6 +143,7 @@ class LMScript(BaseSerializable):
             logger.warning("len(command_params) exceeds max command type value")
         self.command_params = command_params
         self.commands = commands
+        self.pylm = kwargs.get("pylm")
 
     def __len__(self):
         return len(self.commands)
@@ -620,7 +621,7 @@ class LMScript(BaseSerializable):
                 return menus
             if BaseSelectionMenu.is_menu_start(cmd):
                 try:
-                    menu = make_menu(self, i)
+                    menu = make_menu(self, i, pylm=self.pylm)
                     menus.append((cmd.LineNo, menu))
                 except LiveMakerException:
                     pass
