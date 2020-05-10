@@ -29,6 +29,7 @@ import math
 from collections import defaultdict, deque
 from copy import copy
 from io import IOBase
+from pathlib import Path
 
 import construct
 
@@ -381,6 +382,8 @@ class LMScript(BaseSerializable):
             infile = open(infile, "rb")
         data = infile.read(9)
         infile.seek(0)
+        if "call_name" not in kwargs:
+            kwargs["call_name"] = Path(infile.name).name
         if data.startswith(b"LiveMaker"):
             return cls.from_lsc(infile.read().decode("cp932"), **kwargs)
         elif data.startswith(b"<?xml"):

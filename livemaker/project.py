@@ -42,7 +42,7 @@ class PylmProject:
             return None
         if path.is_file():
             path = path.parent
-        search_names = {"live.lsb", "ゲームメイン.lsb", "ノベルシステム"}
+        search_names = {"live.lpb", "ゲームメイン.lsb", "ノベルシステム"}
         for search_dir in [path] + list(reversed(path.parents)):
             if set(os.listdir(search_dir)) & search_names:
                 return search_dir
