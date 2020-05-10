@@ -16,7 +16,7 @@ Welcome to pylivemaker's documentation!
 
    livenovel
 
-   Original LM3 LiveNovel Docs (jp) <https://pylivemaker.readthedocs.io/en/latest/_static/LiveNovel/script.html>
+   Original LM3 LiveNovel Docs (jp) <https://pylivemaker.readthedocs.io/en/latest/_static/LiveNovel/index.html>
 
 Indices and tables
 ==================
