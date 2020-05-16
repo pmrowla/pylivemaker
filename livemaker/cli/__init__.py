@@ -19,6 +19,7 @@
 # -*- coding: utf-8 -*-
 """pylivemaker cli."""
 
+import os
 import sys
 
 from loguru import logger
@@ -34,5 +35,9 @@ __all__ = ["galconvert", "lmar", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
 
 
 logger.remove()
+
+if os.name == "nt":
+    sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
+
 logger.add(sys.stderr, level="WARNING")
 logger.enable("livemaker")
