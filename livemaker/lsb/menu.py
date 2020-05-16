@@ -130,6 +130,10 @@ class BaseSelectionMenu:
     def _patch_int_jump_cmd(cls, cmd, text):
         if cmd.type != CommandType.Jump:
             raise LiveMakerException
+        calc = cmd["Calc"]
+        if str(calc) == "1":
+            # nothing to do for default case
+            return None
         return cls._patch_cmd(cmd, cls.INT_JUMP_RE, text)
 
     @classmethod
