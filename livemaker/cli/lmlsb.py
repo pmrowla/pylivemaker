@@ -184,15 +184,23 @@ def dump(mode, encoding, output_file, input_file):
         outf = sys.stdout
 
     pylm = None
+    skip_pylm = False
 
     for path in input_file:
         try:
-            if not pylm:
-                pylm = PylmProject(path)
-            call_name = pylm.call_name(path)
+            if skip_pylm:
+                call_name = None
+            elif not pylm:
+                try:
+                    pylm = PylmProject(path)
+                    call_name = pylm.call_name(path)
+                except LiveMakerException:
+                    call_name = None
+                    skip_pylm = True
             with open(path, "rb") as f:
                 lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
-            pylm.update_labels(lsb)
+            if pylm:
+                pylm.update_labels(lsb)
         except BadLsbError as e:
             sys.stderr.write("  Failed to parse file: {}".format(e))
             continue
@@ -224,7 +232,7 @@ def dump(mode, encoding, output_file, input_file):
                 s = ["{}{:4}: {}".format(mute, c.LineNo, "    " * c.Indent)]
                 s.append(str(c).replace("\r", "\\r").replace("\n", "\\n"))
                 ref = c.get("Page")
-                if ref and ref.Page.endswith("lsb"):
+                if ref and ref.Page.endswith("lsb") and pylm:
                     # resolve lsb refs
                     line_no, name = pylm.resolve_label(ref)
                     if line_no is not None:
@@ -954,12 +962,18 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
     try:
         pylm = PylmProject(lsb_file)
         call_name = pylm.call_name(lsb_file)
+    except LiveMakerException:
+        pylm = None
+        call_name = None
+
+    try:
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
     except BadLsbError as e:
         sys.exit("Failed to parse file: {}".format(e))
 
-    pylm.update_labels(lsb)
+    if pylm:
+        pylm.update_labels(lsb)
 
     csv_data = []
     names = set()
@@ -975,7 +989,10 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
             name = ""
         else:
             names.add(name)
-        _, target_name = pylm.resolve_label(choice.target)
+        if pylm:
+            _, target_name = pylm.resolve_label(choice.target)
+        else:
+            target_name = None
         target_name = f" ({target_name})" if target_name else ""
         context = [f"Target: {choice.target}{target_name}"]
         csv_data.append([str(id_), name, "\n".join(context), text, None])

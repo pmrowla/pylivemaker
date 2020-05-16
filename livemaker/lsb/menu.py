@@ -21,6 +21,8 @@
 import re
 from pathlib import Path, PureWindowsPath
 
+from loguru import logger
+
 from .command import CommandType
 from .core import OpeDataType, ParamType
 from .translate import BaseTranslatable, LPMMenuIdentifier, TextMenuIdentifier
@@ -38,6 +40,10 @@ class BaseSelectionMenu:
     CHOICE_RE = re.compile(r"^AddArray\(_tmp, \"(?P<text>.*)\"\)$")
     INT_JUMP_RE = re.compile(r"選択値 == \"(?P<text>.*)\"")
     END_SELECTION_CALCS = ["選択実行中 = 0"]
+    END_CHOICE_CALCS = [
+        "Trim(ArrayToString(_tmp))",
+        "TrimArray(_tmp)",
+    ]
     EXECUTE_LSB = None
 
     def __init__(self, lsb, choices=[], label=None, **kwargs):
@@ -142,10 +148,11 @@ class BaseSelectionMenu:
     def _end_choices(cls, cmd):
         # menu array population finishes with
         #   Calc StringToArray(_tmp, _tmp)
+
         if cmd.type != CommandType.Calc:
             return None
         calc = cmd["Calc"]
-        if str(calc) in cls.END_SELECTION_CALCS + ["StringToArray(_tmp, _tmp)"]:
+        if str(calc) in cls.END_SELECTION_CALCS + cls.END_CHOICE_CALCS:
             return True
         return False
 
@@ -178,6 +185,9 @@ class BaseSelectionMenu:
         m = cls.INT_JUMP_RE.match(str(calc))
         if m:
             return m.group("text"), page
+        elif str(calc) == "1":
+            # unconditional jump (default selection case)
+            return None, page
         return None, None
 
     @classmethod
@@ -296,7 +306,11 @@ class TextSelectionMenu(BaseSelectionMenu):
             try:
                 target, target_index = jumps[text]
             except KeyError:
-                raise KeyError(f"No matching jump for menu choice {text}")
+                if None in jumps:
+                    logger.info(f"Using default jump for choice '{text}'")
+                    target, target_index = jumps[None]
+                else:
+                    raise KeyError(f"No matching jump for menu choice {text}")
             choice = TextSelectionChoice(text, text_index, target, target_index)
             menu.add_choice(choice)
         return menu
