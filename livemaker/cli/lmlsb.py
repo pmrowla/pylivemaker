@@ -1042,8 +1042,13 @@ def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
     lsb_file = Path(lsb_file)
     print("Patching {} ...".format(lsb_file))
 
-    pylm = PylmProject(lsb_file)
-    call_name = pylm.call_name(lsb_file)
+    try:
+        pylm = PylmProject(lsb_file)
+        call_name = pylm.call_name(lsb_file)
+    except LiveMakerException:
+        pylm = None
+        call_name = None
+
     try:
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, pylm=pylm, call_name=call_name)
@@ -1140,8 +1145,13 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
     lsb_file = Path(lsb_file)
     print("Extracting {} ...".format(lsb_file))
 
-    pylm = PylmProject(lsb_file)
-    call_name = pylm.call_name(lsb_file)
+    try:
+        pylm = PylmProject(lsb_file)
+        call_name = pylm.call_name(lsb_file)
+    except LiveMakerException:
+        pylm = None
+        call_name = None
+
     try:
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
@@ -1227,8 +1237,13 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
     lsb_file = Path(lsb_file)
     print("Patching {} ...".format(lsb_file))
 
-    pylm = PylmProject(lsb_file)
-    call_name = pylm.call_name(lsb_file)
+    try:
+        pylm = PylmProject(lsb_file)
+        call_name = pylm.call_name(lsb_file)
+    except LiveMakerException:
+        pylm = None
+        call_name = None
+
     try:
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
