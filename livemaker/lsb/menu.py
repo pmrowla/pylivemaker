@@ -21,6 +21,8 @@
 import re
 from pathlib import Path, PureWindowsPath
 
+from loguru import logger
+
 from .command import CommandType
 from .core import OpeDataType, ParamType
 from .translate import BaseTranslatable, LPMMenuIdentifier, TextMenuIdentifier
@@ -183,6 +185,9 @@ class BaseSelectionMenu:
         m = cls.INT_JUMP_RE.match(str(calc))
         if m:
             return m.group("text"), page
+        elif str(calc) == "1":
+            # unconditional jump (default selection case)
+            return None, page
         return None, None
 
     @classmethod
@@ -301,7 +306,11 @@ class TextSelectionMenu(BaseSelectionMenu):
             try:
                 target, target_index = jumps[text]
             except KeyError:
-                raise KeyError(f"No matching jump for menu choice {text}")
+                if None in jumps:
+                    logger.info(f"Using default jump for choice '{text}'")
+                    target, target_index = jumps[None]
+                else:
+                    raise KeyError(f"No matching jump for menu choice {text}")
             choice = TextSelectionChoice(text, text_index, target, target_index)
             menu.add_choice(choice)
         return menu
