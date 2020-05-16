@@ -38,6 +38,10 @@ class BaseSelectionMenu:
     CHOICE_RE = re.compile(r"^AddArray\(_tmp, \"(?P<text>.*)\"\)$")
     INT_JUMP_RE = re.compile(r"選択値 == \"(?P<text>.*)\"")
     END_SELECTION_CALCS = ["選択実行中 = 0"]
+    END_CHOICE_CALCS = [
+        "Trim(ArrayToString(_tmp))",
+        "TrimArray(_tmp)",
+    ]
     EXECUTE_LSB = None
 
     def __init__(self, lsb, choices=[], label=None, **kwargs):
@@ -142,10 +146,11 @@ class BaseSelectionMenu:
     def _end_choices(cls, cmd):
         # menu array population finishes with
         #   Calc StringToArray(_tmp, _tmp)
+
         if cmd.type != CommandType.Calc:
             return None
         calc = cmd["Calc"]
-        if str(calc) in cls.END_SELECTION_CALCS + ["StringToArray(_tmp, _tmp)"]:
+        if str(calc) in cls.END_SELECTION_CALCS + cls.END_CHOICE_CALCS:
             return True
         return False
 
