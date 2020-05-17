@@ -17,6 +17,7 @@ requirements = [
     "funcy>=1.4",
     "loguru>=0.4.1",
     "lxml>=4.3",
+    "networkx>=2.4",
     "numpy>=1.16",
     "Pillow>=6.2.1",
     "pydot>=1.4.1",
