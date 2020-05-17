@@ -671,7 +671,7 @@ class LMScript(BaseSerializable):
         for line_no in replacement_choices:
             try:
                 index, _ = self.get_command(line_no)
-                menu = make_menu(self, line_no)
+                menu = make_menu(self, index)
             except LiveMakerException:
                 raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not start of a menu")
 
