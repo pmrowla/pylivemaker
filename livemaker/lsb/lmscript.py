@@ -412,10 +412,14 @@ class LMScript(BaseSerializable):
     def get_command(self, line_no):
         """Get specified command by line number.
 
+        Returns:
+            tuple(cmd_index, cmd)
+
         Raises:
             KeyError: the specified line_no does not exist in this LSB.
         """
-        return self.commands[self._cmd_index[line_no]]
+        index = self._cmd_index[line_no]
+        return index, self.commands[index]
 
     def walk(self, start=0, unreachable=False):
         """Iterate over LSB commands in approximate execution order.
@@ -576,7 +580,7 @@ class LMScript(BaseSerializable):
 
         for line_no in replacement_blocks:
             try:
-                cmd = self.get_command(line_no)
+                _, cmd = self.get_command(line_no)
                 if cmd.type != CommandType.TextIns:
                     raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not TextIns")
             except KeyError:
@@ -666,6 +670,7 @@ class LMScript(BaseSerializable):
 
         for line_no in replacement_choices:
             try:
+                index, _ = self.get_command(line_no)
                 menu = make_menu(self, line_no)
             except LiveMakerException:
                 raise BadTextIdentifierError(f"invalid text block: LSB command '{line_no}' is not start of a menu")

@@ -443,6 +443,13 @@ MENU_IDENTIFIERS = {
 
 
 def make_menu(lsb, index, **kwargs):
+    """Return a selection menu instance for menu starting at the specified command index.
+
+    Args:
+        index: command index
+
+    Any provided ``kwargs`` will be passed into the menu constructor.
+    """
     for cls in MENU_IDENTIFIERS:
         try:
             return cls.from_lsb_command(lsb, index, **kwargs)
