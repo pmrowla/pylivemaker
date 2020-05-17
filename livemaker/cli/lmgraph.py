@@ -30,8 +30,15 @@ import pydot
 from livemaker.exceptions import LiveMakerException
 from livemaker.lsb import LMScript
 from livemaker.lsb.command import CommandType
+from livemaker.lsb.graph import make_graph, nx_to_dot
 
 from .cli import _version, __version__
+
+
+@click.group()
+@click.version_option(version=__version__, message=_version)
+def lmgraph():
+    """Experimental command-line tool for generating DOT syntax graphs."""
 
 
 IGNORED_SCRIPTS = [
@@ -119,12 +126,11 @@ def parse_lsb(lsb_file, root_dir=None):
                 cmds_to_visit.append((next_pc, last_calc))
 
 
-@click.command()
-@click.version_option(version=__version__, message=_version)
+@lmgraph.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
 @click.argument("out_file", required=False)
-def lmgraph(lsb_file, out_file):
-    """Generate a DOT syntax graph for a LiveNovel game.
+def game(lsb_file, out_file):
+    """Generate a DOT syntax call graph for a full LiveNovel game.
 
     lsb_file should be a path to the root script node - this should always be ゲームメイン.lsb (game_main.lsb)
     for LiveMaker games.
@@ -145,4 +151,30 @@ def lmgraph(lsb_file, out_file):
         out_file = "{}.dot".format(lsb_file)
     with open(out_file, "w") as f:
         f.write(graph.to_string())
+    print("Wrote {}".format(out_file))
+
+
+@lmgraph.command()
+@click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.argument("out_file", required=False)
+def lsb(lsb_file, out_file):
+    """Generate a DOT syntax execution graph for an LSB script.
+
+    lsb_file should be an LSB file.
+    If output file is not specified, it defaults to <lsb_file>.dot
+
+    The output graph will contain blocks of LSB commands as nodes
+    and branch points as edges.
+    """
+    path = Path(lsb_file)
+    print("Generating execution graph for {}".format(path))
+
+    if not out_file:
+        out_file = "{}.dot".format(lsb_file)
+
+    lsb = LMScript.from_file(path)
+    dot = nx_to_dot(make_graph(lsb))
+
+    with open(out_file, "w") as f:
+        f.write(dot.to_string())
     print("Wrote {}".format(out_file))
