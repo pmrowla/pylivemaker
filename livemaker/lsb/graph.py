@@ -144,7 +144,7 @@ def handle_while(graph, unvisited, lsb, init_pc, init_cmd, return_pc=None):
     # add edges
     graph.add_edge(init_pc, while_pc, branch=False)
     calc = str(while_cmd.get("Calc"))
-    graph.add_edge(while_pc, while_pc + 1, branch=True, loop=True, cond=f"While {calc}")
+    graph.add_edge(while_pc, while_pc + 1, branch=True, cond=f"While {calc}")
     graph.add_edge(while_pc, end_pc, branch=True, cond=f"Done")
     graph.add_edge(loop_pc, while_pc, branch=False)
 
@@ -168,7 +168,7 @@ def visit(graph, unvisited, lsb, return_pc=None):
             if pc + 1 in unvisited:
                 graph.add_edge(pc, pc + 1, branch=False)
             elif return_pc is not None:
-                graph.add_edge(pc, return_pc, branch=False)
+                graph.add_edge(pc, return_pc, branch=True)
 
 
 def make_graph(lsb):
@@ -182,3 +182,45 @@ def make_graph(lsb):
     unvisited = deque([i for i in range(len(lsb.commands)) if lsb.commands[i].Indent == 0])
     visit(graph, unvisited, lsb)
     return graph
+
+
+def nx_to_dot(graph):
+    import pydot
+
+    dot = pydot.Dot(graph_type="digraph")
+    block_nodes = []
+    for n in reversed(list(nx.dfs_postorder_nodes(graph))):
+        block_nodes.append(n)
+        adjacent = list(graph.adj[n].items())
+        if len(adjacent) == 1:
+            nbr, edge_data = adjacent[0]
+            cmd = graph.nodes[nbr]["cmd"]
+            if not (cmd.type == CommandType.Label or edge_data.get("branch")):
+                continue
+
+        lines = []
+        for node in block_nodes:
+            cmd = graph.nodes[node]["cmd"]
+            s = str(cmd).replace("\r", "\\r").replace("\n", "\\n")
+            lines.append(f"{cmd.LineNo:4}: {s}\\l")
+            if cmd.type == CommandType.TextIns:
+                blocks = cmd["Text"].get_text_blocks()
+                if blocks:
+                    for line in blocks[0].text.splitlines():
+                        lines.append(f"    {line}\\l")
+                    lines.append(f"    ...\\l")
+
+        block_start = block_nodes[0]
+        dot_node = pydot.Node(block_start, label="".join(lines), shape="box")
+        dot.add_node(dot_node)
+        block_nodes.clear()
+
+        for nbr, edge_data in adjacent:
+            cond = edge_data.get("cond")
+            if cond:
+                dot_edge = pydot.Edge(block_start, nbr, label=cond)
+            else:
+                dot_edge = pydot.Edge(block_start, nbr)
+            dot.add_edge(dot_edge)
+
+    return dot
