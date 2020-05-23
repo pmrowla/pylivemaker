@@ -138,7 +138,7 @@ class LMScript(BaseSerializable):
         self.version = version
         self.param_type = param_type
         self.flags = flags
-        self.call_name = call_name
+        self.call_name = str(call_name)
         self.novel_params = novel_params
         if len(command_params) > (max(CommandType) + 1):
             logger.warning("len(command_params) exceeds max command type value")

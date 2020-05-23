@@ -30,7 +30,7 @@ import numpy
 from lxml import etree
 
 from livemaker.lsb import LMScript
-from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump
+from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump, LabelReference
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
 from livemaker.lsb.menu import LPMSelectionChoice
 from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
@@ -232,11 +232,12 @@ def dump(mode, encoding, output_file, input_file):
                 s = ["{}{:4}: {}".format(mute, c.LineNo, "    " * c.Indent)]
                 s.append(str(c).replace("\r", "\\r").replace("\n", "\\n"))
                 ref = c.get("Page")
-                if ref and ref.Page.endswith("lsb") and pylm:
-                    # resolve lsb refs
-                    line_no, name = pylm.resolve_label(ref)
-                    if line_no is not None:
-                        s.append(f" (Label {line_no}: {name})")
+                if ref and isinstance(ref, LabelReference):
+                    if ref.Page.endswith("lsb") and pylm:
+                        # resolve lsb refs
+                        line_no, name = pylm.resolve_label(ref)
+                        if line_no is not None:
+                            s.append(f" (Label {line_no}: {name})")
                 print("".join(s), file=outf)
                 if c.type == CommandType.TextIns:
                     dec = LNSDecompiler()

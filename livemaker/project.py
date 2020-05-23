@@ -54,7 +54,8 @@ class PylmProject:
             raise LiveMakerException(f"{path} is not an LSB")
         try:
             relpath = PureWindowsPath(path.relative_to(self.root))
-            return str(relpath.parent / f"{relpath.stem}.lsb")
+            name = f"{relpath.stem}.lsb"
+            return str(relpath.parent / name)
         except ValueError:
             raise LiveMakerException(f"{path} is outside this project")
 
@@ -90,7 +91,7 @@ class PylmProject:
         path = Path(PureWindowsPath(ref.Page))
         call_name = self.call_name(path)
         if call_name not in self._label_cache:
-            path = self.root / call_name
+            path = self.root / PureWindowsPath(call_name)
             try:
                 lsb = LMScript.from_file(path, call_name=call_name)
                 self.update_labels(lsb)
