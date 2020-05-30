@@ -19,7 +19,7 @@ requirements = [
     "lxml>=4.3",
     "networkx>=2.4",
     "numpy>=1.16",
-    "Pillow>=6.2.1",
+    "Pillow>=7.1.2",
     "pydot>=1.4.1",
 ]
 
@@ -51,6 +51,7 @@ setup(
             "lmlsb=livemaker.cli:lmlsb",
             "lmpatch=livemaker.cli:lmpatch",
             "galconvert=livemaker.cli:galconvert",
+            "lmbmp=livemaker.cli:lmbmp",
         ],
     },
     install_requires=requirements,
