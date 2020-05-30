@@ -503,8 +503,8 @@ PIL/Pillow.
     If a GAL image contains multiple frames, only the first frame will be used when converting to a format which
     does not support multiple frames.
 
-    Conversion to GAL format is not currently supported. If you need to generate GAL images, it is recommended to
-    use LiveMaker's ``BmpToGale`` program.
+    Direct conversion to GAL format is not currently supported. If you need to generate GAL images,
+    it is recommended to use LiveMaker's ``BmpToGale`` program in conjunction with ``lmbmp``.
 
 ::
 
@@ -519,5 +519,25 @@ PIL/Pillow.
       Output format will be determined based on file extension.
 
     Options:
+      -f, --force  Overwrite output file if it exists.
+      --help       Show this message and exit.
+
+lmbmp
+-----
+
+``lmbmp`` can be used to convert an image to a set of bitmap files which can then be used with LiveMaker's
+``BmpToGale`` tool. ::
+
+    $ lmbmp --help
+    Usage: lmbmp [OPTIONS] INPUT_FILE
+
+      Convert image to BMP(s) which can be used with bmp2gale.
+
+      If the input file contains an alpha layer, a mask bitmap will be
+      generated. Output files will be named <input_name>.bmp and
+      <input_name>-m.bmp.
+
+    Options:
+      --version    Show the version and exit.
       -f, --force  Overwrite output file if it exists.
       --help       Show this message and exit.

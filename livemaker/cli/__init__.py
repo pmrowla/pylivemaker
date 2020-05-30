@@ -24,14 +24,14 @@ import sys
 
 from loguru import logger
 
-from .cli import galconvert
+from .cli import galconvert, lmbmp
 from .lmar import lmar
 from .lmgraph import lmgraph
 from .lmlpb import lmlpb
 from .lmlsb import lmlsb
 from .lmpatch import lmpatch
 
-__all__ = ["galconvert", "lmar", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
+__all__ = ["galconvert", "lmar", "lmbmp", "lmgraph", "lmlpb", "lmlsb", "lmpatch"]
 
 
 logger.remove()
