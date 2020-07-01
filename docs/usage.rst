@@ -24,6 +24,45 @@ To try and patch something:
     $ lmlsb dump ゲームメイン.lsb > gamemain.txt
     $ lmlsb dump 00000001.lsb > 00000001.lsb.txt
 
+3. Once you've found an LSB with a script you want to edit, scenario text lines from an LSB can be extracted into a CSV file. ::
+
+    $ lmlsb extractcsv --encoding=utf-8-sig 00000001.lsb 00000001.csv
+
+.. note:: The ``encoding`` parameter is optional, but must be set to ``utf-8-sig``
+   if you intend to use Microsoft Excel to translate a pylivemaker CSV file.
+
+4. Edit the CSV using your preferred spreadsheet tool. To translate a text block,
+   simply add your translation in the "Translated text" column.
+
+.. image:: https://user-images.githubusercontent.com/651988/80898950-d770ae00-8d44-11ea-8772-99e49f3b8482.png
+   :width: 500
+
+.. note:: For text blocks spanning multiple lines, newlines in the translated
+   text cell will be preserved in-game as line breaks.
+
+5. Patch the translated CSV back into the lsb. ::
+
+   $ lmlsb insertcsv --encoding=utf-8-sig 00000001.lsb 00000001.csv
+
+.. note:: The recommended way to translate scripts in pylivemaker 1.0
+   is via the CSV tools. ``extractmenu`` and ``insertmenu`` can be used
+   to translate in-game text menus via CSV files as well. For more details
+   on the CSV tools, refer to this (and related) github discussions:
+   https://github.com/pmrowla/pylivemaker/pull/37
+
+6. Patch the exe (for now the .lsb file must be in the same directory as the exe, since there is no command line option to set the correct archive entry path). ::
+
+    $ lmpatch some.exe 00000001.lsb
+
+Patching with LNS scripts
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LNS scripts can be extracted and edited as well, in the event that you
+need support for more advanced script tags which are not supported by
+the CSV translation API.
+
+Example (replaces steps 3 through 5 from above):
+
 3. Once you've found an lsb with a script you want to edit, extract it. ::
 
     $ mkdir orig_scripts
@@ -35,17 +74,11 @@ To try and patch something:
     $ cp orig_scripts/*.lns translated_scripts
     <run your favorite text editor on whatever script you want to translate>
 
-.. note:: If you do not need access LiveNovel script tags for your game, you can also work with script text lines using the ``lmlsb extractcsv`` and ``lmlsb insertcsv`` commands (instead of ``lmlsb extract`` and ``lmlsb insert`` in steps 3 and 4).
-
 5. Patch the new script back into the lsb. ::
 
     $ lmlsb insert 00000001.lsb scripts_dir/<translated_script>.lns 1234
 
    (where 1234 is the appropriate TextIns command line number).
-
-6. Patch the exe (for now the .lsb file must be in the same directory as the exe, since there is no command line option to set the correct archive entry path). ::
-
-    $ lmpatch some.exe 00000001.lsb
 
 Notes for Translation Patches
 -----------------------------
