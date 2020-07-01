@@ -19,6 +19,7 @@
 """LiveMaker LSB script CLI tool."""
 
 import hashlib
+import re
 import shutil
 import sys
 import csv
@@ -244,6 +245,11 @@ def dump(mode, encoding, output_file, input_file):
                     print(dec.decompile(c.get("Text")), file=outf)
 
 
+def _escape_scenario_name(name):
+    """Replace invalid Windows path characters with underscore."""
+    return re.sub(r'[\/:*?"<>|]+', "_", name)
+
+
 @lmlsb.command()
 @click.option(
     "-e",
@@ -284,7 +290,7 @@ def extract(encoding, output_dir, input_file):
         with open(output_dir.joinpath(lsb_ref_filename), "w", encoding=encoding) as lsb_ref_file:
             for line, name, scenario in lsb.text_scenarios():
                 if name:
-                    name = "{}-{}.lns".format(lsb_path.stem, name)
+                    name = "{}-{}.lns".format(lsb_path.stem, _escape_scenario_name(name))
                 if not name:
                     name = "{}-line{}.lns".format(lsb_path.stem, line)
                 output_path = output_dir.joinpath(name)
