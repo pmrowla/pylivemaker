@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     livemaker.lsb
+    livemaker.cli
 
 Submodules
 ----------
@@ -19,14 +20,6 @@ livemaker.archive module
     :undoc-members:
     :show-inheritance:
 
-livemaker.cli module
---------------------
-
-.. automodule:: livemaker.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 livemaker.exceptions module
 ---------------------------
 
@@ -35,10 +28,34 @@ livemaker.exceptions module
     :undoc-members:
     :show-inheritance:
 
-livemaker.patch module
-----------------------
+livemaker.lpb module
+--------------------
 
-.. automodule:: livemaker.patch
+.. automodule:: livemaker.lpb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+livemaker.lpm module
+--------------------
+
+.. automodule:: livemaker.lpm
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+livemaker.project module
+------------------------
+
+.. automodule:: livemaker.project
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+livemaker.scramble module
+-------------------------
+
+.. automodule:: livemaker.scramble
     :members:
     :undoc-members:
     :show-inheritance:

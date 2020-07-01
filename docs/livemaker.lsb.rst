@@ -20,6 +20,14 @@ livemaker.lsb.core module
     :undoc-members:
     :show-inheritance:
 
+livemaker.lsb.graph module
+--------------------------
+
+.. automodule:: livemaker.lsb.graph
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 livemaker.lsb.lmscript module
 -----------------------------
 
@@ -28,10 +36,26 @@ livemaker.lsb.lmscript module
     :undoc-members:
     :show-inheritance:
 
+livemaker.lsb.menu module
+-------------------------
+
+.. automodule:: livemaker.lsb.menu
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 livemaker.lsb.novel module
 --------------------------
 
 .. automodule:: livemaker.lsb.novel
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+livemaker.lsb.translate module
+------------------------------
+
+.. automodule:: livemaker.lsb.translate
     :members:
     :undoc-members:
     :show-inheritance:

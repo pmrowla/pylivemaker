@@ -28,8 +28,9 @@ To try and patch something:
 
     $ lmlsb extractcsv --encoding=utf-8-sig 00000001.lsb 00000001.csv
 
-.. note:: The ``encoding`` parameter is optional, but must be set to ``utf-8-sig``
-   if you intend to use Microsoft Excel to translate a pylivemaker CSV file.
+.. note:: It is also possible to extract, translate and insert multiple LSB files
+   using a single CSV file. For details refer to this discussion:
+   https://github.com/pmrowla/pylivemaker/issues/58#issuecomment-626787758
 
 4. Edit the CSV using your preferred spreadsheet tool. To translate a text block,
    simply add your translation in the "Translated text" column.
