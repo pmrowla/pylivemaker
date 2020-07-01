@@ -2,14 +2,37 @@
 History
 =======
 
+1.0.0 (2020-07-01)
+------------------
+
+* Added ``lmlpb`` tool for editing LPB project parameters
+* Added ``livemaker.lsb.translate`` API
+* Added menu translation API, text and LPM (image) menus are now supported
+* Standardized CSV format for translatable text
+* All CSV commands now support the ``--encoding`` parameter
+* Fixed old logging bugs
+* Added experimental ``lmgraph lsb`` command for generating LSB file execution graphs
+* Added ``lmbmp`` helper utility for generating ``BmpToGale`` compatible image + mask pairs
+
+Known issues:
+
+* CSV scenario script translation does not currently support formatting tags.
+  If you need advanced tag support, you will need to use the LNS script
+  translation method.
+
+Deprecated:
+
+* ``--mode=lines`` for scenario text CSV commands
+* Old CSV format (CSV files generated in 0.3.x are not compatible with 1.0)
+
 0.3.2 (2020-05-04)
 ------------------
 
 This will be the final release before v1.0.0 (which will break backwards compatibility with this release).
 
-* Added `extractcsv` command for extracting scenario text to a CSV file
-* Added `insertcsv` command for replacing scenario text from a CSV file
-* Added `lmlpb` CLI tool for manipulating LPB project settings files.
+* Added ``extractcsv`` command for extracting scenario text to a CSV file
+* Added ``insertcsv`` command for replacing scenario text from a CSV file
+* Added ``lmlpb`` CLI tool for manipulating LPB project settings files.
 
 Known issues:
 
