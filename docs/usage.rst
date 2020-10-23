@@ -84,6 +84,9 @@ Example (replaces steps 3 through 5 from above):
 Notes for Translation Patches
 -----------------------------
 
+Latin Character Display
+^^^^^^^^^^^^^^^^^^^^^^^
+
 By default, LiveMaker games will display text using full-width latin characters, which causes text translated into any Western language to look very bad in-game.
 For LiveMaker 3 based games, this behavior can be modified, but for LiveMaker 2 games, I am unaware of any solution for this issue.
 
@@ -127,3 +130,18 @@ By changing that value to ``0``, the standard in-game text box should now be dis
 For more details refer to the thread in `issue #9 <https://github.com/pmrowla/pylivemaker/issues/9#issuecomment-506694249>`_.
 
 .. note:: There are multiple possible LiveMaker message box types (including menus/history/etc), so users generating a full translation patch may need to modify multiple ``MesBox`` commands to have their translated text displayed properly everywhere in-game.
+
+Translating System Menus
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+To translate the main LiveMaker system menus, ``lmlsb edit`` can be used to translate strings in the system menu LSB files (such as ``ノベルシステム/システムメニュー/オプション選択時.lsb``/``novel_system/system_menu/on_option_selection.lsb``).
+
+For more details refer to the thread in `issue #19 <https://github.com/pmrowla/pylivemaker/issues/19>`_.
+
+pylivemaker-tools
+^^^^^^^^^^^^^^^^^
+
+Github user @Stefan311 has provided a collection of scripts which may be useful to translators.
+See: https://github.com/Stefan311/pylivemaker-tools.
+
+In particular, ``extractstrings.py`` and ``insertstrings.py`` can be used to translate strings inside LSB commands which are not supported by pylivemaker's ``lmlsb edit`` tool.
