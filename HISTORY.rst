@@ -2,6 +2,12 @@
 History
 =======
 
+1.0.1 (2020-10-25)
+------------------
+
+* Fix menu support for certain LM engine versions
+* Add experimental ruby/furigana support (supported in LNS scripts only)
+
 1.0.0 (2020-07-01)
 ------------------
 
