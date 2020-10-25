@@ -108,7 +108,7 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
 
 @lmar.command()
 @click.argument("input_file", required=True, type=click.Path(exists=True, dir_okay=False))
-def l(input_file):
+def l(input_file):  # noqa: E741
     """List the contents of the specified archive."""
     try:
         with LMArchive(input_file) as lm:

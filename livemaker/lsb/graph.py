@@ -145,7 +145,7 @@ def handle_while(graph, unvisited, lsb, init_pc, init_cmd, return_pc=None):
     graph.add_edge(init_pc, while_pc, branch=False)
     calc = str(while_cmd.get("Calc"))
     graph.add_edge(while_pc, while_pc + 1, branch=True, cond=f"While {calc}")
-    graph.add_edge(while_pc, end_pc, branch=True, cond=f"Done")
+    graph.add_edge(while_pc, end_pc, branch=True, cond="Done")
     graph.add_edge(loop_pc, while_pc, branch=False)
 
     # visit loop
@@ -208,7 +208,7 @@ def nx_to_dot(graph):
                 if blocks:
                     for line in blocks[0].text.splitlines():
                         lines.append(f"    {line}\\l")
-                    lines.append(f"    ...\\l")
+                    lines.append("    ...\\l")
 
         block_start = block_nodes[0]
         dot_node = pydot.Node(block_start, label="".join(lines), shape="box")
