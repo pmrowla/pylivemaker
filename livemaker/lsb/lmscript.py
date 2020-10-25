@@ -268,7 +268,8 @@ class LMScript(BaseSerializable):
             "param_stream_size" / construct.Int32ul,
             "command_params"
             / construct.Array(
-                construct.this.command_count, _ParamStreamAdapter(construct.Bytes(construct.this.param_stream_size)),
+                construct.this.command_count,
+                _ParamStreamAdapter(construct.Bytes(construct.this.param_stream_size)),
             ),
             "commands" / construct.PrefixedArray(construct.Int32ul, construct.Select(*_command_structs)),
         )

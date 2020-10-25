@@ -125,16 +125,38 @@ class LMProject:
             "unk2" / construct.Int64ul,
             "init_lsb" / construct.PascalString(construct.Int32ul, "cp932"),
             "exit_lsb"
-            / construct.If(construct.this.version > 0x6D, construct.PascalString(construct.Int32ul, "cp932"),),
+            / construct.If(
+                construct.this.version > 0x6D,
+                construct.PascalString(construct.Int32ul, "cp932"),
+            ),
             "project_dir" / construct.PascalString(construct.Int32ul, "cp932"),
             "unk3" / construct.Int32ul,
             "bool1" / construct.Byte,
-            "bool2" / construct.If(construct.this.version >= 0x6A, construct.Byte,),
+            "bool2"
+            / construct.If(
+                construct.this.version >= 0x6A,
+                construct.Byte,
+            ),
             "audio_formats"
-            / construct.If(construct.this.version >= 0x6D, construct.PascalString(construct.Int32ul, "cp932"),),
-            "bool3" / construct.If(construct.this.version >= 0x71, construct.Byte,),
-            "bool4" / construct.If(construct.this.version >= 0x72, construct.Byte,),
-            "bool5" / construct.If(construct.this.version >= 0x74, construct.Byte,),
+            / construct.If(
+                construct.this.version >= 0x6D,
+                construct.PascalString(construct.Int32ul, "cp932"),
+            ),
+            "bool3"
+            / construct.If(
+                construct.this.version >= 0x71,
+                construct.Byte,
+            ),
+            "bool4"
+            / construct.If(
+                construct.this.version >= 0x72,
+                construct.Byte,
+            ),
+            "bool5"
+            / construct.If(
+                construct.this.version >= 0x74,
+                construct.Byte,
+            ),
             "insert_disk_prompt" / construct.PascalString(construct.Int32ul, "cp932"),
             "exit_prompt" / construct.PascalString(construct.Int32ul, "cp932"),
             "system_settings"

@@ -321,7 +321,10 @@ class TWdOpeReturn(BaseTWdGlyph):
     """
 
     type = TWdType.TWdOpeReturn
-    _struct_fields = construct.Struct(construct.Embedded(BaseTWdGlyph._struct_fields), "break_type" / construct.Byte,)
+    _struct_fields = construct.Struct(
+        construct.Embedded(BaseTWdGlyph._struct_fields),
+        "break_type" / construct.Byte,
+    )
 
     def __init__(self, break_type=0, **kwargs):
         super().__init__(**kwargs)
@@ -374,7 +377,8 @@ class TWdOpeEvent(BaseTWdGlyph):
 
     type = TWdType.TWdOpeEvent
     _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields), "event" / construct.PascalString(construct.Int32ul, "cp932"),
+        construct.Embedded(BaseTWdGlyph._struct_fields),
+        "event" / construct.PascalString(construct.Int32ul, "cp932"),
     )
 
     def __init__(self, event="", **kwargs):
@@ -496,10 +500,26 @@ class TWdImg(BaseTWdReal):
         "align" / construct.Byte,
         "hoversrc"
         / construct.If(construct.this._._.version >= 103, construct.PascalString(construct.Int32ul, "cp932")),
-        "mgnleft" / construct.If(construct.this._._.version >= 105, construct.Int32sl,),
-        "mgnright" / construct.If(construct.this._._.version >= 105, construct.Int32sl,),
-        "mgntop" / construct.If(construct.this._._.version >= 105, construct.Int32sl,),
-        "mgnbottom" / construct.If(construct.this._._.version >= 105, construct.Int32sl,),
+        "mgnleft"
+        / construct.If(
+            construct.this._._.version >= 105,
+            construct.Int32sl,
+        ),
+        "mgnright"
+        / construct.If(
+            construct.this._._.version >= 105,
+            construct.Int32sl,
+        ),
+        "mgntop"
+        / construct.If(
+            construct.this._._.version >= 105,
+            construct.Int32sl,
+        ),
+        "mgnbottom"
+        / construct.If(
+            construct.this._._.version >= 105,
+            construct.Int32sl,
+        ),
         "downsrc"
         / construct.If(construct.this._._.version >= 105, construct.PascalString(construct.Int32ul, "cp932")),
     )
@@ -615,8 +635,16 @@ class TDecorate(BaseSerializable):
             "unk7" / construct.IfThenElse(construct.this._._.version < 100, construct.Byte, construct.Int32ul),
             "unk8" / construct.PascalString(construct.Int32ul, "cp932"),
             "ruby" / construct.PascalString(construct.Int32ul, "cp932"),
-            "unk10" / construct.If(construct.this._._.version >= 100, construct.Int32ul,),
-            "unk11" / construct.If(construct.this._._.version >= 100, construct.Int32ul,),
+            "unk10"
+            / construct.If(
+                construct.this._._.version >= 100,
+                construct.Int32ul,
+            ),
+            "unk11"
+            / construct.If(
+                construct.this._._.version >= 100,
+                construct.Int32ul,
+            ),
         )
 
 
@@ -662,7 +690,8 @@ class TWdCondition(BaseSerializable):
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            "count" / construct.Int32ul, "target" / construct.PascalString(construct.Int32ul, "cp932"),
+            "count" / construct.Int32ul,
+            "target" / construct.PascalString(construct.Int32ul, "cp932"),
         )
 
 
@@ -798,11 +827,13 @@ class TpWord(BaseSerializable):
             "decorators" / construct.PrefixedArray(construct.Int32ul, TDecorate._struct()),
             "conditions"
             / construct.If(
-                construct.this.version >= 104, construct.PrefixedArray(construct.Int32ul, TWdCondition._struct()),
+                construct.this.version >= 104,
+                construct.PrefixedArray(construct.Int32ul, TWdCondition._struct()),
             ),
             "links"
             / construct.If(
-                construct.this.version >= 105, construct.PrefixedArray(construct.Int32ul, TWdLink._struct()),
+                construct.this.version >= 105,
+                construct.PrefixedArray(construct.Int32ul, TWdLink._struct()),
             ),
             "body" / construct.PrefixedArray(construct.Int32ul, construct.Select(*select_subcons)),
         )

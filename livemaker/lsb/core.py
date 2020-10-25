@@ -492,7 +492,9 @@ class Param(BaseSerializable):
                     "Str": construct.PascalString(construct.Int32ul, "cp932"),
                 },
                 # else 'Var' variable name type
-                construct.Select(construct.PascalString(construct.Int32ul, "cp932"),),
+                construct.Select(
+                    construct.PascalString(construct.Int32ul, "cp932"),
+                ),
             ),
         )
 
@@ -819,7 +821,9 @@ class LiveParser(BaseSerializable):
 
     @classmethod
     def _struct(cls):
-        return construct.Struct("entries" / construct.PrefixedArray(construct.Int32ul, OpeData._struct()),)
+        return construct.Struct(
+            "entries" / construct.PrefixedArray(construct.Int32ul, OpeData._struct()),
+        )
 
     #     @classmethod
     #     def from_struct(cls, struct):

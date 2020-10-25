@@ -465,7 +465,11 @@ class LMArchiveDirectory(object):
                     / construct.IfThenElse(
                         construct.this._.version >= 100,
                         construct.Transformed(
-                            construct.Int32ul, LMObfuscator().transform_int, 4, LMObfuscator().transform_int, 4,
+                            construct.Int32ul,
+                            LMObfuscator().transform_int,
+                            4,
+                            LMObfuscator().transform_int,
+                            4,
                         ),
                         construct.Int32ul,
                     ),
@@ -474,7 +478,11 @@ class LMArchiveDirectory(object):
                     / construct.IfThenElse(
                         construct.this._.version >= 101,
                         construct.Transformed(
-                            construct.Int32ul, LMObfuscator().transform_int, 4, LMObfuscator().transform_int_high, 4,
+                            construct.Int32ul,
+                            LMObfuscator().transform_int,
+                            4,
+                            LMObfuscator().transform_int_high,
+                            4,
                         ),
                         construct.Int32ul,
                     ),
@@ -493,8 +501,16 @@ class LMArchiveDirectory(object):
                 # ),
                 construct.Int32ul,
             ),
-            "checksums" / construct.Array(construct.this.count, construct.Int32ul,),
-            "encrypt_flags" / construct.Array(construct.this.count, construct.Byte,),
+            "checksums"
+            / construct.Array(
+                construct.this.count,
+                construct.Int32ul,
+            ),
+            "encrypt_flags"
+            / construct.Array(
+                construct.this.count,
+                construct.Byte,
+            ),
         )
 
     @classmethod

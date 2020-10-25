@@ -101,7 +101,8 @@ class LMLivePrevMenu:
                     "unk4" / construct.PascalString(construct.Int32ul, "cp932"),
                     "unk5"
                     / construct.If(
-                        construct.this._._.version > 100, construct.PascalString(construct.Int32ul, "cp932"),
+                        construct.this._._.version > 100,
+                        construct.PascalString(construct.Int32ul, "cp932"),
                     ),
                     "unk6"
                     / construct.If(
@@ -139,11 +140,13 @@ class LMLivePrevMenu:
                     ),
                     "unk19"
                     / construct.If(
-                        construct.this._._.version > 104, construct.PascalString(construct.Int32ul, "cp932"),
+                        construct.this._._.version > 104,
+                        construct.PascalString(construct.Int32ul, "cp932"),
                     ),
                     "unk20"
                     / construct.If(
-                        construct.this._._.version > 105, construct.PascalString(construct.Int32ul, "cp932"),
+                        construct.this._._.version > 105,
+                        construct.PascalString(construct.Int32ul, "cp932"),
                     ),
                 ),
             ),

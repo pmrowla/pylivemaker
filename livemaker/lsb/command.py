@@ -215,7 +215,8 @@ class LabelReference(BaseSerializable):
     @classmethod
     def _struct(cls):
         return construct.Struct(
-            "Page" / construct.PascalString(construct.Int32ul, "cp932"), "Label" / construct.Int32ul,
+            "Page" / construct.PascalString(construct.Int32ul, "cp932"),
+            "Label" / construct.Int32ul,
         )
 
     @classmethod
@@ -405,7 +406,9 @@ class If(BaseCommand):
     """
 
     type = CommandType.If
-    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Calc" / LiveParser._struct(),
+    )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -452,7 +455,9 @@ class Label(BaseCommand):
     """
 
     type = CommandType.Label
-    _struct_fields = construct.Struct("Name" / construct.PascalString(construct.Int32ul, "cp932"),)
+    _struct_fields = construct.Struct(
+        "Name" / construct.PascalString(construct.Int32ul, "cp932"),
+    )
 
     def __init__(self, Name="", **kwargs):
         super().__init__(**kwargs)
@@ -477,7 +482,10 @@ class Jump(BaseCommand):
     """
 
     type = CommandType.Jump
-    _struct_fields = construct.Struct("Page" / LabelReference._struct(), "Calc" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Page" / LabelReference._struct(),
+        "Calc" / LiveParser._struct(),
+    )
 
     def __init__(self, Page=LabelReference(), Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -562,7 +570,9 @@ class Exit(BaseCommand):
     """
 
     type = CommandType.Exit
-    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Calc" / LiveParser._struct(),
+    )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -598,9 +608,6 @@ class Wait(BaseCommand):
     )
 
     def __init__(self, Calc=LiveParser(), Time=LiveParser(), StopEvent=None, **kwargs):
-        """
-
-        """
         super().__init__(**kwargs)
         if isinstance(Calc, construct.Container):
             Calc = LiveParser.from_struct(Calc)
@@ -652,7 +659,9 @@ class BaseComponentCommand(BaseCommand):
     # NOTE: We don't use LiveParserArray here because we would still need to do
     # the special handling for parameter names/types anyways
     type = None
-    _struct_fields = construct.Struct("components" / construct.Array(_count_params, LiveParser._struct()),)
+    _struct_fields = construct.Struct(
+        "components" / construct.Array(_count_params, LiveParser._struct()),
+    )
 
     def __init__(self, components=[], command_params=[], **kwargs):
         super().__init__(**kwargs)
@@ -862,7 +871,9 @@ class Calc(BaseCommand):
     """
 
     type = CommandType.Calc
-    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Calc" / LiveParser._struct(),
+    )
 
     def __init__(self, Calc=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -899,9 +910,6 @@ class VarNew(BaseCommand):
     )
 
     def __init__(self, Name="", Type=0, InitVal=LiveParser(), Scope=0, **kwargs):
-        """
-
-        """
         super().__init__(**kwargs)
         self.args["Name"] = Name
         if not isinstance(Type, ParamType):
@@ -939,7 +947,9 @@ class VarDel(BaseCommand):
     """
 
     type = CommandType.VarDel
-    _struct_fields = construct.Struct("Name" / construct.PascalString(construct.Int32ul, "cp932"),)
+    _struct_fields = construct.Struct(
+        "Name" / construct.PascalString(construct.Int32ul, "cp932"),
+    )
 
     def __init__(self, Name="", **kwargs):
         super().__init__(**kwargs)
@@ -972,9 +982,6 @@ class GetProp(BaseCommand):
     )
 
     def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), VarName="", **kwargs):
-        """
-
-        """
         super().__init__(**kwargs)
         if isinstance(ObjName, construct.Container):
             ObjName = LiveParser.from_struct(ObjName)
@@ -1009,7 +1016,9 @@ class SetProp(BaseCommand):
 
     type = CommandType.SetProp
     _struct_fields = construct.Struct(
-        "ObjName" / LiveParser._struct(), "ObjProp" / LiveParser._struct(), "Value" / LiveParser._struct(),
+        "ObjName" / LiveParser._struct(),
+        "ObjProp" / LiveParser._struct(),
+        "Value" / LiveParser._struct(),
     )
 
     def __init__(self, ObjName=LiveParser(), ObjProp=LiveParser(), Value=LiveParser(), **kwargs):
@@ -1043,7 +1052,9 @@ class ObjDel(BaseCommand):
     """
 
     type = CommandType.ObjDel
-    _struct_fields = construct.Struct("Name" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Name" / LiveParser._struct(),
+    )
 
     def __init__(self, Name=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -1204,7 +1215,9 @@ class MenuClose(BaseCommand):
     """
 
     type = CommandType.MenuClose
-    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Target" / LiveParser._struct(),
+    )
 
     def __init__(self, Target=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -1236,11 +1249,11 @@ class TextClr(BaseCommand):
     """
 
     type = CommandType.TextClr
-    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Target" / LiveParser._struct(),
+    )
 
     def __init__(self, Target=LiveParser(), **kwargs):
-        """
-        """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
@@ -1361,7 +1374,10 @@ class While(BaseCommand):
     """
 
     type = CommandType.While
-    _struct_fields = construct.Struct("Calc" / LiveParser._struct(), "End" / construct.Int32ul,)
+    _struct_fields = construct.Struct(
+        "Calc" / LiveParser._struct(),
+        "End" / construct.Int32ul,
+    )
 
     def __init__(self, Calc=LiveParser(), End=0, **kwargs):
         super().__init__(**kwargs)
@@ -1380,7 +1396,9 @@ class WhileInit(BaseCommand):
     """
 
     type = CommandType.WhileInit
-    _struct_fields = construct.Struct("Calc" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Calc" / LiveParser._struct(),
+    )
 
     def __init__(self, Calc=LiveParser, **kwargs):
         super().__init__(**kwargs)
@@ -1413,7 +1431,10 @@ class WhileLoop(WhileInit):
     """
 
     type = CommandType.WhileLoop
-    _struct_fields = construct.Struct(construct.Embedded(WhileInit._struct_fields), "Start" / construct.Int32ul,)
+    _struct_fields = construct.Struct(
+        construct.Embedded(WhileInit._struct_fields),
+        "Start" / construct.Int32ul,
+    )
 
     def __init__(self, Start=0, **kwargs):
         super().__init__(**kwargs)
@@ -1433,7 +1454,10 @@ class Break(Exit):
     """
 
     type = CommandType.Break
-    _struct_fields = construct.Struct(construct.Embedded(Exit._struct_fields), "End" / construct.Int32ul,)
+    _struct_fields = construct.Struct(
+        construct.Embedded(Exit._struct_fields),
+        "End" / construct.Int32ul,
+    )
 
     def __init__(self, End=0, **kwargs):
         super().__init__(**kwargs)
@@ -1453,7 +1477,10 @@ class Continue(Exit):
     """
 
     type = CommandType.Continue
-    _struct_fields = construct.Struct(construct.Embedded(Exit._struct_fields), "Start" / construct.Int32ul,)
+    _struct_fields = construct.Struct(
+        construct.Embedded(Exit._struct_fields),
+        "Start" / construct.Int32ul,
+    )
 
     def __init__(self, Start=0, **kwargs):
         super().__init__(**kwargs)
@@ -1518,7 +1545,9 @@ class GameLoad(BaseCommand):
     """
 
     type = CommandType.GameLoad
-    _struct_fields = construct.Struct("No" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "No" / LiveParser._struct(),
+    )
 
     def __init__(self, No=LiveParser(), **kwargs):
         super().__init__(**kwargs)
@@ -1540,7 +1569,10 @@ class PCReset(BaseCommand):
     """
 
     type = CommandType.PCReset
-    _struct_fields = construct.Struct("Page" / LabelReference._struct(), "AllClear" / construct.Byte,)
+    _struct_fields = construct.Struct(
+        "Page" / LabelReference._struct(),
+        "AllClear" / construct.Byte,
+    )
 
     def __init__(self, Page=LabelReference(), AllClear=0, **kwargs):
         super().__init__(**kwargs)
@@ -1642,11 +1674,11 @@ class MediaPlay(BaseCommand):
     """
 
     type = CommandType.MediaPlay
-    _struct_fields = construct.Struct("Target" / LiveParser._struct(),)
+    _struct_fields = construct.Struct(
+        "Target" / LiveParser._struct(),
+    )
 
     def __init__(self, Target=LiveParser(), **kwargs):
-        """
-        """
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
             Target = LiveParser.from_struct(Target)
@@ -1735,8 +1767,6 @@ class FormatHist(BaseCommand):
     )
 
     def __init__(self, Name=LiveParser(), Target=LiveParser(), **kwargs):
-        """
-        """
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
             Name = LiveParser.from_struct(Name)
@@ -1766,8 +1796,6 @@ class SaveCabinet(BaseComponentCommand):
     )
 
     def __init__(self, Act=LiveParser(), Targets=LiveParserArray(), **kwargs):
-        """
-        """
         super().__init__(**kwargs)
         if isinstance(Act, construct.Container):
             Act = LiveParser.from_struct(Act)
