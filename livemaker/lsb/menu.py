@@ -43,6 +43,8 @@ class BaseSelectionMenu:
     END_CHOICE_CALCS = [
         "Trim(ArrayToString(_tmp))",
         "TrimArray(_tmp)",
+        "_tmp = Trim(ArrayToString(_tmp))",
+        "_tmp = TrimArray(_tmp)",
     ]
     EXECUTE_LSB = None
 
@@ -295,11 +297,13 @@ class TextSelectionMenu(BaseSelectionMenu):
                 label = cmd
         except IndexError:
             pass
+        logger.debug(f"Searching for menu at index {start}")
         choices, next_cmd = cls._find_choices(lsb, start + 1)
         if not choices:
             raise NotSelectionMenuError
         jumps, next_cmd = cls._find_int_jumps(lsb, next_cmd)
         if not jumps:
+            logger.debug("Not a menu - no intermediate jumps")
             raise NotSelectionMenuError
         for text in jumps:
             target, index = jumps[text]
@@ -414,7 +418,10 @@ class LPMSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         params = cls._parse_params(params)
         lpm_file = params["menu_file"].strip('"')
-        choices = cls._choices_from_lpm(lpm_file, pylm=pylm)
+        try:
+            choices = cls._choices_from_lpm(lpm_file, pylm=pylm)
+        except FileNotFoundError:
+            choices = None
         if not choices:
             raise NotSelectionMenuError
 
@@ -430,7 +437,8 @@ class LPMSelectionMenu(BaseSelectionMenu):
             try:
                 target, target_index = jumps[name]
             except KeyError:
-                raise KeyError(f"No matching jump for menu choice {text}")
+                logger.warning(f"{lpm_file} contains unreachable menu choice {name}")
+                continue
             choice = LPMSelectionChoice(src_file, name, target, target_index)
             menu.add_choice(choice)
         return menu
