@@ -418,7 +418,10 @@ class LPMSelectionMenu(BaseSelectionMenu):
             raise NotSelectionMenuError
         params = cls._parse_params(params)
         lpm_file = params["menu_file"].strip('"')
-        choices = cls._choices_from_lpm(lpm_file, pylm=pylm)
+        try:
+            choices = cls._choices_from_lpm(lpm_file, pylm=pylm)
+        except FileNotFoundError:
+            choices = None
         if not choices:
             raise NotSelectionMenuError
 
@@ -434,7 +437,8 @@ class LPMSelectionMenu(BaseSelectionMenu):
             try:
                 target, target_index = jumps[name]
             except KeyError:
-                raise KeyError(f"No matching jump for menu choice {text}")
+                logger.warning(f"{lpm_file} contains unreachable menu choice {name}")
+                continue
             choice = LPMSelectionChoice(src_file, name, target, target_index)
             menu.add_choice(choice)
         return menu
