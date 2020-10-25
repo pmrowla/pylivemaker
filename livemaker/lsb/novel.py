@@ -566,7 +566,7 @@ class TDecorate(BaseSerializable):
     """
 
     def __init__(
-        self, count=0, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0, unk8="", unk9="", unk10=0, unk11=0, **kwargs
+        self, count=0, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0, unk8="", ruby="", unk10=0, unk11=0, **kwargs
     ):
         self.count = count
         self.unk2 = unk2
@@ -576,7 +576,7 @@ class TDecorate(BaseSerializable):
         self.unk6 = unk6
         self.unk7 = unk7
         self.unk8 = unk8
-        self.unk9 = unk9
+        self.ruby = ruby
         self.unk10 = unk10
         self.unk11 = unk11
 
@@ -592,7 +592,7 @@ class TDecorate(BaseSerializable):
         return "TDecorate({})".format(", ".join(["{}={}".format(k, v) for k, v in self.items()]))
 
     def keys(self):
-        return ["count", "unk2", "unk3", "unk4", "unk5", "unk6", "unk7", "unk8", "unk9", "unk10", "unk11"]
+        return ["count", "unk2", "unk3", "unk4", "unk5", "unk6", "unk7", "unk8", "ruby", "unk10", "unk11"]
 
     def items(self):
         return [(k, self[k]) for k in self.keys()]
@@ -614,7 +614,7 @@ class TDecorate(BaseSerializable):
             "unk6" / construct.Byte,
             "unk7" / construct.IfThenElse(construct.this._._.version < 100, construct.Byte, construct.Int32ul),
             "unk8" / construct.PascalString(construct.Int32ul, "cp932"),
-            "unk9" / construct.PascalString(construct.Int32ul, "cp932"),
+            "ruby" / construct.PascalString(construct.Int32ul, "cp932"),
             "unk10" / construct.If(construct.this._._.version >= 100, construct.Int32ul,),
             "unk11" / construct.If(construct.this._._.version >= 100, construct.Int32ul,),
         )
@@ -829,7 +829,7 @@ class TpWord(BaseSerializable):
     def body(self):
         return self._body
 
-    def replace_body(self, body):
+    def replace_body(self, body, ruby_text=None):
         """Replace the current text block body with a new one.
 
         Updates the appropriate character counts as needed.
@@ -837,6 +837,9 @@ class TpWord(BaseSerializable):
         Args:
             body (list(:class:`TWdGlyph`)): The new body. This should generally be
                 a script body compiled via `LNSCompiler.compile()`.
+            ruby_text (dict): Optional dict mapping {decorator_id: text}.
+                If provided, the ruby entry for the specified decorator will
+                be replaced.
 
         Raises:
             `BadLnsError`: If the new script body is invalid for this TpWord block
@@ -882,6 +885,19 @@ class TpWord(BaseSerializable):
         if self.links is not None:
             for i, link in enumerate(self.links):
                 link.count = link_counts[i]
+
+        if ruby_text:
+            warned = False
+            for id_, text in ruby_text.items():
+                try:
+                    dec = self.decorators[id_]
+                except IndexError:
+                    raise BadLnsError(f"Ruby text entry {id_} references a decorator that does not exist.")
+                if dec.ruby != text:
+                    if not warned:
+                        logger.warning("Ruby text support is experimental")
+                        warned = True
+                    dec.ruby = text
 
     def get_text_blocks(self):
         """Return :class:`LNSText` blocks for this TpWord."""
@@ -1007,7 +1023,12 @@ class LNSDecompiler(object):
                     self._endl()
                 self._decorator = w.decorator
                 if self._decorator:
-                    self._line.append(LNSTag.open(LNSTag.style, {"ID": self._decorator}))
+                    attrs = {"ID": self._decorator}
+                    dec = self.tpword.decorators[self._decorator]
+                    ruby = dec.get("ruby")
+                    if ruby:
+                        attrs["RUBY"] = ruby
+                    self._line.append(LNSTag.open(LNSTag.style, attrs))
         else:
             self._close_link()
             self._close_decorator()
@@ -1240,6 +1261,7 @@ class LNSCompiler(_markupbase.ParserBase):
         self.link_name = ""
         self.tpword_body = []
         self.version = 0
+        self.ruby_text = {}
 
     def compile(self, script):
         """Compile a [decompiled] script into a TpWord block.
@@ -1520,6 +1542,9 @@ class LNSCompiler(_markupbase.ParserBase):
             self.version = int(attrs.get("VER", 0))
         elif tag == LNSTag.style:
             self.decorator = int(attrs["ID"])
+            ruby = attrs.get("RUBY")
+            if ruby:
+                self.ruby_text[self.decorator] = ruby
         elif tag == LNSTag.txspd:
             self.text_speed = int(attrs.get("TIME"), 50)
         elif tag == LNSTag.txspn:
