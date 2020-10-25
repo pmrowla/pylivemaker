@@ -54,7 +54,7 @@ class LMProject:
         insert_disk_prompt="",
         exit_prompt="",
         system_settings=[],
-        **kwargs
+        **kwargs,
     ):
         self.version = version
         self.project_name = project_name

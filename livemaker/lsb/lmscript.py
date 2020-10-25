@@ -131,7 +131,7 @@ class LMScript(BaseSerializable):
         novel_params=[],
         command_params=[[]],
         commands=[],
-        **kwargs
+        **kwargs,
     ):
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
             logger.warning("LSB compilation unsupported for LMScript version {}".format(version))

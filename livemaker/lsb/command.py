@@ -798,7 +798,7 @@ class Flip(BaseCommand):
         DifferenceOnly=None,
         StopEvent=None,
         Param=LiveParserArray(prefixed=False),
-        **kwargs
+        **kwargs,
     ):
         # TODO: lsb and lsc XML serialization order are different (lsb is by
         # version, and XML always puts Param last), for now we assume text lsc
@@ -1286,7 +1286,7 @@ class CallHist(BaseCommand):
         Count=LiveParser(),
         CutBreak=LiveParser(),
         FormatName=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
         if isinstance(Target, construct.Container):
@@ -1693,7 +1693,7 @@ class PropMotion(BaseCommand):
         Time=LiveParser(),
         MoveType=LiveParser(),
         Paused=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
         if isinstance(Name, construct.Container):
