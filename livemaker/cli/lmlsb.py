@@ -144,7 +144,7 @@ def validate(input_file):
             script = dec.decompile(scenario)
             cc = LNSCompiler()
             new_body = cc.compile(script)
-            scenario.replace_body(new_body)
+            scenario.replace_body(new_body, ruby_text=cc.ruby_text)
             new_bytes = scenario._struct().build(scenario)
             if new_bytes == orig_bytes:
                 print("  script passed")
@@ -401,7 +401,7 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
             for index, name, scenario in lsb.text_scenarios():
                 if index == line_number:
                     print("Scenario {} at line {} will be replaced.".format(name, index))
-                    scenario.replace_body(new_body)
+                    scenario.replace_body(new_body, ruby_text=cc.ruby_text)
                     break
 
     try:
@@ -918,7 +918,7 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
     for index, name, scenario in lsb.text_scenarios():
         if index == line_number:
             print("Scenario {} at line {} will be replaced.".format(name, index))
-            scenario.replace_body(new_body)
+            scenario.replace_body(new_body, ruby_text=cc.ruby_text)
             break
     else:
         sys.exit("No matching TextIns command in the specified LSB.")
