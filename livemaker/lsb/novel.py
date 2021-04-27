@@ -297,10 +297,10 @@ class TWdOpeDiv(BaseTWdGlyph):
     def __init__(self, align=0, padleft=0, padright=0, noheight=0, **kwargs):
         super().__init__(**kwargs)
         self._keys.update(("align", "padleft", "padright", "noheight"))
-        self.align = int(align)
-        self.padleft = int(padleft)
-        self.padright = int(padright)
-        self.noheight = int(noheight)
+        self.align = int(align or 0)
+        self.padleft = int(padleft or 0)
+        self.padright = int(padright or 0)
+        self.noheight = int(noheight or 0)
 
     def __str__(self):
         attrs = {
