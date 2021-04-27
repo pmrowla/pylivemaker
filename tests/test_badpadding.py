@@ -1,6 +1,7 @@
 from livemaker.lsb import novel
 import pytest
 
+
 def test_padding_is_none():
 
     # This throws a type error
