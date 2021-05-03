@@ -2,6 +2,11 @@
 History
 =======
 
+1.0.2 (2021-05-03)
+------------------
+
+* Fix issue where text padding could be parsed into None-type
+
 1.0.1 (2020-10-25)
 ------------------
 
