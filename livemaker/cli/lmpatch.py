@@ -115,7 +115,7 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
         ) as new_lm:
 
             def bar_show(item):
-                width, _ = click.get_terminal_size()
+                width, _ = shutil.get_terminal_size()
                 width //= 4
                 name = item.name if item is not None else ""
                 if len(name) > width:
