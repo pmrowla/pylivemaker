@@ -21,7 +21,7 @@
 __author__ = """Peter Rowlands"""
 __email__ = "peter@pmrowla.com"
 __license__ = "GPLv3"
-__version__ = "1.0.3"
+__version__ = "1.0.4-dev"
 
 
 from loguru import logger
