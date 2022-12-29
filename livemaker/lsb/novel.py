@@ -1577,7 +1577,7 @@ class LNSCompiler(_markupbase.ParserBase):
             if ruby:
                 self.ruby_text[self.decorator] = ruby
         elif tag == LNSTag.txspd:
-            self.text_speed = int(attrs.get("TIME"), 50)
+            self.text_speed = int(attrs.get("TIME", 50))
         elif tag == LNSTag.txspn:
             self.text_speed = 50
         elif tag == LNSTag.txspf:
