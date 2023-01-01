@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches:
+    - master
+  release:
+    types: [released, prereleased]
+
+jobs:
+  pypi:
+    name: PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      - name: Install pip + twine
+        run: |
+          pip install -U pip build twine
+          pip --version
+
+      - name: Install package
+        run: |
+          pip install .
+
+      - name: Build package
+        run: |
+          python -m build
+
+      - name: Publish package on PyPI
+        if: github.event_name == "release"
+        uses: pypa/gh-action-pypi-publish@v1.6.4
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Publish package on TestPyPI
+        if: github.event_name != "release"
+        uses: pypa/gh-action-pypi-publish@v1.6.4
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
