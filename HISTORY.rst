@@ -2,6 +2,18 @@
 History
 =======
 
+1.0.4 (2023-01-01)
+------------------
+
+This will be the final release which supports Python <3.8.
+
+* Fix issue parsing ``TXSPD`` tags
+
+1.0.3 (2022-12-26)
+------------------
+
+* Fix issue with ``click.get_terminal_size`` deprecation
+
 1.0.2 (2021-05-03)
 ------------------
 

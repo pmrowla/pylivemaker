@@ -6,8 +6,8 @@ pylivemaker
 .. image:: https://img.shields.io/pypi/v/pylivemaker.svg
         :target: https://pypi.python.org/pypi/pylivemaker
 
-.. image:: https://img.shields.io/travis/com/pmrowla/pylivemaker.svg
-        :target: https://travis-ci.com/github/pmrowla/pylivemaker
+.. image:: https://github.com/pmrowla/pylivemaker/actions/workflows/tests.yml/badge.svg
+        :target: https://github.com/pmrowla/pylivemaker/actions/workflows/tests.yml
 
 .. image:: https://readthedocs.org/projects/pylivemaker/badge/?version=latest
         :target: https://pylivemaker.readthedocs.io/en/latest/?badge=latest
@@ -22,7 +22,7 @@ should also work for other LiveMaker games.
 
 Based on tinfoil's irl_.
 
-Requires Python 3 (3.6 and later).
+Requires Python 3 (3.8 and later).
 
 
 * Free software: GNU General Public License v3

@@ -68,7 +68,7 @@ Ready to contribute? Here's how to set up `pylivemaker` for local development.
 
     $ mkvirtualenv pylivemaker
     $ cd pylivemaker/
-    $ python setup.py develop
+    $ pip install -e ".[test,docs]"
     $ pip install -r requirements_dev.txt
     $ pre-commit install
 
@@ -79,10 +79,10 @@ Ready to contribute? Here's how to set up `pylivemaker` for local development.
    Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+   tests::
 
     $ pre-commit run --all-files
-    $ python setup.py test or pytest
+    $ pytest
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -109,9 +109,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.6, 3.7 and 3.8, and for PyPy. Check
-   https://travis-ci.com/github/pmrowla/pylivemaker/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+3. The pull request should work for Python 3.8 through 3.11 and for PyPy.
 
 Tips
 ----
@@ -126,10 +124,4 @@ Deploying
 
 A reminder for the maintainers on how to deploy.
 Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
-
-$ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
-
-Travis will then deploy to PyPI if tests pass.
+Then use the GitHub release functionality to generate a new tag and release.
