@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -58,13 +57,13 @@ class LsbVersionValidator(construct.Validator):
 
     def _decode(self, obj, ctx, path):
         if not self._validate(obj, ctx, path):
-            raise construct.ValidationError("Unsupported LSB version: {}".format(obj))
+            raise construct.ValidationError(f"Unsupported LSB version: {obj}")
         return obj
 
 
 def lsb_to_lm_ver(version):
     if version < MIN_LSB_VERSION:
-        raise BadLsbError("Unknown LSB version: {}".format(version))
+        raise BadLsbError(f"Unknown LSB version: {version}")
     elif version < 117:
         return 2
     return 3
@@ -134,7 +133,7 @@ class LMScript(BaseSerializable):
         **kwargs,
     ):
         if version < MIN_LSB_VERSION or version > MAX_LSB_VERSION:
-            logger.warning("LSB compilation unsupported for LMScript version {}".format(version))
+            logger.warning(f"LSB compilation unsupported for LMScript version {version}")
         self.version = version
         self.param_type = param_type
         self.flags = flags
@@ -150,7 +149,7 @@ class LMScript(BaseSerializable):
         return len(self.commands)
 
     def __repr__(self):
-        return "<LMScript version={} commands={}>".format(self.version, repr(self.commands))
+        return f"<LMScript version={self.version} commands={repr(self.commands)}>"
 
     def __iter__(self):
         return iter(self.items())
@@ -201,7 +200,7 @@ class LMScript(BaseSerializable):
     def to_lsc(self):
         """Return this script in the tex .lsc format."""
         lines = [
-            "LiveMaker{:03}".format(self.version),
+            f"LiveMaker{self.version:03}",
             str(self.param_type),
         ]
         if self.version >= 104:

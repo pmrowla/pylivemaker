@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -61,12 +60,12 @@ def parse_lsb(lsb_file, root_dir=None):
     if path in visited:
         return
     visited.add(path)
-    print("processing {}...".format(path))
+    print(f"processing {path}...")
     with open(path, "rb") as f:
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
-            sys.exit("Could not open LSB file: {}".format(e))
+            sys.exit(f"Could not open LSB file: {e}")
     graph.add_node(pydot.Node(str(lsb_file), label=str(lsb_file)))
     remaining_cmds = set(range(1, len(lsb.commands)))
 
@@ -140,7 +139,7 @@ def game(lsb_file, out_file):
     scripts, which should give a general approximation of the original LiveMaker scenario chart.
     """
     path = Path(lsb_file)
-    print("Generating graph for {}".format(path))
+    print(f"Generating graph for {path}")
     if path.name != "ゲームメイン.lsb":
         print("Warning: input filename is not ゲームメイン.lsb")
     root_dir = path.parent
@@ -148,10 +147,10 @@ def game(lsb_file, out_file):
     while lsbs_to_visit:
         parse_lsb(lsbs_to_visit.popleft(), root_dir=root_dir)
     if not out_file:
-        out_file = "{}.dot".format(lsb_file)
+        out_file = f"{lsb_file}.dot"
     with open(out_file, "w") as f:
         f.write(graph.to_string())
-    print("Wrote {}".format(out_file))
+    print(f"Wrote {out_file}")
 
 
 @lmgraph.command()
@@ -167,14 +166,14 @@ def lsb(lsb_file, out_file):
     and branch points as edges.
     """
     path = Path(lsb_file)
-    print("Generating execution graph for {}".format(path))
+    print(f"Generating execution graph for {path}")
 
     if not out_file:
-        out_file = "{}.dot".format(lsb_file)
+        out_file = f"{lsb_file}.dot"
 
     lsb = LMScript.from_file(path)
     dot = nx_to_dot(make_graph(lsb))
 
     with open(out_file, "w") as f:
         f.write(dot.to_string())
-    print("Wrote {}".format(out_file))
+    print(f"Wrote {out_file}")

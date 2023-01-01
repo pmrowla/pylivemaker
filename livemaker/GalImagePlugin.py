@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 """LiveMaker Gale (GAL/GaleX) image plugin for Python Imaging Library.
 
 Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
@@ -75,7 +74,7 @@ class GalImageFile(ImageFile.ImageFile):
                 # lxml deal with most of these cases.
                 root = etree.fromstring(xml, parser=etree.XMLParser(encoding="shift-jis", recover=True))
             except etree.LxmlError as e:
-                raise GalImageError("Could not parse GAL/X image XML metadata: {}".format(e))
+                raise GalImageError(f"Could not parse GAL/X image XML metadata: {e}")
             info["width"] = int(root.get("Width", 0))
             info["height"] = int(root.get("Height", 0))
             info["bpp"] = int(root.get("Bpp", 0))
@@ -89,7 +88,7 @@ class GalImageFile(ImageFile.ImageFile):
             info["offset"] = header_size + 12
             info["root"] = root
         else:
-            raise GalImageError("Unsupported GAL/X version {}".format(header))
+            raise GalImageError(f"Unsupported GAL/X version {header}")
         if info["frame_count"] != len(root):
             print("Warning: frame count mismatch")
         info["frames"] = []
@@ -175,7 +174,7 @@ class GalImageFile(ImageFile.ImageFile):
         try:
             version = int(info["version"])
         except ValueError:
-            raise GalImageError("Unsupported GAL version {}".format(header))
+            raise GalImageError(f"Unsupported GAL version {header}")
         if version > 102:
             header_size = si32le(read(4))
             header = read(header_size)
@@ -206,7 +205,7 @@ class GalImageFile(ImageFile.ImageFile):
             info["compression"] = None
             info["frame_count"] = 1
         else:
-            raise GalImageError("Unsupported GAL version {}".format(header))
+            raise GalImageError(f"Unsupported GAL version {header}")
         return info
 
     def _gal_frames(self, info):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -83,7 +82,7 @@ def lmbmp(force, input_file):
     input_file = Path(input_file)
     try:
         im = Image.open(input_file)
-    except IOError as e:
+    except OSError as e:
         sys.exit(f"Error opening {input_file}: {e}")
     name = Path(input_file.stem)
     output_file = input_file.parent / f"{name}.bmp"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>

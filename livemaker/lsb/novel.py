@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -59,15 +58,15 @@ class LNSTag(enum.Enum):
 
     @classmethod
     def open(cls, tag, attributes={}):
-        out = ["<{}".format(tag.value)]
+        out = [f"<{tag.value}"]
         if attributes:
-            out.append(" {}".format(" ".join(['{}="{}"'.format(k, v) for k, v in attributes.items()])))
+            out.append(" {}".format(" ".join([f'{k}="{v}"' for k, v in attributes.items()])))
         out.append(">")
         return "".join(out)
 
     @classmethod
     def close(cls, tag):
-        return "</{}>".format(tag.value)
+        return f"</{tag.value}>"
 
 
 class AlignEnum(enum.IntEnum):
@@ -136,16 +135,14 @@ class BaseTWdGlyph(BaseSerializable):
     )
 
     def __init__(self, condition=None, **kwargs):
-        self._keys = set(("type", "condition"))
+        self._keys = {"type", "condition"}
         self.condition = condition
 
     def __str__(self):
-        return "<{}>".format(repr(self))
+        return f"<{repr(self)}>"
 
     def __repr__(self):
-        return "{}({})".format(
-            type(self).__name__, ", ".join(["{}={}".format(k, getattr(self, k)) for k in self._keys])
-        )
+        return "{}({})".format(type(self).__name__, ", ".join([f"{k}={getattr(self, k)}" for k in self._keys]))
 
     def __iter__(self):
         return iter(self.items())
@@ -394,10 +391,10 @@ class TWdOpeEvent(BaseTWdGlyph):
             # System event
             e = e[1:]
             if args:
-                args = " {}".format(" ".join(['"{}"'.format(x) for x in args]))
+                args = " {}".format(" ".join([f'"{x}"' for x in args]))
             else:
                 args = ""
-            return "{{{0}{1}}}".format(e, args)
+            return f"{{{e}{args}}}"
         return LNSTag.open(LNSTag.event, {"VALUE": "\\r\\n".join([e] + args)})
 
     @property
@@ -609,7 +606,7 @@ class TDecorate(BaseSerializable):
         raise KeyError
 
     def __str__(self):
-        return "TDecorate({})".format(", ".join(["{}={}".format(k, v) for k, v in self.items()]))
+        return "TDecorate({})".format(", ".join([f"{k}={v}" for k, v in self.items()]))
 
     def keys(self):
         return ["count", "unk2", "unk3", "unk4", "unk5", "unk6", "unk7", "unk8", "ruby", "unk10", "unk11"]
@@ -665,7 +662,7 @@ class TWdCondition(BaseSerializable):
         self.target = target
 
     def __str__(self):
-        return "TWdCondition({})".format(", ".join(["{}={}".format(k, v) for k, v in self.items()]))
+        return "TWdCondition({})".format(", ".join([f"{k}={v}" for k, v in self.items()]))
 
     def __iter__(self):
         return iter(self.items())
@@ -711,7 +708,7 @@ class TWdLink(BaseSerializable):
         self.unk3 = unk3
 
     def __str__(self):
-        s = "TWdLink({})".format(", ".join(["{}={}".format(k, v) for k, v in self.items()]))
+        s = "TWdLink({})".format(", ".join([f"{k}={v}" for k, v in self.items()]))
         return s.replace("\r", "\\r").replace("\n", "\\n")
 
     def __iter__(self):
@@ -750,7 +747,7 @@ class _TpWordVersionAdapter(construct.Adapter):
         return int(obj)
 
     def _encode(self, obj, ctx, path):
-        return "{:03}".format(obj).encode("ascii")
+        return f"{obj:03}".encode("ascii")
 
 
 class TpWord(BaseSerializable):
@@ -887,19 +884,19 @@ class TpWord(BaseSerializable):
                 if hasattr(wd, "decorator") and wd.decorator is not None:
                     decorator_counts[wd.decorator] += 1
             except IndexError:
-                raise BadLnsError("TWd #{} ({}) references a decorator that does not exist.".format(i, wd))
+                raise BadLnsError(f"TWd #{i} ({wd}) references a decorator that does not exist.")
             try:
                 if self.conditions is not None:
                     if hasattr(wd, "condition") and wd.condition is not None:
                         condition_counts[wd.condition] += 1
             except IndexError:
-                raise BadLnsError("TWd #{} ({}) references a condition that does not exist.".format(i, wd))
+                raise BadLnsError(f"TWd #{i} ({wd}) references a condition that does not exist.")
             try:
                 if self.links is not None:
                     if hasattr(wd, "link") and wd.link is not None:
                         link_counts[wd.link] += 1
             except IndexError:
-                raise BadLnsError("TWd #{} ({}) references a condition that does not exist.".format(i, wd))
+                raise BadLnsError(f"TWd #{i} ({wd}) references a condition that does not exist.")
             # TODO: not sure how old scripts which use link_name use the count
             # field, implement this if/when someone finds an example.
             if hasattr(wd, "link_name") and wd.link_name:
@@ -965,7 +962,7 @@ class TpWord(BaseSerializable):
         self.replace_body(new_body)
 
 
-class LNSDecompiler(object):
+class LNSDecompiler:
     """Attempt to decompile a TpWord text block into something that resembles
     LiveMaker's LiveNovel scenario script format.
 
@@ -1005,15 +1002,15 @@ class LNSDecompiler(object):
             if self.tpword.decorators is not None:
                 lines.append("; Font styles:")
                 for i, x in enumerate(self.tpword.decorators):
-                    lines.append("; {:4}: {}".format(i, x))
+                    lines.append(f"; {i:4}: {x}")
             if self.tpword.conditions is not None:
                 lines.append("; Display conditions:")
                 for i, x in enumerate(self.tpword.conditions):
-                    lines.append("; {:4}: {}".format(i, x))
+                    lines.append(f"; {i:4}: {x}")
             if self.tpword.links is not None:
                 lines.append("; Links:")
                 for i, x in enumerate(self.tpword.links):
-                    lines.append("; {:4}: {}".format(i, x))
+                    lines.append(f"; {i:4}: {x}")
             lines.extend(
                 [
                     ";---------------------------------------",
@@ -1502,7 +1499,7 @@ class LNSCompiler(_markupbase.ParserBase):
         return gtpos
 
     def handle_eventtag(self, tag, attrs):
-        event = ["\x01{}".format(tag)]
+        event = [f"\x01{tag}"]
         for arg in attrs:
             event.append(arg.strip('"'))
         self.tpword_body.append(
@@ -1595,7 +1592,7 @@ class LNSCompiler(_markupbase.ParserBase):
             d["unk3"] = int(attrs.get("unk3", 0))
             self.tpword_body.append(TWdOpeVar(**d))
         else:
-            logger.warning("Unexpected tag: {}".format(tag))
+            logger.warning(f"Unexpected tag: {tag}")
 
     def handle_endtag(self, tag):
         tag = LNSTag[tag.lower()]
