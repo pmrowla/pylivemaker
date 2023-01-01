@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -48,13 +47,13 @@ def probe(input_file):
         try:
             lpb = LMProject.from_file(f)
         except BadLpbError as e:
-            sys.exit("Could not read file: {}".format(e))
+            sys.exit(f"Could not read file: {e}")
     print("LiveMaker project settings file:")
-    print("  Version: {} (LiveMaker{})".format(lpb.version, lpb.lm_version))
-    print("  Project Name: {}".format(lpb.project_name))
-    print("  Project dir: {}".format(lpb.project_dir))
-    print("  Init LSB: {}".format(lpb.init_lsb))
-    print("  Exit LSB: {}".format(lpb.exit_lsb))
+    print(f"  Version: {lpb.version} (LiveMaker{lpb.lm_version})")
+    print(f"  Project Name: {lpb.project_name}")
+    print(f"  Project dir: {lpb.project_dir}")
+    print(f"  Init LSB: {lpb.init_lsb}")
+    print(f"  Exit LSB: {lpb.exit_lsb}")
     print("  Settings:")
     for setting in lpb.system_settings:
         print("    {}: {}".format(setting["name"], setting["value"]))
@@ -87,9 +86,9 @@ def edit(lpb_file):
         try:
             lpb = LMProject.from_file(f)
         except LiveMakerException as e:
-            sys.exit("Could not open LPB file: {}".format(e))
+            sys.exit(f"Could not open LPB file: {e}")
 
-    print("Editing LM project {}".format(lpb_file))
+    print(f"Editing LM project {lpb_file}")
     for key in lpb.keys():
         orig = getattr(lpb, key)
         if key in EDITABLE_STRINGS:
@@ -98,24 +97,24 @@ def edit(lpb_file):
             if value != orig:
                 setattr(lpb, key, value)
         elif key != "system_settings":
-            print("{} [{}]: <skipping uneditable field>".format(key, orig))
+            print(f"{key} [{orig}]: <skipping uneditable field>")
     print("System settings:")
     for setting in lpb.system_settings:
         name = setting["name"]
         orig = setting["value"]
         param_type = setting["type"]
         param = Param(value=orig, type=ParamType[param_type])
-        _edit_parser_op(param, prompt="  {}".format(name))
+        _edit_parser_op(param, prompt=f"  {name}")
         if param.value != orig:
             setting["value"] = param.value
         print(lpb.system_settings)
 
     print("Backing up original LPB.")
-    shutil.copyfile(str(lpb_file), "{}.bak".format(str(lpb_file)))
+    shutil.copyfile(str(lpb_file), f"{str(lpb_file)}.bak")
     try:
         new_lpb_data = lpb.to_lpb()
         with open(lpb_file, "wb") as f:
             f.write(new_lpb_data)
         print("Wrote new LPB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LPB file: {}".format(e))
+        sys.exit(f"Could not generate new LPB file: {e}")

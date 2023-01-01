@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -439,7 +438,7 @@ class Param(BaseSerializable):
             elif isinstance(value, str):
                 self.type = ParamType.Str
             else:
-                raise ValueError("Could not guess datatype for {}".format(value))
+                raise ValueError(f"Could not guess datatype for {value}")
         else:
             self.type = ParamType(int(type))
 
@@ -464,13 +463,13 @@ class Param(BaseSerializable):
 
     def to_lsc(self):
         if self.type == ParamType.Str:
-            return '"{}"'.format(self.value)
+            return f'"{self.value}"'
         return str(self)
 
     def to_xml(self):
         xml = self.to_lsc()
         if self.type == ParamType.Var and "\x01" in xml:
-            logger.warning('Replacing invalid xml char "\\x01" in varname {}'.format(self.value))
+            logger.warning(f'Replacing invalid xml char "\\x01" in varname {self.value}')
             xml = xml.replace("\x01", "*")
         return xml
 
@@ -668,7 +667,7 @@ class OpeData(BaseSerializable):
         return x
 
     def _func(self):
-        x = ["{}(".format(self.func.name)]
+        x = [f"{self.func.name}("]
         for i, p in enumerate(self.operands):
             x.append(p)
             if i != len(self.operands) - 1:
@@ -773,7 +772,7 @@ class OpeData(BaseSerializable):
             }[self.type]()
             return tokens
         except KeyError:
-            raise NotImplementedError("Cannot compute value for {} types.".format(self.type))
+            raise NotImplementedError(f"Cannot compute value for {self.type} types.")
 
 
 class LiveParser(BaseSerializable):
@@ -845,7 +844,7 @@ class LiveParser(BaseSerializable):
                             else:
                                 operands[i] = op.value
                         elif op.type == ParamType.Str:
-                            operands[i] = '"{}"'.format(op.value).replace("\n", "\\n").replace("\r", "\\r")
+                            operands[i] = f'"{op.value}"'.replace("\n", "\\n").replace("\r", "\\r")
                         else:
                             operands[i] = op.value
 
@@ -861,9 +860,9 @@ class LiveParser(BaseSerializable):
             if e.type == OpeDataType.To:
                 if e.name == "____arg":
                     return _resolve("____arg", exprs)
-                return "{} = {}".format(e.name, _resolve(e.name, exprs))
+                return f"{e.name} = {_resolve(e.name, exprs)}"
             else:
-                logger.warning("Last entry in LiveParser was not a To statement: {}".format(self.entries[-1]))
+                logger.warning(f"Last entry in LiveParser was not a To statement: {self.entries[-1]}")
         return ""
 
 

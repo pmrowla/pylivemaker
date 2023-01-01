@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -33,7 +32,6 @@ import shutil
 import struct
 import tempfile
 import zlib
-from io import open
 from pathlib import Path, PureWindowsPath
 
 import construct
@@ -329,7 +327,7 @@ DEFAULT_VERSION = 102
 SPLIT_ARCHIVE_PART_SIZE = 1073741824
 
 
-class LMObfuscator(object):
+class LMObfuscator:
     """Class for (de)obfuscating LiveMaker directory fields.
 
     Note:
@@ -381,11 +379,11 @@ class _LMArchiveVersionValidator(construct.Validator):
 
     def _decode(self, obj, ctx, path):
         if not self._validate(obj, ctx, path):
-            raise construct.ValidationError("Unsupported LiveMaker archive version: {}".format(obj))
+            raise construct.ValidationError(f"Unsupported LiveMaker archive version: {obj}")
         return obj
 
 
-class LMArchiveDirectory(object):
+class LMArchiveDirectory:
     """Class for handling parsing and writing archive directories.
 
     LiveMaker archive format is::
@@ -559,7 +557,7 @@ class LMArchiveDirectory(object):
         return csum ^ 0xFFFFFFFF
 
 
-class LMArchive(object):
+class LMArchive:
     """Provide interface to a LiveMaker archive (or exe).
 
     Behaves in the same manner as Python ``tarfile.TarFile`` or ``zipfile.ZipFile``.
@@ -638,7 +636,7 @@ class LMArchive(object):
                     if split:
                         self.is_split = True
                         self._split_base = root
-                        self._split_files = set([self.name])
+                        self._split_files = {self.name}
                         if ext.lower() not in [".dat", ".ext"]:
                             logger.warning("Writing split archive index without .dat or .ext file extension.")
                         elif ext.lower() == ".ext":
@@ -662,13 +660,13 @@ class LMArchive(object):
                 if ext.lower() in [".dat", ".ext"]:
                     self.is_split = True
                     self._split_base = root
-                    self._split_files = set([self.name])
+                    self._split_files = {self.name}
                     if ext.lower() == ".ext":
                         self.has_ext = True
-                        dat_file = "{}.dat".format(self._split_base)
+                        dat_file = f"{self._split_base}.dat"
                         if not os.path.isfile(dat_file):
                             raise BadLiveMakerArchive(
-                                "Could not find (.dat) data file for split archive index {}.".format(self.name)
+                                f"Could not find (.dat) data file for split archive index {self.name}."
                             )
                         self._split_files.add(dat_file)
                         self._read_fps.append(open(dat_file, self._mode))
@@ -676,7 +674,7 @@ class LMArchive(object):
                         self.has_ext = False
                         self._read_fps.append(self.fp)
                     for i in range(1, 100):
-                        dat_file = "{}.{:03}".format(self._split_base, i)
+                        dat_file = f"{self._split_base}.{i:03}"
                         if os.path.isfile(dat_file):
                             self._read_fps.append(open(dat_file, self._mode))
                             self._split_files.add(dat_file)
@@ -750,7 +748,7 @@ class LMArchive(object):
         """
         info = self.name_info.get(name)
         if info is None:
-            raise KeyError("{} does not exist in archive.".format(name))
+            raise KeyError(f"{name} does not exist in archive.")
         return info
 
     def list(self):
@@ -795,7 +793,7 @@ class LMArchive(object):
         try:
             directory = LMArchiveDirectory.struct().parse_stream(self.fp)
         except construct.ConstructError as e:
-            raise BadLiveMakerArchive("Failed to parse VF directory: {}".format(e))
+            raise BadLiveMakerArchive(f"Failed to parse VF directory: {e}")
         self.version = directory.version
         filenames = directory.filenames
         offsets = directory.offsets
@@ -875,7 +873,7 @@ class LMArchive(object):
             except UnsupportedLiveMakerCompression as e:
                 if not allow_unsupported:
                     raise e
-                logger.warning("Skipping encrypted file {}".format(e))
+                logger.warning(f"Skipping encrypted file {e}")
 
     def read(self, name, decompress=True, skip_checksum=True):
         """Return the bytes of the specified file in the archive.
@@ -904,7 +902,7 @@ class LMArchive(object):
         else:
             info = self.getinfo(name)
         if decompress and info.compress_type not in SUPPORTED_COMPRESSIONS:
-            raise UnsupportedLiveMakerCompression("{} is unsupported".format(info.compress_type))
+            raise UnsupportedLiveMakerCompression(f"{info.compress_type} is unsupported")
         if self._read_fps:
             # archive data is split on 1GB (1024 * 1024 * 1024 bytes) boundaries
             # start reading from whichever data file contains the start of
@@ -924,7 +922,7 @@ class LMArchive(object):
             data = self.fp.read(info.compressed_size)
         if not skip_checksum and info.checksum is not None:
             if info.checksum != LMArchiveDirectory.checksum(data):
-                logger.warning("Bad checksum for file {}.".format(info.name))
+                logger.warning(f"Bad checksum for file {info.name}.")
         if decompress:
             if info.compress_type in (LMCompressType.ENCRYPTED, LMCompressType.ENCRYPTED_ZLIB):
                 data = decrypt(data)
@@ -985,9 +983,9 @@ class LMArchive(object):
         # strip drive and leading pathsep
         name = str(arcpath.relative_to(arcpath.anchor))
         if name in self.name_info:
-            raise FileExistsError("{} already exists in this archive.".format(name))
+            raise FileExistsError(f"{name} already exists in this archive.")
         if compress_type is not None and compress_type not in SUPPORTED_COMPRESSIONS:
-            raise UnsupportedLiveMakerCompression("{} is not supported.".format(compress_type))
+            raise UnsupportedLiveMakerCompression(f"{compress_type} is not supported.")
         info = LMArchiveInfo(name)
         with open(filename, "rb") as f:
             data = f.read()
@@ -1055,7 +1053,7 @@ class LMArchive(object):
             info = LMArchiveInfo(arcname)
             info.compress_type = compress_type
         if info.name in self.name_info:
-            raise FileExistsError("{} already exists in this archive.".format(arcname))
+            raise FileExistsError(f"{arcname} already exists in this archive.")
         info.compressed_size = len(data)
         if info.checksum is None:
             info.checksum = LMArchiveDirectory.checksum(data)
@@ -1130,14 +1128,14 @@ class LMArchive(object):
                 extra_files -= 1
             self.tmpfp.seek(0)
             if self.has_ext:
-                dat_file = "{}.dat".format(self._split_base)
+                dat_file = f"{self._split_base}.dat"
                 with open(dat_file, self._mode) as fp:
                     fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE))
                 self._split_files.add(dat_file)
             else:
                 self.fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE - data_offset))
             for i in range(1, extra_files + 1):
-                dat_file = "{}.{:03}".format(self._split_base, i)
+                dat_file = f"{self._split_base}.{i:03}"
                 with open(dat_file, self._mode) as fp:
                     fp.write(self.tmpfp.read(SPLIT_ARCHIVE_PART_SIZE))
                 self._split_files.add(dat_file)
@@ -1152,7 +1150,7 @@ class LMArchive(object):
             self.fp.write(b"lv")
 
 
-class LMArchiveInfo(object):
+class LMArchiveInfo:
     """An entry (file) contained in a LiveMaker archive.
 
     Attributes:

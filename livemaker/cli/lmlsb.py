@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -63,7 +62,7 @@ def probe(input_file):
         try:
             lm = LMScript.from_file(f)
         except BadLsbError as e:
-            sys.exit("Could not read file: {}".format(e))
+            sys.exit(f"Could not read file: {e}")
     if lm._parsed_from == "lsc":
         print("LiveMaker LSC script file:")
     elif lm._parsed_from == "lsc-xml":
@@ -72,18 +71,18 @@ def probe(input_file):
         print("LiveMaker compiled LSB script file:")
     else:
         print("LiveMaker script file:")
-    print("  Version: {} (LiveMaker{})".format(lm.version, lm.lm_version))
-    print("  Total commands: {}".format(len(lm)))
+    print(f"  Version: {lm.version} (LiveMaker{lm.lm_version})")
+    print(f"  Total commands: {len(lm)}")
     cmd_types = set()
     for cmd in lm.commands:
         cmd_types.add(cmd.type)
     print("    Command types: {}".format(", ".join([x.name for x in sorted(cmd_types)])))
     scenarios = lm.text_scenarios()
-    print("  Total text scenarios: {}".format(len(scenarios)))
+    print(f"  Total text scenarios: {len(scenarios)}")
     for index, name, scenario in scenarios:
         if not name:
             name = "Unlabeled scenario"
-        print("    {}".format(name))
+        print(f"    {name}")
         tpwd_types = set()
         char_count = 0
         line_count = 0
@@ -93,12 +92,12 @@ def probe(input_file):
                 char_count += 1
             elif isinstance(wd, TWdOpeReturn):
                 line_count += 1
-        print("      LiveNovel scenario version: {}".format(scenario.version))
+        print(f"      LiveNovel scenario version: {scenario.version}")
         print("      TpWd types: {}".format(", ".join([x.name for x in sorted(tpwd_types)])))
-        print("      Approx. character count: {}".format(char_count))
+        print(f"      Approx. character count: {char_count}")
         if char_count:
             # don't count line breaks in event-only scenarios
-            print("      Approx. line count: {}".format(line_count))
+            print(f"      Approx. line count: {line_count}")
 
 
 @lmlsb.command()
@@ -123,22 +122,22 @@ def validate(input_file):
             lsb = LMScript.from_lsb(data)
             orig = hashlib.sha256(data).hexdigest()
         except BadLsbError as e:
-            print("  Failed to parse file: {}".format(e))
+            print(f"  Failed to parse file: {e}")
             continue
         try:
             built_data = lsb.to_lsb()
             reassembled = hashlib.sha256(built_data).hexdigest()
         except BadLsbError as e:
-            print("  Failed to reassemble file: {}".format(e))
+            print(f"  Failed to reassemble file: {e}")
             continue
-        print("  Orig: {} ({} bytes)".format(orig, len(data)))
-        print("   New: {} ({} bytes)".format(reassembled, len(built_data)))
+        print(f"  Orig: {orig} ({len(data)} bytes)")
+        print(f"   New: {reassembled} ({len(built_data)} bytes)")
         if orig == reassembled:
             print("  SHA256 digest validation passed")
         if orig != reassembled:
             print("  SHA256 digest validation failed")
         for line, name, scenario in lsb.text_scenarios(run_order=False):
-            print("  {}".format(name))
+            print(f"  {name}")
             orig_bytes = scenario._struct().build(scenario)
             dec = LNSDecompiler()
             script = dec.decompile(scenario)
@@ -149,7 +148,7 @@ def validate(input_file):
             if new_bytes == orig_bytes:
                 print("  script passed")
             else:
-                print("  script mismatch, {} {}".format(len(orig_bytes), len(new_bytes)))
+                print(f"  script mismatch, {len(orig_bytes)} {len(new_bytes)}")
 
 
 @lmlsb.command()
@@ -203,7 +202,7 @@ def dump(mode, encoding, output_file, input_file):
             if pylm:
                 pylm.update_labels(lsb)
         except BadLsbError as e:
-            sys.stderr.write("  Failed to parse file: {}".format(e))
+            sys.stderr.write(f"  Failed to parse file: {e}")
             continue
 
         if mode == "xml":
@@ -216,9 +215,9 @@ def dump(mode, encoding, output_file, input_file):
             lsb_path = Path(path)
             for line, name, scenario in lsb.text_scenarios():
                 if name:
-                    name = "{}-{}.lns".format(lsb_path.stem, name)
+                    name = f"{lsb_path.stem}-{name}.lns"
                 if not name:
-                    name = "{}-line{}.lns".format(lsb_path.stem, line)
+                    name = f"{lsb_path.stem}-line{line}.lns"
                 print(name, file=outf)
                 print("------", file=outf)
                 for block in scenario.get_text_blocks():
@@ -283,22 +282,22 @@ def extract(encoding, output_dir, input_file):
     else:
         output_dir = Path.cwd()
     for path in input_file:
-        print("Extracting scripts from {}".format(path))
+        print(f"Extracting scripts from {path}")
         lsb_path = Path(path)
         lsb = LMScript.from_file(path)
-        lsb_ref_filename = "{}.lsbref".format(lsb_path.stem)
+        lsb_ref_filename = f"{lsb_path.stem}.lsbref"
         with open(output_dir.joinpath(lsb_ref_filename), "w", encoding=encoding) as lsb_ref_file:
             for line, name, scenario in lsb.text_scenarios():
                 if name:
-                    name = "{}-{}.lns".format(lsb_path.stem, _escape_scenario_name(name))
+                    name = f"{lsb_path.stem}-{_escape_scenario_name(name)}.lns"
                 if not name:
-                    name = "{}-line{}.lns".format(lsb_path.stem, line)
+                    name = f"{lsb_path.stem}-line{line}.lns"
                 output_path = output_dir.joinpath(name)
                 dec = LNSDecompiler()
                 with open(output_path, "w", encoding=encoding) as f:
                     f.write(dec.decompile(scenario))
-                print("  wrote {}".format(output_path))
-                lsb_ref_file.write("{}:{}\n".format(name, line))
+                print(f"  wrote {output_path}")
+                lsb_ref_file.write(f"{name}:{line}\n")
 
 
 @lmlsb.command()
@@ -364,17 +363,17 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
         return
     if not no_backup:
         print("Backing up original LSB.")
-        shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+        shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
 
     with open(lsb_file, "rb") as f:
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
-            sys.exit("Could not open LSB file: {}".format(e))
+            sys.exit(f"Could not open LSB file: {e}")
 
     lsb_path = Path(lsb_file)
-    lsb_ref_filename = "{}.lsbref".format(lsb_path.stem)
-    with open(script_dir.joinpath(lsb_ref_filename), "r", encoding=encoding) as lsb_ref_file:
+    lsb_ref_filename = f"{lsb_path.stem}.lsbref"
+    with open(script_dir.joinpath(lsb_ref_filename), encoding=encoding) as lsb_ref_file:
         while True:
             ln = lsb_ref_file.readline()
             if ln == "":
@@ -385,10 +384,10 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
 
             if not Path(script_file).exists():
                 if ignore_missing:
-                    print("Warning: script file {} is missing, skipped.".format(script_file))
+                    print(f"Warning: script file {script_file} is missing, skipped.")
                     continue
                 else:
-                    sys.exit("Script file is missing: {}".format(script_file))
+                    sys.exit(f"Script file is missing: {script_file}")
 
             with open(script_file, "rb") as f:
                 script = f.read().decode(encoding)
@@ -396,11 +395,11 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
                 cc = LNSCompiler()
                 new_body = cc.compile(script)
             except LiveMakerException as e:
-                sys.exit("Could not compile script file: {}".format(e))
+                sys.exit(f"Could not compile script file: {e}")
 
             for index, name, scenario in lsb.text_scenarios():
                 if index == line_number:
-                    print("Scenario {} at line {} will be replaced.".format(name, index))
+                    print(f"Scenario {name} at line {index} will be replaced.")
                     scenario.replace_body(new_body, ruby_text=cc.ruby_text)
                     break
 
@@ -410,7 +409,7 @@ def batchinsert(encoding, lsb_file, script_dir, no_backup, ignore_missing):
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LSB file: {}".format(e))
+        sys.exit(f"Could not generate new LSB file: {e}")
 
 
 # Known property data types
@@ -612,7 +611,7 @@ def _check_string_literal(value):
 
 def _edit_parser_op(op, prompt="Operand"):
     if op.type == ParamType.Str:
-        orig = '"{}"'.format(op.value)
+        orig = f'"{op.value}"'
     else:
         orig = op.value
     value = click.prompt(prompt, default=orig)
@@ -646,21 +645,21 @@ def _edit_delimited_string_op(str_op, sep_op, prompt="String"):
     sep = sep_op.value
     for i, s in enumerate(str_op.value.split(sep)):
         while True:
-            value = click.prompt("{} {}".format(prompt, i), default='"{}"'.format(s))
+            value = click.prompt(f"{prompt} {i}", default=f'"{s}"')
             if sep in value:
                 print('  Entry strings cannot contain the delimiter string ("{}")')
             else:
                 break
         new_strs.append(_check_string_literal(value))
     str_op.value = sep.join(new_strs)
-    value = click.prompt("{} separator".format(prompt), default='"{}"'.format(sep))
+    value = click.prompt(f"{prompt} separator", default=f'"{sep}"')
     sep_op.value = _check_string_literal(value)
 
 
 def _edit_parser(parser):
     """Edit fields in a TLiveParser."""
     # map ____<arg> variables to the appropriate entry index for this parser
-    print("  {}".format(parser))
+    print(f"  {parser}")
     entry_index = {}
     for i, entry in enumerate(parser.entries):
         if entry.type == OpeDataType.To and entry.name.startswith("____"):
@@ -676,11 +675,11 @@ def _edit_parser(parser):
                     continue
                 array_var_op = entry.operands[0]
                 if array_var_op.type != ParamType.Var:
-                    print("AddArray operand 0 is not a variable name: {}".format(entry))
+                    print(f"AddArray operand 0 is not a variable name: {entry}")
                     continue
                 value_entry_index = entry_index.get(entry.operands[1].value)
                 if value_entry_index is None:
-                    print("AddArray operand 1 does not point to a valid parser ____<arg> entry: {}".format(entry))
+                    print(f"AddArray operand 1 does not point to a valid parser ____<arg> entry: {entry}")
                     continue
                 value_entry_op = parser.entries[value_entry_index].operands[0]
                 _edit_parser_op(array_var_op, "  Array variable")
@@ -706,13 +705,13 @@ def _edit_parser(parser):
                     continue
                 sep_entry_index = entry_index.get(entry.operands[2].value)
                 if sep_entry_index is None:
-                    print("StringToArray operand 2 does not point to a valid parser ____<arg> entry: {}".format(entry))
+                    print(f"StringToArray operand 2 does not point to a valid parser ____<arg> entry: {entry}")
                     continue
                 sep_entry_op = parser.entries[sep_entry_index].operands[0]
                 _edit_parser_op(entry.operands[1], "  Array variable")
                 _edit_delimited_string_op(entry.operands[0], sep_entry_op, "  Array entry")
             else:
-                print("Skipping uneditable parser func type: {}".format(entry))
+                print(f"Skipping uneditable parser func type: {entry}")
         elif entry.type == OpeDataType.To:
             if len(entry.operands) > 1:
                 print("Skipping complex assignment")
@@ -749,7 +748,7 @@ def _edit_parser(parser):
                     rhs_op = parser.entries[index].operands[0]
             _edit_parser_op(rhs_op, "  Right hand side")
         else:
-            print("Skipping uneditable parser entry: {}".format(entry))
+            print(f"Skipping uneditable parser entry: {entry}")
 
 
 def _edit_calc(cmd):
@@ -782,7 +781,7 @@ def _edit_component(cmd):
             or (len(parser.entries) == 1 and parser.entries[0].type != OpeDataType.To)
             or (len(parser.entries) == 0 and key not in EDITABLE_PROPERTY_TYPES)
         ):
-            print("{} [{}]: <skipping uneditable field>".format(key, parser))
+            print(f"{key} [{parser}]: <skipping uneditable field>")
             continue
         if parser.entries:
             e = parser.entries[0]
@@ -809,7 +808,7 @@ def _edit_component(cmd):
                     e = OpeData(type=OpeDataType.To, name="____arg", operands=[op])
                     parser.entries.append(e)
                 except ValueError:
-                    print("Invalid datatype for {}, skipping.".format(key))
+                    print(f"Invalid datatype for {key}, skipping.")
 
 
 def _edit_jump(cmd):
@@ -856,7 +855,7 @@ def edit(lsb_file, line_number):
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
-            sys.exit("Could not open LSB file: {}".format(e))
+            sys.exit(f"Could not open LSB file: {e}")
 
     cmd = None
     for c in lsb.commands:
@@ -864,7 +863,7 @@ def edit(lsb_file, line_number):
             cmd = c
             break
     else:
-        sys.exit("Command {} does not exist in the specified LSB".format(line_number))
+        sys.exit(f"Command {line_number} does not exist in the specified LSB")
 
     print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
     if isinstance(cmd, BaseComponentCommand):
@@ -874,17 +873,17 @@ def edit(lsb_file, line_number):
     elif isinstance(cmd, Jump):
         _edit_jump(cmd)
     else:
-        sys.exit("Cannot edit {} commands.".format(cmd.type.name))
+        sys.exit(f"Cannot edit {cmd.type.name} commands.")
 
     print("Backing up original LSB.")
-    shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+    shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
     try:
         new_lsb_data = lsb.to_lsb()
         with open(lsb_file, "wb") as f:
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LSB file: {}".format(e))
+        sys.exit(f"Could not generate new LSB file: {e}")
 
 
 def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
@@ -907,17 +906,17 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
         cc = LNSCompiler()
         new_body = cc.compile(script)
     except LiveMakerException as e:
-        sys.exit("Could not compile script file: {}".format(e))
+        sys.exit(f"Could not compile script file: {e}")
 
     with open(lsb_file, "rb") as f:
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
-            sys.exit("Could not open LSB file: {}".format(e))
+            sys.exit(f"Could not open LSB file: {e}")
 
     for index, name, scenario in lsb.text_scenarios():
         if index == line_number:
-            print("Scenario {} at line {} will be replaced.".format(name, index))
+            print(f"Scenario {name} at line {index} will be replaced.")
             scenario.replace_body(new_body, ruby_text=cc.ruby_text)
             break
     else:
@@ -925,14 +924,14 @@ def insert_lns(encoding, lsb_file, script_file, line_number, no_backup):
 
     if not no_backup:
         print("Backing up original LSB.")
-        shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+        shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
     try:
         new_lsb_data = lsb.to_lsb()
         with open(lsb_file, "wb") as f:
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LSB file: {}".format(e))
+        sys.exit(f"Could not generate new LSB file: {e}")
 
 
 CSV_HEADER = ["ID", "Label", "Context", "Original text", "Translated text"]
@@ -964,7 +963,7 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
     With the --overwrite option an existing csv will be overwritten without warning.
 
     """
-    print("Extracting {} ...".format(lsb_file))
+    print(f"Extracting {lsb_file} ...")
 
     try:
         pylm = PylmProject(lsb_file)
@@ -977,7 +976,7 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
     except BadLsbError as e:
-        sys.exit("Failed to parse file: {}".format(e))
+        sys.exit(f"Failed to parse file: {e}")
 
     if pylm:
         pylm.update_labels(lsb)
@@ -1009,9 +1008,9 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
 
     if Path(csv_file).exists():
         if not overwrite and not append:
-            sys.exit("File {} already exists. Please use --overwrite or --append option.".format(csv_file))
+            sys.exit(f"File {csv_file} already exists. Please use --overwrite or --append option.")
     elif append:
-        print("File {} does not exist, but --append specified. A new file will be created.".format(csv_file))
+        print(f"File {csv_file} does not exist, but --append specified. A new file will be created.")
         append = False
 
     with open(csv_file, ("a" if append else "w"), encoding=encoding, newline="\n") as csvfile:
@@ -1021,7 +1020,7 @@ def extractmenu(lsb_file, csv_file, encoding, lpm, overwrite, append):
         for row in csv_data:
             csv_writer.writerow(row)
 
-    print("{} Menu entries extracted.".format(len(csv_data)))
+    print(f"{len(csv_data)} Menu entries extracted.")
 
 
 @lmlsb.command()
@@ -1047,7 +1046,7 @@ def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
     The original LSB file will be backed up to <lsb_file>.bak unless the --no-backup option is specified.
     """
     lsb_file = Path(lsb_file)
-    print("Patching {} ...".format(lsb_file))
+    print(f"Patching {lsb_file} ...")
 
     try:
         pylm = PylmProject(lsb_file)
@@ -1060,7 +1059,7 @@ def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, pylm=pylm, call_name=call_name)
     except BadLsbError as e:
-        sys.exit("Failed to parse file: {}".format(e))
+        sys.exit(f"Failed to parse file: {e}")
 
     csv_data = []
 
@@ -1079,14 +1078,14 @@ def insertmenu(lsb_file, csv_file, encoding, no_backup, verbose):
 
     if not no_backup:
         print("Backing up original LSB.")
-        shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+        shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
     try:
         new_lsb_data = lsb.to_lsb()
         with open(lsb_file, "wb") as f:
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LSB file: {}".format(e))
+        sys.exit(f"Could not generate new LSB file: {e}")
 
 
 def _patch_csv_menus(lsb, lsb_file, csv_data, verbose=False):
@@ -1150,7 +1149,7 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
     using the extract and insert/batchinsert commands.
     """
     lsb_file = Path(lsb_file)
-    print("Extracting {} ...".format(lsb_file))
+    print(f"Extracting {lsb_file} ...")
 
     try:
         pylm = PylmProject(lsb_file)
@@ -1163,7 +1162,7 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
     except BadLsbError as e:
-        sys.exit("Failed to parse file: {}".format(e))
+        sys.exit(f"Failed to parse file: {e}")
 
     csv_data = []
     for id_, block in lsb.get_text_blocks():
@@ -1174,9 +1173,9 @@ def extractcsv(lsb_file, csv_file, encoding, overwrite, append):
 
     if Path(csv_file).exists():
         if not overwrite and not append:
-            sys.exit("File {} already exists. Please use --overwrite or --append option.".format(csv_file))
+            sys.exit(f"File {csv_file} already exists. Please use --overwrite or --append option.")
     elif append:
-        print("File {} does not exist, but --append specified. A new file will be created.".format(csv_file))
+        print(f"File {csv_file} does not exist, but --append specified. A new file will be created.")
         append = False
 
     with open(csv_file, ("a" if append else "w"), newline="\n", encoding=encoding) as csvfile:
@@ -1242,7 +1241,7 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
     The original LSB file will be backed up to <lsb_file>.bak unless the --no-backup option is specified.
     """
     lsb_file = Path(lsb_file)
-    print("Patching {} ...".format(lsb_file))
+    print(f"Patching {lsb_file} ...")
 
     try:
         pylm = PylmProject(lsb_file)
@@ -1255,7 +1254,7 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
         with open(lsb_file, "rb") as f:
             lsb = LMScript.from_file(f, call_name=call_name, pylm=pylm)
     except BadLsbError as e:
-        sys.exit("Failed to parse file: {}".format(e))
+        sys.exit(f"Failed to parse file: {e}")
 
     csv_data = []
 
@@ -1273,11 +1272,11 @@ def insertcsv(lsb_file, csv_file, encoding, no_backup, verbose):
 
     if not no_backup:
         print("Backing up original LSB.")
-        shutil.copyfile(str(lsb_file), "{}.bak".format(str(lsb_file)))
+        shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
     try:
         new_lsb_data = lsb.to_lsb()
         with open(lsb_file, "wb") as f:
             f.write(new_lsb_data)
         print("Wrote new LSB.")
     except LiveMakerException as e:
-        sys.exit("Could not generate new LSB file: {}".format(e))
+        sys.exit(f"Could not generate new LSB file: {e}")

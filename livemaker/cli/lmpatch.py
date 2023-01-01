@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -87,28 +86,28 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
         tmp_exe = None
 
     if not no_backup:
-        backup_paths = {archive_path: Path("{}.bak".format(archive_path))}
+        backup_paths = {archive_path: Path(f"{archive_path}.bak")}
         if orig_lm.is_split:
             for p in orig_lm._split_files:
-                backup_paths[Path(p)] = Path("{}.bak".format(p))
+                backup_paths[Path(p)] = Path(f"{p}.bak")
         for p in backup_paths.values():
             if p.exists():
                 if force:
-                    print("{} will be overwritten".format(p))
+                    print(f"{p} will be overwritten")
                 else:
-                    sys.exit("{} already exists".format(p))
+                    sys.exit(f"{p} already exists")
 
     if Path(patched_lsb).is_dir():
         if not recursive:
-            sys.exit("Cannot patch directory ({}) without -r/--recursive mode".format(patched_lsb))
+            sys.exit(f"Cannot patch directory ({patched_lsb}) without -r/--recursive mode")
     else:
         if recursive:
-            sys.exit("Cannot patch file ({}) within -r/--recursive mode".format(patched_lsb))
+            sys.exit(f"Cannot patch file ({patched_lsb}) within -r/--recursive mode")
 
     try:
         tmpdir = tempfile.mkdtemp()
         tmpdir_path = Path(tmpdir)
-        logger.info("Using temp directory {}".format(tmpdir_path))
+        logger.info(f"Using temp directory {tmpdir_path}")
         print("Generating new archive contents...")
         with LMArchive(
             name=tmpdir_path.joinpath(archive_name), mode="w", version=orig_lm.version, exe=tmp_exe, split=split
@@ -146,12 +145,12 @@ def lmpatch(archive_file, patched_lsb, split, no_backup, force, recursive):
 
                     if lsb_path:
                         new_lm.write(lsb_path, compress_type=compress_type, unk1=info.unk1, arcname=info.path)
-                        logger.info("patched {}".format(info.path))
+                        logger.info(f"patched {info.path}")
                     else:
                         # copy original version
                         data = orig_lm.read(info, decompress=False)
                         new_lm.writebytes(info, data)
-                        logger.info("copied {}".format(info.path))
+                        logger.info(f"copied {info.path}")
 
         orig_lm.close()
 

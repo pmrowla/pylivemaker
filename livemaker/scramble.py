@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -28,7 +27,7 @@ import numpy as np
 LIVEMAKER3_SCRAMBLE_KEY = 0xF8EA
 
 
-class LMScramble(object):
+class LMScramble:
     """PRNG used for LM TScramble encryption.
 
     RE'd from TScrambleInts, TGetRandom classes in LM3 code.

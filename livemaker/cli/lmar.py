@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -42,7 +41,7 @@ def lmar():
 
 def _extract_as_png(lm, info, output_dir, image_format, dry_run, verbose):
     try:
-        png_path = info.path.parent.joinpath("{}.png".format(info.path.stem))
+        png_path = info.path.parent.joinpath(f"{info.path.stem}.png")
         if not dry_run:
             data = lm.read(info)
             path = output_dir.joinpath(png_path).expanduser().resolve()
@@ -52,7 +51,7 @@ def _extract_as_png(lm, info, output_dir, image_format, dry_run, verbose):
         if verbose or dry_run:
             print(png_path)
     except LiveMakerException as e:
-        print("Error converting {} to PNG: {}".format(info.path, e))
+        print(f"Error converting {info.path} to PNG: {e}")
         if image_format == "png":
             print("  Original GAL image will be used as fallback.")
             if not dry_run:
@@ -101,9 +100,9 @@ def x(dry_run, image_format, output_dir, verbose, input_file):
                         if verbose or dry_run:
                             print(info.path)
                 except LiveMakerException as e:
-                    print("  Error extracting {}: {}".format(info.path, e))
+                    print(f"  Error extracting {info.path}: {e}")
     except BadLiveMakerArchive as e:
-        print("Could not read LiveMaker archive {}: {}".format(input_file, e))
+        print(f"Could not read LiveMaker archive {input_file}: {e}")
 
 
 @lmar.command()
@@ -114,7 +113,7 @@ def l(input_file):  # noqa: E741
         with LMArchive(input_file) as lm:
             lm.list()
     except BadLiveMakerArchive as e:
-        print("Could not read LiveMaker archive {}: {}".format(input_file, e))
+        print(f"Could not read LiveMaker archive {input_file}: {e}")
 
 
 @lmar.command()
@@ -131,10 +130,10 @@ def strip(input_file, output_file):
             if lm.is_exe:
                 path = Path(output_file)
                 if path.exists():
-                    print("{} already exists and will be overwritten.".format(path))
+                    print(f"{path} already exists and will be overwritten.")
                 with open(output_file, "wb") as f:
                     f.write(lm.read_exe())
             else:
                 print("The specified file is not a LiveMaker executable.")
     except BadLiveMakerArchive as e:
-        print("Could not read LiveMaker archive {}: {}".format(input_file, e))
+        print(f"Could not read LiveMaker archive {input_file}: {e}")

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2020 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
@@ -137,7 +136,7 @@ class LabelReference(BaseSerializable):
         self.Label = Label
 
     def __str__(self):
-        return "{}:{}".format(self.Page, self.Label)
+        return f"{self.Page}:{self.Label}"
 
     def __iter__(self):
         return iter(self.items())
@@ -270,7 +269,7 @@ class BaseCommand(BaseSerializable):
         for k in self.keys():
             v = self.get(k)
             if v is not None:
-                params.append("{}={}".format(k, repr(v)))
+                params.append(f"{k}={repr(v)}")
         return "{}({})".format(type(self).__name__, ", ".join(params))
 
     def __iter__(self):
