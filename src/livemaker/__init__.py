@@ -16,15 +16,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 """Top-level package for pylivemaker."""
-
-__author__ = """Peter Rowlands"""
-__email__ = "peter@pmrowla.com"
-__license__ = "GPLv3"
-__version__ = "1.0.4"
-
-
 from loguru import logger
 
+from ._version import __version__, __version_tuple__  # noqa: F401
 from .archive import LMArchive, LMArchiveInfo, LMCompressType
 from .lsb import LMScript, LNSCompiler, LNSDecompiler
 

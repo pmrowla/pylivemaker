@@ -1,3 +1,63 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools-scm[toml]>=7"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pylivemaker"
+description = "Python package for manipulating LiveMaker game resources."
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {text = "GNU General Public License v3 or later (GPLv3+)"}
+authors = [
+    {name = "Peter Rowlands", email = "peter@pmrowla.com"},
+    {name = "tinfoil"},
+]
+keywords = [
+    "LiveMaker",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "Click>=8.1",
+    "construct>=2.9,<2.10",
+    "funcy>=1.4",
+    "loguru>=0.4.1",
+    "lxml>=4.3",
+    "networkx>=2.4",
+    "numpy>=1.16",
+    "Pillow>=7.1.2",
+    "pydot>=1.4.1",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=5",
+    "pytest-datadir>=1.3.1",
+]
+
+[project.urls]
+documentation = "https://pylivemaker.readthedocs.io/en/latest/"
+repository = "https://github.com/pmrowla/pylivemaker"
+changelog = "https://github.com/pmrowla/pylivemaker/blob/master/HISTORY.rst"
+
+[project.scripts]
+lmar = "livemaker.cli:lmar"
+lmgraph = "livemaker.cli:lmgraph"
+lmlpb = "livemaker.cli:lmlpb"
+lmlsb = "livemaker.cli:lmlsb"
+lmpatch = "livemaker.cli:lmpatch"
+galconvert = "livemaker.cli:galconvert"
+lmbmp = "livemaker.cli:lmbmp"
+
 [tool.black]
 line-length = 119
 include = '\.pyi?$'
@@ -17,3 +77,9 @@ exclude = '''
 
 [tool.isort]
 line_length = 119
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+write_to = "src/livemaker/_version.py"
