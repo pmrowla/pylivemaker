@@ -1,5 +1,4 @@
 [tool.black]
-target-version = ['py36', 'py37', 'py38']
 line-length = 119
 include = '\.pyi?$'
 exclude = '''
@@ -15,3 +14,6 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.isort]
+line_length = 119

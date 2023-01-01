@@ -22,9 +22,9 @@ import sys
 from pathlib import Path
 
 import click
-
 from PIL import Image
-from livemaker import __version__, GalImagePlugin  # noqa: F401
+
+from livemaker import GalImagePlugin, __version__  # noqa: F401
 
 _version = """%(prog)s, version %(version)s
 

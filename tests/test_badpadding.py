@@ -1,5 +1,6 @@
-from livemaker.lsb import novel
 import pytest
+
+from livemaker.lsb import novel
 
 
 def test_padding_is_none():

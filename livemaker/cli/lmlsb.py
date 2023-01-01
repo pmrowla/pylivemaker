@@ -17,28 +17,27 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 """LiveMaker LSB script CLI tool."""
 
+import csv
 import hashlib
 import re
 import shutil
 import sys
-import csv
 from pathlib import Path
 
 import click
 import numpy
-
 from lxml import etree
 
+from livemaker.exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 from livemaker.lsb import LMScript
 from livemaker.lsb.command import BaseComponentCommand, Calc, CommandType, Jump, LabelReference
 from livemaker.lsb.core import OpeData, OpeDataType, OpeFuncType, Param, ParamType
 from livemaker.lsb.menu import LPMSelectionChoice
-from livemaker.lsb.novel import LNSDecompiler, LNSCompiler, TWdChar, TWdOpeReturn
+from livemaker.lsb.novel import LNSCompiler, LNSDecompiler, TWdChar, TWdOpeReturn
+from livemaker.lsb.translate import TextBlockIdentifier, TextMenuIdentifier, make_identifier
 from livemaker.project import PylmProject
-from livemaker.lsb.translate import make_identifier, TextBlockIdentifier, TextMenuIdentifier
-from livemaker.exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
 
-from .cli import _version, __version__
+from .cli import __version__, _version
 
 
 @click.group()

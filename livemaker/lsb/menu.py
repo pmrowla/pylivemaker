@@ -22,11 +22,11 @@ from pathlib import Path, PureWindowsPath
 
 from loguru import logger
 
+from ..exceptions import LiveMakerException
+from ..lpm import LMLivePrevMenu
 from .command import CommandType
 from .core import OpeDataType, ParamType
 from .translate import BaseTranslatable, LPMMenuIdentifier, TextMenuIdentifier
-from ..exceptions import LiveMakerException
-from ..lpm import LMLivePrevMenu
 
 
 class NotSelectionMenuError(LiveMakerException):

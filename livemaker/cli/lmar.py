@@ -22,7 +22,6 @@ from io import BytesIO
 from pathlib import Path
 
 import click
-
 from PIL import Image
 
 from livemaker import GalImagePlugin  # noqa: F401

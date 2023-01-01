@@ -35,7 +35,6 @@ import zlib
 from pathlib import Path, PureWindowsPath
 
 import construct
-
 from loguru import logger
 
 from .exceptions import BadLiveMakerArchive, UnsupportedLiveMakerCompression
