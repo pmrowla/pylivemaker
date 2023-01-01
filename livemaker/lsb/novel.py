@@ -20,17 +20,15 @@
 import enum
 import os
 import re
-import _markupbase
 from bisect import bisect
 
+import _markupbase
 import construct
-
 from loguru import logger
-
 from lxml import etree
 
-from .core import BaseSerializable, LiveParser
 from ..exceptions import BadLnsError, InvalidCharError
+from .core import BaseSerializable, LiveParser
 from .translate import BaseTranslatable
 
 

@@ -31,17 +31,14 @@ from io import IOBase
 from pathlib import Path
 
 import construct
-
 from loguru import logger
-
 from lxml import etree
 
-from .core import BaseSerializable
-from .command import CommandType, PropertyType, _command_classes, _command_structs
-from .menu import BaseSelectionMenu, make_menu, MENU_IDENTIFIERS
-from .translate import TextBlockIdentifier
 from ..exceptions import BadLsbError, BadTextIdentifierError, LiveMakerException
-
+from .command import CommandType, PropertyType, _command_classes, _command_structs
+from .core import BaseSerializable
+from .menu import MENU_IDENTIFIERS, BaseSelectionMenu, make_menu
+from .translate import TextBlockIdentifier
 
 # Known LSB format versions
 MIN_LSB_VERSION = 103

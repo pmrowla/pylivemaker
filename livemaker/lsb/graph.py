@@ -22,9 +22,8 @@ from collections import deque
 import networkx as nx
 from loguru import logger
 
-from .command import CommandType
 from ..exceptions import LiveMakerException
-
+from .command import CommandType
 
 END_COMMANDS = [
     CommandType.Exit,

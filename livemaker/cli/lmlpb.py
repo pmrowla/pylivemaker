@@ -23,11 +23,11 @@ import sys
 
 import click
 
-from livemaker.exceptions import LiveMakerException, BadLpbError
+from livemaker.exceptions import BadLpbError, LiveMakerException
 from livemaker.lpb import LMProject
 from livemaker.lsb.core import Param, ParamType
 
-from .cli import _version, __version__
+from .cli import __version__, _version
 from .lmlsb import _edit_parser_op
 
 

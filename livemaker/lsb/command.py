@@ -21,14 +21,12 @@ import enum
 from collections import OrderedDict
 
 import construct
-
 from loguru import logger
-
 from lxml import etree
 
+from ..exceptions import BadLsbError
 from .core import BaseSerializable, LiveParser, LiveParserArray, ParamType, PropertyType
 from .novel import TpWord
-from ..exceptions import BadLsbError
 
 
 class CommandType(enum.IntEnum):

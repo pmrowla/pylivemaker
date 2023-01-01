@@ -23,7 +23,6 @@ import construct
 
 from .exceptions import LiveMakerException
 
-
 DEFAULT_LPM_VERSION = 106
 
 

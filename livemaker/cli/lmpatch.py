@@ -19,13 +19,12 @@
 
 import os
 import os.path
+import shutil
 import sys
 import tempfile
-import shutil
 from pathlib import Path, PureWindowsPath
 
 import click
-
 from loguru import logger
 
 from livemaker import LMArchive, LMCompressType

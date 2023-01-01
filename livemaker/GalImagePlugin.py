@@ -23,12 +23,10 @@ from binascii import unhexlify
 from io import BytesIO
 
 from lxml import etree
-
 from PIL import Image, ImageFile, ImagePalette
 from PIL._binary import i32le, si32le
 
 from .exceptions import LiveMakerException
-
 
 _GAL_MODE = {
     # TODO: support palette modes

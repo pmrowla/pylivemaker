@@ -22,7 +22,6 @@ import struct
 
 import numpy as np
 
-
 # constant XOR key for LM3
 LIVEMAKER3_SCRAMBLE_KEY = 0xF8EA
 

@@ -23,7 +23,6 @@ from collections import deque
 from pathlib import Path
 
 import click
-
 import pydot
 
 from livemaker.exceptions import LiveMakerException
@@ -31,7 +30,7 @@ from livemaker.lsb import LMScript
 from livemaker.lsb.command import CommandType
 from livemaker.lsb.graph import make_graph, nx_to_dot
 
-from .cli import _version, __version__
+from .cli import __version__, _version
 
 
 @click.group()
