@@ -65,6 +65,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/pmrowla/pylivemaker",
-    version="1.0.4-dev",
+    version="1.0.4",
     zip_safe=False,
 )
