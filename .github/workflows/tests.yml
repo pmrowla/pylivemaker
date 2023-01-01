@@ -1,0 +1,47 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  tests:
+    name: ${{ matrix.python }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.8", "3.9", "3.10", "3.11"]
+        include:
+          - os: ubuntu-latest
+            python: pypy3.9
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Upgrade pip
+        run: |
+          pip install --constraint=.github/workflows/constraints.txt pip
+          pip --version
+
+      - name: Install pylivemaker
+        run: |
+          pip install --constraint=.github/workflows/constraints.txt .[test]
+
+      - name: Run tests
+        run: |
+          pytest --cov=livemaker --cov-report=xml --cov-report=term
+
+      - name: Upload coverage data
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
