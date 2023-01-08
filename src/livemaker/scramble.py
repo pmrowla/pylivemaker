@@ -100,7 +100,7 @@ class LMScramble:
         return seq
 
 
-def decrypt(data):
+def decrypt(data: bytes) -> bytes:
     """Unscramble the specified data stream and return the result."""
     if len(data) < 8:
         return data
