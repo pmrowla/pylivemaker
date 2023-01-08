@@ -36,14 +36,14 @@ jobs:
           python -m build
 
       - name: Publish package on PyPI
-        if: github.event_name == "release"
+        if: ${{ github.event_name == "release" }}
         uses: pypa/gh-action-pypi-publish@v1.6.4
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish package on TestPyPI
-        if: github.event_name != "release"
+        if: ${{ github.event_name != "release" }}
         uses: pypa/gh-action-pypi-publish@v1.6.4
         with:
           user: __token__

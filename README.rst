@@ -6,7 +6,7 @@ pylivemaker
 .. image:: https://img.shields.io/pypi/v/pylivemaker.svg
         :target: https://pypi.python.org/pypi/pylivemaker
 
-.. image:: https://github.com/pmrowla/pylivemaker/actions/workflows/tests.yml/badge.svg
+.. image:: https://github.com/pmrowla/pylivemaker/actions/workflows/tests.yml/badge.svg?branch=master
         :target: https://github.com/pmrowla/pylivemaker/actions/workflows/tests.yml
 
 .. image:: https://readthedocs.org/projects/pylivemaker/badge/?version=latest
