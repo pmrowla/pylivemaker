@@ -350,11 +350,11 @@ class LMObfuscator:
             yield key
 
     def transform_bytes(self, data):
-        return construct.integers2bytes((b ^ (next(self.keystream) & 0xFF)) for b in construct.iterateints(data))
+        return construct.integers2bytes((b ^ (next(self.keystream) & 0xFF)) for b in data)
 
     def transform_int(self, data):
         key = next(self.keystream)
-        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(construct.iterateints(data))]
+        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
         return construct.integers2bytes(data)
 
     def transform_int_high(self, data):
@@ -362,7 +362,7 @@ class LMObfuscator:
         # LiveMaker always only outputs 0 or 0xffffffff depending on if high
         # bit ends up set
         key = next(self.keystream)
-        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(construct.iterateints(data))]
+        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
         if data[3] & 0x80:
             data = [0xFF, 0xFF, 0xFF, 0xFF]
         else:

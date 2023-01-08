@@ -380,15 +380,15 @@ class BaseCommand(BaseSerializable):
     @classmethod
     def _struct(cls):
         """Return a construct Struct for this command type."""
-        return construct.Struct(
-            "type" / construct.Const(cls.type.name, construct.Enum(construct.Byte, CommandType)),
-            "Indent" / construct.Int32ul,
-            "Mute" / construct.Flag,
-            "NotUpdate" / construct.Flag,
-            "LineNo" / construct.Int32ul,
-            # construct.Probe(),
-            construct.Embedded(cls._struct_fields),
-            # construct.Probe(),
+        return (
+            construct.Struct(
+                "type" / construct.Const(cls.type.name, construct.Enum(construct.Byte, CommandType)),
+                "Indent" / construct.Int32ul,
+                "Mute" / construct.Flag,
+                "NotUpdate" / construct.Flag,
+                "LineNo" / construct.Int32ul,
+            )
+            + cls._struct_fields
         )
 
 
@@ -1428,8 +1428,7 @@ class WhileLoop(WhileInit):
     """
 
     type = CommandType.WhileLoop
-    _struct_fields = construct.Struct(
-        construct.Embedded(WhileInit._struct_fields),
+    _struct_fields = WhileInit._struct_fields + construct.Struct(
         "Start" / construct.Int32ul,
     )
 
@@ -1451,8 +1450,7 @@ class Break(Exit):
     """
 
     type = CommandType.Break
-    _struct_fields = construct.Struct(
-        construct.Embedded(Exit._struct_fields),
+    _struct_fields = Exit._struct_fields + construct.Struct(
         "End" / construct.Int32ul,
     )
 
@@ -1474,8 +1472,7 @@ class Continue(Exit):
     """
 
     type = CommandType.Continue
-    _struct_fields = construct.Struct(
-        construct.Embedded(Exit._struct_fields),
+    _struct_fields = Exit._struct_fields + construct.Struct(
         "Start" / construct.Int32ul,
     )
 
@@ -1786,8 +1783,7 @@ class SaveCabinet(BaseComponentCommand):
     """
 
     type = CommandType.SaveCabinet
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseComponentCommand._struct_fields),
+    _struct_fields = BaseComponentCommand._struct_fields + construct.Struct(
         "Act" / LiveParser._struct(),
         "Targets" / LiveParserArray._struct(construct.Int32ul),
     )
