@@ -88,3 +88,4 @@ where = ["src"]
 
 [tool.setuptools_scm]
 write_to = "src/livemaker/_version.py"
+local_scheme = "no-local-version"
