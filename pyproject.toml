@@ -27,7 +27,7 @@ classifiers = [
 ]
 dependencies = [
     "Click>=8.1",
-    "construct>=2.9,<2.10",
+    "construct>=2.10,<2.11",
     "funcy>=1.4",
     "loguru>=0.4.1",
     "lxml>=4.3",

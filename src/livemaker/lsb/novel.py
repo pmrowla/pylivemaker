@@ -168,10 +168,11 @@ class BaseTWdGlyph(BaseSerializable):
     @classmethod
     def _struct(cls):
         """Return a construct Struct for this TWd type."""
-        return construct.Struct(
-            "type" / construct.Const(cls.type.name, construct.Enum(construct.Byte, TWdType)),
-            construct.Embedded(cls._struct_fields),
-            # construct.Probe(),
+        return (
+            construct.Struct(
+                "type" / construct.Const(cls.type.name, construct.Enum(construct.Byte, TWdType)),
+            )
+            + cls._struct_fields
         )
 
     @classmethod
@@ -195,8 +196,7 @@ class BaseTWdReal(BaseTWdGlyph):
 
     # BaseTWdReal is an abstract type and is always used via a subclass
     type = None
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields),
+    _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "link_name"
         / construct.If(construct.this._._.version < 105, construct.PascalString(construct.Int32ul, "cp932")),
         "link" / construct.If(construct.this._._.version >= 105, construct.Int32sl),
@@ -237,8 +237,7 @@ class TWdChar(BaseTWdReal):
     """
 
     type = TWdType.TWdChar
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdReal._struct_fields),
+    _struct_fields = BaseTWdReal._struct_fields + construct.Struct(
         "ch" / _TWdCharAdapter(construct.Int16ul),
         "decorator" / construct.Int32sl,
     )
@@ -281,8 +280,7 @@ class TWdOpeDiv(BaseTWdGlyph):
     """
 
     type = TWdType.TWdOpeDiv
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields),
+    _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "align" / construct.Byte,
         "padleft" / construct.If(construct.this._._.version >= 105, construct.Int32sl),
         "padright" / construct.If(construct.this._._.version >= 105, construct.Int32sl),
@@ -316,8 +314,7 @@ class TWdOpeReturn(BaseTWdGlyph):
     """
 
     type = TWdType.TWdOpeReturn
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields),
+    _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "break_type" / construct.Byte,
     )
 
@@ -371,8 +368,7 @@ class TWdOpeEvent(BaseTWdGlyph):
     """
 
     type = TWdType.TWdOpeEvent
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields),
+    _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "event" / construct.PascalString(construct.Int32ul, "cp932"),
     )
 
@@ -430,8 +426,7 @@ class TWdOpeVar(BaseTWdGlyph):
     """
 
     type = TWdType.TWdOpeVar
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdGlyph._struct_fields),
+    _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "decorator" / construct.Int32sl,
         "unk3" / construct.If(construct.this._._.version >= 100, construct.Int32ul),
         "link_name"
@@ -489,8 +484,7 @@ class TWdImg(BaseTWdReal):
     """
 
     type = TWdType.TWdImg
-    _struct_fields = construct.Struct(
-        construct.Embedded(BaseTWdReal._struct_fields),
+    _struct_fields = BaseTWdReal._struct_fields + construct.Struct(
         "src" / construct.PascalString(construct.Int32ul, "cp932"),
         "align" / construct.Byte,
         "hoversrc"
