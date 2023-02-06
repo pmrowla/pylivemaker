@@ -4,7 +4,6 @@ from livemaker.lsb import novel
 
 
 def test_padding_is_none():
-
     # This throws a type error
     with pytest.raises(TypeError):
         int(None)
