@@ -42,7 +42,6 @@ from .scramble import decrypt
 
 
 class LMCompressType(enum.IntEnum):
-
     ZLIB = (0,)  # zlib compressed
     NONE = (1,)  # uncompressed (used for already compressed media types)
     ENCRYPTED = (2,)  # LiveMaker Pro encrypted + uncompressed

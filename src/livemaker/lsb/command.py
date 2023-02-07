@@ -1655,7 +1655,6 @@ class GaugeNew(BaseComponentCommand):
 
 
 class CGCaption(BaseComponentCommand):
-
     type = CommandType.CGCaption
 
 

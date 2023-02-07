@@ -331,7 +331,6 @@ class GalImageFile(ImageFile.ImageFile):
 
 
 class GalImageDecoder(ImageFile.PyDecoder):
-
     _pulls_fd = True
 
     def decode(self, buffer):

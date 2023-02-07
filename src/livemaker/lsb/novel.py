@@ -33,7 +33,6 @@ from .translate import BaseTranslatable
 
 
 class LNSTag(enum.Enum):
-
     a = "A"
     br = "BR"
     clr = "CLR"
