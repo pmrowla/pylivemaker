@@ -828,7 +828,7 @@ class TpWord(BaseSerializable):
 
     @classmethod
     def from_struct(cls, struct):
-        d = {k: v for k, v in struct.items()}
+        d = dict(struct.items())
         if struct.decorators is not None:
             d["decorators"] = [TDecorate.from_struct(x) for x in struct.decorators]
         if struct.conditions is not None:
@@ -1510,7 +1510,7 @@ class LNSCompiler(_markupbase.ParserBase):
 
     def handle_starttag(self, tag, attrs):
         tag = LNSTag[tag.lower()]
-        attrs = {k: v for k, v in attrs}
+        attrs = dict(attrs)
         d = {
             "decorator": self.decorator,
             "text_speed": self.text_speed,

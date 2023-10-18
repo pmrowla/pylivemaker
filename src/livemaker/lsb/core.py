@@ -94,7 +94,7 @@ class BaseSerializable(ABC):
     def from_struct(cls, struct, **kwargs):
         """Instantiate an object from a construct Struct."""
         if isinstance(struct, construct.Container):
-            d = {k: v for k, v in struct.items()}
+            d = dict(struct.items())
             d.update(kwargs)
             return cls(**d)
         raise NotImplementedError
