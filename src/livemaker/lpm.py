@@ -154,7 +154,7 @@ class LMLivePrevMenu:
     def from_struct(cls, struct, **kwargs):
         """Create an LMProject from the specified struct."""
         if isinstance(struct, construct.Container):
-            d = {k: v for k, v in struct.items()}
+            d = dict(struct.items())
             d.update(kwargs)
             return cls(**d)
         raise NotImplementedError
