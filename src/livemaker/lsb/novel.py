@@ -427,9 +427,12 @@ class TWdOpeVar(BaseTWdGlyph):
     type = TWdType.TWdOpeVar
     _struct_fields = BaseTWdGlyph._struct_fields + construct.Struct(
         "decorator" / construct.Int32sl,
-        "unk3" / construct.If(construct.this._._.version >= 100, construct.Int32ul),
+        "unk3" / construct.If(construct.this._._.version > 100, construct.Int32ul),
         "link_name"
-        / construct.If(100 <= construct.this._._.version < 105, construct.PascalString(construct.Int32ul, "cp932")),
+        / construct.If(
+            construct.this._._.version < 105 and construct.this._._.version > 100,
+            construct.PascalString(construct.Int32ul, "cp932"),
+        ),
         "link" / construct.If(construct.this._._.version >= 105, construct.Int32sl),
         "var_name_params" / construct.If(construct.this._._.version < 102, LiveParser._struct()),
         "var_name"
