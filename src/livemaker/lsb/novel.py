@@ -430,7 +430,7 @@ class TWdOpeVar(BaseTWdGlyph):
         "unk3" / construct.If(construct.this._._.version > 100, construct.Int32ul),
         "link_name"
         / construct.If(
-            construct.this._._.version < 105 and construct.this._._.version > 100,
+            lambda this: 100 < this._._.version < 105,
             construct.PascalString(construct.Int32ul, "cp932"),
         ),
         "link" / construct.If(construct.this._._.version >= 105, construct.Int32sl),
