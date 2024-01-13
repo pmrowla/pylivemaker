@@ -34,7 +34,7 @@ dependencies = [
     "lxml>=4.3",
     "networkx>=2.4",
     "numpy>=1.16",
-    "Pillow>=7.1.2",
+    "Pillow>=10.2.0",
     "pydot>=1.4.1",
 ]
 dynamic = ["version"]

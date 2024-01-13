@@ -319,7 +319,7 @@ class GalImageFile(ImageFile.ImageFile):
 
         try:
             name, mode, box, palette, tile = self.frames[frame]
-            self.mode = mode
+            self._mode = mode
             self.tile = tile
             self.palette = palette
             self._frame = frame
