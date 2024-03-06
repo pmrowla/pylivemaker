@@ -39,6 +39,8 @@ from livemaker.project import PylmProject
 
 from .cli import __version__, _version
 
+#dreamsavior edit
+import json
 
 @click.group()
 @click.version_option(version=__version__, message=_version)
@@ -152,7 +154,7 @@ def validate(input_file):
 
 @lmlsb.command()
 @click.option(
-    "-m", "--mode", type=click.Choice(["text", "xml", "lines"]), default="text", help="Output mode (defaults to text)"
+    "-m", "--mode", type=click.Choice(["text", "xml", "lines", "json"]), default="text", help="Output mode (defaults to text)"
 )
 @click.option(
     "-e",
@@ -170,12 +172,29 @@ def validate(input_file):
 @click.argument("input_file", required=True, nargs=-1, type=click.Path(exists=True, dir_okay="False"))
 def dump(mode, encoding, output_file, input_file):
     """Dump the contents of the specified LSB file(s) to stdout in a human-readable format.
+    
+    \b
+    MODE:
+    text
+        The full LSB will be output as human-readable text.
 
-    For text mode, the full LSB will be output as human-readable text.
+    \b
+    xml
+        The full LSB file will be output as an XML document.
 
-    For xml mode, the full LSB file will be output as an XML document.
+    \b
+    lines
+        only text lines will be output.
 
-    For lines mode, only text lines will be output.
+    \b
+    JSON
+        The output will be a JSON-formatted LSB command (JSON will always be in UTF-8 format).
+        You can edit the JSON and import it back using the lmlsb edit command. 
+        Note: Don't forget to set the "modified" flag to true for each line you edit.
+    
+    \b
+    Example:
+        lmlsb.exe dump 00000001.lsb -m json -o 00000001.json
     """
     if output_file:
         outf = open(output_file, mode="w", encoding=encoding)
@@ -210,6 +229,36 @@ def dump(mode, encoding, output_file, input_file):
                 etree.tostring(root, encoding=encoding, pretty_print=True, xml_declaration=True).decode(encoding),
                 file=outf,
             )
+        elif mode == "json":
+            jsonData = {}
+            #print("command param", lsb.command_params)
+            for cmd in lsb.commands:
+                thisData = {}
+                #print("text", str(cmd))
+                thisData["text"] = str(cmd)
+                thisData["type"] = cmd.type.name
+                thisData["mute"] = cmd.Mute
+                thisData["modified"] = False
+
+                #print(vars(cmd))
+                #print(cmd.LineNo, "command", cmd)
+                compKeys = None
+                
+                try:
+                    compKeys = cmd._component_keys
+                except:
+                    #do nothing
+                    continue
+
+                if compKeys != None:
+                    params = {}
+                    for key in cmd._component_keys:
+                        params[key] = str(cmd[key])
+                        #print("Key", key, "default", cmd[key])
+                    thisData["params"] = params
+                jsonData[cmd.LineNo] = thisData
+            print(json.dumps(jsonData, ensure_ascii=False, indent=4), file=outf)
+
         elif mode == "lines":
             lsb_path = Path(path)
             for line, name, scenario in lsb.text_scenarios():
@@ -221,7 +270,7 @@ def dump(mode, encoding, output_file, input_file):
                 print("------", file=outf)
                 for block in scenario.get_text_blocks():
                     for line in block.text.splitlines():
-                        print(line, file=outf)
+                        print(line, file=outf)                            
         else:
             for c in lsb.commands:
                 if c.Mute:
@@ -765,11 +814,78 @@ def _edit_calc(cmd):
     print("Editing Calc expression")
     _edit_parser(parser)
 
+# issues/126 
+# Dreamsavior: edit component with predetermined settings
+def _edit_component_auto(cmd, setting):
+    """Edit a BaseComponent (or subclass) command with predetermined settings."""
+    print()
+    print("setting", setting)
 
+    # paramId = -1
+    edited = False
+
+    for key in setting:
+        if key not in cmd._component_keys:
+            print(f"Warning: Cannot find {key} in command")
+            continue
+
+        # paramId += 1
+        parser = cmd[key]
+
+        if key not in setting:
+            continue
+        else:
+            print()
+            print("{} -> Default value: {}".format(key, parser))
+
+        # TODO: editing complex fields and adding values for empty fields will
+        # require full LiveParser expression parsing, for now we can only edit
+        # simple scalar values.
+        if (
+            len(parser.entries) > 1
+            or (len(parser.entries) == 1 and parser.entries[0].type != OpeDataType.To)
+            or (len(parser.entries) == 0 and key not in EDITABLE_PROPERTY_TYPES)
+        ):
+            print(f"{key} [{parser}]: <skipping uneditable field>")
+            continue
+
+        value = setting[key]
+        if parser.entries:
+            e = parser.entries[0]
+            op = e.operands[-1]
+            if op:
+                if value != op.value:
+                    if op.type == ParamType.Int or op.type == ParamType.Flag:
+                        op.value = int(value)
+                    elif op.type == ParamType.Float:
+                        op.value = numpy.longdouble(value)
+                    else:
+                        op.value = value
+                    edited = True
+        else:
+            if value:
+                param_type = EDITABLE_PROPERTY_TYPES[key]
+                try:
+                    if param_type == ParamType.Int or param_type == ParamType.Flag:
+                        value = int(value)
+                    elif param_type == ParamType.Float:
+                        value = numpy.longdouble(value)
+                    op = Param(value, param_type)
+                    e = OpeData(type=OpeDataType.To, name="____arg", operands=[op])
+                    parser.entries.append(e)
+                    edited = True
+
+                except ValueError:
+                    print(f"Invalid datatype for {key}, skipping.")
+                    continue
+    return edited
+        
 def _edit_component(cmd):
     """Edit a BaseComponent (or subclass) command."""
     print()
     print("Enter new value for each field (or keep existing value)")
+
+    edited = False
     for key in cmd._component_keys:
         parser = cmd[key]
         # TODO: editing complex fields and adding values for empty fields will
@@ -780,7 +896,7 @@ def _edit_component(cmd):
             or (len(parser.entries) == 1 and parser.entries[0].type != OpeDataType.To)
             or (len(parser.entries) == 0 and key not in EDITABLE_PROPERTY_TYPES)
         ):
-            print(f"{key} [{parser}]: <skipping uneditable field>")
+            print("{} [{}]: <skipping uneditable field>".format(key, parser))
             continue
         if parser.entries:
             e = parser.entries[0]
@@ -794,6 +910,7 @@ def _edit_component(cmd):
                         op.value = numpy.longdouble(value)
                     else:
                         op.value = value
+                    edited = True
         else:
             value = click.prompt(key, default="")
             if value:
@@ -806,8 +923,12 @@ def _edit_component(cmd):
                     op = Param(value, param_type)
                     e = OpeData(type=OpeDataType.To, name="____arg", operands=[op])
                     parser.entries.append(e)
+                    edited = True
                 except ValueError:
-                    print(f"Invalid datatype for {key}, skipping.")
+                    print("Invalid datatype for {}, skipping.".format(key))
+                    continue
+
+    return edited
 
 
 def _edit_jump(cmd):
@@ -830,10 +951,33 @@ def _edit_jump(cmd):
     _edit_parser(parser)
 
 
+# issues/126 
+def _main_edit(cmd, setting, line_number):
+    if line_number != None:
+        print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
+    
+    if isinstance(cmd, BaseComponentCommand):
+        if setting != None:
+            return _edit_component_auto(cmd, setting)
+        else:
+            return _edit_component(cmd)
+    elif isinstance(cmd, Calc):
+        _edit_calc(cmd)
+    elif isinstance(cmd, Jump):
+        _edit_jump(cmd)
+    else:
+        print(f"Cannot edit {cmd.type.name} commands.")
+        return False
+    return True
+
+
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
-@click.argument("line_number", required=True, type=int)
-def edit(lsb_file, line_number):
+# issues/126 
+@click.argument("line_number", required=False, type=int)
+@click.option("-p", "--param", type=str, help="Parameter in JSON format.")
+@click.option("-b", "--batch", type=str, help="Edit with parameter with JSON formatted file.")
+def edit(lsb_file, line_number, param, batch):
     """Edit the specified command within an LSB file.
 
     Only specific command types and specific fields can be edited.
@@ -849,30 +993,87 @@ def edit(lsb_file, line_number):
     the data type of the new value is assumed to be the same as the
     original data type.
 
+    \b
+    Batch mode:
+    You can batch edit several line and paramaters with JSON file.
+    The format of JSON file is as follow:
+    {
+        "36" : {
+            "modified": true,
+            "params": {
+                "PR_LEFT": "20",
+                "PR_TOP": "12"
+            }
+        }
+    }
+
+    You can generate the JSON via "lmlsb.exe dump" command with JSON mode.
+    
+    \b
+    Example:
+        - To edit line 33 with prompt:
+        lmlsb.exe edit 00000001.lsb 33
+
+    \b
+        - To set the value of PR_LEFT parameter on line 33 to 20:
+        lmlsb.exe edit 00000001.lsb 33 -p '{\\"PR_LEFT\\": 20}'
+
+    \b
+        - To import back the value from lmlsb dump:
+        lmlsb.exe edit 00000001.lsb -b 00000001.json
     """
+    batchData = None
+    if batch != None:
+        with open(batch, "rb") as f:
+            try:
+                batchData = json.load(f)
+            except LiveMakerException as e:
+                sys.exit(f"Could not read JSON file : {batch}\nWith error {e}")
+
+
+    if batch == None and line_number == None:
+        sys.exit("One of the parameter line number or -b must exist")
+
     with open(lsb_file, "rb") as f:
         try:
             lsb = LMScript.from_file(f)
         except LiveMakerException as e:
             sys.exit(f"Could not open LSB file: {e}")
 
-    cmd = None
-    for c in lsb.commands:
-        if c.LineNo == line_number:
-            cmd = c
-            break
-    else:
-        sys.exit(f"Command {line_number} does not exist in the specified LSB")
+    # handling setting
+    setting = None
+    if (param != None):
+        print("Parsing param")
+        try:
+            setting = json.loads(param)
+        except LiveMakerException as e:
+            sys.exit("Cannot JSON parse parameter : {param}\nWith error {e}")
 
-    print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
-    if isinstance(cmd, BaseComponentCommand):
-        _edit_component(cmd)
-    elif isinstance(cmd, Calc):
-        _edit_calc(cmd)
-    elif isinstance(cmd, Jump):
-        _edit_jump(cmd)
-    else:
-        sys.exit(f"Cannot edit {cmd.type.name} commands.")
+
+
+    writeData = False
+    if line_number != None:
+        for c in lsb.commands:
+            if c.LineNo == line_number:
+                writeData = _main_edit(c, setting, line_number)
+                break
+        else:
+            sys.exit("Command {line_number} does not exist in the specified LSB")
+    elif batchData != None:
+        if setting != None:
+            print("Found both batchData and parameter. Parameter will be ignored.")
+        for c in lsb.commands:
+            key = str(c.LineNo)
+            if key in batchData:
+                if batchData[key]["modified"]:
+                    print("Found modified line no", c.LineNo)
+                    writeData = _main_edit(c, batchData[key]["params"], c.LineNo) or writeData
+        print("Batch edit completed")
+
+        
+    if not writeData:
+        sys.exit("Nothing to write")
+
 
     print("Backing up original LSB.")
     shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
