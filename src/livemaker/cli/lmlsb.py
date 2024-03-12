@@ -152,9 +152,54 @@ def validate(input_file):
                 print(f"  script mismatch, {len(orig_bytes)} {len(new_bytes)}")
 
 
+def _dump_json(lsb, pylm, jsonmode):
+    jsonData = {}
+    #print("command param", lsb.command_params)
+    for cmd in lsb.commands:
+        thisData = {}
+        #print("text", str(cmd))
+        thisData["text"] = str(cmd)
+        thisData["type"] = cmd.type.name
+        thisData["mute"] = cmd.Mute
+        thisData["modified"] = False
+        thisData["indent"] = cmd.Indent
+
+        compKeys = None
+        
+        try:
+            compKeys = cmd._component_keys
+            thisData["editable"] = True
+        except:
+            thisData["editable"] = False
+            if jsonmode != "jsonfull":
+                continue
+
+        if compKeys != None:
+            params = {}
+            for key in cmd._component_keys:
+                params[key] = str(cmd[key])
+            thisData["params"] = params
+
+        if cmd.type == CommandType.TextIns:
+            dec = LNSDecompiler()
+            thisData["script"] = str(dec.decompile(cmd.get("Text")))
+
+        ref = cmd.get("Page")
+        if ref and isinstance(ref, LabelReference):
+            if ref.Page.endswith("lsb") and pylm:
+                # resolve lsb refs
+                line_no, name = pylm.resolve_label(ref)
+                if line_no is not None:
+                    thisData["target"] = {}
+                    thisData["target"]["line"] = str(line_no)
+                    thisData["target"]["label"] = str(name)
+
+        jsonData[cmd.LineNo] = thisData
+    return jsonData
+
 @lmlsb.command()
 @click.option(
-    "-m", "--mode", type=click.Choice(["text", "xml", "lines", "json"]), default="text", help="Output mode (defaults to text)"
+    "-m", "--mode", type=click.Choice(["text", "xml", "lines", "json", "jsonfull"]), default="text", help="Output mode (defaults to text)"
 )
 @click.option(
     "-e",
@@ -187,11 +232,16 @@ def dump(mode, encoding, output_file, input_file):
         only text lines will be output.
 
     \b
-    JSON
+    json
         The output will be a JSON-formatted LSB command (JSON will always be in UTF-8 format).
         You can edit the JSON and import it back using the lmlsb edit command. 
-        Note: Don't forget to set the "modified" flag to true for each line you edit.
-    
+        Use "jsonfull" option if you want to output all line.
+        Note:   - Don't forget to set the "modified" flag to true for each line you edit.
+                - This mode will only output the editable lines. 
+    \b
+    jsonfull
+        Will output the complete line instead of only editable lines
+        
     \b
     Example:
         lmlsb.exe dump 00000001.lsb -m json -o 00000001.json
@@ -229,34 +279,8 @@ def dump(mode, encoding, output_file, input_file):
                 etree.tostring(root, encoding=encoding, pretty_print=True, xml_declaration=True).decode(encoding),
                 file=outf,
             )
-        elif mode == "json":
-            jsonData = {}
-            #print("command param", lsb.command_params)
-            for cmd in lsb.commands:
-                thisData = {}
-                #print("text", str(cmd))
-                thisData["text"] = str(cmd)
-                thisData["type"] = cmd.type.name
-                thisData["mute"] = cmd.Mute
-                thisData["modified"] = False
-
-                #print(vars(cmd))
-                #print(cmd.LineNo, "command", cmd)
-                compKeys = None
-                
-                try:
-                    compKeys = cmd._component_keys
-                except:
-                    #do nothing
-                    continue
-
-                if compKeys != None:
-                    params = {}
-                    for key in cmd._component_keys:
-                        params[key] = str(cmd[key])
-                        #print("Key", key, "default", cmd[key])
-                    thisData["params"] = params
-                jsonData[cmd.LineNo] = thisData
+        elif mode == "json" or mode == "jsonfull":
+            jsonData = _dump_json(lsb, pylm, mode)
             print(json.dumps(jsonData, ensure_ascii=False, indent=4), file=outf)
 
         elif mode == "lines":
