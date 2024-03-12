@@ -169,12 +169,12 @@ def _dump_json(lsb, pylm, jsonmode):
         try:
             compKeys = cmd._component_keys
             thisData["editable"] = True
-        except:
+        except AttributeError:
             thisData["editable"] = False
             if jsonmode != "jsonfull":
                 continue
 
-        if compKeys != None:
+        if compKeys is not None:
             params = {}
             for key in cmd._component_keys:
                 params[key] = str(cmd[key])
@@ -977,11 +977,11 @@ def _edit_jump(cmd):
 
 # issues/126 
 def _main_edit(cmd, setting, line_number):
-    if line_number != None:
+    if line_number is not None:
         print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
     
     if isinstance(cmd, BaseComponentCommand):
-        if setting != None:
+        if setting is not None:
             return _edit_component_auto(cmd, setting)
         else:
             return _edit_component(cmd)
@@ -1047,7 +1047,7 @@ def edit(lsb_file, line_number, param, batch):
         lmlsb.exe edit 00000001.lsb -b 00000001.json
     """
     batchData = None
-    if batch != None:
+    if batch is not None:
         with open(batch, "rb") as f:
             try:
                 batchData = json.load(f)
@@ -1055,7 +1055,7 @@ def edit(lsb_file, line_number, param, batch):
                 sys.exit(f"Could not read JSON file : {batch}\nWith error {e}")
 
 
-    if batch == None and line_number == None:
+    if batch is None and line_number is None:
         sys.exit("One of the parameter line number or -b must exist")
 
     with open(lsb_file, "rb") as f:
@@ -1066,25 +1066,25 @@ def edit(lsb_file, line_number, param, batch):
 
     # handling setting
     setting = None
-    if (param != None):
+    if (param is not None):
         print("Parsing param")
         try:
             setting = json.loads(param)
         except LiveMakerException as e:
-            sys.exit("Cannot JSON parse parameter : {param}\nWith error {e}")
+            sys.exit(f"Cannot JSON parse parameter : {param}\nWith error {e}")
 
 
 
     writeData = False
-    if line_number != None:
+    if line_number is not None:
         for c in lsb.commands:
             if c.LineNo == line_number:
                 writeData = _main_edit(c, setting, line_number)
                 break
         else:
             sys.exit("Command {line_number} does not exist in the specified LSB")
-    elif batchData != None:
-        if setting != None:
+    elif batchData is not None:
+        if setting is not None:
             print("Found both batchData and parameter. Parameter will be ignored.")
         for c in lsb.commands:
             key = str(c.LineNo)
