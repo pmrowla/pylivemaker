@@ -19,6 +19,8 @@
 
 import csv
 import hashlib
+# dreamsavior edit
+import json
 import re
 import shutil
 import sys
@@ -39,8 +41,6 @@ from livemaker.project import PylmProject
 
 from .cli import __version__, _version
 
-#dreamsavior edit
-import json
 
 @click.group()
 @click.version_option(version=__version__, message=_version)
@@ -154,10 +154,10 @@ def validate(input_file):
 
 def _dump_json(lsb, pylm, jsonmode):
     jsonData = {}
-    #print("command param", lsb.command_params)
+    # print("command param", lsb.command_params)
     for cmd in lsb.commands:
         thisData = {}
-        #print("text", str(cmd))
+        # print("text", str(cmd))
         thisData["text"] = str(cmd)
         thisData["type"] = cmd.type.name
         thisData["mute"] = cmd.Mute
@@ -165,7 +165,7 @@ def _dump_json(lsb, pylm, jsonmode):
         thisData["indent"] = cmd.Indent
 
         compKeys = None
-        
+
         try:
             compKeys = cmd._component_keys
             thisData["editable"] = True
@@ -197,9 +197,14 @@ def _dump_json(lsb, pylm, jsonmode):
         jsonData[cmd.LineNo] = thisData
     return jsonData
 
+
 @lmlsb.command()
 @click.option(
-    "-m", "--mode", type=click.Choice(["text", "xml", "lines", "json", "jsonfull"]), default="text", help="Output mode (defaults to text)"
+    "-m",
+    "--mode",
+    type=click.Choice(["text", "xml", "lines", "json", "jsonfull"]),
+    default="text",
+    help="Output mode (defaults to text)",
 )
 @click.option(
     "-e",
@@ -217,7 +222,7 @@ def _dump_json(lsb, pylm, jsonmode):
 @click.argument("input_file", required=True, nargs=-1, type=click.Path(exists=True, dir_okay="False"))
 def dump(mode, encoding, output_file, input_file):
     """Dump the contents of the specified LSB file(s) to stdout in a human-readable format.
-    
+
     \b
     MODE:
     text
@@ -234,14 +239,14 @@ def dump(mode, encoding, output_file, input_file):
     \b
     json
         The output will be a JSON-formatted LSB command (JSON will always be in UTF-8 format).
-        You can edit the JSON and import it back using the lmlsb edit command. 
+        You can edit the JSON and import it back using the lmlsb edit command.
         Use "jsonfull" option if you want to output all line.
         Note:   - Don't forget to set the "modified" flag to true for each line you edit.
-                - This mode will only output the editable lines. 
+                - This mode will only output the editable lines.
     \b
     jsonfull
         Will output the complete line instead of only editable lines
-        
+
     \b
     Example:
         lmlsb.exe dump 00000001.lsb -m json -o 00000001.json
@@ -294,7 +299,7 @@ def dump(mode, encoding, output_file, input_file):
                 print("------", file=outf)
                 for block in scenario.get_text_blocks():
                     for line in block.text.splitlines():
-                        print(line, file=outf)                            
+                        print(line, file=outf)
         else:
             for c in lsb.commands:
                 if c.Mute:
@@ -838,7 +843,8 @@ def _edit_calc(cmd):
     print("Editing Calc expression")
     _edit_parser(parser)
 
-# issues/126 
+
+# issues/126
 # Dreamsavior: edit component with predetermined settings
 def _edit_component_auto(cmd, setting):
     """Edit a BaseComponent (or subclass) command with predetermined settings."""
@@ -903,7 +909,8 @@ def _edit_component_auto(cmd, setting):
                     print(f"Invalid datatype for {key}, skipping.")
                     continue
     return edited
-        
+
+
 def _edit_component(cmd):
     """Edit a BaseComponent (or subclass) command."""
     print()
@@ -975,11 +982,11 @@ def _edit_jump(cmd):
     _edit_parser(parser)
 
 
-# issues/126 
+# issues/126
 def _main_edit(cmd, setting, line_number):
     if line_number != None:
         print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
-    
+
     if isinstance(cmd, BaseComponentCommand):
         if setting != None:
             return _edit_component_auto(cmd, setting)
@@ -997,7 +1004,7 @@ def _main_edit(cmd, setting, line_number):
 
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
-# issues/126 
+# issues/126
 @click.argument("line_number", required=False, type=int)
 @click.option("-p", "--param", type=str, help="Parameter in JSON format.")
 @click.option("-b", "--batch", type=str, help="Edit with parameter with JSON formatted file.")
@@ -1032,7 +1039,7 @@ def edit(lsb_file, line_number, param, batch):
     }
 
     You can generate the JSON via "lmlsb.exe dump" command with JSON mode.
-    
+
     \b
     Example:
         - To edit line 33 with prompt:
@@ -1054,7 +1061,6 @@ def edit(lsb_file, line_number, param, batch):
             except LiveMakerException as e:
                 sys.exit(f"Could not read JSON file : {batch}\nWith error {e}")
 
-
     if batch == None and line_number == None:
         sys.exit("One of the parameter line number or -b must exist")
 
@@ -1066,14 +1072,12 @@ def edit(lsb_file, line_number, param, batch):
 
     # handling setting
     setting = None
-    if (param != None):
+    if param != None:
         print("Parsing param")
         try:
             setting = json.loads(param)
         except LiveMakerException as e:
             sys.exit("Cannot JSON parse parameter : {param}\nWith error {e}")
-
-
 
     writeData = False
     if line_number != None:
@@ -1094,10 +1098,8 @@ def edit(lsb_file, line_number, param, batch):
                     writeData = _main_edit(c, batchData[key]["params"], c.LineNo) or writeData
         print("Batch edit completed")
 
-        
     if not writeData:
         sys.exit("Nothing to write")
-
 
     print("Backing up original LSB.")
     shutil.copyfile(str(lsb_file), f"{str(lsb_file)}.bak")
