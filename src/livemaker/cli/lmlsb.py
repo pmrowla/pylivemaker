@@ -154,7 +154,6 @@ def validate(input_file):
 
 def _dump_json(lsb, pylm, jsonmode):
     jsonData = {}
-    # print("command param", lsb.command_params)
     for cmd in lsb.commands:
         thisData = {}
         # print("text", str(cmd))
