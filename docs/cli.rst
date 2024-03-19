@@ -274,21 +274,40 @@ lines
     $ lmlsb dump --help
     Usage: lmlsb dump [OPTIONS] INPUT_FILE...
 
-      Dump the contents of the specified LSB file(s) to stdout in a human-
-      readable format.
+      Dump the contents of the specified LSB file(s) to stdout in a human-readable
+      format.
 
-      For text mode, the full LSB will be output as human-readable text.
+      MODE:
+      text
+          The full LSB will be output as human-readable text.
 
-      For xml mode, the full LSB file will be output as an XML document.
+      xml
+          The full LSB file will be output as an XML document.
 
-      For lines mode, only text lines will be output.
+      lines
+          only text lines will be output.
+
+      json
+          The output will be a JSON-formatted LSB command (JSON will always be in UTF-8 format).
+          You can edit the JSON and import it back using the lmlsb edit command.
+          Use "jsonfull" option if you want to output all line.
+          Note:   - Don't forget to set the "modified" flag to true for each line you edit.
+                  - This mode will only output the editable lines.
+
+      jsonfull
+          Will output the complete line instead of only editable lines
+
+
+      Example:
+          lmlsb.exe dump 00000001.lsb -m json -o 00000001.json
 
     Options:
-      -m, --mode [text|xml|lines]   Output mode (defaults to text)
-      -e, --encoding [cp932|utf-8]  Output text encoding (defaults to utf-8).
-      -o, --output-file FILE        Output file. If unspecified, output will be
-                                    dumped to stdout.
-      --help                        Show this message and exit.
+      -m, --mode [text|xml|lines|json|jsonfull]
+                                      Output mode (defaults to text)
+      -e, --encoding [cp932|utf-8]    Output text encoding (defaults to utf-8).
+      -o, --output-file FILE          Output file. If unspecified, output will be
+                                      dumped to stdout.
+      --help                          Show this message and exit.
 
 edit
 ^^^^
@@ -311,7 +330,7 @@ For more specific usage/implementation details refer to the thread in `issue #9 
 ::
 
     $ lmlsb edit --help
-    Usage: lmlsb edit [OPTIONS] LSB_FILE LINE_NUMBER
+    Usage: lmlsb edit [OPTIONS] LSB_FILE [LINE_NUMBER]
 
       Edit the specified command within an LSB file.
 
@@ -324,11 +343,38 @@ For more specific usage/implementation details refer to the thread in `issue #9 
       behavior (or a complete crash) in the LiveMaker engine during runtime.
 
       Note: Setting empty fields to improper data types may cause undefined
-      behavior in the LiveMaker engine. When editing a field, the data type of
-      the new value is assumed to be the same as the original data type.
+      behavior in the LiveMaker engine. When editing a field, the data type of the
+      new value is assumed to be the same as the original data type.
+
+      Batch mode:
+      You can batch edit several line and paramaters with JSON file.
+      The format of JSON file is as follow:
+      {
+          "36" : {
+              "modified": true,
+              "params": {
+                  "PR_LEFT": "20",
+                  "PR_TOP": "12"
+              }
+          }
+      }
+
+      You can generate the JSON via "lmlsb.exe dump" command with JSON mode.
+
+      Example:
+          - To edit line 33 with input prompt:
+          lmlsb.exe edit 00000001.lsb 33
+
+          - To set the value of PR_LEFT parameter on line 33 to 20:
+          lmlsb.exe edit 00000001.lsb 33 -p '{\"PR_LEFT\": 20}'
+
+          - To import back the value from lmlsb dump:
+          lmlsb.exe edit 00000001.lsb -b 00000001.json
 
     Options:
-      --help  Show this message and exit.
+      -p, --param TEXT  Parameter in JSON format.
+      -b, --batch TEXT  Edit with parameter with JSON formatted file.
+      --help            Show this message and exit.
 
 extract
 ^^^^^^^
