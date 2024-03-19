@@ -19,7 +19,6 @@
 
 import csv
 import hashlib
-# dreamsavior edit
 import json
 import re
 import shutil
@@ -153,36 +152,34 @@ def validate(input_file):
 
 
 def _dump_json(lsb, pylm, jsonmode):
-    jsonData = {}
-    # print("command param", lsb.command_params)
+    json_data = {}
     for cmd in lsb.commands:
-        thisData = {}
-        # print("text", str(cmd))
-        thisData["text"] = str(cmd)
-        thisData["type"] = cmd.type.name
-        thisData["mute"] = cmd.Mute
-        thisData["modified"] = False
-        thisData["indent"] = cmd.Indent
+        this_data = {}
+        this_data["text"] = str(cmd)
+        this_data["type"] = cmd.type.name
+        this_data["mute"] = cmd.Mute
+        this_data["modified"] = False
+        this_data["indent"] = cmd.Indent
 
-        compKeys = None
+        comp_keys = None
 
         try:
-            compKeys = cmd._component_keys
-            thisData["editable"] = True
+            comp_keys = cmd._component_keys
+            this_data["editable"] = True
         except AttributeError:
-            thisData["editable"] = False
+            this_data["editable"] = False
             if jsonmode != "jsonfull":
                 continue
 
-        if compKeys is not None:
+        if comp_keys is not None:
             params = {}
             for key in cmd._component_keys:
                 params[key] = str(cmd[key])
-            thisData["params"] = params
+            this_data["params"] = params
 
         if cmd.type == CommandType.TextIns:
             dec = LNSDecompiler()
-            thisData["script"] = str(dec.decompile(cmd.get("Text")))
+            this_data["script"] = str(dec.decompile(cmd.get("Text")))
 
         ref = cmd.get("Page")
         if ref and isinstance(ref, LabelReference):
@@ -190,12 +187,12 @@ def _dump_json(lsb, pylm, jsonmode):
                 # resolve lsb refs
                 line_no, name = pylm.resolve_label(ref)
                 if line_no is not None:
-                    thisData["target"] = {}
-                    thisData["target"]["line"] = str(line_no)
-                    thisData["target"]["label"] = str(name)
+                    this_data["target"] = {}
+                    this_data["target"]["line"] = str(line_no)
+                    this_data["target"]["label"] = str(name)
 
-        jsonData[cmd.LineNo] = thisData
-    return jsonData
+        json_data[cmd.LineNo] = this_data
+    return json_data
 
 
 @lmlsb.command()
@@ -844,14 +841,12 @@ def _edit_calc(cmd):
     _edit_parser(parser)
 
 
-# issues/126
-# Dreamsavior: edit component with predetermined settings
 def _edit_component_auto(cmd, setting):
     """Edit a BaseComponent (or subclass) command with predetermined settings."""
     print()
-    print("setting", setting)
+    print("Apply setting :", setting)
+    print()
 
-    # paramId = -1
     edited = False
 
     for key in setting:
@@ -859,14 +854,12 @@ def _edit_component_auto(cmd, setting):
             print(f"Warning: Cannot find {key} in command")
             continue
 
-        # paramId += 1
         parser = cmd[key]
 
         if key not in setting:
             continue
         else:
-            print()
-            print("{} -> Default value: {}".format(key, parser))
+            print(f"{key} : {parser} -> {setting[key]}")
 
         # TODO: editing complex fields and adding values for empty fields will
         # require full LiveParser expression parsing, for now we can only edit
@@ -982,7 +975,6 @@ def _edit_jump(cmd):
     _edit_parser(parser)
 
 
-# issues/126
 def _main_edit(cmd, setting, line_number):
     if line_number is not None:
         print("{}: {}".format(line_number, str(cmd).replace("\r", "\\r").replace("\n", "\\n")))
@@ -1004,7 +996,6 @@ def _main_edit(cmd, setting, line_number):
 
 @lmlsb.command()
 @click.argument("lsb_file", required=True, type=click.Path(exists=True, dir_okay=False))
-# issues/126
 @click.argument("line_number", required=False, type=int)
 @click.option("-p", "--param", type=str, help="Parameter in JSON format.")
 @click.option("-b", "--batch", type=str, help="Edit with parameter with JSON formatted file.")
