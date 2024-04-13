@@ -300,6 +300,7 @@ class GalImageFile(ImageFile.ImageFile):
             offset = offsets[i]
             tile = [(self.decoder, box, offset, (info, layermode, rawmode, i))]
             frames[i] = name, mode, box, palette, tile
+            i += 1
         self.fp.seek(info["offset"])
         self.frames = frames
         self._frame = None
