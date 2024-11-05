@@ -39,10 +39,10 @@ jobs:
 
       - name: Publish package on PyPI
         if: ${{ github.event_name == 'release' }}
-        uses: pypa/gh-action-pypi-publish@v1.11.0
+        uses: pypa/gh-action-pypi-publish@v1.12.0
 
       - name: Publish package on TestPyPI
         if: ${{ github.event_name != 'release' }}
-        uses: pypa/gh-action-pypi-publish@v1.11.0
+        uses: pypa/gh-action-pypi-publish@v1.12.0
         with:
           repository_url: https://test.pypi.org/legacy/
