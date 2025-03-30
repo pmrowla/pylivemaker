@@ -1,4 +1,3 @@
-#
 # Copyright (C) 2019 Peter Rowlands <peter@pmrowla.com>
 # Copyright (C) 2014 tinfoil <https://bitbucket.org/tinfoil/>
 #
@@ -33,12 +32,31 @@ import struct
 import tempfile
 import zlib
 from pathlib import Path, PureWindowsPath
+from typing import (
+    IO,
+    TYPE_CHECKING,
+    Any,
+    BinaryIO,
+    Collection,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Literal,
+    Optional,
+    Union,
+    cast,
+)
 
 import construct
 from loguru import logger
 
 from .exceptions import BadLiveMakerArchive, UnsupportedLiveMakerCompression
 from .scramble import decrypt
+from .types import PathLike
+
+if TYPE_CHECKING:
+    from construct import Container, Context
 
 
 class LMCompressType(enum.IntEnum):
@@ -333,11 +351,11 @@ class LMObfuscator:
 
     """
 
-    def __init__(self, seed=LIVEMAKER3_XOR_SEED):
+    def __init__(self, seed: int = LIVEMAKER3_XOR_SEED):
         self.keystream = self._keystream(seed)
 
     @classmethod
-    def _keystream(cls, seed=LIVEMAKER3_XOR_SEED):
+    def _keystream(cls, seed: int = LIVEMAKER3_XOR_SEED) -> Iterator[int]:
         """xor keystream generator used for obfuscating archive filenames and offets.
 
         Yields (int): The next XOR value.
@@ -348,34 +366,34 @@ class LMObfuscator:
             key = ((key << 2) + key + seed) & 0xFFFFFFFF
             yield key
 
-    def transform_bytes(self, data):
+    def transform_bytes(self, data: bytes) -> bytes:
         return construct.integers2bytes((b ^ (next(self.keystream) & 0xFF)) for b in data)
 
-    def transform_int(self, data):
+    def transform_int(self, data: bytes) -> bytes:
         key = next(self.keystream)
-        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
-        return construct.integers2bytes(data)
+        ints = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
+        return construct.integers2bytes(ints)
 
-    def transform_int_high(self, data):
+    def transform_int_high(self, data: bytes) -> bytes:
         # special case for re-encoding high part of offsets
         # LiveMaker always only outputs 0 or 0xffffffff depending on if high
         # bit ends up set
         key = next(self.keystream)
-        data = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
-        if data[3] & 0x80:
-            data = [0xFF, 0xFF, 0xFF, 0xFF]
+        ints = [(b ^ ((key >> (8 * i)) & 0xFF)) for i, b in enumerate(data)]
+        if ints[3] & 0x80:
+            ints = [0xFF, 0xFF, 0xFF, 0xFF]
         else:
-            data = [0, 0, 0, 0]
-        return construct.integers2bytes(data)
+            ints = [0, 0, 0, 0]
+        return construct.integers2bytes(ints)
 
 
-class _LMArchiveVersionValidator(construct.Validator):
+class _LMArchiveVersionValidator(construct.Validator[int, int]):
     """Construct validator for supported LiveMaker archive versions."""
 
-    def _validate(self, obj, ctx, path):
+    def _validate(self, obj: int, ctx: "Context", path: str) -> bool:
         return obj >= MIN_ARCHIVE_VERSION
 
-    def _decode(self, obj, ctx, path):
+    def _decode(self, obj: int, ctx: "Context", path: str) -> int:
         if not self._validate(obj, ctx, path):
             raise construct.ValidationError(f"Unsupported LiveMaker archive version: {obj}")
         return obj
@@ -430,7 +448,7 @@ class LMArchiveDirectory:
     """
 
     @classmethod
-    def struct(cls):
+    def struct(cls) -> construct.Struct[Container[Any], Optional[Dict[str, Any]]]:
         return construct.Struct(
             "signature" / construct.Const(b"vf"),
             "version" / _LMArchiveVersionValidator(construct.Int32ul),
@@ -488,13 +506,6 @@ class LMArchiveDirectory:
             "unk1s"
             / construct.Array(
                 construct.this.count,
-                # construct.Transformed(
-                #     construct.Int32ul,
-                #     LMObfuscator().transform_int,
-                #     4,
-                #     LMObfuscator().transform_int,
-                #     4,
-                # ),
                 construct.Int32ul,
             ),
             "checksums"
@@ -510,17 +521,17 @@ class LMArchiveDirectory:
         )
 
     @classmethod
-    def make_offset(cls, obj):
+    def make_offset(cls, obj: Any) -> int:
         """Join split offset into one 64-bit unsigned offset."""
-        return ((obj.offset_high & 0x80000000) << 32) | obj.offset_low
+        return ((cast(int, obj.offset_high) & 0x80000000) << 32) | cast(int, obj.offset_low)
 
     @classmethod
-    def split_offset(cls, offset):
+    def split_offset(cls, offset: int) -> Dict[str, int]:
         """Split an offset into the expected components for writing to an archive."""
         return {"offset_low": offset & 0xFFFFFFFF, "offset_high": (offset >> 32) << 31}
 
     @classmethod
-    def directory_size(cls, version, filenames=[]):
+    def directory_size(cls, version: int, filenames: Collection[str] = []) -> int:
         """Return the size of a directory containing `filenames`."""
         # we have to build an empty dir since construct sizeof() only works if
         # a struct has a fixed size
@@ -538,7 +549,7 @@ class LMArchiveDirectory:
         return len(cls.struct().build(directory))
 
     @classmethod
-    def checksum(cls, data):
+    def checksum(cls, data: bytes) -> int:
         """Compute a VF archive checksum for the specified data.
 
         RE'd from TVrFile.ChecksumStream().
@@ -593,7 +604,15 @@ class LMArchive:
 
     """
 
-    def __init__(self, name=None, mode="r", fp=None, exe=None, split=False, version=DEFAULT_VERSION):
+    def __init__(
+        self,
+        name: Optional[PathLike] = None,
+        mode: Literal["r", "w"] = "r",
+        fp: Optional[BinaryIO] = None,
+        exe: Optional[str] = None,
+        split: bool = False,
+        version: int = DEFAULT_VERSION,
+    ):
         self.closed = True
         if not name and not fp:
             raise ValueError("Nothing to open")
@@ -604,28 +623,32 @@ class LMArchive:
         self._mode = modes[mode]
 
         if not fp:
-            fp = open(name, self._mode)
+            assert name
+            fp = cast(BinaryIO, open(name, self._mode))
             self._extfp = False
         else:
-            if name is None and hasattr(fp, "name") and isinstance(fp.name, (str, bytes)):
-                name = fp.name
+            if not name:
+                if hasattr(fp, "name"):
+                    name = fp.name
+                else:
+                    raise ValueError("name is required when specifing fp")
             if hasattr(fp, "mode"):
                 self._mode = fp.mode
             self._extfp = True
-        self.fp = fp
+        self.fp: BinaryIO = fp
         self.closed = False
 
         self.name = str(Path(name).resolve())
         root, ext = os.path.splitext(self.name)
 
-        self.filelist = []
-        self.name_info = {}
+        self.filelist: List[LMArchiveInfo] = []
+        self.name_info: Dict[str, LMArchiveInfo] = {}
 
         try:
             if mode == "w":
-                self._read_fps = []
+                self._read_fps: List[BinaryIO] = []
                 if exe:
-                    self.exefp = open(exe, "rb")
+                    self.exefp: Optional[BinaryIO] = open(exe, "rb")
                     self.is_exe = True
                     self.is_split = False
                     self.has_ext = False
@@ -645,7 +668,7 @@ class LMArchive:
                         self.is_split = False
                         self.has_ext = False
                     self.exefp = None
-                self.tmpfp = tempfile.TemporaryFile()
+                self.tmpfp: Optional[IO[bytes]] = tempfile.TemporaryFile()
                 self.version = version
             else:
                 self.exefp = None
@@ -667,14 +690,14 @@ class LMArchive:
                                 f"Could not find (.dat) data file for split archive index {self.name}."
                             )
                         self._split_files.add(dat_file)
-                        self._read_fps.append(open(dat_file, self._mode))
+                        self._read_fps.append(cast(BinaryIO, open(dat_file, self._mode)))
                     else:
                         self.has_ext = False
                         self._read_fps.append(self.fp)
                     for i in range(1, 100):
                         dat_file = f"{self._split_base}.{i:03}"
                         if os.path.isfile(dat_file):
-                            self._read_fps.append(open(dat_file, self._mode))
+                            self._read_fps.append(cast(BinaryIO, open(dat_file, self._mode)))
                             self._split_files.add(dat_file)
                 else:
                     self.is_split = False
@@ -691,16 +714,16 @@ class LMArchive:
             self.closed = True
             raise e
 
-    def __enter__(self):
+    def __enter__(self) -> "LMArchive":
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type: Any, value: Any, traceback: Any) -> None:
         self.close()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.close()
 
-    def close(self):
+    def close(self) -> None:
         """Close the archive file.
 
         When an archive is opened in write mode, `close()` must be called before exiting your program
@@ -729,15 +752,15 @@ class LMArchive:
                 self.fp.close()
             self.closed = True
 
-    def namelist(self):
+    def namelist(self) -> List[str]:
         """Return a list of archive entries by name."""
         return sorted(self.name_info.keys())
 
-    def infolist(self):
+    def infolist(self) -> List["LMArchiveInfo"]:
         """Return a containing a `LMArchiveInfo` object for each entry in the archive."""
         return self.filelist
 
-    def getinfo(self, name):
+    def getinfo(self, name: str) -> "LMArchiveInfo":
         """Return a `LMArchiveInfo` object for the entry with the specified name.
 
         Raises:
@@ -749,7 +772,7 @@ class LMArchive:
             raise KeyError(f"{name} does not exist in archive.")
         return info
 
-    def list(self):
+    def list(self) -> None:
         """Print a list of archive entries to stdout."""
         print(self.name)
         print("-------- ------ -------- -------- ------- ------")
@@ -767,7 +790,7 @@ class LMArchive:
                 )
             )
 
-    def _find_archive_offset(self):
+    def _find_archive_offset(self) -> int:
         """Find offset for the start of the archive."""
         self.fp.seek(0)
         if self.fp.read(2) == b"MZ":
@@ -780,12 +803,12 @@ class LMArchive:
             # Read offset for start of archive
             self.fp.seek(-6, 2)
             (offset,) = struct.unpack("<I", self.fp.read(4))
-            return offset
+            return cast(int, offset)
         else:
             self.is_exe = False
             return 0
 
-    def _parse_directory(self):
+    def _parse_directory(self) -> None:
         """Parse the file index for this archive."""
         self.fp.seek(self.archive_offset)
         try:
@@ -811,7 +834,7 @@ class LMArchive:
             self.filelist.append(info)
             self.name_info[name] = info
 
-    def _extract(self, entry, output_path):
+    def _extract(self, entry: Union["LMArchiveInfo", str], output_path: PathLike) -> None:
         """Extract the specified entry."""
         if self.closed:
             raise ValueError("Archive is already closed.")
@@ -819,13 +842,13 @@ class LMArchive:
             raise ValueError("Cannot extract entry from archive which is open for writing.")
         if not isinstance(entry, LMArchiveInfo):
             entry = self.getinfo(entry)
-        path = Path.joinpath(output_path, entry.path).expanduser().resolve()
+        path = Path(output_path).joinpath(entry.path).expanduser().resolve()
         path.parent.mkdir(parents=True, exist_ok=True)
         data = self.read(entry)
         with path.open("wb") as f:
             f.write(data)
 
-    def extract(self, name, path=None):
+    def extract(self, name: Union["LMArchiveInfo", str], path: Optional[PathLike] = None) -> None:
         """Extract the specified entry from the archive to the current working directory.
 
         Args:
@@ -844,7 +867,12 @@ class LMArchive:
             path = Path.cwd()
         self._extract(name, path)
 
-    def extractall(self, path=None, entries=None, allow_unsupported=False):
+    def extractall(
+        self,
+        path: Optional[PathLike] = None,
+        entries: Optional[Iterable["LMArchiveInfo"]] = None,
+        allow_unsupported: bool = False,
+    ) -> None:
         """Extract all entries in this archive to the current working directory.
 
         Args:
@@ -873,7 +901,7 @@ class LMArchive:
                     raise e
                 logger.warning(f"Skipping encrypted file {e}")
 
-    def read(self, name, decompress=True, skip_checksum=True):
+    def read(self, name: Union[str, "LMArchiveInfo"], decompress: bool = True, skip_checksum: bool = True) -> bytes:
         """Return the bytes of the specified file in the archive.
 
         The archive must be open for reading.
@@ -932,7 +960,7 @@ class LMArchive:
                     raise UnsupportedLiveMakerCompression(str(e))
         return data
 
-    def read_exe(self):
+    def read_exe(self) -> bytes:
         """Return the exe bytes for this archive.
 
         Raises:
@@ -949,7 +977,13 @@ class LMArchive:
         self.fp.seek(0)
         return self.fp.read(self.archive_offset)
 
-    def write(self, filename, arcname=None, compress_type=None, unk1=None):
+    def write(
+        self,
+        filename: str,
+        arcname: Optional[str] = None,
+        compress_type: Optional["LMCompressType"] = None,
+        unk1: Optional[int] = None,
+    ) -> int:
         """Write the file named `filename` into the archive.
 
         Args:
@@ -978,6 +1012,7 @@ class LMArchive:
             arcpath = PureWindowsPath(filename)
         else:
             arcpath = PureWindowsPath(arcname)
+        assert self.tmpfp
         # strip drive and leading pathsep
         name = str(arcpath.relative_to(arcpath.anchor))
         if name in self.name_info:
@@ -1005,7 +1040,13 @@ class LMArchive:
         self.name_info[name] = info
         return info.compressed_size
 
-    def writebytes(self, arcname, data, compress_type=None, skip_checksum=True):
+    def writebytes(
+        self,
+        arcname: Union[str, "LMArchiveInfo"],
+        data: bytes,
+        compress_type: Optional["LMCompressType"] = None,
+        skip_checksum: bool = True,
+    ) -> int:
         """Write a raw (already compressed) file into the archive.
 
         This method can be used to copy compressed data from an
@@ -1038,6 +1079,7 @@ class LMArchive:
             raise ValueError("Archive is already closed.")
         if self.mode != "w":
             raise ValueError("Cannot write to archive opened for reading.")
+        assert self.tmpfp
         if isinstance(arcname, LMArchiveInfo):
             info = LMArchiveInfo(arcname.name)
             info.compress_type = arcname.compress_type
@@ -1061,29 +1103,19 @@ class LMArchive:
         self.name_info[info.name] = info
         return info.compressed_size
 
-    def _write_exe(self):
+    def _write_exe(self) -> None:
         if self.is_exe and self.exefp:
             self.fp.write(self.exefp.read())
 
-    def _write_directory(self):
-        directory = {
-            "version": self.version,
-            "count": len(self.filelist),
-            "filenames": [],
-            "offsets": [],
-            "compress_types": [],
-            "unk1s": [],
-            "checksums": [],
-            "encrypt_flags": [],
-        }
+    def _write_directory(self) -> None:
         self.archive_offset = archive_offset = self.fp.tell()
-        directory_size = LMArchiveDirectory.directory_size(self.version, self.name_info.keys())
-        filenames = directory["filenames"]
-        offsets = directory["offsets"]
-        compress_types = directory["compress_types"]
-        unk1s = directory["unk1s"]
-        checksums = directory["checksums"]
-        encrypt_flags = directory["encrypt_flags"]
+        directory_size = LMArchiveDirectory.directory_size(self.version, list(self.name_info.keys()))
+        filenames: List[str] = []
+        offsets: List[Dict[str, int]] = []
+        compress_types: List["LMCompressType"] = []
+        unk1s: List[int] = []
+        checksums: List[int] = []
+        encrypt_flags: List[int] = []
         for info in self.filelist:
             filenames.append(info.name)
             # info offset will be the offset of this entry in the temporary
@@ -1106,11 +1138,22 @@ class LMArchive:
         else:
             # handle empty archive
             offsets.append(LMArchiveDirectory.split_offset(archive_offset))
+        directory = {
+            "version": self.version,
+            "count": len(self.filelist),
+            "filenames": filenames,
+            "offsets": offsets,
+            "compress_types": [],
+            "unk1s": unk1s,
+            "checksums": [],
+            "encrypt_flags": encrypt_flags,
+        }
         data = LMArchiveDirectory.struct().build(directory)
         self.fp.write(data)
 
-    def _write_archive(self):
+    def _write_archive(self) -> None:
         # copy data from temp file into final archive
+        assert self.tmpfp
         if self.is_split:
             self.tmpfp.seek(0, 2)
             data_offset = self.fp.tell()
@@ -1141,7 +1184,7 @@ class LMArchive:
             self.tmpfp.seek(0)
             shutil.copyfileobj(self.tmpfp, self.fp)
 
-    def _write_trailer(self):
+    def _write_trailer(self) -> None:
         if not self.is_split:
             data = struct.pack("<I", self.archive_offset)
             self.fp.write(data)
@@ -1161,7 +1204,7 @@ class LMArchiveInfo:
 
     """
 
-    def __init__(self, name=""):
+    def __init__(self, name: str = ""):
         self.name = name
         self._offset = 0
         self.compress_type = LMCompressType.NONE
@@ -1169,12 +1212,12 @@ class LMArchiveInfo:
         # fairly sure these are supposed to be some sort of checksum but as
         # far as I can tell a LiveNovel game exe never actually verifies them??
         self.unk1 = 0
-        self.checksum = None
+        self.checksum = 0
         self.encrypt_flag = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     @property
-    def path(self):
+    def path(self) -> PureWindowsPath:
         return PureWindowsPath(self.name)
