@@ -52,6 +52,6 @@ jobs:
           pytest --cov=livemaker --cov-report=xml --cov-report=term
 
       - name: Upload coverage data
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           files: ./coverage.xml
