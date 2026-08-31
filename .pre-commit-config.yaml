@@ -1,18 +1,18 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
-  - repo: https://github.com/psf/black
-    rev: 25.1.0
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.5.1
     hooks:
       - id: black
         language_version: python3
         files: .
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-toml
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.2
+    rev: 7.3.0
     hooks:
       - id: flake8
         language_version: python3
@@ -22,4 +22,4 @@ repos:
       - id: isort
         language_version: python3
     repo: https://github.com/timothycrosley/isort
-    rev: 6.0.1
+    rev: 9.0.1
