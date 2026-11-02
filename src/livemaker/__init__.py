@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 """Top-level package for pylivemaker."""
+
 from loguru import logger
 
 from ._version import __version__, __version_tuple__  # noqa: F401
