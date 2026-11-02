@@ -17,12 +17,12 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 """LiveMaker LiveNovel LNS script classes."""
 
+import _markupbase
 import enum
 import os
 import re
 from bisect import bisect
 
-import _markupbase
 import construct
 from loguru import logger
 from lxml import etree
