@@ -590,7 +590,7 @@ class OpeData(BaseSerializable):
     # someone finds a script that actually requires supporting it
 
     def _plus(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " + ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -598,7 +598,7 @@ class OpeData(BaseSerializable):
         return [Param(value=p1.value + p2.value)]
 
     def _minus(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " - ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -606,7 +606,7 @@ class OpeData(BaseSerializable):
         return [Param(value=p1.value - p2.value)]
 
     def _mul(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " * ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -614,7 +614,7 @@ class OpeData(BaseSerializable):
         return [Param(value=p1.value * p2.value)]
 
     def _div(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " / ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -622,7 +622,7 @@ class OpeData(BaseSerializable):
         return [Param(value=p1.value / p2.value)]
 
     def _mod(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " % ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -631,7 +631,7 @@ class OpeData(BaseSerializable):
 
     def _or(self):
         # LiveMaker uses | to specify both bitwise and boolean OR
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return ["(", p1, " | ", p2, ")"]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -642,7 +642,7 @@ class OpeData(BaseSerializable):
 
     def _and(self):
         # LiveMaker uses | to specify both bitwise and boolean AND
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return ["(", p1, " & ", p2, ")"]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -652,7 +652,7 @@ class OpeData(BaseSerializable):
         return [p1.value & p2.value]
 
     def _xor(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " ^ ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -676,37 +676,37 @@ class OpeData(BaseSerializable):
         return x
 
     def _equal(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " == ", p2]
         return [Param(value=p1.value == p2.value)]
 
     def _big(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " > ", p2]
         return [Param(value=p1.value > p2.value)]
 
     def _small(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " < ", p2]
         return [Param(value=p1.value < p2.value)]
 
     def _ebig(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " >= ", p2]
         return [Param(value=p1.value >= p2.value)]
 
     def _esmall(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " <= ", p2]
         return [Param(value=p1.value <= p2.value)]
 
     def _shiftl(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " << ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -714,7 +714,7 @@ class OpeData(BaseSerializable):
         return [Param(p1.value << p2.value)]
 
     def _shiftr(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " >> ", p2]
         elif p1.type == ParamType.Str or p2.type == ParamType.Str:
@@ -723,7 +723,7 @@ class OpeData(BaseSerializable):
 
     def _combostr(self):
         # String join
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " ++ ", p2]
         elif p1.type != ParamType.Str or p2.type != ParamType.Str:
@@ -731,7 +731,7 @@ class OpeData(BaseSerializable):
         return [Param(value="".join([p1.value, p2.value]))]
 
     def _nequal(self):
-        (p1, p2) = self.operands
+        p1, p2 = self.operands
         if p1.type == ParamType.Var or p2.type == ParamType.Var:
             return [p1, " != ", p2]
         return [Param(value=p1.value != p2.value)]
